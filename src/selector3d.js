@@ -68,16 +68,22 @@ export class Selector3D {
       this.glows[id] = glow
     }
 
-    // Les deux livres fermés
+    // Les deux livres fermés : ils lévitent et tournent sur eux-mêmes
+    // à l'infini, comme des objets de jeu vidéo.
     const edgeTex = new THREE.CanvasTexture(edgeCanvas)
     edgeTex.wrapS = edgeTex.wrapT = THREE.RepeatWrapping
     this.books = {}
     for (const [id, x] of [['classique', -0.78], ['thermostatique', 0.78]]) {
-      const book = this._makeBook(covers[id], edgeTex)
-      book.position.set(x, 0.055, 0)
-      book.userData = { id, baseX: x, lift: 0, liftTarget: 0 }
-      this.scene.add(book)
-      this.books[id] = book
+      const mesh = this._makeBook(covers[id], edgeTex)
+      const tilt = new THREE.Group()
+      tilt.rotation.x = Math.PI / 2 - 0.1 // debout, couverture face caméra
+      tilt.add(mesh)
+      const spin = new THREE.Group()
+      spin.add(tilt)
+      spin.position.set(x, 1.0, 0)
+      spin.userData = { id, baseX: x, lift: 0, liftTarget: 0, phase: x * 2 }
+      this.scene.add(spin)
+      this.books[id] = spin
     }
 
     this.ray = new THREE.Raycaster()
@@ -114,6 +120,10 @@ export class Selector3D {
     front.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy())
     const back = new THREE.CanvasTexture(covers.back)
     back.colorSpace = THREE.SRGBColorSpace
+    // La face arrière de la boîte est cartographiée tête-bêche : on remet la
+    // 4e de couverture à l'endroit pour la rotation du livre.
+    back.center.set(0.5, 0.5)
+    back.rotation = Math.PI
 
     const paper = new THREE.MeshStandardMaterial({ map: edgeTex, roughness: 0.9 })
     const spine = new THREE.MeshStandardMaterial({ color: 0x0b3a44, roughness: 0.6 })
@@ -181,9 +191,10 @@ export class Selector3D {
   // Arrivée depuis un livre (transition retour) : caméra proche, puis recul.
   arriveFrom(id) {
     const book = this.books[id]
-    this.cam.el = 1.3
-    this.cam.dist = 1.4
+    this.cam.el = 0.35
+    this.cam.dist = 1.5
     this.cam.tx = book.position.x
+    this.cam.ty = 1.0
     this.cam.tz = 0
   }
 
@@ -193,17 +204,18 @@ export class Selector3D {
     this.renderer.setSize(w, h, false)
     this.camera.aspect = w / h
     this.camera.updateProjectionMatrix()
-    // Cadrage : les deux livres (largeur ~2.9) tiennent dans le champ.
+    // Cadrage : les deux livres debout (largeur ~2.9, hauteur ~1.5)
+    // tiennent dans le champ, vue frontale légèrement plongeante.
     const vHalf = Math.tan((this.camera.fov * Math.PI) / 360)
     const hHalf = vHalf * this.camera.aspect
     const portrait = this.camera.aspect < 0.9
-    const halfW = portrait ? 1.32 : 1.58
-    const appH = (PH / 2) * Math.sin(0.88) + 0.3
-    this.camGoal.dist = Math.max(halfW / hHalf, appH / vHalf) + (portrait ? 0.8 : 1.1)
-    this.camGoal.el = 0.88
+    const halfW = portrait ? 1.30 : 1.55
+    const halfH = PH / 2 + 0.42
+    this.camGoal.dist = Math.max(halfW / hHalf, halfH / vHalf) + (portrait ? 0.5 : 0.8)
+    this.camGoal.el = 0.32
     this.camGoal.tx = 0
-    this.camGoal.ty = 0.03
-    this.camGoal.tz = -0.1
+    this.camGoal.ty = 1.0
+    this.camGoal.tz = 0
   }
 
   _frame() {
@@ -211,14 +223,20 @@ export class Selector3D {
     const damp = (r) => (this.reduced ? 1 : 1 - Math.exp(-r * dt))
     const now = performance.now() / 1000
 
-    // Livres : lévitation douce + avancée au survol
+    // Livres : lévitation + rotation infinie sur eux-mêmes, avancée au survol
     for (const book of Object.values(this.books)) {
       const u = book.userData
       u.lift += (u.liftTarget - u.lift) * damp(6)
-      const bob = this.reduced ? 0 : Math.sin(now * 0.6 + u.baseX * 3) * 0.008
-      book.position.y = 0.055 + bob + u.lift * 0.07
-      book.position.z = u.lift * 0.17
-      book.rotation.y = (this.reduced ? 0 : Math.sin(now * 0.3 + u.baseX * 5) * 0.02) + u.lift * -0.06 * Math.sign(u.baseX)
+      if (this.reduced) {
+        book.rotation.y = 0.12 * Math.sign(u.baseX) * -1
+        book.position.y = 1.0
+      } else {
+        book.rotation.y += dt * 0.55 * (1 + u.lift * 0.6) // tour complet ~11 s
+        book.position.y = 1.0 + Math.sin(now * 0.9 + u.phase) * 0.035 + u.lift * 0.05
+      }
+      book.position.z = u.lift * 0.16
+      const sc = 1 + u.lift * 0.07
+      book.scale.set(sc, sc, sc)
       // Estompage pendant la plongée
       book.traverse((o) => {
         if (o.userData && o.userData.fade && o.material) {
@@ -240,9 +258,10 @@ export class Selector3D {
       const k = Math.min(1, (performance.now() - this.diveStart) / this.diveDur)
       const e = k * k * (3 - 2 * k)
       const book = this.books[this.diving]
-      this.cam.el += (1.35 - this.cam.el) * e * 0.35
-      this.cam.dist += (1.15 - this.cam.dist) * e * 0.35
+      this.cam.el += (0.3 - this.cam.el) * e * 0.35
+      this.cam.dist += (1.05 - this.cam.dist) * e * 0.35
       this.cam.tx += (book.position.x - this.cam.tx) * e * 0.4
+      this.cam.ty += (1.0 - this.cam.ty) * e * 0.4
       this.cam.tz += (0 - this.cam.tz) * e * 0.4
       if (k >= 1 && this.diveResolve) {
         this.diveResolve()

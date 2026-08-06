@@ -714,6 +714,16 @@ export class Book3D {
     void anyAnim
   }
 
+  // Pause du rendu (vue pleine résolution ouverte) : libère le GPU mobile.
+  pause() {
+    this.renderer.setAnimationLoop(null)
+  }
+
+  resume() {
+    this.clock.getDelta() // purge le temps écoulé pendant la pause
+    this.renderer.setAnimationLoop(() => this._frame())
+  }
+
   dispose() {
     this.renderer.setAnimationLoop(null)
     window.removeEventListener('resize', this._onResize)

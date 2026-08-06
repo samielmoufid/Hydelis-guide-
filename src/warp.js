@@ -58,9 +58,9 @@ export class Warp {
     canvas.style.opacity = '1'
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
-    const cx = w / 2
+    const cx0 = w / 2
     const cy = h * 0.46
-    const maxR = Math.hypot(cx, cy) * 1.15
+    const maxR = Math.hypot(cx0, cy) * 1.15
 
     const N = this.light ? 54 : 110
     const streaks = []
@@ -86,8 +86,8 @@ export class Warp {
       }
     }
 
-    const DUR = 1150
-    const t0 = performance.now()
+    const DUR = 1650
+    let t0 = performance.now()
     let covered = false
 
     return new Promise((resolve) => {
@@ -101,11 +101,18 @@ export class Warp {
         // Vitesse : accélération puis freinage doux
         const speed = Math.sin(Math.min(1, t) * Math.PI) ** 1.5
         // Opacité globale : montée rapide, plateau, retombée
-        const alpha = t < 0.28 ? t / 0.28 : t > 0.72 ? Math.max(0, (1 - t) / 0.28) : 1
+        const alpha = t < 0.24 ? t / 0.24 : t > 0.74 ? Math.max(0, (1 - t) / 0.26) : 1
+        // Zigzag : le point de fuite fouette de gauche à droite pendant
+        // le voyage (secousses du tunnel).
+        const cx = cx0 + Math.sin(t * Math.PI * 3.4) * w * 0.085 * Math.sin(Math.PI * Math.min(1, t)) * (this.light ? 0.75 : 1)
 
-        if (!covered && t >= 0.45) {
+        if (!covered && t >= 0.42) {
           covered = true
+          // L'échange de scènes peut être coûteux : on décale le chrono du
+          // temps qu'il a pris pour que la sortie du tunnel se joue en entier.
+          const b0 = performance.now()
           onCover && onCover()
+          t0 += performance.now() - b0
         }
 
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)

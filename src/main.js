@@ -253,14 +253,6 @@ function showSelector(fromId) {
   $('#topbar').classList.remove('ui-hidden')
   history.replaceState(null, '', location.pathname + location.search)
 
-  // « Reprendre la lecture » sur le dernier livre consulté.
-  const last = localStorage.getItem('hydelis-last-book')
-  document.querySelectorAll('.sel-resume').forEach((el) => { el.hidden = true })
-  if (last && BOOKS[last]) {
-    const chip = document.querySelector(`#sel-${last} .sel-resume`)
-    if (chip) chip.hidden = false
-  }
-
   if (WEBGL) {
     selector = new Selector3D({
       canvas: $('#scene'),
@@ -632,10 +624,14 @@ const lightbox = {
     $('#sr-live').textContent = `Zoom sur la page ${idx + 1} : ${CUR.titles[idx]}`
     hideSharpHint()
     showLbHint()
+    // Rendu 3D en pause pendant la lecture : toute la fluidité va au zoom.
+    if (book && book.pause) book.pause()
   },
   close() {
+    if (this.el.hidden) return
     this.el.classList.remove('open')
     setTimeout(() => { this.el.hidden = true }, REDUCED ? 0 : 320)
+    if (book && book.resume) book.resume()
   },
   show(idx) {
     if (idx < 0 || idx > N - 1) return

@@ -277,6 +277,12 @@ body {
 .lb-backdrop { position: absolute; inset: 0; background: rgba(1, 6, 9, 0.88);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   opacity: 0; transition: opacity 0.3s; }
+/* Mobile : fond opaque sans flou — compositing bien plus léger pendant
+   le pan/pincement. */
+@media (pointer: coarse) {
+  .lb-backdrop { background: rgba(2, 9, 12, 0.97);
+    backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
 #lightbox.open .lb-backdrop { opacity: 1; }
 .lb-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   overflow: hidden; touch-action: none; cursor: grab; }
@@ -285,8 +291,11 @@ body {
   max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px);
   border-radius: 6px; box-shadow: 0 30px 90px rgba(0,0,0,0.7);
   transform-origin: center center; will-change: transform;
-  opacity: 0; transform: scale(0.92); transition: opacity 0.3s, transform 0.3s; }
-#lightbox.open #lb-img { opacity: 1; }
+  /* Surtout PAS de transition sur transform : le pan/pincement doit suivre
+     le doigt instantanément (l'entrée est animée par lb-in). */
+  opacity: 0; transition: opacity 0.3s; }
+#lightbox.open #lb-img { opacity: 1; animation: lb-in 0.3s ease; }
+@keyframes lb-in { from { transform: scale(0.94); } }
 .lb-btn { position: absolute; z-index: 2; }
 .lb-close { top: calc(14px + var(--safe-t)); right: 14px; }
 .lb-prev { left: 10px; top: 50%; transform: translateY(-50%); border-radius: 50%; }
