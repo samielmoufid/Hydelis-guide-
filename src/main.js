@@ -160,13 +160,35 @@ function onZoomChange(side) {
     exitBtn.hidden = false
     requestAnimationFrame(() => exitBtn.classList.add('show'))
     $('#page-indicator').textContent = `Page ${page} / 7 · détail`
-    $('#sr-live').textContent = `Page ${page} en détail. Touchez pour revenir au livre.`
+    $('#sr-live').textContent =
+      `Page ${page} en détail. Touchez la page pour la pleine résolution, à côté pour revenir au livre.`
     hideTapHint()
+    showSharpHint()
   } else {
     exitBtn.classList.remove('show')
     setTimeout(() => { exitBtn.hidden = true }, REDUCED ? 0 : 420)
+    hideSharpHint()
     onSpreadChange(book.turned)
   }
+}
+
+// Indication « retouchez la page pour la netteté parfaite » (max 3 fois).
+let sharpHintShown = 0
+let sharpHintTimer = null
+function showSharpHint() {
+  if (sharpHintShown >= 3) return
+  sharpHintShown++
+  const hint = $('#sharp-hint')
+  hint.hidden = false
+  clearTimeout(sharpHintTimer)
+  requestAnimationFrame(() => hint.classList.add('show'))
+  sharpHintTimer = setTimeout(hideSharpHint, 3400)
+}
+function hideSharpHint() {
+  clearTimeout(sharpHintTimer)
+  const hint = $('#sharp-hint')
+  hint.classList.remove('show')
+  setTimeout(() => { hint.hidden = true }, 600)
 }
 
 // Navigation page par page pendant le zoom (swipe, flèches, boutons).
@@ -407,6 +429,8 @@ const lightbox = {
     requestAnimationFrame(() => this.el.classList.add('open'))
     $('#lb-counter').textContent = `Page ${idx + 1} / 7 — ${PAGE_TITLES[idx]}`
     $('#sr-live').textContent = `Zoom sur la page ${idx + 1} : ${PAGE_TITLES[idx]}`
+    hideSharpHint()
+    showLbHint()
   },
   close() {
     this.el.classList.remove('open')
@@ -438,6 +462,32 @@ const lightbox = {
     this.scale = ns
     this._apply()
   }
+}
+
+// Indication de zoom dans la vue pleine résolution (max 3 fois).
+let lbHintShown = 0
+let lbHintTimer = null
+function showLbHint() {
+  if (lbHintShown >= 3) return
+  lbHintShown++
+  const coarse = window.matchMedia('(pointer: coarse)').matches
+  $('#lb-hint-text').textContent = coarse
+    ? 'Pincez pour zoomer où vous voulez, glissez pour vous déplacer'
+    : 'Molette pour zoomer où vous voulez, cliquez-glissez pour vous déplacer'
+  const hint = $('#lb-hint')
+  hint.hidden = false
+  clearTimeout(lbHintTimer)
+  requestAnimationFrame(() => hint.classList.add('show'))
+  lbHintTimer = setTimeout(() => {
+    hint.classList.remove('show')
+    setTimeout(() => { hint.hidden = true }, 600)
+  }, 3600)
+}
+
+// iOS Safari : empêche le zoom natif de la page entière (le pincement doit
+// zoomer la page du guide, pas l'interface).
+for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) {
+  document.addEventListener(ev, (e) => e.preventDefault(), { passive: false })
 }
 
 $('#lb-close').addEventListener('click', () => lightbox.close())

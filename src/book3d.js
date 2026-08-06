@@ -505,8 +505,15 @@ export class Book3D {
     const timer = setTimeout(() => {
       this.lastTap = null
       if (this.zoom) {
-        // En mode zoom, un tap referme la page.
-        this.zoomExit()
+        // En mode zoom : tap SUR la page → netteté maximale (pleine
+        // résolution) ; tap à côté → retour au livre.
+        const s = this.zoom.side
+        const onPage = (s === 'right'
+          ? loc.x > -0.03 && loc.x < PW + 0.03
+          : loc.x < 0.03 && loc.x > -PW - 0.03) &&
+          Math.abs(loc.y) < PH / 2 + 0.04
+        if (onPage) this.on.doubleTap && this.on.doubleTap(s)
+        else this.zoomExit()
         return
       }
       const side = loc.x >= 0.05 ? 'right' : loc.x <= -0.05 ? 'left' : null

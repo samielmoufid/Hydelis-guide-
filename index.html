@@ -100,6 +100,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
     </button>
     <div id="lb-counter" class="lb-counter" aria-hidden="true"></div>
+    <div id="lb-hint" class="lb-hint" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8L20.5 20.5M11 8.5v5M8.5 11h5"/></svg>
+      <span id="lb-hint-text">Pincez pour zoomer où vous voulez</span>
+    </div>
   </div>
 
   <!-- Écran d'ouverture -->
@@ -119,6 +123,12 @@
     <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     <span>Retour au livre</span>
   </button>
+
+  <!-- Indication : retoucher la page zoomée pour la pleine résolution -->
+  <div id="sharp-hint" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8L20.5 20.5M11 8.5v5M8.5 11h5"/></svg>
+    <span>Touchez encore la page pour une netteté parfaite</span>
+  </div>
 
   <!-- Indication : toucher une page pour la voir en détail -->
   <div id="tap-hint" hidden>
