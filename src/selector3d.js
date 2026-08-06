@@ -282,6 +282,19 @@ export class Selector3D {
     this.renderer.render(this.scene, this.camera)
   }
 
+  pause() {
+    this.renderer.setAnimationLoop(null)
+  }
+
+  resume() {
+    this.clock.getDelta()
+    this.renderer.setAnimationLoop(() => this._frame())
+  }
+
+  renderOnce() {
+    this._frame()
+  }
+
   dispose() {
     this.renderer.setAnimationLoop(null)
     window.removeEventListener('resize', this._onResize)

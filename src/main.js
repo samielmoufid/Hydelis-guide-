@@ -11,7 +11,7 @@ import {
   makeInnerBackCanvas, makeBackCoverCanvas, makePaperEdgeCanvas
 } from './gen-textures.js'
 import { PaperSound } from './audio.js'
-import { Book3D } from './book3d.js'
+import { Book3D, mirrorTexture } from './book3d.js'
 import { Book2D } from './fallback2d.js'
 import { Selector3D } from './selector3d.js'
 import { Warp } from './warp.js'
@@ -312,14 +312,19 @@ async function pickBook(id) {
   $('#selector').classList.add('leaving')
 
   loadBookImages(id)
-  // Envoi progressif des textures au GPU pendant l'accélération du tunnel :
-  // évite le gros blocage (et les saccades) au moment de l'échange de scènes.
+  // Envoi progressif des textures (et de leurs miroirs) au GPU pendant
+  // l'accélération du tunnel : plus de blocage à l'échange de scènes.
   if (WEBGL) {
     const faces = facesFor(id)
+    const uploads = []
+    faces.forEach((t, idx) => {
+      uploads.push(t)
+      if (idx % 2 === 1) uploads.push(mirrorTexture(t)) // versos des feuilles
+    })
     let i = 0
     const upload = () => {
-      if (i >= faces.length || book) return
-      const t = faces[i++]
+      if (i >= uploads.length || book) return
+      const t = uploads[i++]
       const im = t.image
       if (im && (im instanceof HTMLCanvasElement || (im.complete && im.naturalWidth))) {
         renderer.initTexture(t)
@@ -337,9 +342,15 @@ async function pickBook(id) {
       buildBook(id)
       if (book.lightRamp !== undefined) book.lightRamp = 0
       if (WEBGL && book.cam) book.cam.dist = book.fitDist * 1.35 // punch d'atterrissage
+      // Une seule image rendue, puis pause : le tunnel garde toute la
+      // fluidité pendant la phase couverte.
+      if (book.renderOnce) { book.renderOnce(); book.pause() }
+    },
+    onReveal: () => {
+      if (book && book.resume) book.resume()
+      landing()
     }
   })
-  landing()
   busy = false
 }
 
@@ -361,6 +372,10 @@ async function switchModel() {
     onCover: () => {
       destroyBook()
       showSelector(WEBGL && !REDUCED ? fromId : null)
+      if (selector && selector.renderOnce) { selector.renderOnce(); selector.pause() }
+    },
+    onReveal: () => {
+      if (selector && selector.resume) selector.resume()
     }
   })
   busy = false
@@ -395,22 +410,25 @@ function showIntro() {
 
 // ————— Interface du livre —————
 
-// Page réellement affichée d'un côté du spread (1-indexée), ou 0.
+// Page réellement affichée d'un côté du spread (1-indexée), ou 0 si la
+// face de ce côté n'est pas une page du guide (garde, merci…).
 function pageAtSide(side) {
-  const visible = pagesAtSpread(book.turned, N)
-  if (!visible.length) return 0
-  return side === 'left' ? visible[0] : visible[visible.length - 1]
+  const f = side === 'right' ? 2 * book.turned : 2 * book.turned - 1
+  const p = f - 1
+  return p >= 1 && p <= N ? p : 0
 }
 
 function onZoomChange(side) {
   const exitBtn = $('#zoom-exit')
   if (side) {
     const page = pageAtSide(side)
+    const isGarde = page === 0 && side === 'left' && book.turned === 1
     exitBtn.hidden = false
     requestAnimationFrame(() => exitBtn.classList.add('show'))
-    $('#page-indicator').textContent = `Page ${page} / ${N} · détail`
-    $('#sr-live').textContent =
-      `Page ${page} en détail. Touchez la page pour la pleine résolution, à côté pour revenir au livre.`
+    $('#page-indicator').textContent = isGarde ? 'Informations · détail' : `Page ${page} / ${N} · détail`
+    $('#sr-live').textContent = isGarde
+      ? 'Page d’informations en détail. Touchez la page pour la pleine résolution.'
+      : `Page ${page} en détail. Touchez la page pour la pleine résolution, à côté pour revenir au livre.`
     hideTapHint()
     showSharpHint()
   } else {
@@ -437,9 +455,19 @@ function hideSharpHint() {
 function zoomNav(dir) {
   if (!book || !book.zoom) return
   const cur = pageAtSide(book.zoom.side)
+  // Depuis la garde : seule la page 1 est à droite.
+  if (!cur && book.zoom.side === 'left' && book.turned === 1) {
+    if (dir > 0) book.zoomTo('right')
+    return
+  }
   if (!cur) return
   const target = cur + dir
-  if (target < 1 || target > N) return
+  if (target < 1) {
+    // Page 1 → retour sur la garde.
+    if (cur === 1) book.zoomTo('left')
+    return
+  }
+  if (target > N) return
   const T2 = spreadForPage(target)
   if (T2 > book.turned) book.next()
   else if (T2 < book.turned) book.prev()
@@ -499,10 +527,20 @@ function closeToc() {
 
 function zoomFromSide(side) {
   if (!book) return
+  // La garde (mention de compatibilité) est la page de gauche du premier spread.
+  if (side === 'left' && book.turned === 1) {
+    lightbox.open(-1)
+    return
+  }
   const visible = pagesAtSpread(book.turned, N)
   if (!visible.length) return
   const page = side === 'left' ? visible[0] : visible[visible.length - 1]
   lightbox.open(page - 1)
+}
+
+function innerCoverUrlFor(id) {
+  ensureGenUrls()
+  return id === 'classique' ? genUrls.innerClassique : genUrls.innerThermostatique
 }
 
 function bindGlobalUI() {
@@ -643,14 +681,21 @@ const lightbox = {
   lastMid: null, multi: false,
 
   open(idx) {
+    // idx = -1 : page de garde (mention de compatibilité).
     this.idx = idx
     this.scale = 1; this.tx = 0; this.ty = 0
-    this.img.src = CUR.pages[idx]
+    if (idx === -1) {
+      this.img.src = innerCoverUrlFor(CUR.id)
+      $('#lb-counter').textContent = `Informations — ${CUR.label}`
+      $('#sr-live').textContent = 'Zoom sur la page d’informations du guide'
+    } else {
+      this.img.src = CUR.pages[idx]
+      $('#lb-counter').textContent = `Page ${idx + 1} / ${N} — ${CUR.titles[idx]}`
+      $('#sr-live').textContent = `Zoom sur la page ${idx + 1} : ${CUR.titles[idx]}`
+    }
     this._apply()
     this.el.hidden = false
     requestAnimationFrame(() => this.el.classList.add('open'))
-    $('#lb-counter').textContent = `Page ${idx + 1} / ${N} — ${CUR.titles[idx]}`
-    $('#sr-live').textContent = `Zoom sur la page ${idx + 1} : ${CUR.titles[idx]}`
     hideSharpHint()
     showLbHint()
     // Rendu 3D en pause pendant la lecture : toute la fluidité va au zoom.
@@ -663,7 +708,7 @@ const lightbox = {
     if (book && book.resume) book.resume()
   },
   show(idx) {
-    if (idx < 0 || idx > N - 1) return
+    if (idx < -1 || idx > N - 1) return
     this.open(idx)
   },
   _apply() {

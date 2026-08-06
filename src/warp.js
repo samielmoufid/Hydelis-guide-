@@ -13,15 +13,16 @@ export class Warp {
   }
 
   /**
-   * Joue la transition. `onCover` est appelé une fois au moment où l'écran
-   * est entièrement couvert (c'est là qu'on échange les scènes).
+   * Joue la transition. `onCover` est appelé une fois quand l'écran est
+   * entièrement couvert (échange des scènes) ; `onReveal` juste avant que
+   * le tunnel ne se dissipe (reprise du rendu de la scène d'arrivée).
    */
-  play({ onCover }) {
-    if (this.reduced) return this._playFade(onCover)
-    return this._playWarp(onCover)
+  play({ onCover, onReveal }) {
+    if (this.reduced) return this._playFade(onCover, onReveal)
+    return this._playWarp(onCover, onReveal)
   }
 
-  _playFade(onCover) {
+  _playFade(onCover, onReveal) {
     // prefers-reduced-motion : simple fondu.
     const el = this.canvas
     el.style.display = 'block'
@@ -34,6 +35,7 @@ export class Warp {
         setTimeout(() => {
           onCover && onCover()
           setTimeout(() => {
+            onReveal && onReveal()
             el.style.opacity = '0'
             setTimeout(() => {
               el.style.display = 'none'
@@ -46,7 +48,7 @@ export class Warp {
     })
   }
 
-  _playWarp(onCover) {
+  _playWarp(onCover, onReveal) {
     const canvas = this.canvas
     const ctx = this.ctx
     const dpr = Math.min(window.devicePixelRatio || 1, this.light ? 1.5 : 2)
@@ -89,6 +91,7 @@ export class Warp {
     const DUR = 1650
     let t0 = performance.now()
     let covered = false
+    let revealed = false
 
     return new Promise((resolve) => {
       const tick = () => {
@@ -114,6 +117,10 @@ export class Warp {
           onCover && onCover()
           t0 += performance.now() - b0
         }
+        if (covered && !revealed && t >= 0.7) {
+          revealed = true
+          onReveal && onReveal()
+        }
 
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
         ctx.globalCompositeOperation = 'source-over'
@@ -137,6 +144,24 @@ export class Warp {
           const y1 = cy + Math.sin(s.a) * s.r
           const x2 = cx + Math.cos(s.a) * r2
           const y2 = cy + Math.sin(s.a) * r2
+          if (this.light) {
+            // Mobile : traits à deux tons (pas de dégradés — bien plus léger)
+            ctx.globalAlpha = alpha * 0.6
+            ctx.strokeStyle = s.c
+            ctx.lineWidth = s.w
+            ctx.beginPath()
+            ctx.moveTo(x1, y1)
+            ctx.lineTo(x2, y2)
+            ctx.stroke()
+            ctx.globalAlpha = alpha * 0.85
+            ctx.strokeStyle = '#EAF9FB'
+            ctx.lineWidth = s.w * 0.7
+            ctx.beginPath()
+            ctx.moveTo(cx + Math.cos(s.a) * (s.r + (r2 - s.r) * 0.72), cy + Math.sin(s.a) * (s.r + (r2 - s.r) * 0.72))
+            ctx.lineTo(x2, y2)
+            ctx.stroke()
+            continue
+          }
           const grad = ctx.createLinearGradient(x1, y1, x2, y2)
           grad.addColorStop(0, 'rgba(0,0,0,0)')
           grad.addColorStop(0.6, s.c)

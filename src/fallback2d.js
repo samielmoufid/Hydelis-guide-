@@ -182,7 +182,7 @@ export class Book2D {
         const side = cx >= mid ? 'right' : 'left'
         const idx = side === 'right' ? (this.T < this.S ? 2 * this.T : -1)
           : (this.T > 0 ? 2 * this.T - 1 : -1)
-        if (idx >= 2 && idx <= this.nPages + 1) {
+        if (idx >= 1 && idx <= this.nPages + 1) {
           // Une vraie page du guide : vue détail.
           this.on.doubleTap && this.on.doubleTap(side)
         } else {

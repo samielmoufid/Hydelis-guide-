@@ -11,6 +11,19 @@ const SEG = 26               // segments de courbure
 const COVER_SCALE = 1.022
 const EASE = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
+// Clone miroir d'une texture (verso des feuilles), mis en cache sur la
+// texture source : un seul envoi GPU même si le livre est reconstruit.
+export function mirrorTexture(tex) {
+  if (tex.userData.mirrored) return tex.userData.mirrored
+  const t = tex.clone()
+  t.wrapS = THREE.RepeatWrapping
+  t.repeat.x = -1
+  t.offset.x = 1
+  t.needsUpdate = true
+  tex.userData.mirrored = t
+  return t
+}
+
 export class Book3D {
   /**
    * @param {Object} o
@@ -171,16 +184,7 @@ export class Book3D {
   }
 
   _mirrored(tex) {
-    // Mise en cache sur la texture source : le clone miroir n'est envoyé
-    // qu'une fois au GPU, même si le livre est reconstruit.
-    if (tex.userData.mirrored) return tex.userData.mirrored
-    const t = tex.clone()
-    t.wrapS = THREE.RepeatWrapping
-    t.repeat.x = -1
-    t.offset.x = 1
-    t.needsUpdate = true
-    tex.userData.mirrored = t
-    return t
+    return mirrorTexture(tex)
   }
 
   _buildSheets(faces) {
@@ -610,10 +614,10 @@ export class Book3D {
     return side === 'right' ? (T < this.S ? 2 * T : -1) : (T > 0 ? 2 * T - 1 : -1)
   }
 
-  // Les faces 2..nPages+1 sont les vraies pages du guide.
+  // Faces zoomables : la garde (mention de compatibilité) et les pages.
   _isGuidePage(side) {
     const i = this._faceIndex(side)
-    return i >= 2 && i <= this.nPages + 1
+    return i >= 1 && i <= this.nPages + 1
   }
 
   _frame() {
@@ -718,9 +722,13 @@ export class Book3D {
     void anyAnim
   }
 
-  // Pause du rendu (vue pleine résolution ouverte) : libère le GPU mobile.
+  // Pause du rendu (vue pleine résolution ouverte, phase couverte du warp).
   pause() {
     this.renderer.setAnimationLoop(null)
+  }
+
+  renderOnce() {
+    this._frame()
   }
 
   resume() {
