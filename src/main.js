@@ -48,7 +48,24 @@ let edgeCanvas = null
 let edgeTexture = null  // texture de tranche partagée
 const imageCache = {}   // id -> { images: [Image], promise }
 const faceTexCache = {} // id -> textures THREE des faces (réutilisées)
+let selTex = null       // textures du sélecteur (créées une seule fois)
 let busy = false        // transition en cours
+
+function selectorTextures() {
+  if (selTex) return selTex
+  const t = (c) => {
+    const x = new THREE.CanvasTexture(c)
+    x.colorSpace = THREE.SRGBColorSpace
+    return x
+  }
+  const back = t(gen.backCover)
+  selTex = {
+    classique: { front: t(covers.classique), back },
+    thermostatique: { front: t(covers.thermostatique), back },
+    edge: new THREE.CanvasTexture(edgeCanvas)
+  }
+  return selTex
+}
 
 // ————— Loader —————
 
@@ -274,18 +291,21 @@ function showSelector(fromId) {
   history.replaceState(null, '', location.pathname + location.search)
 
   if (WEBGL) {
-    selector = new Selector3D({
-      canvas: $('#scene'),
-      renderer,
-      covers: {
-        classique: { front: covers.classique, back: gen.backCover },
-        thermostatique: { front: covers.thermostatique, back: gen.backCover }
-      },
-      edgeCanvas,
-      reduced: REDUCED,
-      onPick: pickBook
-    })
-    if (fromId) selector.arriveFrom(fromId)
+    if (selector) {
+      // Instance réutilisée : rien à reconstruire, zéro renvoi GPU.
+      selector.reset(fromId || null)
+    } else {
+      const st = selectorTextures()
+      selector = new Selector3D({
+        canvas: $('#scene'),
+        renderer,
+        covers: { classique: st.classique, thermostatique: st.thermostatique },
+        edgeTexture: st.edge,
+        reduced: REDUCED,
+        onPick: pickBook
+      })
+      if (fromId) selector.arriveFrom(fromId)
+    }
   } else {
     document.body.classList.add('sel-fallback')
     ensureGenUrls()
@@ -337,7 +357,7 @@ async function pickBook(id) {
   void dive
   await warp.play({
     onCover: () => {
-      if (selector) { selector.dispose(); selector = null }
+      if (selector) selector.pause() // instance conservée pour le retour
       hideSelectorDOM()
       buildBook(id)
       if (book.lightRamp !== undefined) book.lightRamp = 0
@@ -368,6 +388,19 @@ async function switchModel() {
   if (!book || busy) return
   busy = true
   const fromId = CUR.id
+  // Pré-envoi des textures du sélecteur au GPU pendant l'accélération
+  // (utile surtout à la toute première utilisation du bouton retour).
+  if (WEBGL) {
+    const st = selectorTextures()
+    const list = [st.classique.front, st.classique.back, st.thermostatique.front, st.edge]
+    let i = 0
+    const up = () => {
+      if (i >= list.length) return
+      renderer.initTexture(list[i++])
+      requestAnimationFrame(up)
+    }
+    requestAnimationFrame(up)
+  }
   await warp.play({
     onCover: () => {
       destroyBook()

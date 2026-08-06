@@ -7,23 +7,27 @@ const PW = 1.022
 const PH = (1491 / 1055) * 1.022
 const DEPTH = 0.075
 
+let sharedGlowTex = null
+
 export class Selector3D {
   /**
    * @param {Object} o
    * @param {HTMLCanvasElement} o.canvas
    * @param {THREE.WebGLRenderer} o.renderer   renderer partagé
-   * @param {Object} o.covers   { classique: {front, back}, thermostatique: {front, back} } (canvas)
-   * @param {HTMLCanvasElement} o.edgeCanvas   texture de tranche
+   * @param {Object} o.covers   { classique: {front, back}, thermostatique:
+   *   {front, back} } — textures THREE déjà créées (mises en cache côté appelant)
+   * @param {THREE.Texture} o.edgeTexture      texture de tranche
    * @param {boolean} o.reduced
    * @param {Function} o.onPick(id)
    */
-  constructor({ canvas, renderer, covers, edgeCanvas, reduced, onPick }) {
+  constructor({ canvas, renderer, covers, edgeTexture, reduced, onPick }) {
     this.canvas = canvas
     this.renderer = renderer
     this.reduced = reduced
     this.onPick = onPick
     this.hover = null
     this.diving = null
+    this.active = true
 
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera(34, 1, 0.1, 30)
@@ -52,7 +56,7 @@ export class Selector3D {
     floor.receiveShadow = true
     this.scene.add(floor)
 
-    const glowTex = this._glowTexture()
+    const glowTex = sharedGlowTex || (sharedGlowTex = this._glowTexture())
     this.glows = {}
     for (const [id, x] of [['classique', -0.78], ['thermostatique', 0.78]]) {
       const glow = new THREE.Mesh(
@@ -70,11 +74,10 @@ export class Selector3D {
 
     // Les deux livres fermés : ils lévitent et tournent sur eux-mêmes
     // à l'infini, comme des objets de jeu vidéo.
-    const edgeTex = new THREE.CanvasTexture(edgeCanvas)
-    edgeTex.wrapS = edgeTex.wrapT = THREE.RepeatWrapping
+    edgeTexture.wrapS = edgeTexture.wrapT = THREE.RepeatWrapping
     this.books = {}
     for (const [id, x] of [['classique', -0.78], ['thermostatique', 0.78]]) {
-      const mesh = this._makeBook(covers[id], edgeTex)
+      const mesh = this._makeBook(covers[id], edgeTexture)
       const tilt = new THREE.Group()
       tilt.rotation.x = Math.PI / 2 - 0.1 // debout, couverture face caméra
       tilt.add(mesh)
@@ -115,10 +118,10 @@ export class Selector3D {
   }
 
   _makeBook(covers, edgeTex) {
-    const front = new THREE.CanvasTexture(covers.front)
+    const front = covers.front
     front.colorSpace = THREE.SRGBColorSpace
     front.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy())
-    const back = new THREE.CanvasTexture(covers.back)
+    const back = covers.back
     back.colorSpace = THREE.SRGBColorSpace
     // La face arrière de la boîte est cartographiée tête-bêche : on remet la
     // 4e de couverture à l'endroit pour la rotation du livre.
@@ -161,12 +164,12 @@ export class Selector3D {
   }
 
   _onMove(e) {
-    if (this.diving) return
+    if (this.diving || !this.active) return
     if (e.pointerType === 'mouse') this.setHover(this._pickAt(e))
   }
 
   _onTap(e) {
-    if (this.diving) return
+    if (this.diving || !this.active) return
     const id = this._pickAt(e)
     if (id && this.onPick) this.onPick(id)
   }
@@ -283,16 +286,45 @@ export class Selector3D {
   }
 
   pause() {
+    this.active = false
     this.renderer.setAnimationLoop(null)
   }
 
   resume() {
+    this.active = true
     this.clock.getDelta()
     this.renderer.setAnimationLoop(() => this._frame())
   }
 
   renderOnce() {
     this._frame()
+  }
+
+  // Réutilisation de l'instance (retour depuis un livre) : on remet tout à
+  // zéro sans rien reconstruire ni renvoyer au GPU.
+  reset(fromId) {
+    this.diving = null
+    this.diveResolve = null
+    this.hover = null
+    for (const book of Object.values(this.books)) {
+      book.userData.lift = 0
+      book.userData.liftTarget = 0
+      book.rotation.y = 0 // couvertures face caméra à l'arrivée
+      book.traverse((o) => {
+        if (o.userData) delete o.userData.fade
+        if (o.material) {
+          const mats = Array.isArray(o.material) ? o.material : [o.material]
+          mats.forEach((m) => { m.opacity = 1; m.transparent = false })
+        }
+      })
+    }
+    for (const glow of Object.values(this.glows)) {
+      glow.userData = {}
+      glow.material.opacity = 0.42
+    }
+    this._resize()
+    if (fromId) this.arriveFrom(fromId)
+    else this.cam = { ...this.camGoal }
   }
 
   dispose() {
