@@ -161,31 +161,46 @@ export function makeInnerCoverCanvas(kind = 'classique') {
   const ctx = c.getContext('2d')
   paperBackground(ctx)
   ctx.save()
-  ctx.globalAlpha = 0.055
-  drawDrop(ctx, W / 2, H * 0.42, 300, '#0F6673')
+  ctx.globalAlpha = 0.05
+  drawDrop(ctx, W / 2, H * 0.56, 300, '#0F6673')
   ctx.restore()
   ctx.textAlign = 'center'
 
-  // Mention de compatibilité : protège des petites variations entre
-  // références d'une même gamme.
+  // En-tête dans le style des pages du guide.
+  drawDrop(ctx, W / 2, 180, 40, 'rgba(23,149,165,0.9)')
+  ctx.fillStyle = '#11333B'
+  ctx.font = '600 82px "Cormorant Garamond", serif'
+  ctx.fillText('Informations importantes', W / 2, 348)
+  ctx.strokeStyle = 'rgba(23,149,165,0.85)'
+  ctx.lineWidth = 4
+  ctx.beginPath()
+  ctx.moveTo(W / 2 - 90, 392)
+  ctx.lineTo(W / 2 + 90, 392)
+  ctx.stroke()
+
+  // Mention de compatibilité, bien lisible dès la vue double page.
   const gamme = kind === 'thermostatique'
     ? 'colonnes thermostatiques'
     : 'colonnes de douche classiques'
-  ctx.fillStyle = 'rgba(15,102,115,0.75)'
-  ctx.font = '400 27px "Poppins", sans-serif'
-  ctx.fillText(`Ce guide s’applique à l’ensemble des`, W / 2, H * 0.635)
-  ctx.fillText(`${gamme} Hydelis.`, W / 2, H * 0.635 + 42)
-  ctx.fillStyle = 'rgba(17,51,59,0.5)'
-  ctx.font = '300 24px "Poppins", sans-serif'
-  ctx.fillText('Les visuels et certaines étapes peuvent légèrement', W / 2, H * 0.635 + 104)
-  ctx.fillText('varier selon votre référence exacte.', W / 2, H * 0.635 + 140)
+  ctx.fillStyle = 'rgba(17,51,59,0.88)'
+  ctx.font = '400 40px "Poppins", sans-serif'
+  ctx.fillText('Ce guide s’applique à l’ensemble des', W / 2, 560)
+  ctx.fillStyle = '#0F6673'
+  ctx.font = '500 41px "Poppins", sans-serif'
+  ctx.fillText(`${gamme} Hydelis.`, W / 2, 624)
 
-  ctx.fillStyle = 'rgba(17,51,59,0.55)'
+  ctx.fillStyle = 'rgba(17,51,59,0.68)'
+  ctx.font = '300 33px "Poppins", sans-serif'
+  ctx.fillText('Les visuels et certaines étapes peuvent', W / 2, 790)
+  ctx.fillText('légèrement varier selon votre', W / 2, 840)
+  ctx.fillText('référence exacte.', W / 2, 890)
+
+  ctx.fillStyle = 'rgba(17,51,59,0.6)'
   ctx.font = '600 44px "Cormorant Garamond", serif'
-  spacedText(ctx, 'HYDELIS', W / 2, H * 0.84, 16)
+  spacedText(ctx, 'HYDELIS', W / 2, H * 0.86, 16)
   ctx.font = '300 21px "Poppins", sans-serif'
-  ctx.fillStyle = 'rgba(17,51,59,0.4)'
-  spacedText(ctx, "L'EAU SUBLIMÉE", W / 2, H * 0.84 + 46, 8)
+  ctx.fillStyle = 'rgba(17,51,59,0.42)'
+  spacedText(ctx, "L'EAU SUBLIMÉE", W / 2, H * 0.86 + 46, 8)
   return c
 }
 
