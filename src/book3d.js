@@ -408,7 +408,7 @@ export class Book3D {
       if (this.pinch.pts[e.pointerId]) {
         this.pinch.pts[e.pointerId] = { x: e.clientX, y: e.clientY }
         const d = this._pinchDist()
-        if (!this.pinch.fired && d > this.pinch.d0 * 1.18) {
+        if (!this.pinch.fired && d > this.pinch.d0 * 1.06) {
           this.pinch.fired = true
           const [a, b] = this.pinch.ids
           const mx = (this.pinch.pts[a].x + this.pinch.pts[b].x) / 2

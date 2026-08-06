@@ -172,20 +172,13 @@ function onZoomChange(side) {
   }
 }
 
-// Indication « retouchez la page pour la netteté parfaite » (max 3 fois).
-let sharpHintShown = 0
-let sharpHintTimer = null
+// Indication permanente pendant le zoom : « touchez encore la page ».
 function showSharpHint() {
-  if (sharpHintShown >= 3) return
-  sharpHintShown++
   const hint = $('#sharp-hint')
   hint.hidden = false
-  clearTimeout(sharpHintTimer)
   requestAnimationFrame(() => hint.classList.add('show'))
-  sharpHintTimer = setTimeout(hideSharpHint, 3400)
 }
 function hideSharpHint() {
-  clearTimeout(sharpHintTimer)
   const hint = $('#sharp-hint')
   hint.classList.remove('show')
   setTimeout(() => { hint.hidden = true }, 600)
@@ -274,7 +267,6 @@ function bindUI() {
     setTimeout(() => {
       $('#topbar').classList.remove('ui-hidden')
       $('#bottombar').classList.remove('ui-hidden')
-      maybeShowRotateHint()
       showTapHint()
     }, REDUCED ? 0 : 900)
   }
@@ -377,17 +369,13 @@ function rampLight() {
 
 let tapHintTimers = []
 function showTapHint() {
-  // Après la suggestion paysage sur mobile portrait, sinon rapidement.
-  const portrait = window.innerHeight > window.innerWidth
-  const coarse = window.matchMedia('(pointer: coarse)').matches
-  const delay = portrait && coarse ? 6600 : 1400
   const hint = $('#tap-hint')
   tapHintTimers.push(setTimeout(() => {
     if (book.zoom) return
     hint.hidden = false
     requestAnimationFrame(() => hint.classList.add('show'))
     tapHintTimers.push(setTimeout(hideTapHint, 5600))
-  }, delay))
+  }, 1400))
 }
 
 function hideTapHint() {
@@ -398,18 +386,6 @@ function hideTapHint() {
   setTimeout(() => { hint.hidden = true }, 600)
 }
 
-function maybeShowRotateHint() {
-  const portrait = window.innerHeight > window.innerWidth
-  const coarse = window.matchMedia('(pointer: coarse)').matches
-  if (!portrait || !coarse) return
-  const hint = $('#rotate-hint')
-  hint.hidden = false
-  requestAnimationFrame(() => hint.classList.add('show'))
-  setTimeout(() => {
-    hint.classList.remove('show')
-    setTimeout(() => { hint.hidden = true }, 600)
-  }, 5200)
-}
 
 // ————— Lightbox zoom pleine résolution —————
 
@@ -485,9 +461,15 @@ function showLbHint() {
 }
 
 // iOS Safari : empêche le zoom natif de la page entière (le pincement doit
-// zoomer la page du guide, pas l'interface).
+// zoomer la page du guide, pas l'interface). Sans cela, Safari « se bat »
+// avec l'app pendant le pincement et peut interrompre le geste.
 for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) {
   document.addEventListener(ev, (e) => e.preventDefault(), { passive: false })
+}
+for (const el of [document.querySelector('#scene'), lightbox.stage]) {
+  if (!el) continue
+  el.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false })
+  el.addEventListener('touchstart', (e) => { if (e.touches.length > 1) e.preventDefault() }, { passive: false })
 }
 
 $('#lb-close').addEventListener('click', () => lightbox.close())
