@@ -78,6 +78,7 @@ export class Book3D {
 
     this.clock = new THREE.Clock()
     this._resize()
+    this.camDist = this.camDistTarget // cadrage correct dès la première image
     window.addEventListener('resize', () => this._resize())
     this.renderer.setAnimationLoop(() => this._frame())
   }
@@ -542,7 +543,11 @@ export class Book3D {
   }
 
   _frame() {
-    const dt = Math.min(this.clock.getDelta(), 0.05)
+    const rawDt = Math.min(this.clock.getDelta(), 0.5)
+    const dt = Math.min(rawDt, 0.05)
+    // Amortissement indépendant du framerate (converge en temps réel,
+    // même si l'appareil ne tient pas 60 fps).
+    const damp = (rate) => 1 - Math.exp(-rate * rawDt)
     const now = performance.now() / 1000
 
     // Tweens de feuilles
@@ -566,7 +571,7 @@ export class Book3D {
     const T = this.turned
     const anyAnim = this.sheets.some((s) => s.anim || s.dragging)
     const targetX = T === 0 ? -PW / 2 : T === 6 ? PW / 2 : 0
-    this.flatX += (targetX - this.flatX) * Math.min(1, dt * 3.2)
+    this.flatX += (targetX - this.flatX) * damp(3.2)
     this.flat.position.x = this.flatX
 
     // Blocs de tranche (piles de pages restantes)
@@ -579,8 +584,7 @@ export class Book3D {
     this.blockL.visible = hL > 0.004
     this.blockR.scale.z = Math.max(hR, 0.001)
     this.blockL.scale.z = Math.max(hL, 0.001)
-    this.spine.scale.z = Math.max(hR, hL, TH) + 0.006
-    this.spine.visible = true
+    this.spine.scale.z = Math.max(hR, hL, TH * 0.5)
 
     // Lumière : montée en intensité à l'ouverture
     const ramp = this.lightRamp
@@ -594,8 +598,8 @@ export class Book3D {
     if (!this.reduced) {
       this.tilt.rotation.y = Math.sin(now * 0.32) * 0.014 + (this.opened ? 0 : 0.16)
       this.tilt.position.y = Math.sin(now * 0.55) * 0.007
-      this.parallax.x += (this.parallax.tx - this.parallax.x) * Math.min(1, dt * 2.5)
-      this.parallax.y += (this.parallax.ty - this.parallax.y) * Math.min(1, dt * 2.5)
+      this.parallax.x += (this.parallax.tx - this.parallax.x) * damp(2.5)
+      this.parallax.y += (this.parallax.ty - this.parallax.y) * damp(2.5)
       this.rig.rotation.y = -this.parallax.x * 0.055
       this.rig.rotation.x = this.parallax.y * 0.03
       if (this.particles) {
@@ -613,7 +617,7 @@ export class Book3D {
 
     // Caméra
     this._updateFit()
-    this.camDist += (this.camDistTarget - this.camDist) * Math.min(1, dt * 2.2)
+    this.camDist += (this.camDistTarget - this.camDist) * damp(2.2)
     this.camera.position.set(0, this.camDist * Math.sin(this.camEl), this.camDist * Math.cos(this.camEl))
     this.camera.lookAt(0, 0.02, -0.14)
 

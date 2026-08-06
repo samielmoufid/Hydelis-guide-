@@ -2,8 +2,17 @@
 import { chromium } from 'playwright'
 import { spawn } from 'child_process'
 
-const server = spawn('npx', ['serve', '-p', '4174', 'dist'], { cwd: process.cwd() })
-await new Promise((r) => setTimeout(r, 2500))
+console.log('démarrage serveur…')
+const server = spawn('npx', ['serve', '-p', '4174', 'dist'], { cwd: process.cwd(), stdio: 'ignore' })
+for (let i = 0; i < 30; i++) {
+  try {
+    await fetch('http://127.0.0.1:4174/')
+    break
+  } catch {
+    await new Promise((r) => setTimeout(r, 1000))
+  }
+}
+console.log('serveur prêt, lancement navigateur…')
 const browser = await chromium.launch({
   executablePath: '/opt/pw-browsers/chromium',
   args: ['--use-gl=angle', '--enable-unsafe-swiftshader']
@@ -14,8 +23,10 @@ for (const [name, vw, vh, mobile] of [['desktop', 1440, 900, false], ['portrait'
     viewport: { width: vw, height: vh }, deviceScaleFactor: mobile ? 2 : 1,
     isMobile: mobile, hasTouch: mobile
   })
+  console.log('contexte', name)
   const page = await ctx.newPage()
-  await page.goto('http://localhost:4174/', { waitUntil: 'networkidle' })
+  await page.goto('http://127.0.0.1:4174/', { waitUntil: 'networkidle' })
+  console.log('page chargée', name)
   await page.waitForTimeout(2000)
   await page.click('body', { position: { x: vw / 2, y: vh / 2 } })
   await page.waitForTimeout(3500)
