@@ -45,7 +45,12 @@ branche `gh-pages` (en préservant son dossier `.github/`). Le workflow
 `self-deploy.yml` présent sur `gh-pages` publie alors le contenu via l'API
 Pages — une copie de référence est gardée dans
 `.github/pages-self-deploy.yml.reference` au cas où la branche `gh-pages`
-devrait être recréée. Pour brancher un sous-domaine (`guide.hydelis.fr`), voir la
+devrait être recréée.
+
+Le site est servi sur **https://guide.hydelis.fr** (CNAME DNS géré dans
+Shopify → Paramètres → Domaines → hydelis.fr ; le fichier `public/CNAME`
+maintient le domaine à chaque déploiement). L'ancienne adresse
+`samielmoufid.github.io/Hydelis-guide-/` redirige automatiquement. Pour brancher un sous-domaine (`guide.hydelis.fr`), voir la
 documentation GitHub Pages : ajouter un enregistrement DNS `CNAME` vers
 `samielmoufid.github.io`, déclarer le domaine dans Settings → Pages, et le
 fichier `public/CNAME` sera à créer avec `guide.hydelis.fr`.
