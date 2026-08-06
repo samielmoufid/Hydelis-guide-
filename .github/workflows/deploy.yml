@@ -3,6 +3,7 @@ name: Déploiement GitHub Pages
 on:
   push:
     branches: [main, claude/oh-s5aavh]
+    paths-ignore: ['.github/workflows/deploy-actions.yml']
   workflow_dispatch:
 
 permissions:
