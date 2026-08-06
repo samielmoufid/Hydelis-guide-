@@ -39,9 +39,13 @@ résolution conservée pour le zoom). La couverture, les pages de garde, la page
 
 ## Déploiement
 
-Chaque push sur `main` (ou la branche de travail) déclenche le workflow
-`.github/workflows/deploy.yml`, qui build le site et le publie sur GitHub
-Pages. Pour brancher un sous-domaine (`guide.hydelis.fr`), voir la
+Chaque push sur `main` (ou la branche de travail) déclenche
+`.github/workflows/deploy.yml` : build Vite, puis commit du résultat sur la
+branche `gh-pages` (en préservant son dossier `.github/`). Le workflow
+`self-deploy.yml` présent sur `gh-pages` publie alors le contenu via l'API
+Pages — une copie de référence est gardée dans
+`.github/pages-self-deploy.yml.reference` au cas où la branche `gh-pages`
+devrait être recréée. Pour brancher un sous-domaine (`guide.hydelis.fr`), voir la
 documentation GitHub Pages : ajouter un enregistrement DNS `CNAME` vers
 `samielmoufid.github.io`, déclarer le domaine dans Settings → Pages, et le
 fichier `public/CNAME` sera à créer avec `guide.hydelis.fr`.
