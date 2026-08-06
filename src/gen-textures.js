@@ -68,7 +68,36 @@ function frame(ctx, inset, color, width) {
   ctx.strokeRect(inset, inset, W - 2 * inset, H - 2 * inset)
 }
 
-export function makeCoverCanvas() {
+// Picto température : goutte accompagnée d'un thermomètre.
+function drawThermoPicto(ctx, x, y, s, fill) {
+  drawDrop(ctx, x - 0.55 * s, y, 0.85 * s, fill)
+  ctx.save()
+  ctx.translate(x + 0.55 * s, y)
+  ctx.strokeStyle = fill
+  ctx.fillStyle = fill
+  ctx.lineWidth = 0.16 * s
+  ctx.lineCap = 'round'
+  // Tube
+  ctx.beginPath()
+  ctx.moveTo(0, -0.85 * s)
+  ctx.lineTo(0, 0.42 * s)
+  ctx.stroke()
+  // Réservoir
+  ctx.beginPath()
+  ctx.arc(0, 0.62 * s, 0.3 * s, 0, Math.PI * 2)
+  ctx.fill()
+  // Graduations
+  ctx.lineWidth = 0.09 * s
+  for (const gy of [-0.62, -0.3, 0.02]) {
+    ctx.beginPath()
+    ctx.moveTo(0.18 * s, gy * s)
+    ctx.lineTo(0.42 * s, gy * s)
+    ctx.stroke()
+  }
+  ctx.restore()
+}
+
+export function makeCoverCanvas({ title, subtitle, picto } = {}) {
   const c = makeCanvas()
   const ctx = c.getContext('2d')
   tealBackground(ctx, '#12717F', '#082F38')
@@ -76,7 +105,11 @@ export function makeCoverCanvas() {
   frame(ctx, 54, 'rgba(255,255,255,0.12)', 1)
 
   ctx.textBaseline = 'alphabetic'
-  drawDrop(ctx, W / 2, 330, 74, 'rgba(255,255,255,0.95)')
+  if (picto === 'thermo') {
+    drawThermoPicto(ctx, W / 2, 330, 74, 'rgba(255,255,255,0.95)')
+  } else {
+    drawDrop(ctx, W / 2, 330, 74, 'rgba(255,255,255,0.95)')
+  }
 
   ctx.fillStyle = '#F4FAFB'
   ctx.font = '600 118px "Cormorant Garamond", serif'
@@ -99,13 +132,14 @@ export function makeCoverCanvas() {
   ctx.textAlign = 'center'
   ctx.fillText('Guide de pose', W / 2, 880)
 
-  ctx.font = '400 42px "Poppins", sans-serif'
+  const titleText = title || 'Colonne de douche'
+  ctx.font = `400 ${titleText.length > 18 ? 36 : 42}px "Poppins", sans-serif`
   ctx.fillStyle = '#9FD8E0'
-  ctx.fillText('Colonne de douche', W / 2, 960)
+  ctx.fillText(titleText, W / 2, 960)
 
   ctx.font = '300 28px "Poppins", sans-serif'
   ctx.fillStyle = 'rgba(214,238,241,0.55)'
-  ctx.fillText('avec étagère intégrée et jet d’hygiène', W / 2, 1014)
+  ctx.fillText(subtitle || 'avec étagère intégrée et jet d’hygiène', W / 2, 1014)
 
   ctx.textAlign = 'left'
   ctx.fillStyle = 'rgba(214,238,241,0.6)'

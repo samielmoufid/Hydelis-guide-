@@ -1,19 +1,22 @@
 // Fallback sans WebGL : flipbook CSS 3D double page, même modèle de feuilles
-// que le livre 3D (6 feuilles, 12 faces).
+// que le livre 3D.
 
-import { PAGE_RATIO } from './pages.js'
+import { PAGE_RATIO } from './books.js'
 
 export class Book2D {
   /**
    * @param {Object} o
    * @param {HTMLElement} o.container
-   * @param {string[]} o.faces   12 URLs (recto/verso des 6 feuilles)
+   * @param {string[]} o.faces   URLs (recto/verso des feuilles)
+   * @param {number} o.nPages    nombre de vraies pages du guide
    * @param {boolean} o.reduced
    * @param {Object} o.on        { change, turnStart, doubleTap }
    */
-  constructor({ container, faces, reduced, on = {} }) {
+  constructor({ container, faces, nPages, reduced, on = {} }) {
     this.container = container
     this.faces = faces
+    this.nPages = nPages
+    this.S = faces.length / 2
     this.on = on
     this.reduced = reduced
     this.T = 0
@@ -59,12 +62,12 @@ export class Book2D {
   _render() {
     const T = this.T
     const leftFace = T > 0 ? this.faces[2 * T - 1] : null
-    const rightFace = T < 6 ? this.faces[2 * T] : null
+    const rightFace = T < this.S ? this.faces[2 * T] : null
     this.left.style.visibility = leftFace ? 'visible' : 'hidden'
     this.right.style.visibility = rightFace ? 'visible' : 'hidden'
     if (leftFace) this.leftImg.src = leftFace
     if (rightFace) this.rightImg.src = rightFace
-    this.book.classList.toggle('fb-closed-cover', T === 0 || T === 6)
+    this.book.classList.toggle('fb-closed-cover', T === 0 || T === this.S)
   }
 
   get turned() { return this.T }
@@ -75,7 +78,7 @@ export class Book2D {
   prev() { return this._turn(-1) }
 
   goTo(T2) {
-    T2 = Math.max(0, Math.min(6, T2))
+    T2 = Math.max(0, Math.min(this.S, T2))
     if (T2 === this.T || this.animating) return
     // Saut direct (les sauts multi-pages ne sont pas animés dans le fallback).
     const dir = T2 > this.T ? 1 : -1
@@ -88,11 +91,11 @@ export class Book2D {
   _turn(dir) {
     if (this.animating) return false
     const T = this.T
-    if (dir > 0 && T >= 6) return false
+    if (dir > 0 && T >= this.S) return false
     if (dir < 0 && T <= 0) return false
 
     const stiff = (dir > 0 && T === 0) || (dir < 0 && T === 1) ||
-                  (dir > 0 && T === 5) || (dir < 0 && T === 6)
+                  (dir > 0 && T === this.S - 1) || (dir < 0 && T === this.S)
     this.on.turnStart && this.on.turnStart(dir, stiff)
 
     if (this.reduced) {
@@ -119,8 +122,8 @@ export class Book2D {
 
     if (dir > 0) {
       // La page de droite se rabat vers la gauche.
-      this.rightImg.src = T + 1 < 6 ? this.faces[2 * (T + 1)] : ''
-      this.right.style.visibility = T + 1 < 6 ? 'visible' : 'hidden'
+      this.rightImg.src = T + 1 < this.S ? this.faces[2 * (T + 1)] : ''
+      this.right.style.visibility = T + 1 < this.S ? 'visible' : 'hidden'
       sheet.style.transform = 'rotateY(0deg)'
       requestAnimationFrame(() => requestAnimationFrame(() => {
         sheet.style.transform = 'rotateY(-180deg)'
@@ -177,9 +180,9 @@ export class Book2D {
       const timer = setTimeout(() => {
         last = null
         const side = cx >= mid ? 'right' : 'left'
-        const idx = side === 'right' ? (this.T < 6 ? 2 * this.T : -1)
+        const idx = side === 'right' ? (this.T < this.S ? 2 * this.T : -1)
           : (this.T > 0 ? 2 * this.T - 1 : -1)
-        if (idx >= 2 && idx <= 8) {
+        if (idx >= 2 && idx <= this.nPages + 1) {
           // Une vraie page du guide : vue détail.
           this.on.doubleTap && this.on.doubleTap(side)
         } else {

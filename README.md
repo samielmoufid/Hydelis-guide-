@@ -1,9 +1,16 @@
-# Guide de pose Hydelis — Colonne de douche
+# Guides de pose Hydelis
 
-Livre 3D interactif présentant le guide d'installation de la colonne de douche
-Hydelis : un vrai livre WebGL (Three.js) posé dans un décor sombre, pages qui
-plient, tranche visible, zoom pleine résolution, son de papier, sommaire à
-miniatures et bouton SAV WhatsApp.
+Livres 3D interactifs des guides d'installation Hydelis : colonne de douche
+classique (7 pages) et colonne thermostatique (8 pages). Vrai livre WebGL
+(Three.js) dans un décor sombre, pages qui plient, tranche visible, zoom
+pleine résolution, son de papier, sommaire à miniatures, bouton SAV WhatsApp.
+
+La racine du site est un sélecteur de modèle (deux livres fermés côte à
+côte) avec une transition « voyage temporel » vers le livre choisi.
+Liens directs (un QR par gamme) :
+
+- `/#classique` — colonne classique
+- `/#thermostatique` — colonne thermostatique
 
 ## Développement
 
@@ -29,8 +36,10 @@ Options utiles :
 
 ## Contenu
 
-Les 7 pages du guide sont dans `src/assets/pages/` (1055 × 1491, pleine
-résolution conservée pour le zoom). La couverture, les pages de garde, la page
+Les pages des guides sont dans `src/assets/pages/classique/` (7) et
+`src/assets/pages/thermostatique/` (8) — 1055 × 1491, pleine résolution
+conservée pour le zoom. La configuration des deux livres vit dans
+`src/books.js`. La couverture, les pages de garde, la page
 « Merci » et la quatrième de couverture sont générées à la volée sur canvas
 (`src/gen-textures.js`) avec la charte Hydelis :
 

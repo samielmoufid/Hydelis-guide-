@@ -1,8 +1,11 @@
-// Guide de pose Hydelis — orchestration : chargement, livre, interface, zoom.
+// Guides de pose Hydelis — orchestration : routage (#classique /
+// #thermostatique), sélecteur de modèle, transition warp, livre, zoom.
 
 import './styles.css'
 import * as THREE from 'three'
-import { PAGES, PAGE_TITLES, spreadForPage, spreadLabel, pagesAtSpread } from './pages.js'
+import {
+  BOOKS, spreadForPage, spreadLabel, pagesAtSpread, buildFaceList
+} from './books.js'
 import {
   makeCoverCanvas, makeInnerCoverCanvas, makeThanksCanvas,
   makeInnerBackCanvas, makeBackCoverCanvas, makePaperEdgeCanvas
@@ -10,17 +13,11 @@ import {
 import { PaperSound } from './audio.js'
 import { Book3D } from './book3d.js'
 import { Book2D } from './fallback2d.js'
+import { Selector3D } from './selector3d.js'
+import { Warp } from './warp.js'
 
 const $ = (s) => document.querySelector(s)
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-const loaderFill = $('#loader-fill')
-let loadedCount = 0
-const TOTAL_STEPS = PAGES.length + 1 // 7 images + polices
-function step() {
-  loadedCount++
-  loaderFill.style.width = Math.round((loadedCount / TOTAL_STEPS) * 100) + '%'
-}
 
 function hasWebGL() {
   try {
@@ -31,13 +28,39 @@ function hasWebGL() {
   }
 }
 
-function loadImage(url) {
-  return new Promise((resolve, reject) => {
-    const img = new Image()
-    img.onload = () => { step(); resolve(img) }
-    img.onerror = reject
-    img.src = url
-  })
+// « ?no3d » force le flipbook CSS (test du fallback ou appareil capricieux).
+const WEBGL = hasWebGL() && !new URLSearchParams(location.search).has('no3d')
+
+// ————— État global —————
+
+const sound = new PaperSound()
+let CUR = null          // config du livre actif (BOOKS[id])
+let N = 0               // nombre de pages du livre actif
+let book = null
+let selector = null
+let renderer = null
+let warp = null
+let gen = null          // canvases communs (gardes, merci, 4e de couverture)
+let genUrls = null      // versions dataURL pour le fallback CSS
+const covers = {}       // id -> canvas de couverture
+let edgeCanvas = null
+const imageCache = {}   // id -> { images: [Image], promise }
+let busy = false        // transition en cours
+
+// ————— Loader —————
+
+const loaderFill = $('#loader-fill')
+let loadedCount = 0
+let totalSteps = 1
+function step() {
+  loadedCount++
+  if (loaderFill) loaderFill.style.width = Math.round((loadedCount / totalSteps) * 100) + '%'
+}
+function finishLoader() {
+  const l = $('#loader')
+  if (!l) return
+  l.classList.add('done')
+  setTimeout(() => l.remove(), 800)
 }
 
 async function loadFonts() {
@@ -53,29 +76,98 @@ async function loadFonts() {
   step()
 }
 
-// ————— Démarrage —————
+function loadBookImages(id) {
+  if (imageCache[id]) return imageCache[id].promise
+  const images = []
+  const promise = Promise.all(BOOKS[id].pages.map((url, i) => new Promise((res, rej) => {
+    const img = new Image()
+    images[i] = img
+    img.addEventListener('load', () => { step(); res(img) }, { once: true })
+    img.addEventListener('error', rej, { once: true })
+    img.src = url
+  })))
+  imageCache[id] = { images, promise }
+  return promise
+}
 
-const sound = new PaperSound()
-let book = null
-// « ?no3d » force le flipbook CSS (test du fallback ou appareil capricieux).
-let webgl = hasWebGL() && !new URLSearchParams(location.search).has('no3d')
+// ————— Démarrage —————
 
 init()
 
 async function init() {
-  const [images] = await Promise.all([
-    Promise.all(PAGES.map(loadImage)),
-    loadFonts()
-  ])
+  if (!WEBGL) document.body.classList.add('no-webgl')
+
+  const route = location.hash.replace('#', '')
+  const deepLink = BOOKS[route] ? route : null
+  totalSteps = 1 + (deepLink ? BOOKS[deepLink].pages.length : 0)
+
+  await loadFonts()
 
   // Faces générées (après chargement des polices).
-  const genCanvases = {
-    cover: makeCoverCanvas(),
+  gen = {
     innerCover: makeInnerCoverCanvas(),
     thanks: makeThanksCanvas(),
     innerBack: makeInnerBackCanvas(),
     backCover: makeBackCoverCanvas()
   }
+  for (const id of ['classique', 'thermostatique']) {
+    const cfg = BOOKS[id]
+    covers[id] = makeCoverCanvas({
+      title: cfg.coverTitle,
+      subtitle: cfg.coverSub,
+      picto: cfg.picto
+    })
+  }
+  edgeCanvas = makePaperEdgeCanvas()
+
+  if (WEBGL) {
+    renderer = new THREE.WebGLRenderer({
+      canvas: $('#scene'), alpha: true, antialias: true,
+      powerPreference: 'high-performance'
+    })
+    warp = new Warp($('#warp'), { reduced: REDUCED })
+  } else {
+    warp = new Warp($('#warp'), { reduced: true }) // fondu simple sans WebGL
+  }
+
+  bindGlobalUI()
+
+  if (deepLink) {
+    await loadBookImages(deepLink)
+    buildBook(deepLink)
+    showIntro()
+    finishLoader()
+  } else {
+    finishLoader()
+    showSelector(null)
+    // Préchargement des deux livres en arrière-plan.
+    setTimeout(() => {
+      loadBookImages('classique')
+      loadBookImages('thermostatique')
+    }, 700)
+  }
+
+  window.addEventListener('hashchange', () => {
+    const h = location.hash.replace('#', '')
+    const target = BOOKS[h] ? h : null
+    const current = CUR ? CUR.id : null
+    if (target !== current) location.reload()
+  })
+}
+
+// ————— Construction / destruction d'un livre —————
+
+function texFromImage(img) {
+  const t = new THREE.Texture(img)
+  if (img.complete && img.naturalWidth) t.needsUpdate = true
+  else img.addEventListener('load', () => { t.needsUpdate = true }, { once: true })
+  return t
+}
+
+function buildBook(id) {
+  loadBookImages(id)
+  CUR = BOOKS[id]
+  N = CUR.pages.length
 
   const on = {
     change: onSpreadChange,
@@ -86,69 +178,205 @@ async function init() {
     zoomNav
   }
 
-  if (webgl) {
-    try {
-      book = initBook3D(images, genCanvases, on)
-    } catch (err) {
-      console.warn('WebGL indisponible, bascule sur le flipbook CSS :', err)
-      webgl = false
+  if (WEBGL) {
+    const faceInputs = buildFaceList(
+      { cover: covers[id], ...gen },
+      imageCache[id].images
+    )
+    const faces = faceInputs.map((f) =>
+      f instanceof HTMLCanvasElement ? new THREE.CanvasTexture(f) : texFromImage(f)
+    )
+    book = new Book3D({
+      canvas: $('#scene'),
+      renderer,
+      faces,
+      nPages: N,
+      edgeTexture: new THREE.CanvasTexture(edgeCanvas),
+      reduced: REDUCED,
+      on
+    })
+  } else {
+    if (!genUrls) {
+      const url = (c) => c.toDataURL('image/jpeg', 0.88)
+      genUrls = {
+        innerCover: url(gen.innerCover), thanks: url(gen.thanks),
+        innerBack: url(gen.innerBack), backCover: url(gen.backCover),
+        coverClassique: url(covers.classique), coverThermostatique: url(covers.thermostatique)
+      }
     }
-  }
-  if (!webgl) {
-    book = initBook2D(images, genCanvases, on)
+    const coverUrl = id === 'classique' ? genUrls.coverClassique : genUrls.coverThermostatique
+    const faces = buildFaceList({ cover: coverUrl, ...genUrls }, CUR.pages)
+    const fb = $('#fallback')
+    fb.hidden = false
+    book = new Book2D({ container: fb, faces, nPages: N, reduced: REDUCED, on })
   }
 
   buildToc()
-  bindUI()
   onSpreadChange(0)
+  localStorage.setItem('hydelis-last-book', id)
+  history.replaceState(null, '', '#' + id)
+  $('#btn-switch').hidden = false
   window.__book = book // aide au débogage
-
-  $('#loader').classList.add('done')
-  setTimeout(() => $('#loader').remove(), 800)
 }
 
-function initBook3D(images, gen, on) {
-  const tex = (img) => {
-    const t = new THREE.Texture(img)
-    t.needsUpdate = true
-    return t
+function destroyBook() {
+  if (!book) return
+  if (book.dispose) book.dispose()
+  book = null
+  CUR = null
+  if (!WEBGL) {
+    const fb = $('#fallback')
+    fb.hidden = true
+    fb.innerHTML = ''
   }
-  const ctex = (c) => new THREE.CanvasTexture(c)
-  const faces = [
-    ctex(gen.cover), ctex(gen.innerCover),
-    tex(images[0]), tex(images[1]),
-    tex(images[2]), tex(images[3]),
-    tex(images[4]), tex(images[5]),
-    tex(images[6]), ctex(gen.thanks),
-    ctex(gen.innerBack), ctex(gen.backCover)
-  ]
-  return new Book3D({
-    canvas: $('#scene'),
-    faces,
-    edgeTexture: new THREE.CanvasTexture(makePaperEdgeCanvas()),
-    reduced: REDUCED,
-    on
+  $('#bottombar').classList.add('ui-hidden')
+  $('#btn-switch').hidden = true
+  hideTapHint()
+  hideSharpHint()
+  const exitBtn = $('#zoom-exit')
+  exitBtn.classList.remove('show')
+  exitBtn.hidden = true
+  closeToc()
+  lightbox.close()
+}
+
+// ————— Sélecteur de modèle —————
+
+function showSelector(fromId) {
+  const intro = $('#intro')
+  if (intro) intro.remove()
+
+  const sel = $('#selector')
+  sel.hidden = false
+  requestAnimationFrame(() => sel.classList.add('show'))
+  sel.classList.remove('leaving')
+  $('#topbar').classList.remove('ui-hidden')
+  history.replaceState(null, '', location.pathname + location.search)
+
+  // « Reprendre la lecture » sur le dernier livre consulté.
+  const last = localStorage.getItem('hydelis-last-book')
+  document.querySelectorAll('.sel-resume').forEach((el) => { el.hidden = true })
+  if (last && BOOKS[last]) {
+    const chip = document.querySelector(`#sel-${last} .sel-resume`)
+    if (chip) chip.hidden = false
+  }
+
+  if (WEBGL) {
+    selector = new Selector3D({
+      canvas: $('#scene'),
+      renderer,
+      covers: {
+        classique: { front: covers.classique, back: gen.backCover },
+        thermostatique: { front: covers.thermostatique, back: gen.backCover }
+      },
+      edgeCanvas,
+      reduced: REDUCED,
+      onPick: pickBook
+    })
+    if (fromId) selector.arriveFrom(fromId)
+  } else {
+    document.body.classList.add('sel-fallback')
+    if (!genUrls) {
+      const url = (c) => c.toDataURL('image/jpeg', 0.88)
+      genUrls = {
+        innerCover: url(gen.innerCover), thanks: url(gen.thanks),
+        innerBack: url(gen.innerBack), backCover: url(gen.backCover),
+        coverClassique: url(covers.classique), coverThermostatique: url(covers.thermostatique)
+      }
+    }
+    for (const id of ['classique', 'thermostatique']) {
+      const img = document.querySelector(`#sel-${id} .sel-cover`)
+      img.src = id === 'classique' ? genUrls.coverClassique : genUrls.coverThermostatique
+      img.hidden = false
+    }
+  }
+}
+
+function hideSelectorDOM() {
+  const sel = $('#selector')
+  sel.classList.remove('show')
+  sel.hidden = true
+  document.body.classList.remove('sel-fallback')
+}
+
+async function pickBook(id) {
+  if (busy || book) return
+  busy = true
+  sound.unlock()
+  setTimeout(() => { if (sound.blocked) setSoundUI(false, true) }, 300)
+  $('#selector').classList.add('leaving')
+
+  loadBookImages(id)
+  const dive = selector && !REDUCED ? selector.diveTo(id, 0.5) : Promise.resolve()
+  void dive
+  await warp.play({
+    onCover: () => {
+      if (selector) { selector.dispose(); selector = null }
+      hideSelectorDOM()
+      buildBook(id)
+      if (book.lightRamp !== undefined) book.lightRamp = 0
+      if (WEBGL && book.cam) book.cam.dist = book.fitDist * 1.35 // punch d'atterrissage
+    }
   })
+  landing()
+  busy = false
 }
 
-function initBook2D(images, gen, on) {
-  $('#scene').remove()
-  const fb = $('#fallback')
-  fb.hidden = false
-  const url = (c) => c.toDataURL('image/jpeg', 0.88)
-  const faces = [
-    url(gen.cover), url(gen.innerCover),
-    PAGES[0], PAGES[1], PAGES[2], PAGES[3], PAGES[4], PAGES[5], PAGES[6],
-    url(gen.thanks), url(gen.innerBack), url(gen.backCover)
-  ]
-  return new Book2D({ container: fb, faces, reduced: REDUCED, on })
+function landing() {
+  rampLight()
+  setTimeout(() => book && book.open(), REDUCED ? 0 : 260)
+  setTimeout(() => {
+    $('#topbar').classList.remove('ui-hidden')
+    $('#bottombar').classList.remove('ui-hidden')
+    showTapHint()
+  }, REDUCED ? 0 : 700)
 }
 
-// ————— Interface —————
+async function switchModel() {
+  if (!book || busy) return
+  busy = true
+  const fromId = CUR.id
+  await warp.play({
+    onCover: () => {
+      destroyBook()
+      showSelector(WEBGL && !REDUCED ? fromId : null)
+    }
+  })
+  busy = false
+}
+
+// ————— Intro (accès direct par lien profond) —————
+
+function showIntro() {
+  const intro = $('#intro')
+  if (!intro) return
+  $('#intro-sub').textContent = `Guide de pose · ${CUR.label}`
+  const openBook = () => {
+    if (!book || book.opened) return
+    sound.unlock()
+    setTimeout(() => { if (sound.blocked) setSoundUI(false, true) }, 300)
+    intro.classList.add('leaving')
+    setTimeout(() => intro.remove(), 1000)
+    rampLight()
+    setTimeout(() => book.open(), REDUCED ? 0 : 380)
+    setTimeout(() => {
+      $('#topbar').classList.remove('ui-hidden')
+      $('#bottombar').classList.remove('ui-hidden')
+      showTapHint()
+    }, REDUCED ? 0 : 900)
+  }
+  intro.addEventListener('click', openBook)
+  intro.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') openBook()
+  })
+  window.__openIntroBook = openBook
+}
+
+// ————— Interface du livre —————
 
 // Page réellement affichée d'un côté du spread (1-indexée), ou 0.
 function pageAtSide(side) {
-  const visible = pagesAtSpread(book.turned)
+  const visible = pagesAtSpread(book.turned, N)
   if (!visible.length) return 0
   return side === 'left' ? visible[0] : visible[visible.length - 1]
 }
@@ -159,7 +387,7 @@ function onZoomChange(side) {
     const page = pageAtSide(side)
     exitBtn.hidden = false
     requestAnimationFrame(() => exitBtn.classList.add('show'))
-    $('#page-indicator').textContent = `Page ${page} / 7 · détail`
+    $('#page-indicator').textContent = `Page ${page} / ${N} · détail`
     $('#sr-live').textContent =
       `Page ${page} en détail. Touchez la page pour la pleine résolution, à côté pour revenir au livre.`
     hideTapHint()
@@ -168,7 +396,7 @@ function onZoomChange(side) {
     exitBtn.classList.remove('show')
     setTimeout(() => { exitBtn.hidden = true }, REDUCED ? 0 : 420)
     hideSharpHint()
-    onSpreadChange(book.turned)
+    if (book) onSpreadChange(book.turned)
   }
 }
 
@@ -186,34 +414,36 @@ function hideSharpHint() {
 
 // Navigation page par page pendant le zoom (swipe, flèches, boutons).
 function zoomNav(dir) {
-  if (!book.zoom) return
-  const side = book.zoom.side
-  const T = book.turned
-  if (dir > 0) {
-    if (side === 'left') book.zoomTo('right')
-    else if (T < 4) { book.next(); book.zoomTo('left') }
-  } else {
-    if (side === 'right' && T >= 2) book.zoomTo('left')
-    else if (side === 'left' && T > 1) { book.prev(); book.zoomTo('right') }
-  }
+  if (!book || !book.zoom) return
+  const cur = pageAtSide(book.zoom.side)
+  if (!cur) return
+  const target = cur + dir
+  if (target < 1 || target > N) return
+  const T2 = spreadForPage(target)
+  if (T2 > book.turned) book.next()
+  else if (T2 < book.turned) book.prev()
+  // Page impaire → face paire → côté droit du livre ouvert.
+  book.zoomTo(target % 2 === 1 ? 'right' : 'left')
 }
 
 function onSpreadChange(T) {
   if (book && book.zoom) return // le libellé « détail » est géré par onZoomChange
-  $('#page-indicator').textContent = spreadLabel(T)
-  $('#sr-live').textContent = spreadLabel(T)
-  const visible = pagesAtSpread(T)
+  $('#page-indicator').textContent = spreadLabel(T, N)
+  $('#sr-live').textContent = spreadLabel(T, N)
+  const visible = pagesAtSpread(T, N)
   document.querySelectorAll('.toc-item').forEach((el) => {
     const p = el.dataset.page
     const active = p === 'cover' ? T === 0 : visible.includes(Number(p))
     el.classList.toggle('active', active)
   })
+  const S = book ? book.S : 6
   $('#btn-prev').disabled = T <= 0
-  $('#btn-next').disabled = T >= 6
+  $('#btn-next').disabled = T >= S
 }
 
 function buildToc() {
   const list = $('#toc-list')
+  list.innerHTML = ''
   const cover = document.createElement('button')
   cover.className = 'toc-item'
   cover.dataset.page = 'cover'
@@ -223,13 +453,13 @@ function buildToc() {
   cover.addEventListener('click', () => { book.goTo(0); closeToc() })
   list.appendChild(cover)
 
-  PAGES.forEach((src, i) => {
+  CUR.pages.forEach((src, i) => {
     const b = document.createElement('button')
     b.className = 'toc-item'
     b.dataset.page = String(i + 1)
     b.innerHTML = `
-      <img src="${src}" alt="Page ${i + 1} : ${PAGE_TITLES[i]}" loading="lazy">
-      <span class="toc-label">${PAGE_TITLES[i]}</span>`
+      <img src="${src}" alt="Page ${i + 1} : ${CUR.titles[i]}" loading="lazy">
+      <span class="toc-label">${CUR.titles[i]}</span>`
     b.addEventListener('click', () => { book.goTo(spreadForPage(i + 1)); closeToc() })
     list.appendChild(b)
   })
@@ -247,44 +477,34 @@ function closeToc() {
 }
 
 function zoomFromSide(side) {
-  const visible = pagesAtSpread(book.turned)
+  if (!book) return
+  const visible = pagesAtSpread(book.turned, N)
   if (!visible.length) return
   const page = side === 'left' ? visible[0] : visible[visible.length - 1]
   lightbox.open(page - 1)
 }
 
-function bindUI() {
-  const intro = $('#intro')
-  const openBook = () => {
-    if (book.opened) return
-    sound.unlock()
-    // Si le navigateur bloque l'audio, on coupe le son par défaut.
-    setTimeout(() => { if (sound.blocked) setSoundUI(false, true) }, 300)
-    intro.classList.add('leaving')
-    setTimeout(() => intro.remove(), 1000)
-    rampLight()
-    setTimeout(() => book.open(), REDUCED ? 0 : 380)
-    setTimeout(() => {
-      $('#topbar').classList.remove('ui-hidden')
-      $('#bottombar').classList.remove('ui-hidden')
-      showTapHint()
-    }, REDUCED ? 0 : 900)
-  }
-  intro.addEventListener('click', openBook)
-  intro.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') openBook()
-  })
-
-  $('#btn-prev').addEventListener('click', () => (book.zoom ? zoomNav(-1) : book.prev()))
-  $('#btn-next').addEventListener('click', () => (book.zoom ? zoomNav(1) : book.next()))
-  $('#page-indicator').addEventListener('click', openToc)
+function bindGlobalUI() {
+  $('#btn-prev').addEventListener('click', () => book && (book.zoom ? zoomNav(-1) : book.prev()))
+  $('#btn-next').addEventListener('click', () => book && (book.zoom ? zoomNav(1) : book.next()))
+  $('#page-indicator').addEventListener('click', () => book && openToc())
   $('#toc-close').addEventListener('click', closeToc)
   $('#toc .toc-backdrop').addEventListener('click', closeToc)
-  $('#zoom-exit').addEventListener('click', () => book.zoomExit && book.zoomExit())
+  $('#zoom-exit').addEventListener('click', () => book && book.zoomExit && book.zoomExit())
+  $('#btn-switch').addEventListener('click', switchModel)
+
+  // Cartes du sélecteur
+  for (const id of ['classique', 'thermostatique']) {
+    const btn = document.querySelector(`#sel-${id}`)
+    btn.addEventListener('click', () => pickBook(id))
+    btn.addEventListener('mouseenter', () => selector && selector.setHover(id))
+    btn.addEventListener('mouseleave', () => selector && selector.setHover(null))
+    btn.addEventListener('focus', () => selector && selector.setHover(id))
+    btn.addEventListener('blur', () => selector && selector.setHover(null))
+  }
 
   // Son
-  const soundSaved = sound.enabled
-  setSoundUI(soundSaved, false)
+  setSoundUI(sound.enabled, false)
   $('#btn-sound').addEventListener('click', () => {
     sound.unlock()
     setSoundUI(!sound.enabled, true)
@@ -306,12 +526,16 @@ function bindUI() {
   window.addEventListener('keydown', (e) => {
     if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return
     if (!lightbox.el.hidden) return // géré par la lightbox
-    if (!book.opened && (e.key === 'Enter' || e.key === ' ')) { openBook(); return }
+    if (!book) return               // sélecteur : navigation native Tab/Entrée
+    if (!book.opened && (e.key === 'Enter' || e.key === ' ')) {
+      window.__openIntroBook && window.__openIntroBook()
+      return
+    }
     switch (e.key) {
       case 'ArrowRight': case 'PageDown': book.zoom ? zoomNav(1) : book.next(); break
       case 'ArrowLeft': case 'PageUp': book.zoom ? zoomNav(-1) : book.prev(); break
       case 'Home': book.goTo(0); break
-      case 'End': book.goTo(6); break
+      case 'End': book.goTo(book.S); break
       case 's': case 'S': $('#toc').hidden ? openToc() : closeToc(); break
       case 'Escape':
         if (book.zoom) book.zoomExit()
@@ -327,13 +551,13 @@ function bindUI() {
     window.addEventListener('pointermove', (e) => {
       const nx = (e.clientX / window.innerWidth) * 2 - 1
       const ny = (e.clientY / window.innerHeight) * 2 - 1
-      book.setParallax && book.setParallax(nx, ny)
+      book && book.setParallax && book.setParallax(nx, ny)
     })
   }
 
   // Molette : tourner les pages
   window.addEventListener('wheel', (e) => {
-    if (!book.opened || !lightbox.el.hidden || !$('#toc').hidden) return
+    if (!book || !book.opened || !lightbox.el.hidden || !$('#toc').hidden) return
     if (Math.abs(e.deltaY) < 18) return
     if (wheelLock) return
     wheelLock = true
@@ -355,11 +579,12 @@ function setSoundUI(onFlag, save) {
 }
 
 function rampLight() {
-  if (!('lightRamp' in book)) return
+  if (!book || !('lightRamp' in book)) return
   if (REDUCED) { book.lightRamp = 1; return }
   const t0 = performance.now()
   const dur = 1600
   const tick = () => {
+    if (!book) return
     const k = Math.min(1, (performance.now() - t0) / dur)
     book.lightRamp = k * k * (3 - 2 * k)
     if (k < 1) requestAnimationFrame(tick)
@@ -371,7 +596,7 @@ let tapHintTimers = []
 function showTapHint() {
   const hint = $('#tap-hint')
   tapHintTimers.push(setTimeout(() => {
-    if (book.zoom) return
+    if (!book || book.zoom) return
     hint.hidden = false
     requestAnimationFrame(() => hint.classList.add('show'))
     tapHintTimers.push(setTimeout(hideTapHint, 5600))
@@ -386,7 +611,6 @@ function hideTapHint() {
   setTimeout(() => { hint.hidden = true }, 600)
 }
 
-
 // ————— Lightbox zoom pleine résolution —————
 
 const lightbox = {
@@ -400,12 +624,12 @@ const lightbox = {
   open(idx) {
     this.idx = idx
     this.scale = 1; this.tx = 0; this.ty = 0
-    this.img.src = PAGES[idx]
+    this.img.src = CUR.pages[idx]
     this._apply()
     this.el.hidden = false
     requestAnimationFrame(() => this.el.classList.add('open'))
-    $('#lb-counter').textContent = `Page ${idx + 1} / 7 — ${PAGE_TITLES[idx]}`
-    $('#sr-live').textContent = `Zoom sur la page ${idx + 1} : ${PAGE_TITLES[idx]}`
+    $('#lb-counter').textContent = `Page ${idx + 1} / ${N} — ${CUR.titles[idx]}`
+    $('#sr-live').textContent = `Zoom sur la page ${idx + 1} : ${CUR.titles[idx]}`
     hideSharpHint()
     showLbHint()
   },
@@ -414,14 +638,10 @@ const lightbox = {
     setTimeout(() => { this.el.hidden = true }, REDUCED ? 0 : 320)
   },
   show(idx) {
-    if (idx < 0 || idx > 6) return
+    if (idx < 0 || idx > N - 1) return
     this.open(idx)
   },
   _apply() {
-    // Bornes de déplacement pour ne pas perdre l'image.
-    const r = this.img.getBoundingClientRect()
-    const baseW = r.width / (this.prevScale || 1)
-    void baseW
     const maxX = Math.max(0, (this.scale - 1) * (this.img.clientWidth / 2))
     const maxY = Math.max(0, (this.scale - 1) * (this.img.clientHeight / 2))
     this.tx = Math.max(-maxX, Math.min(maxX, this.tx))
@@ -467,7 +687,7 @@ function showLbHint() {
 for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) {
   document.addEventListener(ev, (e) => e.preventDefault(), { passive: false })
 }
-for (const el of [document.querySelector('#scene'), lightbox.stage]) {
+for (const el of [document.querySelector('#scene'), document.querySelector('#lightbox .lb-stage')]) {
   if (!el) continue
   el.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false })
   el.addEventListener('touchstart', (e) => { if (e.touches.length > 1) e.preventDefault() }, { passive: false })

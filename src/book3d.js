@@ -15,19 +15,24 @@ export class Book3D {
   /**
    * @param {Object} o
    * @param {HTMLCanvasElement} o.canvas
-   * @param {THREE.Texture[]} o.faces      12 textures (recto/verso des 6 feuilles)
+   * @param {THREE.WebGLRenderer} [o.renderer]  renderer partagé (sinon créé ici)
+   * @param {THREE.Texture[]} o.faces      textures recto/verso des feuilles
+   * @param {number} o.nPages              nombre de vraies pages du guide
    * @param {THREE.Texture} o.edgeTexture  texture de tranche
    * @param {boolean} o.reduced            prefers-reduced-motion
-   * @param {Object} o.on                  callbacks { change, turnStart, doubleTap, pinch }
+   * @param {Object} o.on                  callbacks { change, turnStart, doubleTap, pinch, zoom, zoomNav }
    */
-  constructor({ canvas, faces, edgeTexture, reduced, on = {} }) {
+  constructor({ canvas, renderer, faces, nPages, edgeTexture, reduced, on = {} }) {
     this.canvas = canvas
     this.on = on
     this.reduced = reduced
+    this.nPages = nPages
+    this.S = faces.length / 2  // nombre de feuilles
     this.opened = false        // avant le premier « Touchez pour ouvrir »
     this.lightRamp = 0         // 0 = pénombre d'intro, 1 = éclairage lecture
 
-    this.renderer = new THREE.WebGLRenderer({
+    this.ownRenderer = !renderer
+    this.renderer = renderer || new THREE.WebGLRenderer({
       canvas,
       alpha: true,
       antialias: true,
@@ -82,7 +87,8 @@ export class Book3D {
     this.clock = new THREE.Clock()
     this._resize()
     this.cam.dist = this.fitDist // cadrage correct dès la première image
-    window.addEventListener('resize', () => this._resize())
+    this._onResize = () => this._resize()
+    window.addEventListener('resize', this._onResize)
     this.renderer.setAnimationLoop(() => this._frame())
   }
 
@@ -181,8 +187,8 @@ export class Book3D {
       tx.anisotropy = maxAniso
     }
 
-    for (let i = 0; i < 6; i++) {
-      const stiff = i === 0 || i === 5
+    for (let i = 0; i < this.S; i++) {
+      const stiff = i === 0 || i === this.S - 1
       const w = stiff ? PW * COVER_SCALE : PW
       const h = stiff ? PH * COVER_SCALE : PH
       const geom = new THREE.PlaneGeometry(w, h, SEG, 3)
@@ -263,9 +269,9 @@ export class Book3D {
   }
 
   _place(s) {
-    // Hauteur d'empilement : pile droite (5-i)·TH → pile gauche i·TH, avec
+    // Hauteur d'empilement : pile droite (S-1-i)·TH → pile gauche i·TH, avec
     // un léger soulèvement pendant la rotation.
-    const hR = 0.004 + (5 - s.i) * TH
+    const hR = 0.004 + (this.S - 1 - s.i) * TH
     const hL = 0.004 + s.i * TH
     const k = EASE(Math.min(1, Math.max(0, s.t)))
     const lift = Math.sin(Math.PI * Math.min(1, Math.max(0, s.t))) * TH * 2.2
@@ -292,7 +298,7 @@ export class Book3D {
 
   next() {
     const T = this.turned
-    if (T >= 6) return false
+    if (T >= this.S) return false
     const s = this.sheets[T]
     this._animate(s, 1, s.stiff ? 1.15 : 0.95)
     this._notifyTurn(1, s)
@@ -310,7 +316,7 @@ export class Book3D {
 
   goTo(T2) {
     this.zoomExit()
-    T2 = Math.max(0, Math.min(6, T2))
+    T2 = Math.max(0, Math.min(this.S, T2))
     const T = this.turned
     if (T2 === T) return
     let step = 0
@@ -354,10 +360,13 @@ export class Book3D {
 
   _bindPointer() {
     const el = this.canvas
-    el.addEventListener('pointerdown', (e) => this._onDown(e))
-    el.addEventListener('pointermove', (e) => this._onMove(e))
-    el.addEventListener('pointerup', (e) => this._onUp(e))
-    el.addEventListener('pointercancel', (e) => this._onUp(e, true))
+    this._bound = [
+      [el, 'pointerdown', (e) => this._onDown(e)],
+      [el, 'pointermove', (e) => this._onMove(e)],
+      [el, 'pointerup', (e) => this._onUp(e)],
+      [el, 'pointercancel', (e) => this._onUp(e, true)]
+    ]
+    for (const [t, ev, fn] of this._bound) t.addEventListener(ev, fn)
   }
 
   _onDown(e) {
@@ -557,7 +566,7 @@ export class Book3D {
   }
 
   _updateFit() {
-    const closed = this.turned === 0 || this.turned === 6
+    const closed = this.turned === 0 || this.turned === this.S
     const halfW = (closed ? 0.72 : 1.14) + 0.06
     const appH = (PH / 2) * Math.sin(this.camEl) + 0.28
     const vHalf = Math.tan((this.camera.fov * Math.PI) / 360)
@@ -594,13 +603,13 @@ export class Book3D {
   // Face affichée d'un côté du livre ouvert (index dans le tableau des faces).
   _faceIndex(side) {
     const T = this.turned
-    return side === 'right' ? (T < 6 ? 2 * T : -1) : (T > 0 ? 2 * T - 1 : -1)
+    return side === 'right' ? (T < this.S ? 2 * T : -1) : (T > 0 ? 2 * T - 1 : -1)
   }
 
-  // Les faces 2..8 sont les 7 vraies pages du guide.
+  // Les faces 2..nPages+1 sont les vraies pages du guide.
   _isGuidePage(side) {
     const i = this._faceIndex(side)
-    return i >= 2 && i <= 8
+    return i >= 2 && i <= this.nPages + 1
   }
 
   _frame() {
@@ -631,13 +640,13 @@ export class Book3D {
     // Recentrage : livre fermé → couverture au centre.
     const T = this.turned
     const anyAnim = this.sheets.some((s) => s.anim || s.dragging)
-    const targetX = T === 0 ? -PW / 2 : T === 6 ? PW / 2 : 0
+    const targetX = T === 0 ? -PW / 2 : T === this.S ? PW / 2 : 0
     this.flatX += (targetX - this.flatX) * damp(3.2)
     this.flat.position.x = this.flatX
 
     // Blocs de tranche (piles de pages restantes)
     const eff = this.sheets.reduce((a, s) => a + s.t, 0)
-    const nR = 6 - eff
+    const nR = this.S - eff
     const nL = eff
     const hR = Math.max(0, nR - 1) * TH
     const hL = Math.max(0, nL - 1) * TH
@@ -707,7 +716,14 @@ export class Book3D {
 
   dispose() {
     this.renderer.setAnimationLoop(null)
-    this.renderer.dispose()
+    window.removeEventListener('resize', this._onResize)
+    for (const [el, ev, fn] of this._bound || []) el.removeEventListener(ev, fn)
+    for (const s of this.sheets) s.geom.dispose()
+    this.blockR.geometry.dispose()
+    this.blockL.geometry.dispose()
+    this.spine.geometry.dispose()
+    if (this.particles) this.particles.geometry.dispose()
+    if (this.ownRenderer) this.renderer.dispose()
   }
 }
 
