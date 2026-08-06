@@ -1,0 +1,44 @@
+[
+  {
+    "fam": "Cormorant Garamond",
+    "style": "italic",
+    "weight": "500",
+    "name": "CormorantGaramond-500i.woff2"
+  },
+  {
+    "fam": "Cormorant Garamond",
+    "style": "normal",
+    "weight": "500",
+    "name": "CormorantGaramond-500.woff2"
+  },
+  {
+    "fam": "Cormorant Garamond",
+    "style": "normal",
+    "weight": "600",
+    "name": "CormorantGaramond-600.woff2"
+  },
+  {
+    "fam": "Poppins",
+    "style": "normal",
+    "weight": "300",
+    "name": "Poppins-300.woff2"
+  },
+  {
+    "fam": "Poppins",
+    "style": "normal",
+    "weight": "400",
+    "name": "Poppins-400.woff2"
+  },
+  {
+    "fam": "Poppins",
+    "style": "normal",
+    "weight": "500",
+    "name": "Poppins-500.woff2"
+  },
+  {
+    "fam": "Poppins",
+    "style": "normal",
+    "weight": "600",
+    "name": "Poppins-600.woff2"
+  }
+]
