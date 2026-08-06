@@ -46,9 +46,12 @@ export class Book3D {
     this.scene.add(this.rig)
     this.camera = new THREE.PerspectiveCamera(34, 1, 0.1, 30)
     this.rig.add(this.camera)
-    this.camDist = 3.6
-    this.camDistTarget = 3.6
-    this.camEl = 0.96 // élévation (rad)
+    this.camEl = 0.96      // élévation en lecture (rad)
+    this.zoomEl = 1.40     // élévation en zoom page : presque à la verticale
+    this.fitDist = 3.6
+    // État caméra animé : élévation, distance, point visé.
+    this.cam = { el: this.camEl, dist: 3.6, tx: 0, ty: 0.02, tz: -0.14 }
+    this.zoom = null       // { side: 'left' | 'right' } quand une page est zoomée
 
     this.parallax = { x: 0, y: 0, tx: 0, ty: 0 }
 
@@ -78,7 +81,7 @@ export class Book3D {
 
     this.clock = new THREE.Clock()
     this._resize()
-    this.camDist = this.camDistTarget // cadrage correct dès la première image
+    this.cam.dist = this.fitDist // cadrage correct dès la première image
     window.addEventListener('resize', () => this._resize())
     this.renderer.setAnimationLoop(() => this._frame())
   }
@@ -306,6 +309,7 @@ export class Book3D {
   }
 
   goTo(T2) {
+    this.zoomExit()
     T2 = Math.max(0, Math.min(6, T2))
     const T = this.turned
     if (T2 === T) return
@@ -378,7 +382,9 @@ export class Book3D {
     }
     const T = this.turned
     const w = PW
-    if (loc.x > w * 0.5 && T < 6) {
+    if (this.zoom) {
+      this.dragSheet = null // pas de glisser-coin en mode zoom
+    } else if (loc.x > w * 0.5 && T < 6) {
       this.dragSheet = this.sheets[T]
       this.dragDir = 1
     } else if (loc.x < -w * 0.5 && T > 0) {
@@ -479,7 +485,8 @@ export class Book3D {
 
     // Swipe
     if (p.moved && dt < 650 && Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.4) {
-      dx < 0 ? this.next() : this.prev()
+      if (this.zoom) this.on.zoomNav && this.on.zoomNav(dx < 0 ? 1 : -1)
+      else dx < 0 ? this.next() : this.prev()
       return
     }
     if (p.moved) return
@@ -490,15 +497,27 @@ export class Book3D {
         Math.hypot(e.clientX - this.lastTap.x, e.clientY - this.lastTap.y) < 44) {
       clearTimeout(this.lastTap.timer)
       this.lastTap = null
-      const side = p.loc0.x >= 0 ? 'right' : 'left'
+      const side = this.zoom ? this.zoom.side : p.loc0.x >= 0 ? 'right' : 'left'
       this.on.doubleTap && this.on.doubleTap(side)
       return
     }
     const loc = p.loc0
     const timer = setTimeout(() => {
       this.lastTap = null
-      if (loc.x > 0.05) this.next()
-      else if (loc.x < -0.05) this.prev()
+      if (this.zoom) {
+        // En mode zoom, un tap referme la page.
+        this.zoomExit()
+        return
+      }
+      const side = loc.x >= 0.05 ? 'right' : loc.x <= -0.05 ? 'left' : null
+      if (!side) return
+      if (this._isGuidePage(side)) {
+        // Une vraie page du guide : on vient la voir de près.
+        this.zoomTo(side)
+      } else {
+        // Couverture, garde, page « Merci »… : on tourne.
+        side === 'right' ? this.next() : this.prev()
+      }
     }, 300)
     this.lastTap = { t: now, x: e.clientX, y: e.clientY, timer }
   }
@@ -539,7 +558,42 @@ export class Book3D {
     // + PH/2 : le bord bas du livre est plus proche de la caméra (perspective),
     // c'est lui qui doit tenir dans le cadre.
     const d = Math.max(halfW / hHalf, appH / vHalf) + 0.9
-    this.camDistTarget = d
+    this.fitDist = d
+  }
+
+  _zoomFitDist() {
+    // Distance pour qu'une page seule remplisse le cadre, vue de dessus.
+    const halfW = (PW / 2) * 1.1
+    const halfH = (PH / 2) * Math.sin(this.zoomEl) * 1.07
+    const vHalf = Math.tan((this.camera.fov * Math.PI) / 360)
+    const hHalf = vHalf * this.camera.aspect
+    return Math.max(halfW / hHalf, halfH / vHalf) + 0.12
+  }
+
+  // ————— Zoom page (la caméra vient au-dessus de la page) —————
+
+  zoomTo(side) {
+    this.zoom = { side }
+    this._cancelDrag()
+    this.on.zoom && this.on.zoom(side)
+  }
+
+  zoomExit() {
+    if (!this.zoom) return
+    this.zoom = null
+    this.on.zoom && this.on.zoom(null)
+  }
+
+  // Face affichée d'un côté du livre ouvert (index dans le tableau des faces).
+  _faceIndex(side) {
+    const T = this.turned
+    return side === 'right' ? (T < 6 ? 2 * T : -1) : (T > 0 ? 2 * T - 1 : -1)
+  }
+
+  // Les faces 2..8 sont les 7 vraies pages du guide.
+  _isGuidePage(side) {
+    const i = this._faceIndex(side)
+    return i >= 2 && i <= 8
   }
 
   _frame() {
@@ -615,11 +669,30 @@ export class Book3D {
       this.tilt.rotation.y = this.opened ? 0 : 0.16
     }
 
-    // Caméra
+    // Caméra : vue lecture ou survol d'une page zoomée.
     this._updateFit()
-    this.camDist += (this.camDistTarget - this.camDist) * damp(2.2)
-    this.camera.position.set(0, this.camDist * Math.sin(this.camEl), this.camDist * Math.cos(this.camEl))
-    this.camera.lookAt(0, 0.02, -0.14)
+    const goal = this.zoom
+      ? {
+          el: this.zoomEl,
+          dist: this._zoomFitDist(),
+          tx: this.flatX + (this.zoom.side === 'right' ? 1 : -1) * (PW / 2),
+          ty: this.flat.position.y,
+          tz: 0
+        }
+      : { el: this.camEl, dist: this.fitDist, tx: 0, ty: 0.02, tz: -0.14 }
+    const ck = this.reduced ? 1 : damp(2.6)
+    const c = this.cam
+    c.el += (goal.el - c.el) * ck
+    c.dist += (goal.dist - c.dist) * ck
+    c.tx += (goal.tx - c.tx) * ck
+    c.ty += (goal.ty - c.ty) * ck
+    c.tz += (goal.tz - c.tz) * ck
+    this.camera.position.set(
+      c.tx,
+      c.ty + c.dist * Math.sin(c.el),
+      c.tz + c.dist * Math.cos(c.el)
+    )
+    this.camera.lookAt(c.tx, c.ty, c.tz)
 
     this.renderer.render(this.scene, this.camera)
     void anyAnim

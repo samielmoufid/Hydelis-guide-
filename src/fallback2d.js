@@ -176,7 +176,15 @@ export class Book2D {
       const cx = e.clientX
       const timer = setTimeout(() => {
         last = null
-        cx >= mid ? this.next() : this.prev()
+        const side = cx >= mid ? 'right' : 'left'
+        const idx = side === 'right' ? (this.T < 6 ? 2 * this.T : -1)
+          : (this.T > 0 ? 2 * this.T - 1 : -1)
+        if (idx >= 2 && idx <= 8) {
+          // Une vraie page du guide : vue détail.
+          this.on.doubleTap && this.on.doubleTap(side)
+        } else {
+          side === 'right' ? this.next() : this.prev()
+        }
       }, 300)
       last = { t: now, x: e.clientX, timer }
     })

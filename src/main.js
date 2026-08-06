@@ -81,7 +81,9 @@ async function init() {
     change: onSpreadChange,
     turnStart: (dir, stiff) => sound.flip(0.7, stiff),
     doubleTap: (side) => zoomFromSide(side),
-    pinch: (side) => zoomFromSide(side)
+    pinch: (side) => zoomFromSide(side),
+    zoom: onZoomChange,
+    zoomNav
   }
 
   if (webgl) {
@@ -144,7 +146,45 @@ function initBook2D(images, gen, on) {
 
 // ————— Interface —————
 
+// Page réellement affichée d'un côté du spread (1-indexée), ou 0.
+function pageAtSide(side) {
+  const visible = pagesAtSpread(book.turned)
+  if (!visible.length) return 0
+  return side === 'left' ? visible[0] : visible[visible.length - 1]
+}
+
+function onZoomChange(side) {
+  const exitBtn = $('#zoom-exit')
+  if (side) {
+    const page = pageAtSide(side)
+    exitBtn.hidden = false
+    requestAnimationFrame(() => exitBtn.classList.add('show'))
+    $('#page-indicator').textContent = `Page ${page} / 7 · détail`
+    $('#sr-live').textContent = `Page ${page} en détail. Touchez pour revenir au livre.`
+    hideTapHint()
+  } else {
+    exitBtn.classList.remove('show')
+    setTimeout(() => { exitBtn.hidden = true }, REDUCED ? 0 : 420)
+    onSpreadChange(book.turned)
+  }
+}
+
+// Navigation page par page pendant le zoom (swipe, flèches, boutons).
+function zoomNav(dir) {
+  if (!book.zoom) return
+  const side = book.zoom.side
+  const T = book.turned
+  if (dir > 0) {
+    if (side === 'left') book.zoomTo('right')
+    else if (T < 4) { book.next(); book.zoomTo('left') }
+  } else {
+    if (side === 'right' && T >= 2) book.zoomTo('left')
+    else if (side === 'left' && T > 1) { book.prev(); book.zoomTo('right') }
+  }
+}
+
 function onSpreadChange(T) {
+  if (book && book.zoom) return // le libellé « détail » est géré par onZoomChange
   $('#page-indicator').textContent = spreadLabel(T)
   $('#sr-live').textContent = spreadLabel(T)
   const visible = pagesAtSpread(T)
@@ -213,6 +253,7 @@ function bindUI() {
       $('#topbar').classList.remove('ui-hidden')
       $('#bottombar').classList.remove('ui-hidden')
       maybeShowRotateHint()
+      showTapHint()
     }, REDUCED ? 0 : 900)
   }
   intro.addEventListener('click', openBook)
@@ -220,11 +261,12 @@ function bindUI() {
     if (e.key === 'Enter' || e.key === ' ') openBook()
   })
 
-  $('#btn-prev').addEventListener('click', () => book.prev())
-  $('#btn-next').addEventListener('click', () => book.next())
+  $('#btn-prev').addEventListener('click', () => (book.zoom ? zoomNav(-1) : book.prev()))
+  $('#btn-next').addEventListener('click', () => (book.zoom ? zoomNav(1) : book.next()))
   $('#page-indicator').addEventListener('click', openToc)
   $('#toc-close').addEventListener('click', closeToc)
   $('#toc .toc-backdrop').addEventListener('click', closeToc)
+  $('#zoom-exit').addEventListener('click', () => book.zoomExit && book.zoomExit())
 
   // Son
   const soundSaved = sound.enabled
@@ -252,12 +294,15 @@ function bindUI() {
     if (!lightbox.el.hidden) return // géré par la lightbox
     if (!book.opened && (e.key === 'Enter' || e.key === ' ')) { openBook(); return }
     switch (e.key) {
-      case 'ArrowRight': case 'PageDown': book.next(); break
-      case 'ArrowLeft': case 'PageUp': book.prev(); break
+      case 'ArrowRight': case 'PageDown': book.zoom ? zoomNav(1) : book.next(); break
+      case 'ArrowLeft': case 'PageUp': book.zoom ? zoomNav(-1) : book.prev(); break
       case 'Home': book.goTo(0); break
       case 'End': book.goTo(6); break
       case 's': case 'S': $('#toc').hidden ? openToc() : closeToc(); break
-      case 'Escape': closeToc(); break
+      case 'Escape':
+        if (book.zoom) book.zoomExit()
+        else closeToc()
+        break
       case 'f': case 'F': fsBtn.style.display !== 'none' && fsBtn.click(); break
       case 'm': case 'M': $('#btn-sound').click(); break
     }
@@ -279,7 +324,8 @@ function bindUI() {
     if (wheelLock) return
     wheelLock = true
     setTimeout(() => { wheelLock = false }, 650)
-    e.deltaY > 0 ? book.next() : book.prev()
+    if (book.zoom) zoomNav(e.deltaY > 0 ? 1 : -1)
+    else e.deltaY > 0 ? book.next() : book.prev()
   }, { passive: true })
 }
 
@@ -305,6 +351,29 @@ function rampLight() {
     if (k < 1) requestAnimationFrame(tick)
   }
   requestAnimationFrame(tick)
+}
+
+let tapHintTimers = []
+function showTapHint() {
+  // Après la suggestion paysage sur mobile portrait, sinon rapidement.
+  const portrait = window.innerHeight > window.innerWidth
+  const coarse = window.matchMedia('(pointer: coarse)').matches
+  const delay = portrait && coarse ? 6600 : 1400
+  const hint = $('#tap-hint')
+  tapHintTimers.push(setTimeout(() => {
+    if (book.zoom) return
+    hint.hidden = false
+    requestAnimationFrame(() => hint.classList.add('show'))
+    tapHintTimers.push(setTimeout(hideTapHint, 5600))
+  }, delay))
+}
+
+function hideTapHint() {
+  tapHintTimers.forEach(clearTimeout)
+  tapHintTimers = []
+  const hint = $('#tap-hint')
+  hint.classList.remove('show')
+  setTimeout(() => { hint.hidden = true }, 600)
 }
 
 function maybeShowRotateHint() {
