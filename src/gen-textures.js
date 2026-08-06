@@ -156,21 +156,36 @@ function paperBackground(ctx) {
   ctx.fillRect(0, 0, W, H)
 }
 
-export function makeInnerCoverCanvas() {
+export function makeInnerCoverCanvas(kind = 'classique') {
   const c = makeCanvas()
   const ctx = c.getContext('2d')
   paperBackground(ctx)
   ctx.save()
   ctx.globalAlpha = 0.055
-  drawDrop(ctx, W / 2, H * 0.46, 300, '#0F6673')
+  drawDrop(ctx, W / 2, H * 0.42, 300, '#0F6673')
   ctx.restore()
   ctx.textAlign = 'center'
+
+  // Mention de compatibilité : protège des petites variations entre
+  // références d'une même gamme.
+  const gamme = kind === 'thermostatique'
+    ? 'colonnes thermostatiques'
+    : 'colonnes de douche classiques'
+  ctx.fillStyle = 'rgba(15,102,115,0.75)'
+  ctx.font = '400 27px "Poppins", sans-serif'
+  ctx.fillText(`Ce guide s’applique à l’ensemble des`, W / 2, H * 0.635)
+  ctx.fillText(`${gamme} Hydelis.`, W / 2, H * 0.635 + 42)
+  ctx.fillStyle = 'rgba(17,51,59,0.5)'
+  ctx.font = '300 24px "Poppins", sans-serif'
+  ctx.fillText('Les visuels et certaines étapes peuvent légèrement', W / 2, H * 0.635 + 104)
+  ctx.fillText('varier selon votre référence exacte.', W / 2, H * 0.635 + 140)
+
   ctx.fillStyle = 'rgba(17,51,59,0.55)'
   ctx.font = '600 44px "Cormorant Garamond", serif'
-  spacedText(ctx, 'HYDELIS', W / 2, H * 0.82, 16)
+  spacedText(ctx, 'HYDELIS', W / 2, H * 0.84, 16)
   ctx.font = '300 21px "Poppins", sans-serif'
   ctx.fillStyle = 'rgba(17,51,59,0.4)'
-  spacedText(ctx, "L'EAU SUBLIMÉE", W / 2, H * 0.82 + 46, 8)
+  spacedText(ctx, "L'EAU SUBLIMÉE", W / 2, H * 0.84 + 46, 8)
   return c
 }
 

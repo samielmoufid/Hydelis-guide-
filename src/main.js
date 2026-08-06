@@ -40,11 +40,14 @@ let book = null
 let selector = null
 let renderer = null
 let warp = null
-let gen = null          // canvases communs (gardes, merci, 4e de couverture)
+let gen = null          // canvases communs (merci, garde arrière, 4e de couverture)
+let innerCovers = null  // id -> canvas de garde (mention de compatibilité)
 let genUrls = null      // versions dataURL pour le fallback CSS
 const covers = {}       // id -> canvas de couverture
 let edgeCanvas = null
+let edgeTexture = null  // texture de tranche partagée
 const imageCache = {}   // id -> { images: [Image], promise }
+const faceTexCache = {} // id -> textures THREE des faces (réutilisées)
 let busy = false        // transition en cours
 
 // ————— Loader —————
@@ -103,12 +106,16 @@ async function init() {
 
   await loadFonts()
 
-  // Faces générées (après chargement des polices).
+  // Faces générées (après chargement des polices). La garde porte la
+  // mention de compatibilité propre à chaque gamme.
   gen = {
-    innerCover: makeInnerCoverCanvas(),
     thanks: makeThanksCanvas(),
     innerBack: makeInnerBackCanvas(),
     backCover: makeBackCoverCanvas()
+  }
+  innerCovers = {
+    classique: makeInnerCoverCanvas('classique'),
+    thermostatique: makeInnerCoverCanvas('thermostatique')
   }
   for (const id of ['classique', 'thermostatique']) {
     const cfg = BOOKS[id]
@@ -164,6 +171,32 @@ function texFromImage(img) {
   return t
 }
 
+// Textures THREE des faces d'un livre, créées une seule fois puis réutilisées
+// (pas de renvoi au GPU quand on rechange de livre).
+function facesFor(id) {
+  if (faceTexCache[id]) return faceTexCache[id]
+  loadBookImages(id)
+  const inputs = buildFaceList(
+    { cover: covers[id], ...gen, innerCover: innerCovers[id] },
+    imageCache[id].images
+  )
+  faceTexCache[id] = inputs.map((f) =>
+    f instanceof HTMLCanvasElement ? new THREE.CanvasTexture(f) : texFromImage(f)
+  )
+  return faceTexCache[id]
+}
+
+function ensureGenUrls() {
+  if (genUrls) return
+  const url = (c) => c.toDataURL('image/jpeg', 0.88)
+  genUrls = {
+    thanks: url(gen.thanks),
+    innerBack: url(gen.innerBack), backCover: url(gen.backCover),
+    coverClassique: url(covers.classique), coverThermostatique: url(covers.thermostatique),
+    innerClassique: url(innerCovers.classique), innerThermostatique: url(innerCovers.thermostatique)
+  }
+}
+
 function buildBook(id) {
   loadBookImages(id)
   CUR = BOOKS[id]
@@ -179,33 +212,20 @@ function buildBook(id) {
   }
 
   if (WEBGL) {
-    const faceInputs = buildFaceList(
-      { cover: covers[id], ...gen },
-      imageCache[id].images
-    )
-    const faces = faceInputs.map((f) =>
-      f instanceof HTMLCanvasElement ? new THREE.CanvasTexture(f) : texFromImage(f)
-    )
     book = new Book3D({
       canvas: $('#scene'),
       renderer,
-      faces,
+      faces: facesFor(id),
       nPages: N,
-      edgeTexture: new THREE.CanvasTexture(edgeCanvas),
+      edgeTexture: edgeTexture || (edgeTexture = new THREE.CanvasTexture(edgeCanvas)),
       reduced: REDUCED,
       on
     })
   } else {
-    if (!genUrls) {
-      const url = (c) => c.toDataURL('image/jpeg', 0.88)
-      genUrls = {
-        innerCover: url(gen.innerCover), thanks: url(gen.thanks),
-        innerBack: url(gen.innerBack), backCover: url(gen.backCover),
-        coverClassique: url(covers.classique), coverThermostatique: url(covers.thermostatique)
-      }
-    }
+    ensureGenUrls()
     const coverUrl = id === 'classique' ? genUrls.coverClassique : genUrls.coverThermostatique
-    const faces = buildFaceList({ cover: coverUrl, ...genUrls }, CUR.pages)
+    const innerUrl = id === 'classique' ? genUrls.innerClassique : genUrls.innerThermostatique
+    const faces = buildFaceList({ cover: coverUrl, ...genUrls, innerCover: innerUrl }, CUR.pages)
     const fb = $('#fallback')
     fb.hidden = false
     book = new Book2D({ container: fb, faces, nPages: N, reduced: REDUCED, on })
@@ -268,14 +288,7 @@ function showSelector(fromId) {
     if (fromId) selector.arriveFrom(fromId)
   } else {
     document.body.classList.add('sel-fallback')
-    if (!genUrls) {
-      const url = (c) => c.toDataURL('image/jpeg', 0.88)
-      genUrls = {
-        innerCover: url(gen.innerCover), thanks: url(gen.thanks),
-        innerBack: url(gen.innerBack), backCover: url(gen.backCover),
-        coverClassique: url(covers.classique), coverThermostatique: url(covers.thermostatique)
-      }
-    }
+    ensureGenUrls()
     for (const id of ['classique', 'thermostatique']) {
       const img = document.querySelector(`#sel-${id} .sel-cover`)
       img.src = id === 'classique' ? genUrls.coverClassique : genUrls.coverThermostatique
@@ -299,6 +312,22 @@ async function pickBook(id) {
   $('#selector').classList.add('leaving')
 
   loadBookImages(id)
+  // Envoi progressif des textures au GPU pendant l'accélération du tunnel :
+  // évite le gros blocage (et les saccades) au moment de l'échange de scènes.
+  if (WEBGL) {
+    const faces = facesFor(id)
+    let i = 0
+    const upload = () => {
+      if (i >= faces.length || book) return
+      const t = faces[i++]
+      const im = t.image
+      if (im && (im instanceof HTMLCanvasElement || (im.complete && im.naturalWidth))) {
+        renderer.initTexture(t)
+      }
+      requestAnimationFrame(upload)
+    }
+    requestAnimationFrame(upload)
+  }
   const dive = selector && !REDUCED ? selector.diveTo(id, 0.5) : Promise.resolve()
   void dive
   await warp.play({

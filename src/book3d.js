@@ -171,11 +171,15 @@ export class Book3D {
   }
 
   _mirrored(tex) {
+    // Mise en cache sur la texture source : le clone miroir n'est envoyé
+    // qu'une fois au GPU, même si le livre est reconstruit.
+    if (tex.userData.mirrored) return tex.userData.mirrored
     const t = tex.clone()
     t.wrapS = THREE.RepeatWrapping
     t.repeat.x = -1
     t.offset.x = 1
     t.needsUpdate = true
+    tex.userData.mirrored = t
     return t
   }
 
