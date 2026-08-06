@@ -212,7 +212,8 @@ body {
 .lb-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   overflow: hidden; touch-action: none; cursor: grab; }
 .lb-stage:active { cursor: grabbing; }
-#lb-img { max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px);
+#lb-img { -webkit-touch-callout: none; user-select: none; -webkit-user-select: none;
+  max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px);
   border-radius: 6px; box-shadow: 0 30px 90px rgba(0,0,0,0.7);
   transform-origin: center center; will-change: transform;
   opacity: 0; transform: scale(0.92); transition: opacity 0.3s, transform 0.3s; }

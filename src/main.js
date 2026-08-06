@@ -395,6 +395,7 @@ const lightbox = {
   stage: document.querySelector('#lightbox .lb-stage'),
   idx: 0, scale: 1, tx: 0, ty: 0,
   pointers: new Map(), pinch0: null, lastTap: 0,
+  lastMid: null, multi: false,
 
   open(idx) {
     this.idx = idx
@@ -479,38 +480,57 @@ $('#lb-next').addEventListener('click', () => lightbox.show(lightbox.idx + 1))
 
 lightbox.stage.addEventListener('pointerdown', (e) => {
   lightbox.stage.setPointerCapture(e.pointerId)
-  lightbox.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+  lightbox.pointers.set(e.pointerId, {
+    x: e.clientX, y: e.clientY,
+    x0: e.clientX, y0: e.clientY, t0: performance.now()
+  })
   if (lightbox.pointers.size === 2) {
     const [a, b] = [...lightbox.pointers.values()]
     lightbox.pinch0 = { d: Math.hypot(a.x - b.x, a.y - b.y), s: lightbox.scale }
+    lightbox.lastMid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }
+    lightbox.multi = true // geste à deux doigts : ne comptera jamais comme un tap
   }
 })
 lightbox.stage.addEventListener('pointermove', (e) => {
   const p = lightbox.pointers.get(e.pointerId)
   if (!p) return
-  const nx = e.clientX
-  const ny = e.clientY
+  const dx = e.clientX - p.x
+  const dy = e.clientY - p.y
+  p.x = e.clientX
+  p.y = e.clientY
   if (lightbox.pointers.size === 2 && lightbox.pinch0) {
-    lightbox.pointers.set(e.pointerId, { x: nx, y: ny })
+    // Pincement : zoom autour du point médian ET suivi du déplacement des
+    // doigts (zoomer et se déplacer dans le même geste).
     const [a, b] = [...lightbox.pointers.values()]
     const d = Math.hypot(a.x - b.x, a.y - b.y)
     const mx = (a.x + b.x) / 2
     const my = (a.y + b.y) / 2
     const target = Math.max(1, Math.min(4.2, lightbox.pinch0.s * (d / lightbox.pinch0.d)))
     lightbox.zoomAt(mx, my, target / lightbox.scale)
+    lightbox.tx += mx - lightbox.lastMid.x
+    lightbox.ty += my - lightbox.lastMid.y
+    lightbox.lastMid = { x: mx, y: my }
+    lightbox._apply()
   } else if (lightbox.pointers.size === 1 && lightbox.scale > 1) {
-    lightbox.tx += nx - p.x
-    lightbox.ty += ny - p.y
-    lightbox.pointers.set(e.pointerId, { x: nx, y: ny })
+    lightbox.tx += dx
+    lightbox.ty += dy
     lightbox._apply()
   }
 })
 const lbUp = (e) => {
-  const had = lightbox.pointers.has(e.pointerId)
+  const p = lightbox.pointers.get(e.pointerId)
   lightbox.pointers.delete(e.pointerId)
   if (lightbox.pointers.size < 2) lightbox.pinch0 = null
-  if (!had) return
-  // Double-tap : zoom / dézoom
+  if (!p) return
+  if (lightbox.pointers.size > 0) return
+  // Tous les doigts sont levés.
+  const wasMulti = lightbox.multi
+  lightbox.multi = false
+  if (wasMulti) { lightbox.lastTap = 0; return } // fin de pincement ≠ tap
+  const moved = Math.hypot(p.x - p.x0, p.y - p.y0) > 12
+  const dur = performance.now() - p.t0
+  if (moved || dur > 350) { lightbox.lastTap = 0; return } // fin de glissement ≠ tap
+  // Vrai tap : double-tap = zoom / dézoom.
   const now = performance.now()
   if (now - lightbox.lastTap < 320) {
     if (lightbox.scale > 1.3) {
@@ -527,6 +547,7 @@ lightbox.stage.addEventListener('pointerup', lbUp)
 lightbox.stage.addEventListener('pointercancel', (e) => {
   lightbox.pointers.delete(e.pointerId)
   if (lightbox.pointers.size < 2) lightbox.pinch0 = null
+  if (lightbox.pointers.size === 0) lightbox.multi = false
 })
 lightbox.stage.addEventListener('wheel', (e) => {
   e.preventDefault()
