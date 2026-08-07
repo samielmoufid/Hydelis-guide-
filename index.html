@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+  <title>Guides de pose Hydelis</title>
+  <meta name="description" content="Les guides de pose interactifs de votre colonne de douche Hydelis — classique ou thermostatique. Feuilletez les étapes d'installation, sans plombier et sans mauvaise surprise.">
+  <meta name="theme-color" content="#05141a">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Hydelis">
+  <meta property="og:title" content="Guides de pose Hydelis">
+  <meta property="og:description" content="Colonne classique ou thermostatique : feuilletez votre guide d'installation interactif, sans plombier et sans mauvaise surprise. L'eau sublimée.">
+  <meta property="og:url" content="https://guide.hydelis.fr/">
+  <meta property="og:image" content="https://guide.hydelis.fr/og-cover.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="fr_FR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Guides de pose Hydelis">
+  <meta name="twitter:description" content="Colonne classique ou thermostatique : feuilletez votre guide d'installation interactif, sans plombier et sans mauvaise surprise.">
+  <meta name="twitter:image" content="https://guide.hydelis.fr/og-cover.jpg">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2c5 8 10 12.5 10 19a10 10 0 1 1-20 0C6 14.5 11 10 16 2z' fill='%231795A5'/%3E%3C/svg%3E">
+  <script type="module" crossorigin src="./assets/index-DDXeLCuf.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-5lGuGuiw.css">
+</head>
+<body>
+  <!-- Décor : dégradé pétrole + caustiques discrètes -->
+  <div id="bg" aria-hidden="true">
+    <div class="caustic caustic-a"></div>
+    <div class="caustic caustic-b"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <!-- Scène 3D -->
+  <canvas id="scene" tabindex="0" role="application"
+          aria-label="Livre interactif : guide de pose Hydelis. Utilisez les flèches gauche et droite pour tourner les pages."></canvas>
+
+  <!-- Transition « voyage temporel » -->
+  <canvas id="warp" aria-hidden="true"></canvas>
+
+  <!-- Sélecteur de modèle -->
+  <div id="selector" hidden>
+    <div class="sel-head">
+      <h1 class="sel-title">Quel est votre modèle&nbsp;?</h1>
+      <p class="sel-sub">Choisissez votre colonne pour ouvrir son guide de pose</p>
+    </div>
+    <div class="sel-cards">
+      <button class="sel-card" id="sel-classique" data-book="classique">
+        <img class="sel-cover" alt="" hidden draggable="false">
+        <span class="sel-name">Colonne classique</span>
+      </button>
+      <button class="sel-card" id="sel-thermostatique" data-book="thermostatique">
+        <img class="sel-cover" alt="" hidden draggable="false">
+        <span class="sel-name">Colonne thermostatique</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Fallback sans WebGL -->
+  <div id="fallback" hidden></div>
+
+  <!-- Interface -->
+  <header id="topbar" class="ui-hidden">
+    <button id="btn-switch" class="switch-btn" hidden aria-label="Changer de modèle">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l-7 7 7 7"/></svg>
+      <span>Changer de modèle</span>
+    </button>
+    <div class="brand">
+      <svg class="drop" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2c5 8 10 12.5 10 19a10 10 0 1 1-20 0C6 14.5 11 10 16 2z"/></svg>
+      <span class="brand-name">HYDELIS</span>
+    </div>
+    <div class="top-actions">
+      <button id="btn-sound" class="icon-btn" aria-label="Activer ou couper le son" aria-pressed="false" title="Son">
+        <svg viewBox="0 0 24 24" class="ic-sound-on"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="wave" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg viewBox="0 0 24 24" class="ic-sound-off" hidden><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9.5l5 5m0-5l-5 5" fill="none" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button id="btn-fs" class="icon-btn" aria-label="Plein écran" title="Plein écran">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg>
+      </button>
+      <a id="btn-sav" class="sav-btn" href="https://wa.me/33756882112?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20l%27installation%20de%20ma%20colonne%20de%20douche%20Hydelis."
+         target="_blank" rel="noopener" aria-label="Contacter le SAV Hydelis sur WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5 13.6c-.2.6-1.2 1.2-1.7 1.2-.4.1-1 .1-1.6-.1a13 13 0 0 1-1.5-.5c-2.6-1.1-4.3-3.7-4.4-3.9-.1-.2-1-1.4-1-2.7s.6-1.9.9-2.1c.2-.3.5-.3.7-.3h.5c.2 0 .4-.1.6.4l.9 2.1c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.1-.2.3-.1.5.1.2.6 1 1.4 1.7 1 .9 1.8 1.1 2 1.2.3.1.4.1.5-.1l.8-.9c.2-.2.3-.2.6-.1l1.9.9c.3.1.5.2.5.3 0 .1 0 .5-.2.9z"/></svg>
+        <span>SAV</span>
+      </a>
+    </div>
+  </header>
+
+  <nav id="bottombar" class="ui-hidden" aria-label="Navigation du guide">
+    <button id="btn-prev" class="icon-btn nav-btn" aria-label="Page précédente">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button id="page-indicator" class="page-indicator" aria-label="Ouvrir le sommaire" aria-live="polite">Couverture</button>
+    <button id="btn-next" class="icon-btn nav-btn" aria-label="Page suivante">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </nav>
+
+  <!-- Sommaire -->
+  <div id="toc" hidden role="dialog" aria-modal="true" aria-label="Sommaire du guide">
+    <div class="toc-backdrop"></div>
+    <div class="toc-panel">
+      <div class="toc-head">
+        <span class="toc-title">Sommaire</span>
+        <button id="toc-close" class="icon-btn" aria-label="Fermer le sommaire">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div id="toc-list" class="toc-list"></div>
+    </div>
+  </div>
+
+  <!-- Zoom pleine résolution -->
+  <div id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Page en plein écran">
+    <div class="lb-backdrop"></div>
+    <div class="lb-stage"><img id="lb-img" alt="Page du guide en haute résolution" draggable="false" decoding="async"></div>
+    <button id="lb-close" class="icon-btn lb-btn lb-close" aria-label="Fermer le zoom">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <button id="lb-prev" class="icon-btn lb-btn lb-prev" aria-label="Page précédente">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button id="lb-next" class="icon-btn lb-btn lb-next" aria-label="Page suivante">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+    <div id="lb-counter" class="lb-counter" aria-hidden="true"></div>
+    <div id="lb-hint" class="lb-hint" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8L20.5 20.5M11 8.5v5M8.5 11h5"/></svg>
+      <span id="lb-hint-text">Pincez pour zoomer où vous voulez</span>
+    </div>
+  </div>
+
+  <!-- Écran d'ouverture -->
+  <div id="intro">
+    <div class="intro-inner">
+      <svg class="intro-drop" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2c5 8 10 12.5 10 19a10 10 0 1 1-20 0C6 14.5 11 10 16 2z"/></svg>
+      <h1 class="intro-logo">HYDELIS</h1>
+      <p class="intro-tagline">L'eau sublimée</p>
+      <div class="intro-sep" aria-hidden="true"></div>
+      <p class="intro-sub" id="intro-sub">Guide de pose · Colonne de douche</p>
+      <button id="intro-open" class="intro-cta">Touchez pour ouvrir</button>
+    </div>
+  </div>
+
+  <!-- Ouverture du guide (livre fermé en lévitation) -->
+  <button id="btn-open" class="open-cta" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-1.8-1.5-4.2-2-7-2v14c2.8 0 5.2.5 7 2 1.8-1.5 4.2-2 7-2V3c-2.8 0-5.2.5-7 2zM12 5v14"/></svg>
+    <span>Ouvrir le guide</span>
+  </button>
+
+  <!-- Sortie du zoom page -->
+  <button id="zoom-exit" class="zoom-exit" hidden aria-label="Revenir à la vue du livre">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    <span>Retour au livre</span>
+  </button>
+
+  <!-- Indication permanente en mode zoom : retoucher la page = pleine résolution -->
+  <div id="sharp-hint" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8L20.5 20.5M11 8.5v5M8.5 11h5"/></svg>
+    <span>Lecture optimale&nbsp;: touchez encore la page pour une netteté maximale</span>
+  </div>
+
+  <!-- Indication : toucher une page pour la voir en détail -->
+  <div id="tap-hint" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M15.8 15.8L20.5 20.5M11 8.5v5M8.5 11h5"/></svg>
+    <span>Touchez une page pour la voir en détail</span>
+  </div>
+
+  <!-- Annonces lecteur d'écran -->
+  <div id="sr-live" class="sr-only" aria-live="polite"></div>
+
+  <!-- Loader -->
+  <div id="loader">
+    <svg class="loader-drop" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2c5 8 10 12.5 10 19a10 10 0 1 1-20 0C6 14.5 11 10 16 2z"/></svg>
+    <div class="loader-name">HYDELIS</div>
+    <div class="loader-bar"><div id="loader-fill"></div></div>
+  </div>
+</body>
+</html>
