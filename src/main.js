@@ -243,6 +243,32 @@ async function init() {
     const current = CUR ? CUR.id : null
     if (target !== current) location.reload()
   })
+
+  // Garde anti-gel : si le fil principal se fige à répétition malgré tout
+  // (Safari iOS capricieux), on bascule sur le flipbook sans WebGL en
+  // conservant la position de lecture. Trois gels de plus de 1,2 s suffisent.
+  if (WEBGL && COARSE) {
+    let hangs = 0
+    let last = performance.now()
+    let armed = false
+    setTimeout(() => { armed = true; last = performance.now() }, 12000)
+    document.addEventListener('visibilitychange', () => { last = performance.now() })
+    const watch = () => {
+      const now = performance.now()
+      if (armed && !document.hidden && now - last > 1200) {
+        if (++hangs >= 3) {
+          try {
+            if (CUR && book) sessionStorage.setItem('hydelis-restore', `${CUR.id}:${book.turned || 0}`)
+          } catch { /* stockage indisponible */ }
+          location.replace(location.pathname + '?no3d' + location.hash)
+          return
+        }
+      }
+      last = now
+      requestAnimationFrame(watch)
+    }
+    requestAnimationFrame(watch)
+  }
 }
 
 // ————— Construction / destruction d'un livre —————

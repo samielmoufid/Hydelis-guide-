@@ -91,6 +91,20 @@ body {
   background: radial-gradient(120% 90% at 50% 42%, transparent 55%, rgba(2,8,11,0.55) 100%);
 }
 
+/* Écrans tactiles : le compositeur de Safari iOS s'effondre quand des
+   backdrop-filter re-floutent en continu un canvas WebGL qui se redessine
+   à chaque frame, et quand d'immenses nappes en filter:blur sont animées.
+   On remplace le « verre flouté » par un verre plein légèrement plus opaque
+   (même identité visuelle, zéro flou temps réel) et on fige les caustiques
+   avec un dégradé déjà doux, sans filtre. */
+@media (pointer: coarse) {
+  * { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  .caustic { filter: none; animation: none; opacity: 0.16;
+    background: radial-gradient(circle at 35% 35%, rgba(41,164,181,0.45) 0%, rgba(23,110,124,0.16) 38%, rgba(23,110,124,0.05) 55%, transparent 72%); }
+  .caustic-b { opacity: 0.11; }
+  :root { --ui-glass: rgba(9, 34, 41, 0.78); }
+}
+
 #scene { position: fixed; inset: 0; z-index: 1; width: 100%; height: 100%;
   display: block; outline: none; cursor: grab; touch-action: none; }
 #scene.dragging { cursor: grabbing; }
