@@ -36,11 +36,15 @@ jobs:
           git worktree add /tmp/site origin/gh-pages
           cd /tmp/site
           git checkout -B gh-pages origin/gh-pages
-          # Remplace tout le contenu sauf .git et .github (le workflow
+          # Remplace tout le contenu sauf .git, .github (le workflow
           # d'auto-déploiement doit rester intact : le token n'a pas le
-          # droit de modifier des fichiers de workflow).
-          find . -maxdepth 1 ! -name .git ! -name .github ! -name . -exec rm -rf {} +
-          cp -r "$GITHUB_WORKSPACE"/dist/* .
+          # droit de modifier des fichiers de workflow) et assets/ : les
+          # anciens bundles empilés restent servis pour qu'un HTML encore
+          # en cache navigateur (Safari iOS…) ne casse jamais.
+          find . -maxdepth 1 ! -name .git ! -name .github ! -name assets ! -name . -exec rm -rf {} +
+          mkdir -p assets
+          cp -rn "$GITHUB_WORKSPACE"/dist/assets/. assets/
+          find "$GITHUB_WORKSPACE"/dist -mindepth 1 -maxdepth 1 ! -name assets -exec cp -r {} . \;
           touch .nojekyll
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

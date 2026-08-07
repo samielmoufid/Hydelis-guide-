@@ -11,13 +11,28 @@ import {
   makeInnerBackCanvas, makeBackCoverCanvas, makePaperEdgeCanvas
 } from './gen-textures.js'
 import { PaperSound } from './audio.js'
-import { Book3D, mirrorTexture } from './book3d.js'
+import { Book3D } from './book3d.js'
 import { Book2D } from './fallback2d.js'
 import { Selector3D } from './selector3d.js'
 import { Warp } from './warp.js'
 
 const $ = (s) => document.querySelector(s)
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const COARSE = window.matchMedia('(pointer: coarse)').matches
+
+// Sur mobile (Safari iOS surtout), la mémoire GPU est comptée : les textures
+// du livre 3D sont plafonnées en largeur. La lecture « netteté maximale »
+// (lightbox) affiche toujours l'image d'origine en pleine résolution.
+const TEX_MAX = 864
+function shrinkForGpu(src, w, h) {
+  if (!COARSE || w <= TEX_MAX) return src
+  const c = document.createElement('canvas')
+  const k = TEX_MAX / w
+  c.width = TEX_MAX
+  c.height = Math.round(h * k)
+  c.getContext('2d').drawImage(src, 0, 0, c.width, c.height)
+  return c
+}
 
 function hasWebGL() {
   try {
@@ -54,7 +69,7 @@ let busy = false        // transition en cours
 function selectorTextures() {
   if (selTex) return selTex
   const t = (c) => {
-    const x = new THREE.CanvasTexture(c)
+    const x = new THREE.CanvasTexture(shrinkForGpu(c, c.width, c.height))
     x.colorSpace = THREE.SRGBColorSpace
     return x
   }
@@ -155,6 +170,13 @@ async function init() {
       canvas: $('#scene'), alpha: true, antialias: true,
       powerPreference: 'high-performance'
     })
+    // Safari iOS peut tuer le contexte WebGL sous pression mémoire : sans
+    // cela, la scène resterait figée pour toujours. On recharge — le hash
+    // (#classique / #thermostatique) ramène directement au bon livre.
+    $('#scene').addEventListener('webglcontextlost', (e) => {
+      e.preventDefault()
+      location.reload()
+    })
     warp = new Warp($('#warp'), { reduced: REDUCED })
   } else {
     warp = new Warp($('#warp'), { reduced: true }) // fondu simple sans WebGL
@@ -189,14 +211,19 @@ async function init() {
 
 function texFromImage(img) {
   const t = new THREE.Texture(img)
+  // Posé ICI, avant tout envoi GPU : si l'image est déjà chargée, ready()
+  // téléverse immédiatement — l'espace couleur doit déjà être le bon.
+  t.colorSpace = THREE.SRGBColorSpace
   const ready = () => {
+    const s = shrinkForGpu(img, img.naturalWidth, img.naturalHeight)
+    if (s !== img) t.image = s
     t.needsUpdate = true
     // Envoi GPU immédiat, au moment du chargement (généralement hors
     // animation) plutôt qu'au premier rendu en pleine rotation de page.
     if (renderer) { try { renderer.initTexture(t) } catch { /* non bloquant */ } }
   }
   if (img.complete && img.naturalWidth) {
-    t.needsUpdate = true
+    ready()
   } else {
     img.addEventListener('load', () => {
       if (img.decode) img.decode().then(ready, ready)
@@ -216,7 +243,9 @@ function facesFor(id) {
     imageCache[id].images
   )
   faceTexCache[id] = inputs.map((f) => {
-    const t = f instanceof HTMLCanvasElement ? new THREE.CanvasTexture(f) : texFromImage(f)
+    const t = f instanceof HTMLCanvasElement
+      ? new THREE.CanvasTexture(shrinkForGpu(f, f.width, f.height))
+      : texFromImage(f)
     // Réglages appliqués AVANT tout envoi GPU (initTexture) : une texture
     // partie en linéaire resterait délavée (noirs gris, chromes brûlés).
     t.colorSpace = THREE.SRGBColorSpace
@@ -360,12 +389,9 @@ async function pickBook(id) {
   // Envoi progressif des textures (et de leurs miroirs) au GPU pendant
   // l'accélération du tunnel : plus de blocage à l'échange de scènes.
   if (WEBGL) {
-    const faces = facesFor(id)
-    const uploads = []
-    faces.forEach((t, idx) => {
-      uploads.push(t)
-      if (idx % 2 === 1) uploads.push(mirrorTexture(t)) // versos des feuilles
-    })
+    // Les versos partagent la texture du recto (UV inversés) : la liste des
+    // faces couvre donc tout le livre.
+    const uploads = facesFor(id).slice()
     let i = 0
     const upload = () => {
       if (i >= uploads.length || book) return

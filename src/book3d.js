@@ -11,17 +11,23 @@ const SEG = 26               // segments de courbure
 const COVER_SCALE = 1.022
 const EASE = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 
-// Clone miroir d'une texture (verso des feuilles), mis en cache sur la
-// texture source : un seul envoi GPU même si le livre est reconstruit.
-export function mirrorTexture(tex) {
-  if (tex.userData.mirrored) return tex.userData.mirrored
-  const t = tex.clone()
-  t.wrapS = THREE.RepeatWrapping
-  t.repeat.x = -1
-  t.offset.x = 1
-  t.needsUpdate = true
-  tex.userData.mirrored = t
-  return t
+// Géométrie « verso » : positions, normales et index PARTAGÉS avec le recto
+// (déformés une seule fois par frame), seuls les UV sont inversés
+// horizontalement. La même texture sert donc aux deux faces — aucun clone,
+// moitié moins de mémoire GPU (vital sur Safari iOS).
+function mirroredGeometry(geom) {
+  const g = new THREE.BufferGeometry()
+  g.setAttribute('position', geom.attributes.position)
+  g.setAttribute('normal', geom.attributes.normal)
+  g.setIndex(geom.index)
+  const uv = geom.attributes.uv
+  const flipped = new Float32Array(uv.count * 2)
+  for (let j = 0; j < uv.count; j++) {
+    flipped[2 * j] = 1 - uv.getX(j)
+    flipped[2 * j + 1] = uv.getY(j)
+  }
+  g.setAttribute('uv', new THREE.BufferAttribute(flipped, 2))
+  return g
 }
 
 export class Book3D {
@@ -184,10 +190,6 @@ export class Book3D {
     this.scene.add(this.particles)
   }
 
-  _mirrored(tex) {
-    return mirrorTexture(tex)
-  }
-
   _buildSheets(faces) {
     this.sheets = []
     const maxAniso = Math.min(8, this.renderer.capabilities.getMaxAnisotropy())
@@ -217,12 +219,17 @@ export class Book3D {
         side: THREE.FrontSide
       })
       const matB = new THREE.MeshStandardMaterial({
-        map: this._mirrored(faces[2 * i + 1]), roughness: stiff ? 0.72 : 0.88, metalness: 0,
+        map: faces[2 * i + 1], roughness: stiff ? 0.72 : 0.88, metalness: 0,
         color: tintB ? coverTint : 0xffffff,
         side: THREE.BackSide
       })
+      const geomB = mirroredGeometry(geom)
       const meshF = new THREE.Mesh(geom, matF)
-      const meshB = new THREE.Mesh(geom, matB)
+      const meshB = new THREE.Mesh(geomB, matB)
+      // La feuille se courbe à chaque frame : on désactive le culling plutôt
+      // que de recalculer des sphères englobantes (le livre est toujours cadré).
+      meshF.frustumCulled = false
+      meshB.frustumCulled = false
       meshF.castShadow = true
       meshF.receiveShadow = true
       meshB.receiveShadow = true
@@ -232,7 +239,7 @@ export class Book3D {
       this.flat.add(holder)
 
       this.sheets.push({
-        i, geom, base, holder, w, h, stiff,
+        i, geom, geomB, base, holder, w, h, stiff,
         bendK: stiff ? 0.09 : 0.45,
         t: 0, target: 0, lagSign: 1,
         anim: null, dragging: false, vel: 0
@@ -775,7 +782,7 @@ export class Book3D {
     this.renderer.setAnimationLoop(null)
     window.removeEventListener('resize', this._onResize)
     for (const [el, ev, fn] of this._bound || []) el.removeEventListener(ev, fn)
-    for (const s of this.sheets) s.geom.dispose()
+    for (const s of this.sheets) { s.geom.dispose(); if (s.geomB) s.geomB.dispose() }
     this.blockR.geometry.dispose()
     this.blockL.geometry.dispose()
     this.spine.geometry.dispose()
