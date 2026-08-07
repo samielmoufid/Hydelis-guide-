@@ -215,9 +215,14 @@ function facesFor(id) {
     { cover: covers[id], ...gen, innerCover: innerCovers[id] },
     imageCache[id].images
   )
-  faceTexCache[id] = inputs.map((f) =>
-    f instanceof HTMLCanvasElement ? new THREE.CanvasTexture(f) : texFromImage(f)
-  )
+  faceTexCache[id] = inputs.map((f) => {
+    const t = f instanceof HTMLCanvasElement ? new THREE.CanvasTexture(f) : texFromImage(f)
+    // Réglages appliqués AVANT tout envoi GPU (initTexture) : une texture
+    // partie en linéaire resterait délavée (noirs gris, chromes brûlés).
+    t.colorSpace = THREE.SRGBColorSpace
+    if (renderer) t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy())
+    return t
+  })
   return faceTexCache[id]
 }
 
