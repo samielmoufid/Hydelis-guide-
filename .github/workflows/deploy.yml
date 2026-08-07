@@ -42,8 +42,11 @@ jobs:
           # anciens bundles empilés restent servis pour qu'un HTML encore
           # en cache navigateur (Safari iOS…) ne casse jamais.
           find . -maxdepth 1 ! -name .git ! -name .github ! -name assets ! -name . -exec rm -rf {} +
+          # Copie simple : les noms sont hachés, une collision signifie un
+          # contenu identique (cp -n a des codes retour instables selon la
+          # version de coreutils, on l'évite).
           mkdir -p assets
-          cp -rn "$GITHUB_WORKSPACE"/dist/assets/. assets/
+          cp -r "$GITHUB_WORKSPACE"/dist/assets/. assets/
           find "$GITHUB_WORKSPACE"/dist -mindepth 1 -maxdepth 1 ! -name assets -exec cp -r {} . \;
           touch .nojekyll
           git config user.name "github-actions[bot]"

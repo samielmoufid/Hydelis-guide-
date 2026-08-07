@@ -19,13 +19,17 @@ import { Warp } from './warp.js'
 const $ = (s) => document.querySelector(s)
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const COARSE = window.matchMedia('(pointer: coarse)').matches
+// Téléphones uniquement : les iPad (grand écran, plus de mémoire) gardent
+// la pleine résolution.
+const SMALL_SCREEN = COARSE && Math.min(screen.width, screen.height) < 700
 
-// Sur mobile (Safari iOS surtout), la mémoire GPU est comptée : les textures
-// du livre 3D sont plafonnées en largeur. La lecture « netteté maximale »
-// (lightbox) affiche toujours l'image d'origine en pleine résolution.
+// Sur téléphone (Safari iOS surtout), la mémoire GPU est comptée : les
+// textures du livre 3D sont plafonnées en largeur. La lecture « netteté
+// maximale » (lightbox) affiche toujours l'image d'origine en pleine
+// résolution.
 const TEX_MAX = 864
 function shrinkForGpu(src, w, h) {
-  if (!COARSE || w <= TEX_MAX) return src
+  if (!SMALL_SCREEN || w <= TEX_MAX) return src
   const c = document.createElement('canvas')
   const k = TEX_MAX / w
   c.width = TEX_MAX
@@ -69,7 +73,9 @@ let busy = false        // transition en cours
 function selectorTextures() {
   if (selTex) return selTex
   const t = (c) => {
-    const x = new THREE.CanvasTexture(shrinkForGpu(c, c.width, c.height))
+    const s = shrinkForGpu(c, c.width, c.height)
+    const x = new THREE.CanvasTexture(s)
+    if (s !== c) x.onUpdate = () => { x.onUpdate = null; s.width = 1; s.height = 1 }
     x.colorSpace = THREE.SRGBColorSpace
     return x
   }
@@ -171,10 +177,21 @@ async function init() {
       powerPreference: 'high-performance'
     })
     // Safari iOS peut tuer le contexte WebGL sous pression mémoire : sans
-    // cela, la scène resterait figée pour toujours. On recharge — le hash
-    // (#classique / #thermostatique) ramène directement au bon livre.
+    // cela, la scène resterait figée pour toujours. On recharge en mémorisant
+    // la position de lecture ; après 3 pertes rapprochées, on bascule sur le
+    // flipbook sans WebGL (?no3d) plutôt que de boucler.
     $('#scene').addEventListener('webglcontextlost', (e) => {
       e.preventDefault()
+      try {
+        if (CUR && book) sessionStorage.setItem('hydelis-restore', `${CUR.id}:${book.turned || 0}`)
+        const [n0, t0] = (sessionStorage.getItem('hydelis-ctx-lost') || '0:0').split(':').map(Number)
+        const n = Date.now() - t0 < 120000 ? n0 + 1 : 1
+        sessionStorage.setItem('hydelis-ctx-lost', `${n}:${Date.now()}`)
+        if (n >= 3) {
+          location.replace(location.pathname + '?no3d' + location.hash)
+          return
+        }
+      } catch { /* stockage indisponible : simple rechargement */ }
       location.reload()
     })
     warp = new Warp($('#warp'), { reduced: REDUCED })
@@ -187,7 +204,28 @@ async function init() {
   if (deepLink) {
     await loadBookImages(deepLink)
     buildBook(deepLink)
-    showIntro()
+    // Reprise après perte de contexte WebGL : on saute l'intro et on
+    // revient à la page où le visiteur en était.
+    let restored = false
+    try {
+      const r = sessionStorage.getItem('hydelis-restore')
+      if (r) {
+        sessionStorage.removeItem('hydelis-restore')
+        const [rid, rT] = r.split(':')
+        if (rid === deepLink) {
+          restored = true
+          const intro = $('#intro')
+          if (intro) intro.remove()
+          rampLight()
+          const T = Number(rT) || 0
+          if (T > 0) book.goTo(T)
+          else showOpenCta()
+          $('#topbar').classList.remove('ui-hidden')
+          $('#bottombar').classList.remove('ui-hidden')
+        }
+      }
+    } catch { /* stockage indisponible */ }
+    if (!restored) showIntro()
     finishLoader()
   } else {
     finishLoader()
@@ -211,23 +249,36 @@ async function init() {
 
 function texFromImage(img) {
   const t = new THREE.Texture(img)
-  // Posé ICI, avant tout envoi GPU : si l'image est déjà chargée, ready()
-  // téléverse immédiatement — l'espace couleur doit déjà être le bon.
+  // Posés ICI, avant tout envoi GPU, quel que soit le chemin : une texture
+  // téléversée avant ces réglages resterait délavée (sRGB) ou floue de
+  // biais (anisotropie) — ces paramètres ne sont appliqués qu'à l'upload.
   t.colorSpace = THREE.SRGBColorSpace
-  const ready = () => {
+  if (renderer) t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy())
+  const prep = () => {
     const s = shrinkForGpu(img, img.naturalWidth, img.naturalHeight)
-    if (s !== img) t.image = s
+    if (s !== img) {
+      t.image = s
+      // Une fois la texture au GPU, le canvas intermédiaire est vidé pour
+      // rendre sa mémoire (une perte de contexte recharge la page entière,
+      // il n'y a jamais de re-téléversement).
+      t.onUpdate = () => { t.onUpdate = null; s.width = 1; s.height = 1 }
+    }
     t.needsUpdate = true
-    // Envoi GPU immédiat, au moment du chargement (généralement hors
-    // animation) plutôt qu'au premier rendu en pleine rotation de page.
-    if (renderer) { try { renderer.initTexture(t) } catch { /* non bloquant */ } }
   }
   if (img.complete && img.naturalWidth) {
-    ready()
+    // Image déjà en cache : PAS d'envoi GPU immédiat — l'upload est étalé
+    // une texture par frame par la boucle progressive de pickBook, ou fait
+    // au premier rendu (masqué par le loader) sur accès direct.
+    prep()
   } else {
     img.addEventListener('load', () => {
-      if (img.decode) img.decode().then(ready, ready)
-      else ready()
+      const go = () => {
+        prep()
+        // Chargement en cours de session : envoi hors animation, tout de suite.
+        if (renderer) { try { renderer.initTexture(t) } catch { /* non bloquant */ } }
+      }
+      if (img.decode) img.decode().then(go, go)
+      else go()
     }, { once: true })
   }
   return t
@@ -243,11 +294,16 @@ function facesFor(id) {
     imageCache[id].images
   )
   faceTexCache[id] = inputs.map((f) => {
-    const t = f instanceof HTMLCanvasElement
-      ? new THREE.CanvasTexture(shrinkForGpu(f, f.width, f.height))
-      : texFromImage(f)
-    // Réglages appliqués AVANT tout envoi GPU (initTexture) : une texture
-    // partie en linéaire resterait délavée (noirs gris, chromes brûlés).
+    let t
+    if (f instanceof HTMLCanvasElement) {
+      const s = shrinkForGpu(f, f.width, f.height)
+      t = new THREE.CanvasTexture(s)
+      if (s !== f) t.onUpdate = () => { t.onUpdate = null; s.width = 1; s.height = 1 }
+    } else {
+      t = texFromImage(f)
+    }
+    // Réglages appliqués AVANT tout envoi GPU : une texture partie en
+    // linéaire resterait délavée (noirs gris, chromes brûlés).
     t.colorSpace = THREE.SRGBColorSpace
     if (renderer) t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy())
     return t
@@ -389,8 +445,9 @@ async function pickBook(id) {
   // Envoi progressif des textures (et de leurs miroirs) au GPU pendant
   // l'accélération du tunnel : plus de blocage à l'échange de scènes.
   if (WEBGL) {
-    // Les versos partagent la texture du recto (UV inversés) : la liste des
-    // faces couvre donc tout le livre.
+    // Une texture par face (recto et verso ont chacun la leur dans la
+    // liste) ; les versos n'ont plus de clone miroir — la géométrie à UV
+    // inversés réutilise la texture telle quelle.
     const uploads = facesFor(id).slice()
     let i = 0
     const upload = () => {
