@@ -97,6 +97,12 @@ export class Warp {
       const tick = () => {
         const t = (performance.now() - t0) / DUR
         if (t >= 1) {
+          // Garantie absolue : même si une frame très lente saute d'un coup
+          // par-dessus les jalons 0,42 et 0,70 (téléphone qui rame), les deux
+          // rappels sont joués avant de terminer — sinon la scène d'arrivée
+          // resterait en pause pour toujours.
+          if (!covered) { covered = true; try { onCover && onCover() } catch (e) { console.error(e) } }
+          if (!revealed) { revealed = true; try { onReveal && onReveal() } catch (e) { console.error(e) } }
           canvas.style.display = 'none'
           resolve()
           return
@@ -114,12 +120,12 @@ export class Warp {
           // L'échange de scènes peut être coûteux : on décale le chrono du
           // temps qu'il a pris pour que la sortie du tunnel se joue en entier.
           const b0 = performance.now()
-          onCover && onCover()
+          try { onCover && onCover() } catch (e) { console.error(e) }
           t0 += performance.now() - b0
         }
         if (covered && !revealed && t >= 0.7) {
           revealed = true
-          onReveal && onReveal()
+          try { onReveal && onReveal() } catch (e) { console.error(e) }
         }
 
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0)

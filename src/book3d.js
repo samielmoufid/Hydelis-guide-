@@ -204,12 +204,20 @@ export class Book3D {
 
       const base = geom.attributes.position.array.slice()
 
+      // Les faces extérieures (couverture, 4e de couverture) sont atténuées
+      // pour garder le teal profond du sélecteur sous l'éclairage de lecture
+      // (pensé pour des pages blanches). Gardes et pages restent intactes.
+      const coverTint = 0xc6cccd
+      const tintF = stiff && i === 0
+      const tintB = stiff && i === this.S - 1
       const matF = new THREE.MeshStandardMaterial({
-        map: faces[2 * i], roughness: stiff ? 0.62 : 0.88, metalness: 0,
+        map: faces[2 * i], roughness: stiff ? 0.72 : 0.88, metalness: 0,
+        color: tintF ? coverTint : 0xffffff,
         side: THREE.FrontSide
       })
       const matB = new THREE.MeshStandardMaterial({
-        map: this._mirrored(faces[2 * i + 1]), roughness: stiff ? 0.62 : 0.88, metalness: 0,
+        map: this._mirrored(faces[2 * i + 1]), roughness: stiff ? 0.72 : 0.88, metalness: 0,
+        color: tintB ? coverTint : 0xffffff,
         side: THREE.BackSide
       })
       const meshF = new THREE.Mesh(geom, matF)

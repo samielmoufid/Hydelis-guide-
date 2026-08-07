@@ -102,7 +102,13 @@ function loadBookImages(id) {
   const promise = Promise.all(BOOKS[id].pages.map((url, i) => new Promise((res, rej) => {
     const img = new Image()
     images[i] = img
-    img.addEventListener('load', () => { step(); res(img) }, { once: true })
+    img.addEventListener('load', () => {
+      // Décodage asynchrone hors du fil principal : l'envoi GPU et
+      // l'affichage ultérieurs ne bloquent plus les animations.
+      const done = () => { step(); res(img) }
+      if (img.decode) img.decode().then(done, done)
+      else done()
+    }, { once: true })
     img.addEventListener('error', rej, { once: true })
     img.src = url
   })))
@@ -183,8 +189,20 @@ async function init() {
 
 function texFromImage(img) {
   const t = new THREE.Texture(img)
-  if (img.complete && img.naturalWidth) t.needsUpdate = true
-  else img.addEventListener('load', () => { t.needsUpdate = true }, { once: true })
+  const ready = () => {
+    t.needsUpdate = true
+    // Envoi GPU immédiat, au moment du chargement (généralement hors
+    // animation) plutôt qu'au premier rendu en pleine rotation de page.
+    if (renderer) { try { renderer.initTexture(t) } catch { /* non bloquant */ } }
+  }
+  if (img.complete && img.naturalWidth) {
+    t.needsUpdate = true
+  } else {
+    img.addEventListener('load', () => {
+      if (img.decode) img.decode().then(ready, ready)
+      else ready()
+    }, { once: true })
+  }
   return t
 }
 
@@ -376,7 +394,28 @@ async function pickBook(id) {
 
 function landing() {
   rampLight()
-  setTimeout(() => book && book.open(), REDUCED ? 0 : 260)
+  // L'ouverture automatique attend que la première page soit décodée
+  // (au plus 1,4 s) : pas d'envoi GPU en pleine rotation de couverture.
+  const first = imageCache[CUR.id] && imageCache[CUR.id].images[0]
+  let opened = false
+  const open = () => {
+    if (opened || !book) return
+    opened = true
+    book.open()
+  }
+  if (REDUCED) {
+    open()
+  } else if (first && first.complete && first.naturalWidth) {
+    setTimeout(open, 260)
+  } else {
+    const fallbackTimer = setTimeout(open, 1400)
+    if (first) {
+      first.addEventListener('load', () => {
+        clearTimeout(fallbackTimer)
+        setTimeout(open, 200)
+      }, { once: true })
+    }
+  }
   setTimeout(() => {
     $('#topbar').classList.remove('ui-hidden')
     $('#bottombar').classList.remove('ui-hidden')
@@ -540,7 +579,7 @@ function buildToc() {
     b.className = 'toc-item'
     b.dataset.page = String(i + 1)
     b.innerHTML = `
-      <img src="${src}" alt="Page ${i + 1} : ${CUR.titles[i]}" loading="lazy">
+      <img src="${src}" alt="Page ${i + 1} : ${CUR.titles[i]}" loading="lazy" decoding="async">
       <span class="toc-label">${CUR.titles[i]}</span>`
     b.addEventListener('click', () => { book.goTo(spreadForPage(i + 1)); closeToc() })
     list.appendChild(b)
