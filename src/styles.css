@@ -361,6 +361,30 @@ body {
   50% { box-shadow: 0 0 30px 4px rgba(23, 149, 165, 0.18); }
 }
 
+/* ————— Bouton « Ouvrir le guide » (livre fermé en lévitation) ————— */
+.open-cta {
+  position: fixed; z-index: 25; left: 50%;
+  bottom: calc(19vh + var(--safe-b));
+  transform: translateX(-50%) translateY(10px);
+  display: inline-flex; align-items: center; gap: 11px;
+  appearance: none; cursor: pointer;
+  font-family: var(--sans); font-weight: 400; font-size: 13px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: #eaf4f6;
+  background: rgba(23, 149, 165, 0.14); border: 1px solid rgba(23, 149, 165, 0.5);
+  border-radius: 999px; padding: 15px 30px 15px 26px;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  animation: cta-breathe 2.6s ease-in-out infinite;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s, transform 0.5s, background 0.3s, border-color 0.3s;
+}
+.open-cta.show { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+.open-cta:hover { background: rgba(23, 149, 165, 0.28); border-color: var(--teal); }
+.open-cta svg { width: 17px; height: 17px; stroke: #7fd4de; flex: none; }
+.open-cta span { white-space: nowrap; }
+@media (max-width: 420px) {
+  .open-cta { font-size: 12px; letter-spacing: 0.16em; padding: 13px 24px 13px 21px; }
+}
+
 /* ————— Zoom page ————— */
 .zoom-exit { position: fixed; z-index: 25; left: 50%; top: calc(70px + var(--safe-t));
   transform: translateX(-50%);

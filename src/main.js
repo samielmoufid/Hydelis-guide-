@@ -248,7 +248,8 @@ function buildBook(id) {
     doubleTap: (side) => zoomFromSide(side),
     pinch: (side) => zoomFromSide(side),
     zoom: onZoomChange,
-    zoomNav
+    zoomNav,
+    coverTap: openGuide
   }
 
   if (WEBGL) {
@@ -291,6 +292,7 @@ function destroyBook() {
   }
   $('#bottombar').classList.add('ui-hidden')
   $('#btn-switch').hidden = true
+  hideOpenCta()
   hideTapHint()
   hideSharpHint()
   const exitBtn = $('#zoom-exit')
@@ -398,34 +400,35 @@ async function pickBook(id) {
 }
 
 function landing() {
+  // Plus d'ouverture automatique : le livre lévite fermé, et c'est le
+  // visiteur qui l'ouvre (bouton, tap sur le livre ou balayage).
   rampLight()
-  // L'ouverture automatique attend que la première page soit décodée
-  // (au plus 1,4 s) : pas d'envoi GPU en pleine rotation de couverture.
-  const first = imageCache[CUR.id] && imageCache[CUR.id].images[0]
-  let opened = false
-  const open = () => {
-    if (opened || !book) return
-    opened = true
-    book.open()
-  }
-  if (REDUCED) {
-    open()
-  } else if (first && first.complete && first.naturalWidth) {
-    setTimeout(open, 260)
-  } else {
-    const fallbackTimer = setTimeout(open, 1400)
-    if (first) {
-      first.addEventListener('load', () => {
-        clearTimeout(fallbackTimer)
-        setTimeout(open, 200)
-      }, { once: true })
-    }
-  }
+  showOpenCta()
   setTimeout(() => {
     $('#topbar').classList.remove('ui-hidden')
     $('#bottombar').classList.remove('ui-hidden')
-    showTapHint()
   }, REDUCED ? 0 : 700)
+}
+
+function showOpenCta() {
+  const b = $('#btn-open')
+  b.hidden = false
+  requestAnimationFrame(() => b.classList.add('show'))
+}
+
+function hideOpenCta() {
+  const b = $('#btn-open')
+  if (b.hidden) return
+  b.classList.remove('show')
+  setTimeout(() => { b.hidden = true }, 500)
+}
+
+// Ouverture demandée par le visiteur (bouton, tap ou balayage sur le livre).
+function openGuide() {
+  if (!book || book.opened) return
+  hideOpenCta()
+  book.open()
+  showTapHint()
 }
 
 async function switchModel() {
@@ -553,6 +556,8 @@ function zoomNav(dir) {
 }
 
 function onSpreadChange(T) {
+  // Toute ouverture (bouton, sommaire, clavier…) retire l'invitation.
+  if (book && book.opened) hideOpenCta()
   if (book && book.zoom) return // le libellé « détail » est géré par onZoomChange
   $('#page-indicator').textContent = spreadLabel(T, N)
   $('#sr-live').textContent = spreadLabel(T, N)
@@ -628,6 +633,7 @@ function bindGlobalUI() {
   $('#toc .toc-backdrop').addEventListener('click', closeToc)
   $('#zoom-exit').addEventListener('click', () => book && book.zoomExit && book.zoomExit())
   $('#btn-switch').addEventListener('click', switchModel)
+  $('#btn-open').addEventListener('click', () => { sound.unlock(); openGuide() })
 
   // Cartes du sélecteur
   for (const id of ['classique', 'thermostatique']) {

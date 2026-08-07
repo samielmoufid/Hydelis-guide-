@@ -42,6 +42,7 @@ export class Book3D {
     this.nPages = nPages
     this.S = faces.length / 2  // nombre de feuilles
     this.opened = false        // avant le premier « Touchez pour ouvrir »
+    this.floatK = reduced ? 0 : 1 // lévitation du livre fermé (0 = posé)
     this.lightRamp = 0         // 0 = pénombre d'intro, 1 = éclairage lecture
 
     this.ownRenderer = !renderer
@@ -315,6 +316,7 @@ export class Book3D {
   next() {
     const T = this.turned
     if (T >= this.S) return false
+    this.opened = true // toute ouverture (bouton, sommaire…) pose le livre
     const s = this.sheets[T]
     this._animate(s, 1, s.stiff ? 1.15 : 0.95)
     this._notifyTurn(1, s)
@@ -335,6 +337,7 @@ export class Book3D {
     T2 = Math.max(0, Math.min(this.S, T2))
     const T = this.turned
     if (T2 === T) return
+    if (T2 > 0) this.opened = true
     let step = 0
     if (T2 > T) {
       for (let i = T; i < T2; i++) {
@@ -386,7 +389,17 @@ export class Book3D {
   }
 
   _onDown(e) {
-    if (!this.opened) return
+    if (!this.opened) {
+      // Livre fermé en lévitation : on suit juste le doigt pour détecter
+      // un tap ou un balayage d'ouverture.
+      this.pointer = {
+        id: e.pointerId, x0: e.clientX, y0: e.clientY, cx: e.clientX, cy: e.clientY,
+        t0: performance.now(), loc0: null, moved: false
+      }
+      this.dragSheet = null
+      this.dragActive = false
+      return
+    }
     this.canvas.setPointerCapture(e.pointerId)
 
     if (this.pointer && this.pointer.id !== e.pointerId) {
@@ -507,6 +520,15 @@ export class Book3D {
     this.dragSheet = null
 
     if (cancelled) return
+
+    if (!this.opened) {
+      // Livre fermé : un tap (ou un balayage vers la gauche, geste naturel
+      // d'ouverture) déclenche l'ouverture via l'orchestrateur.
+      const isTap = !p.moved && dt < 500
+      const isOpenSwipe = p.moved && dt < 650 && dx < -42 && Math.abs(dx) > Math.abs(dy) * 1.4
+      if (isTap || isOpenSwipe) this.on.coverTap && this.on.coverTap()
+      return
+    }
 
     // Swipe
     if (p.moved && dt < 650 && Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.4) {
@@ -680,10 +702,15 @@ export class Book3D {
     this.rim.intensity = 1.4 + 2.4 * ramp
     this.glow.material.opacity = 0.25 + 0.3 * ramp
 
-    // Respiration + parallaxe
+    // Respiration + parallaxe. Tant que le livre n'a jamais été ouvert,
+    // il lévite doucement (objet de collection) puis se pose à l'ouverture.
     if (!this.reduced) {
-      this.tilt.rotation.y = Math.sin(now * 0.32) * 0.014 + (this.opened ? 0 : 0.16)
-      this.tilt.position.y = Math.sin(now * 0.55) * 0.007
+      const fT = this.opened ? 0 : 1
+      this.floatK += (fT - this.floatK) * damp(2.0)
+      const f = this.floatK
+      this.tilt.rotation.y = Math.sin(now * 0.32) * 0.014 + f * (0.16 + Math.sin(now * 0.6) * 0.055)
+      this.tilt.rotation.z = f * Math.sin(now * 0.45) * 0.018
+      this.tilt.position.y = Math.sin(now * 0.55) * 0.007 + f * (0.05 + Math.sin(now * 1.15) * 0.032)
       this.parallax.x += (this.parallax.tx - this.parallax.x) * damp(2.5)
       this.parallax.y += (this.parallax.ty - this.parallax.y) * damp(2.5)
       this.rig.rotation.y = -this.parallax.x * 0.055
