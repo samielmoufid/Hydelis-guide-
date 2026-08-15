@@ -39,7 +39,7 @@
         {% if v3d_usdz %}ios-src="{{ v3d_usdz.url }}"{% endif %}
         alt="{{ product.title | escape }} en 3D"
         camera-controls auto-rotate auto-rotate-delay="800" rotation-per-second="24deg"
-        ar ar-modes="scene-viewer quick-look webxr" ar-scale="fixed"
+        ar ar-modes="scene-viewer quick-look webxr" ar-scale="fixed" ar-placement="floor"
         shadow-intensity="1" exposure="1.05" interaction-prompt="none"
         loading="eager" reveal="auto">
         <button slot="ar-button" class="v3d-ar-btn">
@@ -142,7 +142,7 @@
     { "type": "textarea", "id": "texte", "label": "Texte", "default": "Faites tourner ce luminaire en 3D, puis posez-le en réalité augmentée dans votre pièce, à ses dimensions exactes. Vous saurez en dix secondes s'il est fait pour votre intérieur." },
     { "type": "text", "id": "bouton", "label": "Bouton", "default": "Voir en 3D chez moi" },
     { "type": "text", "id": "note", "label": "Note sous le bouton", "default": "Dimensions réelles respectées · Sans application · iPhone & Android" },
-    { "type": "text", "id": "mention_dimensions", "label": "Mention dimensions", "default": "Modèle 3D à l'échelle réelle" }
+    { "type": "text", "id": "mention_dimensions", "label": "Mention dimensions", "default": "Taille réelle · suspendu à 2,40 m comme au plafond" }
   ],
   "presets": [{ "name": "Velluce 3D" }]
 }
