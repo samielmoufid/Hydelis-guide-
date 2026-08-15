@@ -1,0 +1,149 @@
+{% comment %}
+  Velluce — Visualisation 3D & réalité augmentée
+  Carte premium sur la page produit : le luminaire tourne en 3D aux
+  dimensions réelles, et « Voir chez vous » le pose en RA dans la pièce
+  du client (natif iPhone / Android, sans application).
+  La section ne s'affiche que si le produit possède un modèle 3D.
+{% endcomment %}
+
+{%- assign v3d_model = product.media | where: 'media_type', 'model' | first -%}
+{%- if v3d_model -%}
+{%- assign v3d_glb = v3d_model.sources | where: 'format', 'glb' | first -%}
+{%- assign v3d_usdz = v3d_model.sources | where: 'format', 'usdz' | first -%}
+
+<section class="v3d-card" id="v3d-{{ section.id }}">
+  <div class="v3d-badge">{{ section.settings.badge }}</div>
+  <div class="v3d-inner">
+    <div class="v3d-copy">
+      <h3 class="v3d-title">{{ section.settings.titre }}</h3>
+      <p class="v3d-text">{{ section.settings.texte }}</p>
+    </div>
+    <button type="button" class="v3d-cta" data-v3d-open aria-haspopup="dialog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>
+      <span>{{ section.settings.bouton }}</span>
+    </button>
+    <p class="v3d-note">{{ section.settings.note }}</p>
+  </div>
+
+  <div class="v3d-modal" data-v3d-modal hidden role="dialog" aria-modal="true" aria-label="{{ product.title | escape }} en 3D">
+    <div class="v3d-modal-backdrop" data-v3d-close></div>
+    <div class="v3d-modal-panel">
+      <div class="v3d-modal-head">
+        <span class="v3d-modal-title">{{ product.title | escape }}</span>
+        <button type="button" class="v3d-x" data-v3d-close aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <model-viewer class="v3d-viewer"
+        src="{{ v3d_glb.url }}"
+        {% if v3d_usdz %}ios-src="{{ v3d_usdz.url }}"{% endif %}
+        alt="{{ product.title | escape }} en 3D"
+        camera-controls auto-rotate auto-rotate-delay="800" rotation-per-second="24deg"
+        ar ar-modes="scene-viewer quick-look webxr" ar-scale="fixed"
+        shadow-intensity="1" exposure="1.05" interaction-prompt="none"
+        loading="eager" reveal="auto">
+        <button slot="ar-button" class="v3d-ar-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 9V5.5A2.5 2.5 0 0 1 5.5 3H9M15 3h3.5A2.5 2.5 0 0 1 21 5.5V9M21 15v3.5a2.5 2.5 0 0 1-2.5 2.5H15M9 21H5.5A2.5 2.5 0 0 1 3 18.5V15"/><path d="M12 8l4 2.3v4.5L12 17l-4-2.2V10.3L12 8z"/></svg>
+          Voir chez vous
+        </button>
+      </model-viewer>
+      <div class="v3d-legend">
+        <span class="v3d-dim">{{ section.settings.mention_dimensions }}</span>
+        <span class="v3d-hint">Faites tourner du doigt · Pincez pour zoomer</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .v3d-card { position: relative; margin: 28px 0; padding: 26px 24px 24px;
+    border-radius: 18px; background: linear-gradient(150deg, #1c1a17 0%, #262019 55%, #1a1613 100%);
+    border: 1px solid rgba(207, 161, 74, 0.35); color: #f4ede1; overflow: hidden; }
+  .v3d-card::after { content: ''; position: absolute; top: -40%; right: -20%;
+    width: 60%; height: 120%; background: radial-gradient(circle, rgba(207,161,74,0.14) 0%, transparent 65%); pointer-events: none; }
+  .v3d-badge { position: absolute; top: 0; right: 0; background: #cfa14a; color: #1c1a17;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 7px 16px; border-radius: 0 16px 0 14px; }
+  .v3d-title { font-size: clamp(20px, 4.5vw, 26px); margin: 0 0 8px; font-weight: 600; color: #fff; }
+  .v3d-text { margin: 0 0 18px; font-size: 15px; line-height: 1.55; color: #d8cdbb; max-width: 46ch; }
+  .v3d-cta { display: inline-flex; align-items: center; gap: 10px; cursor: pointer;
+    background: #cfa14a; color: #211c14; border: 0; border-radius: 999px;
+    font-size: 15.5px; font-weight: 700; padding: 15px 28px;
+    transition: transform 0.2s, box-shadow 0.2s; }
+  .v3d-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(207,161,74,0.35); }
+  .v3d-cta svg { width: 20px; height: 20px; }
+  .v3d-note { margin: 12px 0 0; font-size: 12.5px; color: #a2957f; }
+
+  .v3d-modal { position: fixed; inset: 0; z-index: 999; display: flex; align-items: center; justify-content: center; }
+  .v3d-modal[hidden] { display: none; }
+  .v3d-modal-backdrop { position: absolute; inset: 0; background: rgba(12, 10, 8, 0.82); }
+  .v3d-modal-panel { position: relative; width: min(94vw, 640px); height: min(86vh, 720px);
+    display: flex; flex-direction: column; background: #211d18; border-radius: 20px;
+    border: 1px solid rgba(207,161,74,0.3); overflow: hidden; }
+  .v3d-modal-head { display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px; border-bottom: 1px solid rgba(207,161,74,0.18); }
+  .v3d-modal-title { color: #f4ede1; font-weight: 600; font-size: 15px; }
+  .v3d-x { background: none; border: 0; color: #cfa14a; cursor: pointer; padding: 6px; }
+  .v3d-x svg { width: 20px; height: 20px; }
+  .v3d-viewer { flex: 1; width: 100%; background: radial-gradient(120% 100% at 50% 20%, #35302a 0%, #211d18 70%); --poster-color: transparent; }
+  .v3d-ar-btn { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+    display: inline-flex; align-items: center; gap: 9px; background: #cfa14a; color: #211c14;
+    border: 0; border-radius: 999px; font-weight: 700; font-size: 14.5px; padding: 13px 24px; cursor: pointer; }
+  .v3d-ar-btn svg { width: 18px; height: 18px; }
+  .v3d-legend { display: flex; justify-content: space-between; gap: 10px; align-items: center;
+    padding: 12px 18px; border-top: 1px solid rgba(207,161,74,0.18); }
+  .v3d-dim { color: #cfa14a; font-size: 13px; font-weight: 600; }
+  .v3d-hint { color: #8f8471; font-size: 12px; text-align: right; }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('v3d-{{ section.id }}')
+    if (!root) return
+    var modal = root.querySelector('[data-v3d-modal]')
+    var loaded = false
+    function ensureViewer() {
+      if (loaded) return
+      loaded = true
+      if (!window.customElements || customElements.get('model-viewer')) return
+      var s = document.createElement('script')
+      s.type = 'module'
+      s.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js'
+      document.head.appendChild(s)
+    }
+    root.querySelector('[data-v3d-open]').addEventListener('click', function () {
+      ensureViewer()
+      modal.hidden = false
+      document.documentElement.style.overflow = 'hidden'
+    })
+    modal.querySelectorAll('[data-v3d-close]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        modal.hidden = true
+        document.documentElement.style.overflow = ''
+      })
+    })
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hidden) {
+        modal.hidden = true
+        document.documentElement.style.overflow = ''
+      }
+    })
+  })()
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Velluce 3D",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "badge", "label": "Badge", "default": "Exclusivité Velluce" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Visualisez-le chez vous" },
+    { "type": "textarea", "id": "texte", "label": "Texte", "default": "Faites tourner ce luminaire en 3D, puis posez-le en réalité augmentée dans votre pièce, à ses dimensions exactes. Vous saurez en dix secondes s'il est fait pour votre intérieur." },
+    { "type": "text", "id": "bouton", "label": "Bouton", "default": "Voir en 3D chez moi" },
+    { "type": "text", "id": "note", "label": "Note sous le bouton", "default": "Dimensions réelles respectées · Sans application · iPhone & Android" },
+    { "type": "text", "id": "mention_dimensions", "label": "Mention dimensions", "default": "Modèle 3D à l'échelle réelle" }
+  ],
+  "presets": [{ "name": "Velluce 3D" }]
+}
+{% endschema %}
