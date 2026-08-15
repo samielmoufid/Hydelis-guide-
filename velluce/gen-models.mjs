@@ -1,8 +1,11 @@
-// Velluce — générateur de modèles 3D GLB des luminaires, aux dimensions
-// réelles des fiches produits (échelle : mètres, exigée par la RA).
+// Velluce — générateur de modèles 3D GLB des luminaires (v2).
+// Fidèle aux photos produits, dimensions des fiches, échelle en mètres.
+// Chaque modèle intègre sa hauteur de pose complète : le pavillon est à
+// MOUNT (2,40 m) et l'objet s'ancre AU SOL en RA → il apparaît suspendu
+// à hauteur réelle, comme fixé au plafond (l'ancrage plafond n'existe pas
+// dans Quick Look / Scene Viewer).
 // Usage : node velluce/gen-models.mjs  → velluce/models/<handle>.glb
 
-// Shim Node : GLTFExporter s'appuie sur FileReader (API navigateur).
 globalThis.FileReader = class {
   readAsArrayBuffer(blob) {
     blob.arrayBuffer().then((b) => { this.result = b; this.onloadend && this.onloadend() })
@@ -24,222 +27,274 @@ import { fileURLToPath } from 'url'
 const OUT = join(dirname(fileURLToPath(import.meta.url)), 'models')
 mkdirSync(OUT, { recursive: true })
 
-// ————— Matériaux —————
+const MOUNT = 2.4 // hauteur de pose simulée (pavillon au « plafond »)
+
+// ————— Matériaux (fidèles aux photos : noir MAT profond) —————
 const M = {
-  noir: () => new THREE.MeshStandardMaterial({ color: 0x151515, metalness: 0.75, roughness: 0.35 }),
-  blanc: () => new THREE.MeshStandardMaterial({ color: 0xf4f4f0, metalness: 0.4, roughness: 0.45 }),
-  beton: () => new THREE.MeshStandardMaterial({ color: 0x9a9a96, metalness: 0.0, roughness: 0.95 }),
-  beige: () => new THREE.MeshStandardMaterial({ color: 0xe6ddcf, metalness: 0.0, roughness: 0.85 }),
-  or: () => new THREE.MeshStandardMaterial({ color: 0xcfa14a, metalness: 0.9, roughness: 0.25 }),
-  cableNoir: () => new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.2, roughness: 0.7 }),
-  cableTransp: () => new THREE.MeshPhysicalMaterial({ color: 0xdddddd, metalness: 0, roughness: 0.2, transmission: 0.85, transparent: true, opacity: 0.55 }),
-  ampoule: () => new THREE.MeshStandardMaterial({ color: 0xfff2d8, emissive: 0xffdf9e, emissiveIntensity: 1.6, roughness: 0.3 }),
-  acrylique: (hex) => new THREE.MeshPhysicalMaterial({ color: hex, metalness: 0, roughness: 0.06, transmission: 0.92, thickness: 0.004, transparent: true, opacity: 0.8, ior: 1.45 })
+  noir: () => new THREE.MeshStandardMaterial({ color: 0x0a0a0a, metalness: 0.2, roughness: 0.55 }),
+  blanc: () => new THREE.MeshStandardMaterial({ color: 0xf6f6f3, metalness: 0.15, roughness: 0.5 }),
+  chrome: () => new THREE.MeshStandardMaterial({ color: 0xd8d8dc, metalness: 0.95, roughness: 0.15 }),
+  beton: () => new THREE.MeshStandardMaterial({ color: 0x5f5f5b, metalness: 0.0, roughness: 0.97 }),
+  beige: () => new THREE.MeshStandardMaterial({ color: 0xdccfba, metalness: 0.0, roughness: 0.9, side: THREE.DoubleSide }),
+  orMelt: () => new THREE.MeshPhysicalMaterial({ color: 0xd9b258, metalness: 1.0, roughness: 0.07, clearcoat: 0.6, clearcoatRoughness: 0.15 }),
+  laiton: () => new THREE.MeshStandardMaterial({ color: 0xcfa14a, metalness: 0.92, roughness: 0.2 }),
+  cableNoir: () => new THREE.MeshStandardMaterial({ color: 0x0d0d0d, metalness: 0.1, roughness: 0.65 }),
+  cableAcier: () => new THREE.MeshStandardMaterial({ color: 0xc9c9cc, metalness: 0.85, roughness: 0.35 }),
+  // Sources lumineuses : émissif fort (KHR_materials_emissive_strength)
+  lentille: () => new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff0d2, emissiveIntensity: 6, roughness: 0.25 }),
+  opale: () => new THREE.MeshStandardMaterial({ color: 0xfffaf0, emissive: 0xfff3da, emissiveIntensity: 4.5, roughness: 0.35 })
 }
 
-const cyl = (rTop, rBot, h, mat, seg = 40) => new THREE.Mesh(new THREE.CylinderGeometry(rTop, rBot, h, seg), mat)
+const cyl = (rT, rB, h, mat, seg = 40) => new THREE.Mesh(new THREE.CylinderGeometry(rT, rB, h, seg), mat)
 const sph = (r, mat, seg = 40) => new THREE.Mesh(new THREE.SphereGeometry(r, seg, Math.round(seg * 0.7)), mat)
 const box = (w, h, d, mat) => new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat)
 
-// Câble vertical entre deux hauteurs.
-function cable(x, z, yTop, yBot, mat, r = 0.0022) {
-  const c = cyl(r, r, yTop - yBot, mat, 12)
+function cable(x, z, yTop, yBot, mat, r = 0.0016) {
+  const c = cyl(r, r, yTop - yBot, mat, 10)
   c.position.set(x, (yTop + yBot) / 2, z)
   return c
 }
 
-// Pavillon de plafond (garniture) rectangulaire ou rond.
-function canopyRect(w, d, mat, yTop) {
-  const c = box(w, 0.022, d, mat)
-  c.position.y = yTop - 0.011
-  return c
-}
-function canopyRound(rad, mat, yTop) {
-  const c = cyl(rad, rad * 0.92, 0.03, mat)
-  c.position.y = yTop - 0.015
-  return c
-}
-
-// Spot orientable : corps cylindrique + tête inclinée, sur un rail.
-function spot(mat, matIn, tilt = 0.5, pan = 0) {
-  const g = new THREE.Group()
-  const arm = cyl(0.006, 0.006, 0.035, mat, 16)
-  arm.position.y = -0.0175
-  g.add(arm)
-  const head = new THREE.Group()
-  const body = cyl(0.03, 0.03, 0.085, mat, 32)
-  body.position.y = -0.0425
-  head.add(body)
-  const inner = cyl(0.024, 0.024, 0.004, matIn, 24)
-  inner.position.y = -0.086
-  head.add(inner)
-  head.position.y = -0.035
-  head.rotation.x = tilt
-  g.rotation.y = pan
-  g.add(head)
-  return g
-}
-
-// ————— Modèles —————
-// Chaque fabrique retourne un Group dont l'origine est AU SOL (y=0),
-// l'objet s'élève vers le plafond (top = hauteur totale de la scène RA).
-
-// Plafonnier rail à spots (Arvella 118/6, Virelia 80/4, Orphéane 80/4, Nerava 30/2)
-function plafonnierSpots({ L, n, couleur }) {
+// ————— Plafonnier barre plate + spots cylindriques (Arvella / Virelia / Orphéane) —————
+// Photo : barre très fine plaquée au plafond, petits spots suspendus sous
+// la barre par une tige courte, inclinaisons variées.
+function railSpotsCylindres({ L, n, couleur }) {
   const g = new THREE.Group()
   const mat = couleur === 'blanc' ? M.blanc() : M.noir()
-  const H = 0.16
-  const rail = cyl(0.025, 0.025, L, mat, 32)
-  rail.rotation.z = Math.PI / 2
-  rail.position.y = H - 0.045
-  g.add(rail)
-  const plate = box(Math.min(L, 0.28), 0.02, 0.05, mat)
-  plate.position.y = H - 0.01
-  g.add(plate)
+  const bar = box(L, 0.018, 0.05, mat)
+  bar.position.y = MOUNT - 0.009
+  g.add(bar)
   for (let i = 0; i < n; i++) {
-    const x = n === 1 ? 0 : -L / 2 + 0.07 + (i * (L - 0.14)) / (n - 1)
-    const s = spot(mat, M.ampoule(), 0.55 * (i % 2 ? 1 : -1), (i % 2) * Math.PI)
-    s.position.set(x, H - 0.045, 0)
-    g.add(s)
+    const x = -L / 2 + 0.09 + (i * (L - 0.18)) / (n - 1)
+    const pin = cyl(0.005, 0.005, 0.03, mat, 12)
+    pin.position.set(x, MOUNT - 0.033, 0)
+    g.add(pin)
+    const head = new THREE.Group()
+    const body = cyl(0.0275, 0.0275, 0.1, mat, 32)
+    head.add(body)
+    const lens = cyl(0.022, 0.022, 0.005, M.lentille(), 24)
+    lens.position.y = -0.052
+    head.add(lens)
+    head.position.set(x, MOUNT - 0.1, 0)
+    head.rotation.z = (i % 2 ? 1 : -1) * 0.42
+    head.rotation.y = (i % 3) * 0.7
+    g.add(head)
   }
-  g.userData = { L, H }
   return g
 }
 
-// Suspension cylindres noirs (Arothis 3 tubes/45, Neralis 2 tubes/30, Neralis1 1 tube)
-function suspensionCylindres({ railL, tubes, H }) {
+// ————— Plafonnier spots CARRÉS (Nerava, photo : boîtes inclinées) —————
+function railSpotsCarres({ L, n }) {
   const g = new THREE.Group()
   const mat = M.noir()
-  const cmat = M.cableTransp()
-  if (railL > 0) g.add(canopyRect(railL, 0.05, mat, H))
-  else g.add(canopyRound(0.04, mat, H))
-  const n = tubes.length
-  tubes.forEach((t, i) => {
-    const x = n === 1 ? 0 : -((railL - 0.1) / 2) + (i * (railL - 0.1)) / (n - 1)
-    const tube = cyl(0.03, 0.03, t.len, mat)
-    const yC = t.bottom + t.len / 2
-    tube.position.set(x, yC, 0)
-    g.add(tube)
-    const lens = cyl(0.024, 0.024, 0.004, M.ampoule(), 24)
-    lens.position.set(x, t.bottom + 0.002, 0)
-    g.add(lens)
-    g.add(cable(x, 0, H - 0.03, t.bottom + t.len, cmat))
-  })
+  const bar = box(L, 0.035, 0.055, mat)
+  bar.position.y = MOUNT - 0.0175
+  g.add(bar)
+  for (let i = 0; i < n; i++) {
+    const x = n === 1 ? 0 : -L / 2 + 0.075 + (i * (L - 0.15)) / (n - 1)
+    const pin = cyl(0.006, 0.006, 0.035, mat, 12)
+    pin.position.set(x, MOUNT - 0.05, 0)
+    g.add(pin)
+    const head = new THREE.Group()
+    const body = box(0.07, 0.1, 0.07, mat)
+    head.add(body)
+    const lens = cyl(0.026, 0.026, 0.005, M.lentille(), 24)
+    lens.rotation.x = Math.PI / 2
+    lens.position.set(0, -0.028, 0.036)
+    head.add(lens)
+    // petit levier de réglage
+    const lever = cyl(0.003, 0.003, 0.03, mat, 8)
+    lever.rotation.z = Math.PI / 2
+    lever.position.set(0.045, 0.02, 0)
+    head.add(lever)
+    head.position.set(x, MOUNT - 0.12, 0)
+    head.rotation.x = 0.55
+    head.rotation.z = (i % 2 ? 1 : -1) * 0.12
+    g.add(head)
+  }
   return g
 }
 
-// Suspension béton conique (Arkemia Ø17, corps ~26 cm, chute totale 132)
+// ————— Suspensions tubes égaux sur câbles acier (Arothis / Neralis) —————
+// Photo : pavillon barre plate au plafond, tubes identiques, œillets chromés.
+function suspensionTubes({ railL, n, tubeL, tubeR, drop }) {
+  const g = new THREE.Group()
+  const mat = M.noir()
+  const bar = railL > 0 ? box(railL, 0.02, 0.055, mat) : cyl(0.04, 0.038, 0.025, mat)
+  bar.position.y = MOUNT - (railL > 0 ? 0.01 : 0.0125)
+  g.add(bar)
+  const bottom = MOUNT - drop
+  for (let i = 0; i < n; i++) {
+    const x = n === 1 ? 0 : -((railL - 0.12) / 2) + (i * (railL - 0.12)) / (n - 1)
+    const grommet = cyl(0.006, 0.006, 0.012, M.chrome(), 12)
+    grommet.position.set(x, MOUNT - 0.026, 0)
+    g.add(grommet)
+    g.add(cable(x, 0, MOUNT - 0.03, bottom + tubeL, M.cableAcier()))
+    const tube = cyl(tubeR, tubeR, tubeL, mat)
+    tube.position.set(x, bottom + tubeL / 2, 0)
+    g.add(tube)
+    const lens = cyl(tubeR * 0.8, tubeR * 0.8, 0.005, M.lentille(), 24)
+    lens.position.set(x, bottom + 0.0025, 0)
+    g.add(lens)
+  }
+  return g
+}
+
+// ————— Suspension béton entonnoir (Arkemia, photo : col fin → cône) —————
 function suspensionBeton() {
   const g = new THREE.Group()
-  const H = 1.32
-  const body = cyl(0.045, 0.085, 0.24, M.beton(), 48)
-  body.position.y = 0.12 + 0.02
-  g.add(body)
-  const lens = cyl(0.06, 0.06, 0.006, M.ampoule(), 32)
-  lens.position.y = 0.02
+  const drop = 1.32
+  const bodyH = 0.3
+  const bottom = MOUNT - drop
+  // Profil au tour : col cylindrique fin s'évasant en cône Ø17.
+  const pts = []
+  const R = (t) => {
+    if (t < 0.4) return 0.024 + t * 0.01 // col
+    const k = (t - 0.4) / 0.6
+    return 0.028 + (0.085 - 0.028) * Math.pow(k, 1.15) // cône plein et doux
+  }
+  for (let s = 0; s <= 24; s++) {
+    const t = 1 - s / 24 // du haut vers le bas
+    pts.push(new THREE.Vector2(R(t), bottom + t * bodyH))
+  }
+  const lathe = new THREE.Mesh(new THREE.LatheGeometry(pts, 48), M.beton())
+  lathe.material.side = THREE.DoubleSide
+  g.add(lathe)
+  const lens = cyl(0.07, 0.07, 0.006, M.lentille(), 40)
+  lens.position.y = bottom + 0.004
   g.add(lens)
-  g.add(canopyRound(0.04, M.beton(), H))
-  g.add(cable(0, 0, H - 0.03, 0.26 + 0.02, M.cableNoir()))
+  const canopy = cyl(0.042, 0.04, 0.022, M.noir())
+  canopy.position.y = MOUNT - 0.011
+  g.add(canopy)
+  g.add(cable(0, 0, MOUNT - 0.022, bottom + bodyH - 0.005, M.cableNoir(), 0.0028))
   return g
 }
 
-// Lustre industriel 6 bras (Neravio, largeur 63, H réglable ~60)
-function lustreIndustriel() {
+// ————— Lustre sputnik asymétrique (Neravio, photo : globes opales) —————
+function lustreSputnik() {
   const g = new THREE.Group()
   const mat = M.noir()
-  const H = 0.6 + 0.45 // corps sous pavillon, total ~1.05 au sol
-  const hubY = 0.45
-  const hub = cyl(0.035, 0.035, 0.1, mat, 32)
+  const canopy = cyl(0.05, 0.048, 0.022, mat)
+  canopy.position.y = MOUNT - 0.011
+  g.add(canopy)
+  const hubTop = MOUNT - 0.022
+  const hubY = MOUNT - 0.42 // centre du corps
+  const rod = cyl(0.009, 0.009, hubTop - (hubY + 0.09), mat, 16)
+  rod.position.y = (hubTop + hubY + 0.09) / 2
+  g.add(rod)
+  const hub = cyl(0.028, 0.028, 0.18, mat, 32)
   hub.position.y = hubY
   g.add(hub)
-  const tige = cyl(0.008, 0.008, H - hubY - 0.05, mat, 16)
-  tige.position.y = (H - 0.03 + hubY + 0.05) / 2
-  g.add(tige)
-  g.add(canopyRound(0.05, mat, H))
-  const R = 0.63 / 2 - 0.03
-  for (let i = 0; i < 6; i++) {
-    const a = (i / 6) * Math.PI * 2
-    const arm = cyl(0.007, 0.007, R, mat, 12)
-    arm.rotation.z = Math.PI / 2
-    arm.position.set(Math.cos(a) * R / 2, hubY, Math.sin(a) * R / 2)
-    arm.rotation.y = -a
+  // 6 bras à hauteurs et inclinaisons variées (asymétrie de la photo)
+  const arms = [
+    { a: 0.2, dy: 0.06, tilt: 0.28, len: 0.30 },
+    { a: 1.25, dy: 0.02, tilt: -0.1, len: 0.27 },
+    { a: 2.3, dy: -0.04, tilt: 0.12, len: 0.30 },
+    { a: 3.35, dy: 0.05, tilt: -0.25, len: 0.24 },
+    { a: 4.4, dy: -0.06, tilt: -0.05, len: 0.29 },
+    { a: 5.45, dy: 0.0, tilt: 0.2, len: 0.26 }
+  ]
+  for (const { a, dy, tilt, len } of arms) {
+    const dir = new THREE.Vector3(Math.cos(a), Math.sin(tilt), Math.sin(a)).normalize()
+    const start = new THREE.Vector3(0, hubY + dy, 0)
+    const end = start.clone().addScaledVector(dir, len)
+    const arm = cyl(0.007, 0.007, len, mat, 12)
+    arm.position.copy(start.clone().add(end).multiplyScalar(0.5))
+    arm.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir)
     g.add(arm)
-    const douille = cyl(0.02, 0.02, 0.05, mat, 24)
-    douille.position.set(Math.cos(a) * R, hubY + 0.025, Math.sin(a) * R)
-    g.add(douille)
-    const bulb = sph(0.03, M.ampoule(), 24)
-    bulb.position.set(Math.cos(a) * R, hubY + 0.085, Math.sin(a) * R)
+    const socket = cyl(0.016, 0.016, 0.045, mat, 24)
+    socket.position.copy(end.clone().addScaledVector(dir, 0.02))
+    socket.quaternion.copy(arm.quaternion)
+    g.add(socket)
+    const bulb = sph(0.045, M.opale(), 32)
+    bulb.position.copy(end.clone().addScaledVector(dir, 0.085))
     g.add(bulb)
   }
   return g
 }
 
-// Suspension globe acrylique (Ø au choix, capuchon doré, câble 150)
-function suspensionAcrylique({ d, hex }) {
+// ————— Suspension « melt » dorée (photo : globe fondu réfléchissant) —————
+function suspensionMelt({ d }) {
   const g = new THREE.Group()
   const r = d / 2
-  const drop = 1.2
-  const globe = sph(r, M.acrylique(hex), 48)
-  globe.position.y = r
-  g.add(globe)
-  const bulb = sph(Math.min(r * 0.4, 0.045), M.ampoule(), 24)
-  bulb.position.y = r
-  g.add(bulb)
-  const cap = cyl(0.022, 0.03, 0.035, M.or(), 32)
-  cap.position.y = 2 * r + 0.0135
-  g.add(cap)
-  const H = 2 * r + drop
-  g.add(canopyRound(0.04, M.or(), H))
-  g.add(cable(0, 0, H - 0.03, 2 * r + 0.031, M.cableTransp()))
+  const drop = 0.8
+  const centerY = MOUNT - drop - r
+  const geo = new THREE.SphereGeometry(r, 96, 64)
+  const pos = geo.attributes.position
+  const v = new THREE.Vector3()
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i)
+    const n = v.clone().normalize()
+    // Bosses organiques déterministes (style verre fondu)
+    const w =
+      0.16 * Math.sin(3.1 * n.x + 1.7) * Math.sin(2.6 * n.y - 0.6) +
+      0.12 * Math.sin(4.3 * n.y + 2.2) * Math.sin(3.7 * n.z + 0.9) +
+      0.09 * Math.sin(5.1 * n.z - 1.3) * Math.sin(2.9 * n.x + 2.8)
+    const k = 1 + w * (1 - Math.abs(n.y) * 0.55) // pôles plus lisses
+    pos.setXYZ(i, v.x * k, v.y * k, v.z * k)
+  }
+  geo.computeVertexNormals()
+  const blob = new THREE.Mesh(geo, M.orMelt())
+  blob.position.y = centerY
+  g.add(blob)
+  const collar = cyl(0.016, 0.022, 0.03, M.laiton(), 24)
+  collar.position.y = centerY + r * 0.98
+  g.add(collar)
+  const stem = cyl(0.004, 0.004, 0.1, M.laiton(), 12)
+  stem.position.y = centerY + r * 0.98 + 0.065
+  g.add(stem)
+  const canopy = cyl(0.038, 0.036, 0.022, M.laiton())
+  canopy.position.y = MOUNT - 0.011
+  g.add(canopy)
+  g.add(cable(0, 0, MOUNT - 0.022, centerY + r * 0.98 + 0.11, M.cableAcier()))
   return g
 }
 
-// Suspension wabi-sabi : large dôme organique (L80 l42 H22, beige)
-function suspensionWabiSabi({ L, l, h, couleur }) {
+// ————— Suspension wabi-sabi (photo : large chapeau plat à col central) —————
+function suspensionWabi({ L, h }) {
   const g = new THREE.Group()
-  const mat = couleur === 'marron' ? new THREE.MeshStandardMaterial({ color: 0x8a6b50, roughness: 0.85 }) : M.beige()
-  // Demi-sphère aplatie et étirée : forme organique douce.
-  const geo = new THREE.SphereGeometry(0.5, 64, 32, 0, Math.PI * 2, 0, Math.PI / 2)
-  const dome = new THREE.Mesh(geo, mat)
-  mat.side = THREE.DoubleSide
-  const drop = 1.0
-  dome.scale.set(L, h * 2, l)
-  dome.position.y = drop
-  g.add(dome)
-  const bulb = sph(0.035, M.ampoule(), 24)
-  bulb.position.y = drop + 0.02
+  const drop = 0.55 // pavillon → sommet du col
+  const brimR = L / 2
+  const topY = MOUNT - drop
+  const bottomY = topY - h
+  // Profil : bord fin, plateau très doux, montée en col arrondi au centre.
+  const pts = []
+  const N = 30
+  for (let s = 0; s <= N; s++) {
+    const t = s / N // 0 = bord, 1 = centre
+    const r = brimR * (1 - t)
+    // hauteur : quasi plat sur 70 %, puis montée douce vers le col
+    const rise = t < 0.7 ? 0.12 * (t / 0.7) : 0.12 + 0.88 * Math.pow((t - 0.7) / 0.3, 1.7)
+    pts.push(new THREE.Vector2(Math.max(r, 0.02), bottomY + rise * h))
+  }
+  pts.push(new THREE.Vector2(0.02, topY))
+  const shade = new THREE.Mesh(new THREE.LatheGeometry(pts, 72), M.beige())
+  g.add(shade)
+  const bulb = sph(0.03, M.opale(), 24)
+  bulb.position.y = bottomY + 0.06
   g.add(bulb)
-  const H = drop + h + 0.9
-  g.add(canopyRound(0.04, mat, H))
-  g.add(cable(0, 0, H - 0.03, drop + h * 0.96, M.cableNoir()))
+  const canopy = cyl(0.04, 0.038, 0.022, M.noir())
+  canopy.position.y = MOUNT - 0.011
+  g.add(canopy)
+  g.add(cable(0, 0, MOUNT - 0.022, topY - 0.005, M.cableNoir(), 0.0028))
   return g
 }
 
-// ————— Catalogue —————
+// ————— Catalogue (dimensions des fiches produits) —————
 const MODELS = {
-  'plafonnier-blanc-moderne-6-spots-orientables-modele-arvella': () => plafonnierSpots({ L: 1.18, n: 6, couleur: 'blanc' }),
-  'plafonnier-noir-moderne-4-spots-orientables-modele-virelia': () => plafonnierSpots({ L: 0.8, n: 4, couleur: 'noir' }),
-  'plafonnier-moderne-acier-blanc-orientable-sejour-orpheane': () => plafonnierSpots({ L: 0.8, n: 4, couleur: 'blanc' }),
-  'plafonnier-spot-moderne-noir-orientable-modele-nerava': () => plafonnierSpots({ L: 0.3, n: 2, couleur: 'noir' }),
-  'suspension-cylindrique-noire-3-lumieres-modele-arothis': () => suspensionCylindres({
-    railL: 0.45, H: 0.9,
-    tubes: [{ len: 0.35, bottom: 0.25 }, { len: 0.45, bottom: 0.1 }, { len: 0.3, bottom: 0.35 }]
-  }),
-  'suspension-cylindrique-noire-moderne-modele-neralis': () => suspensionCylindres({
-    railL: 0.3, H: 0.9,
-    tubes: [{ len: 0.4, bottom: 0.18 }, { len: 0.32, bottom: 0.32 }]
-  }),
-  'suspension-cylindre-acier-noir-moderne-modele-neralis': () => suspensionCylindres({
-    railL: 0, H: 1.0,
-    tubes: [{ len: 0.4, bottom: 0.3 }]
-  }),
+  'plafonnier-blanc-moderne-6-spots-orientables-modele-arvella': () => railSpotsCylindres({ L: 1.18, n: 6, couleur: 'blanc' }),
+  'plafonnier-noir-moderne-4-spots-orientables-modele-virelia': () => railSpotsCylindres({ L: 0.8, n: 4, couleur: 'noir' }),
+  'plafonnier-moderne-acier-blanc-orientable-sejour-orpheane': () => railSpotsCylindres({ L: 0.8, n: 4, couleur: 'blanc' }),
+  'plafonnier-spot-moderne-noir-orientable-modele-nerava': () => railSpotsCarres({ L: 0.3, n: 2 }),
+  'suspension-cylindrique-noire-3-lumieres-modele-arothis': () => suspensionTubes({ railL: 0.45, n: 3, tubeL: 0.3, tubeR: 0.0275, drop: 0.9 }),
+  'suspension-cylindrique-noire-moderne-modele-neralis': () => suspensionTubes({ railL: 0.3, n: 2, tubeL: 0.3, tubeR: 0.0275, drop: 0.9 }),
+  'suspension-cylindre-acier-noir-moderne-modele-neralis': () => suspensionTubes({ railL: 0, n: 1, tubeL: 0.4, tubeR: 0.04, drop: 1.0 }),
   'suspension-beton-gris-style-loft-modele-arkemia': () => suspensionBeton(),
-  'lustre-industriel-noir-6-lampes-salon-modele-neravio': () => lustreIndustriel(),
-  'suspension-acrylique-transparent-en-9-coloris': () => suspensionAcrylique({ d: 0.3, hex: 0xcfa14a }),
-  'suspension-wabi-sabi-beton': () => suspensionWabiSabi({ L: 0.8, l: 0.42, h: 0.22, couleur: 'blanc' })
+  'lustre-industriel-noir-6-lampes-salon-modele-neravio': () => lustreSputnik(),
+  'suspension-acrylique-transparent-en-9-coloris': () => suspensionMelt({ d: 0.3 }),
+  'suspension-wabi-sabi-beton': () => suspensionWabi({ L: 0.8, h: 0.22 })
 }
 
-// ————— Export —————
 const exporter = new GLTFExporter()
 for (const [handle, build] of Object.entries(MODELS)) {
   const scene = new THREE.Scene()
@@ -249,8 +304,7 @@ for (const [handle, build] of Object.entries(MODELS)) {
   await new Promise((res, rej) => {
     exporter.parse(scene, (buf) => {
       writeFileSync(join(OUT, handle + '.glb'), Buffer.from(buf))
-      const kb = Math.round(Buffer.from(buf).length / 1024)
-      console.log(`✓ ${handle}.glb (${kb} Ko)`)
+      console.log(`✓ ${handle}.glb (${Math.round(Buffer.from(buf).length / 1024)} Ko)`)
       res()
     }, rej, { binary: true })
   })

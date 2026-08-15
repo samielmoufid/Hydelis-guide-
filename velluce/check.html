@@ -6,6 +6,7 @@
 <script type="module">
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 const HANDLES = ['plafonnier-blanc-moderne-6-spots-orientables-modele-arvella','plafonnier-noir-moderne-4-spots-orientables-modele-virelia','plafonnier-moderne-acier-blanc-orientable-sejour-orpheane','plafonnier-spot-moderne-noir-orientable-modele-nerava','suspension-cylindrique-noire-3-lumieres-modele-arothis','suspension-cylindrique-noire-moderne-modele-neralis','suspension-cylindre-acier-noir-moderne-modele-neralis','suspension-beton-gris-style-loft-modele-arkemia','lustre-industriel-noir-6-lampes-salon-modele-neravio','suspension-acrylique-transparent-en-9-coloris','suspension-wabi-sabi-beton']
 const loader = new GLTFLoader()
 let done = 0
@@ -21,6 +22,7 @@ for (const h of HANDLES) {
   r.outputColorSpace = THREE.SRGBColorSpace
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0x12262e)
+  scene.environment = new THREE.PMREMGenerator(r).fromScene(new RoomEnvironment(), 0.04).texture
   scene.add(new THREE.HemisphereLight(0xdfeef2, 0x223038, 1.1))
   const key = new THREE.DirectionalLight(0xfff1df, 2.2); key.position.set(2, 4, 3); scene.add(key)
   const cam = new THREE.PerspectiveCamera(35, cell.clientWidth / cell.clientHeight, 0.01, 50)
