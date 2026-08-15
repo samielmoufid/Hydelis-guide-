@@ -55,6 +55,18 @@ function cable(x, z, yTop, yBot, mat, r = 0.0016) {
   return c
 }
 
+// Ancre de sol invisible : la RA (Quick Look / Scene Viewer) pose la BOÎTE
+// ENGLOBANTE de l'objet au sol. Sans géométrie à y=0, le luminaire
+// retomberait par terre (et un plafonnier se poserait tête-bêche). Ce point
+// transparent au sol force le respect de toute la hauteur de pose.
+function floorAnchor() {
+  const m = new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0 })
+  const dot = new THREE.Mesh(new THREE.CircleGeometry(0.006, 8), m)
+  dot.rotation.x = -Math.PI / 2
+  dot.position.y = 0.0005
+  return dot
+}
+
 // ————— Plafonnier barre plate + spots cylindriques (Arvella / Virelia / Orphéane) —————
 // Photo : barre très fine plaquée au plafond, petits spots suspendus sous
 // la barre par une tige courte, inclinaisons variées.
@@ -299,6 +311,7 @@ const exporter = new GLTFExporter()
 for (const [handle, build] of Object.entries(MODELS)) {
   const scene = new THREE.Scene()
   const model = build()
+  model.add(floorAnchor())
   model.name = handle
   scene.add(model)
   await new Promise((res, rej) => {
