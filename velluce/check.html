@@ -28,10 +28,18 @@ for (const h of HANDLES) {
   const cam = new THREE.PerspectiveCamera(35, cell.clientWidth / cell.clientHeight, 0.01, 50)
   loader.load(`/velluce/models/${h}.glb`, (g) => {
     scene.add(g.scene)
-    const bb = new THREE.Box3().setFromObject(g.scene)
+    // Boîte du luminaire seul : on ignore l'ancre invisible posée au sol.
+    const bb = new THREE.Box3()
+    g.scene.traverse((o) => {
+      if (!o.isMesh) return
+      const ob = new THREE.Box3().setFromObject(o)
+      if (ob.max.y < 0.05) return
+      bb.union(ob)
+    })
     const c = bb.getCenter(new THREE.Vector3())
-    const size = bb.getSize(new THREE.Vector3()).length()
-    cam.position.set(c.x + size * 0.7, c.y + size * 0.35, c.z + size * 0.9)
+    const size = bb.getSize(new THREE.Vector3())
+    const d = Math.max(size.x, size.y * 1.4, size.z, 0.35) * 1.7 + 0.35
+    cam.position.set(c.x + d * 0.55, c.y + d * 0.18, c.z + d * 0.85)
     cam.lookAt(c)
     r.render(scene, cam)
     if (++done === HANDLES.length) document.title = 'READY'

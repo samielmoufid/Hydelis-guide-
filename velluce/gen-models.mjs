@@ -97,31 +97,36 @@ function railSpotsCylindres({ L, n, couleur }) {
 
 // ————— Plafonnier spots CARRÉS (Nerava, photo : boîtes inclinées) —————
 function railSpotsCarres({ L, n }) {
+  // Photo Nerava : barre plate 30 × 6 cm collée au plafond, spots carrés
+  // (~6 × 6 × 10 cm) accrochés près des extrémités par un court pivot,
+  // basculés vers l'EXTÉRIEUR en sens opposés, lentille ronde au bout du
+  // corps, petite manette de réglage côté intérieur.
   const g = new THREE.Group()
   const mat = M.noir()
-  const bar = box(L, 0.035, 0.055, mat)
-  bar.position.y = MOUNT - 0.0175
+  const bar = box(L, 0.025, 0.06, mat)
+  bar.position.y = MOUNT - 0.0125
   g.add(bar)
   for (let i = 0; i < n; i++) {
-    const x = n === 1 ? 0 : -L / 2 + 0.075 + (i * (L - 0.15)) / (n - 1)
-    const pin = cyl(0.006, 0.006, 0.035, mat, 12)
-    pin.position.set(x, MOUNT - 0.05, 0)
+    const x = n === 1 ? 0 : -L / 2 + 0.045 + (i * (L - 0.09)) / (n - 1)
+    const out = x >= 0 ? 1 : -1
+    const pin = cyl(0.007, 0.007, 0.03, mat, 12)
+    pin.position.set(x, MOUNT - 0.025 - 0.015, 0)
     g.add(pin)
     const head = new THREE.Group()
-    const body = box(0.07, 0.1, 0.07, mat)
+    const body = box(0.062, 0.1, 0.062, mat)
+    body.position.y = -0.05
     head.add(body)
-    const lens = cyl(0.026, 0.026, 0.005, M.lentille(), 24)
-    lens.rotation.x = Math.PI / 2
-    lens.position.set(0, -0.028, 0.036)
+    const lens = cyl(0.024, 0.024, 0.004, M.lentille(), 28)
+    lens.position.set(0, -0.101, 0)
     head.add(lens)
-    // petit levier de réglage
-    const lever = cyl(0.003, 0.003, 0.03, mat, 8)
+    // manette de réglage, côté intérieur, vers le haut du corps
+    const lever = cyl(0.0032, 0.0032, 0.034, mat, 10)
     lever.rotation.z = Math.PI / 2
-    lever.position.set(0.045, 0.02, 0)
+    lever.position.set(-out * 0.045, -0.022, 0)
     head.add(lever)
-    head.position.set(x, MOUNT - 0.12, 0)
-    head.rotation.x = 0.55
-    head.rotation.z = (i % 2 ? 1 : -1) * 0.12
+    // pivot au bas du pin, bascule vers l'extérieur (sens opposés)
+    head.position.set(x, MOUNT - 0.055, 0)
+    head.rotation.z = out * 0.62
     g.add(head)
   }
   return g
