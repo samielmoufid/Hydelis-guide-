@@ -1,0 +1,192 @@
+{% comment %}
+  Velluce — Mini carte 3D (v3, compacte).
+  Rendue dans le bloc _product-form, juste sous les boutons d'achat :
+  petite carte verticale sombre avec l'aperçu 3D qui tourne, un bouton
+  ouvre le plein écran + « Voir chez vous » en réalité augmentée
+  (taille réelle, pose à 2,40 m simulée). Ne s'affiche que si le
+  produit possède un modèle 3D.
+{% endcomment %}
+
+{%- if request.page_type == 'product' and product != blank and request.path contains product.handle -%}
+{%- assign v3m_model = product.media | where: 'media_type', 'model' | first -%}
+{%- if v3m_model -%}
+{%- assign v3m_glb = v3m_model.sources | where: 'format', 'glb' | first -%}
+{%- assign v3m_usdz = v3m_model.sources | where: 'format', 'usdz' | first -%}
+
+<div class="v3m" id="v3m-{{ product.id }}">
+  <div class="v3m-card">
+    <div class="v3m-stage" data-v3m-open role="button" tabindex="0" aria-label="Voir {{ product.title | escape }} en 3D">
+      <model-viewer class="v3m-mini"
+        src="{{ v3m_glb.url }}"
+        alt="{{ product.title | escape }} en 3D"
+        auto-rotate auto-rotate-delay="0" rotation-per-second="18deg"
+        camera-target="0m 1.75m 0m" camera-orbit="20deg 78deg 2.6m"
+        disable-zoom disable-pan disable-tap interaction-prompt="none"
+        shadow-intensity="0.6" exposure="1.1" loading="lazy" reveal="auto"></model-viewer>
+      <div class="v3m-halo" aria-hidden="true"></div>
+      <span class="v3m-live"><i></i>Aperçu 3D</span>
+    </div>
+    <div class="v3m-bar">
+      <span class="v3m-txt">
+        <span class="v3m-title">Voyez-le chez vous</span>
+        <span class="v3m-sub">Taille réelle · iPhone &amp; Android</span>
+      </span>
+      <button type="button" class="v3m-btn" data-v3m-open>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 9V5.5A2.5 2.5 0 0 1 5.5 3H9M15 3h3.5A2.5 2.5 0 0 1 21 5.5V9M21 15v3.5a2.5 2.5 0 0 1-2.5 2.5H15M9 21H5.5A2.5 2.5 0 0 1 3 18.5V15"/><path d="M12 7.5l4.5 2.6v5.2L12 17.9l-4.5-2.6V10.1L12 7.5z"/></svg>
+        Voir en 3D
+      </button>
+    </div>
+  </div>
+
+  <div class="v3m-modal" data-v3m-modal hidden role="dialog" aria-modal="true" aria-label="{{ product.title | escape }} en 3D">
+    <div class="v3m-backdrop" data-v3m-close></div>
+    <div class="v3m-panel">
+      <div class="v3m-head">
+        <span class="v3m-head-title">{{ product.title | escape }}</span>
+        <button type="button" class="v3m-x" data-v3m-close aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <model-viewer class="v3m-full"
+        src="{{ v3m_glb.url }}"
+        {% if v3m_usdz %}ios-src="{{ v3m_usdz.url }}"{% endif %}
+        alt="{{ product.title | escape }} en 3D"
+        camera-controls auto-rotate auto-rotate-delay="1200" rotation-per-second="20deg"
+        camera-target="0m 1.7m 0m" camera-orbit="25deg 75deg 2.8m" min-camera-orbit="auto auto 1.2m" max-camera-orbit="auto auto 4.5m"
+        ar ar-modes="scene-viewer quick-look webxr" ar-scale="fixed" ar-placement="floor"
+        shadow-intensity="1" exposure="1.05" interaction-prompt="none"
+        loading="eager" reveal="auto">
+        <button slot="ar-button" class="v3m-ar-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 9V5.5A2.5 2.5 0 0 1 5.5 3H9M15 3h3.5A2.5 2.5 0 0 1 21 5.5V9M21 15v3.5a2.5 2.5 0 0 1-2.5 2.5H15M9 21H5.5A2.5 2.5 0 0 1 3 18.5V15"/><path d="M12 8l4 2.3v4.5L12 17l-4-2.2V10.3L12 8z"/></svg>
+          Voir chez vous
+        </button>
+      </model-viewer>
+      <div class="v3m-legend">
+        <span class="v3m-dim">Taille réelle · suspendu à 2,40 m</span>
+        <span class="v3m-hint">Tournez du doigt · Pincez pour zoomer</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #v3m-{{ product.id }} { margin: 12px 0 4px; }
+  #v3m-{{ product.id }} .v3m-card { overflow: hidden; border-radius: 16px;
+    border: 1px solid rgba(207, 161, 74, 0.38);
+    background: linear-gradient(150deg, #171512 0%, #221d16 55%, #151210 100%);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22); }
+
+  #v3m-{{ product.id }} .v3m-stage { position: relative; height: 200px; cursor: pointer; outline: none;
+    background:
+      linear-gradient(rgba(207, 161, 74, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(207, 161, 74, 0.05) 1px, transparent 1px),
+      radial-gradient(120% 90% at 50% 30%, #2b251d 0%, #17140f 75%);
+    background-size: 30px 30px, 30px 30px, 100% 100%; }
+  #v3m-{{ product.id }} .v3m-stage:focus-visible { box-shadow: inset 0 0 0 2px #cfa14a; }
+  #v3m-{{ product.id }} .v3m-mini { position: absolute; inset: 0; width: 100%; height: 100%;
+    --poster-color: transparent; pointer-events: none; }
+  #v3m-{{ product.id }} .v3m-halo { position: absolute; left: 50%; bottom: 10%;
+    width: 58%; height: 24px; transform: translateX(-50%); border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(207, 161, 74, 0.28) 0%, transparent 70%);
+    animation: v3m-pulse 3.2s ease-in-out infinite; pointer-events: none; }
+  @keyframes v3m-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  #v3m-{{ product.id }} .v3m-live { position: absolute; top: 12px; left: 14px;
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+    color: #e8d9b8; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
+  #v3m-{{ product.id }} .v3m-live i { width: 6px; height: 6px; border-radius: 50%;
+    background: #cfa14a; box-shadow: 0 0 8px 2px rgba(207, 161, 74, 0.7);
+    animation: v3m-pulse 1.8s ease-in-out infinite; }
+
+  #v3m-{{ product.id }} .v3m-bar { display: flex; align-items: center;
+    justify-content: space-between; gap: 12px; padding: 12px 14px;
+    border-top: 1px solid rgba(207, 161, 74, 0.16); }
+  #v3m-{{ product.id }} .v3m-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  #v3m-{{ product.id }} .v3m-title { color: #fff; font-size: 14px; font-weight: 650; }
+  #v3m-{{ product.id }} .v3m-sub { color: #a2957f; font-size: 11px; }
+  #v3m-{{ product.id }} .v3m-btn { display: inline-flex; align-items: center; gap: 8px;
+    flex: none; cursor: pointer; background: linear-gradient(100deg, #cfa14a, #e0bb66);
+    color: #211c14; border: 0; border-radius: 999px; font-size: 12.5px; font-weight: 700;
+    padding: 10px 17px; box-shadow: 0 5px 16px rgba(207, 161, 74, 0.26);
+    transition: transform 0.18s, box-shadow 0.18s; }
+  #v3m-{{ product.id }} .v3m-btn:hover { transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(207, 161, 74, 0.4); }
+  #v3m-{{ product.id }} .v3m-btn svg { width: 16px; height: 16px; }
+
+  #v3m-{{ product.id }} .v3m-modal { position: fixed; inset: 0; z-index: 999;
+    display: flex; align-items: center; justify-content: center; }
+  #v3m-{{ product.id }} .v3m-modal[hidden] { display: none; }
+  #v3m-{{ product.id }} .v3m-backdrop { position: absolute; inset: 0; background: rgba(10, 8, 6, 0.85); }
+  #v3m-{{ product.id }} .v3m-panel { position: relative; width: min(94vw, 680px);
+    height: min(88vh, 760px); display: flex; flex-direction: column; background: #1c1813;
+    border-radius: 20px; border: 1px solid rgba(207, 161, 74, 0.32); overflow: hidden; }
+  #v3m-{{ product.id }} .v3m-head { display: flex; align-items: center;
+    justify-content: space-between; padding: 14px 18px;
+    border-bottom: 1px solid rgba(207, 161, 74, 0.16); }
+  #v3m-{{ product.id }} .v3m-head-title { color: #f4ede1; font-weight: 600; font-size: 15px; }
+  #v3m-{{ product.id }} .v3m-x { background: none; border: 0; color: #cfa14a; cursor: pointer; padding: 6px; }
+  #v3m-{{ product.id }} .v3m-x svg { width: 20px; height: 20px; }
+  #v3m-{{ product.id }} .v3m-full { flex: 1; width: 100%; --poster-color: transparent;
+    background: radial-gradient(120% 100% at 50% 20%, #322b22 0%, #1c1813 72%); }
+  #v3m-{{ product.id }} .v3m-ar-btn { position: absolute; bottom: 16px; left: 50%;
+    transform: translateX(-50%); display: inline-flex; align-items: center; gap: 9px;
+    background: linear-gradient(100deg, #cfa14a, #e0bb66); color: #211c14; border: 0;
+    border-radius: 999px; font-weight: 700; font-size: 14.5px; padding: 14px 26px;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); }
+  #v3m-{{ product.id }} .v3m-ar-btn svg { width: 18px; height: 18px; }
+  #v3m-{{ product.id }} .v3m-legend { display: flex; justify-content: space-between;
+    gap: 10px; align-items: center; padding: 12px 18px;
+    border-top: 1px solid rgba(207, 161, 74, 0.16); }
+  #v3m-{{ product.id }} .v3m-dim { color: #cfa14a; font-size: 13px; font-weight: 600; }
+  #v3m-{{ product.id }} .v3m-hint { color: #8f8471; font-size: 12px; text-align: right; }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('v3m-{{ product.id }}')
+    if (!root || root.dataset.v3mInit) return
+    root.dataset.v3mInit = '1'
+    var modal = root.querySelector('[data-v3m-modal]')
+
+    function loadViewer() {
+      if (!window.customElements || customElements.get('model-viewer')) return
+      if (document.querySelector('script[data-v3d-lib]')) return
+      var s = document.createElement('script')
+      s.type = 'module'
+      s.setAttribute('data-v3d-lib', '')
+      s.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js'
+      document.head.appendChild(s)
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries.some(function (e) { return e.isIntersecting })) { loadViewer(); io.disconnect() }
+      }, { rootMargin: '400px' })
+      io.observe(root)
+    } else {
+      loadViewer()
+    }
+
+    function openModal() {
+      loadViewer()
+      modal.hidden = false
+      document.documentElement.style.overflow = 'hidden'
+    }
+    function closeModal() {
+      modal.hidden = true
+      document.documentElement.style.overflow = ''
+    }
+    root.querySelectorAll('[data-v3m-open]').forEach(function (el) {
+      el.addEventListener('click', openModal)
+      el.addEventListener('keydown', function (e) {
+        if (el.tagName !== 'BUTTON' && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openModal() }
+      })
+    })
+    modal.querySelectorAll('[data-v3m-close]').forEach(function (el) {
+      el.addEventListener('click', closeModal)
+    })
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hidden) closeModal()
+    })
+  })()
+</script>
+{%- endif -%}
+{%- endif -%}
