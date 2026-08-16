@@ -19,11 +19,13 @@
       {% content_for 'blocks' %}
       {% render 'velluce-packs', product: product %}
 
-      {% content_for 'block', type: '_product-add-to-cart-button', id: 'product-add-to-cart-button' %}
+      {% comment %} Bouton natif masqué : le CTA des packs le remplace (le composant reste dans le DOM pour le JS du thème). {% endcomment %}
+      <div class="velluce-native-atc" style="display: none !important;">
+        {% content_for 'block', type: '_product-add-to-cart-button', id: 'product-add-to-cart-button' %}
+      </div>
       {% content_for 'block', type: '_accelerated-checkout', id: 'accelerated-checkout' %}
     {% endform %}
   </product-form>
-  {% render 'velluce-3d-mini', product: product %}
 {% endif %}
 
 {% stylesheet %}
