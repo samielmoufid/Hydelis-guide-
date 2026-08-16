@@ -1,0 +1,148 @@
+{% comment %}
+  Velluce — Le vrai comparatif
+  Tableau de comparaison premium (crème + doré), colonne Velluce mise en
+  valeur, lignes éditables par blocs, optimisé mobile.
+{% endcomment %}
+
+<section class="vcmp" id="vcmp-{{ section.id }}">
+  <div class="vcmp-inner">
+    <p class="vcmp-kicker">{{ section.settings.kicker }}</p>
+    <h2 class="vcmp-title">{{ section.settings.titre }}</h2>
+    <p class="vcmp-sub">{{ section.settings.sous_titre }}</p>
+    <div class="vcmp-brand">
+      <span class="vcmp-brand-name">{{ section.settings.marque }}</span>
+      <span class="vcmp-brand-city">{{ section.settings.marque_sous }}</span>
+    </div>
+
+    <div class="vcmp-table" role="table" aria-label="{{ section.settings.titre | escape }}">
+      <div class="vcmp-row vcmp-head" role="row">
+        <div class="vcmp-crit" role="columnheader">{{ section.settings.col_criteres }}</div>
+        <div class="vcmp-us" role="columnheader">{{ section.settings.col_nous }}</div>
+        <div class="vcmp-them" role="columnheader">{{ section.settings.col_ailleurs }}</div>
+      </div>
+      {% for block in section.blocks %}
+        <div class="vcmp-row" role="row" {{ block.shopify_attributes }}>
+          <div class="vcmp-crit" role="cell">{{ block.settings.critere }}</div>
+          <div class="vcmp-us" role="cell">
+            <svg class="vcmp-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-label="Oui"><path d="M4.5 12.5l5 5L19.5 6.5"/></svg>
+          </div>
+          <div class="vcmp-them" role="cell">
+            <svg class="vcmp-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-label="Non"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.note_1 != blank %}<p class="vcmp-note">{{ section.settings.note_1 }}</p>{% endif %}
+    {% if section.settings.note_2 != blank %}<p class="vcmp-note">{{ section.settings.note_2 }}</p>{% endif %}
+  </div>
+</section>
+
+<style>
+  #vcmp-{{ section.id }} { background: {{ section.settings.fond }}; padding: 64px 16px; }
+  @media (max-width: 749px) { #vcmp-{{ section.id }} { padding: 42px 12px; } }
+  #vcmp-{{ section.id }} .vcmp-inner { max-width: 940px; margin: 0 auto; text-align: center; }
+
+  #vcmp-{{ section.id }} .vcmp-kicker { margin: 0 0 14px; color: #c2ae8c;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; }
+  #vcmp-{{ section.id }} .vcmp-title { margin: 0 auto 16px; max-width: 21ch;
+    font-size: clamp(28px, 5.4vw, 46px); line-height: 1.12; font-weight: 750;
+    letter-spacing: -0.01em; color: #161616; }
+  #vcmp-{{ section.id }} .vcmp-sub { margin: 0 auto 26px; max-width: 62ch;
+    font-size: clamp(14px, 3.6vw, 17px); line-height: 1.55; color: #6d6a64; }
+  #vcmp-{{ section.id }} .vcmp-brand { margin-bottom: 26px; display: flex;
+    flex-direction: column; gap: 2px; }
+  #vcmp-{{ section.id }} .vcmp-brand-name { color: #c2ae8c; font-size: 21px;
+    font-weight: 600; letter-spacing: 0.42em; text-indent: 0.42em; }
+  #vcmp-{{ section.id }} .vcmp-brand-city { color: #a39d92; font-size: 10.5px;
+    font-weight: 600; letter-spacing: 0.34em; text-indent: 0.34em; text-transform: uppercase; }
+
+  /* ————— Tableau ————— */
+  #vcmp-{{ section.id }} .vcmp-table { border-radius: 22px; overflow: hidden;
+    border: 1px solid #e7e0d3; background: #fffdf9;
+    box-shadow: 0 18px 44px rgba(60, 50, 30, 0.08); text-align: left; }
+  #vcmp-{{ section.id }} .vcmp-row { display: grid;
+    grid-template-columns: 1fr 190px 240px; align-items: stretch; }
+  #vcmp-{{ section.id }} .vcmp-row + .vcmp-row { border-top: 1px solid #efe9dd; }
+  #vcmp-{{ section.id }} .vcmp-row > div { display: flex; align-items: center;
+    padding: 17px 22px; }
+
+  #vcmp-{{ section.id }} .vcmp-head { background: #ece4d4; }
+  #vcmp-{{ section.id }} .vcmp-head > div { padding-top: 15px; padding-bottom: 15px;
+    font-size: 12.5px; font-weight: 750; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #4c463c; }
+
+  #vcmp-{{ section.id }} .vcmp-crit { font-size: 15.5px; color: #22201d; font-weight: 500; }
+
+  /* Colonne Velluce : carte claire surélevée, liseré doré */
+  #vcmp-{{ section.id }} .vcmp-us { justify-content: center; background: #fbf8f1;
+    border-left: 1px solid #e7ddc9; border-right: 1px solid #e7ddc9;
+    position: relative; }
+  #vcmp-{{ section.id }} .vcmp-head .vcmp-us { background: #f6f0e3; color: #8c7a58;
+    box-shadow: inset 0 3px 0 #cfc0ae; }
+  #vcmp-{{ section.id }} .vcmp-them { justify-content: center; }
+  #vcmp-{{ section.id }} .vcmp-head .vcmp-them { justify-content: center; text-align: center; }
+
+  #vcmp-{{ section.id }} .vcmp-check { width: 24px; height: 24px; color: #c2ae8c; }
+  #vcmp-{{ section.id }} .vcmp-cross { width: 20px; height: 20px; color: #2c2a27; opacity: 0.85; }
+
+  #vcmp-{{ section.id }} .vcmp-note { margin: 18px auto 0; max-width: 70ch;
+    font-size: 13px; line-height: 1.5; color: #8b857a; }
+  #vcmp-{{ section.id }} .vcmp-note + .vcmp-note { margin-top: 4px; }
+
+  /* ————— Mobile ————— */
+  @media (max-width: 749px) {
+    #vcmp-{{ section.id }} .vcmp-table { border-radius: 18px; }
+    #vcmp-{{ section.id }} .vcmp-row { grid-template-columns: 1fr 74px 84px; }
+    #vcmp-{{ section.id }} .vcmp-row > div { padding: 13px 12px; }
+    #vcmp-{{ section.id }} .vcmp-head > div { font-size: 9.5px; letter-spacing: 0.08em;
+      padding: 12px 8px; justify-content: flex-start; }
+    #vcmp-{{ section.id }} .vcmp-head .vcmp-us,
+    #vcmp-{{ section.id }} .vcmp-head .vcmp-them { justify-content: center; text-align: center; }
+    #vcmp-{{ section.id }} .vcmp-crit { font-size: 13.5px; line-height: 1.35; }
+    #vcmp-{{ section.id }} .vcmp-check { width: 21px; height: 21px; }
+    #vcmp-{{ section.id }} .vcmp-cross { width: 17px; height: 17px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Velluce Comparatif",
+  "tag": "section",
+  "settings": [
+    { "type": "color", "id": "fond", "label": "Couleur de fond", "default": "#f8f4ec" },
+    { "type": "text", "id": "kicker", "label": "Surtitre", "default": "Le vrai comparatif" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Ce que vous devriez exiger d'une boutique de luminaires" },
+    { "type": "textarea", "id": "sous_titre", "label": "Sous-titre", "default": "Six critères vérifiables en deux minutes. Ouvrez n'importe quel autre site de luminaires dans un onglet et contrôlez-les un par un avant de commander ici." },
+    { "type": "text", "id": "marque", "label": "Marque", "default": "VELLUCE" },
+    { "type": "text", "id": "marque_sous", "label": "Sous la marque", "default": "Paris" },
+    { "type": "text", "id": "col_criteres", "label": "Colonne 1", "default": "Critères" },
+    { "type": "text", "id": "col_nous", "label": "Colonne 2", "default": "Velluce" },
+    { "type": "text", "id": "col_ailleurs", "label": "Colonne 3", "default": "Ce qu'on trouve ailleurs*" },
+    { "type": "text", "id": "note_1", "label": "Note 1", "default": "*Comparatif établi en analysant une à une 30 boutiques de luminaires françaises, en août 2026." },
+    { "type": "text", "id": "note_2", "label": "Note 2", "default": "Aucune n'indiquait de cote de pose." }
+  ],
+  "blocks": [
+    {
+      "type": "ligne",
+      "name": "Critère",
+      "settings": [
+        { "type": "text", "id": "critere", "label": "Texte du critère", "default": "Votre critère" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Velluce Comparatif",
+      "blocks": [
+        { "type": "ligne", "settings": { "critere": "Le diamètre conseillé pour votre pièce" } },
+        { "type": "ligne", "settings": { "critere": "La hauteur de pose, chiffrée" } },
+        { "type": "ligne", "settings": { "critere": "Le prix expliqué, pas seulement barré" } },
+        { "type": "ligne", "settings": { "critere": "On vous dit aussi quand ne rien acheter" } },
+        { "type": "ligne", "settings": { "critere": "Aucun compte à rebours, aucune fausse urgence" } },
+        { "type": "ligne", "settings": { "critere": "Une réponse humaine, en français, avant l'achat" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
