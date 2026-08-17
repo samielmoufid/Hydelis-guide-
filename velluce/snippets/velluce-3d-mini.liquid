@@ -190,6 +190,26 @@
       loadViewer()
     }
 
+    // Le repère de pose (fil à plomb + anneau au sol, matériau « reperage »)
+    // sert en RA ; dans la visionneuse de la page on le rend invisible.
+    function hideGuide(mv) {
+      if (!mv) return
+      mv.addEventListener('load', function () {
+        try {
+          var mats = (mv.model && mv.model.materials) || []
+          mats.forEach(function (m) {
+            if (m.name === 'reperage') {
+              m.setAlphaMode('BLEND')
+              var c = m.pbrMetallicRoughness.baseColorFactor
+              m.pbrMetallicRoughness.setBaseColorFactor([c[0], c[1], c[2], 0])
+            }
+          })
+        } catch (e) {}
+      })
+    }
+    hideGuide(root.querySelector('.v3m-mini'))
+    hideGuide(root.querySelector('.v3m-full'))
+
     function openModal() {
       loadViewer()
       modal.hidden = false

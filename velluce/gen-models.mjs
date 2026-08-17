@@ -55,16 +55,39 @@ function cable(x, z, yTop, yBot, mat, r = 0.0016) {
   return c
 }
 
-// Ancre de sol invisible : la RA (Quick Look / Scene Viewer) pose la BOÎTE
-// ENGLOBANTE de l'objet au sol. Sans géométrie à y=0, le luminaire
-// retomberait par terre (et un plafonnier se poserait tête-bêche). Ce point
-// transparent au sol force le respect de toute la hauteur de pose.
-function floorAnchor() {
-  const m = new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0 })
-  const dot = new THREE.Mesh(new THREE.CircleGeometry(0.006, 8), m)
+// Repère de pose VISIBLE (fil à plomb + marque au sol). La RA (Quick Look /
+// Scene Viewer) pose la BOÎTE ENGLOBANTE de l'objet au sol ; une ancre
+// invisible peut être purgée à la conversion USDZ et 95 % du volume vide
+// rend l'objet introuvable (« il a disparu »). Ici : fine ligne dorée du
+// sol au luminaire + anneau de repérage au sol — indestructibles à la
+// conversion, et masqués dans la visionneuse de la page (matériau nommé
+// « reperage », alpha mis à 0 via l'API scene-graph de model-viewer).
+function guideReperage(group) {
+  const bb = new THREE.Box3().setFromObject(group)
+  const g = new THREE.Group()
+  const m = new THREE.MeshStandardMaterial({
+    color: 0xc2ae8c, emissive: 0xc2ae8c, emissiveIntensity: 0.35,
+    transparent: true, opacity: 0.85, metalness: 0.1, roughness: 0.6
+  })
+  m.name = 'reperage'
+  const ring = new THREE.Mesh(new THREE.RingGeometry(0.04, 0.055, 40), m)
+  ring.rotation.x = -Math.PI / 2
+  ring.position.y = 0.0015
+  ring.name = 'reperage-sol'
+  g.add(ring)
+  const dot = new THREE.Mesh(new THREE.CircleGeometry(0.007, 16), m)
   dot.rotation.x = -Math.PI / 2
-  dot.position.y = 0.0005
-  return dot
+  dot.position.y = 0.0015
+  dot.name = 'reperage-centre'
+  g.add(dot)
+  const hLine = Math.max(bb.min.y - 0.006, 0.01)
+  if (hLine > 0.05) {
+    const line = new THREE.Mesh(new THREE.CylinderGeometry(0.0015, 0.0015, hLine, 8), m)
+    line.position.y = hLine / 2 + 0.002
+    line.name = 'reperage-fil'
+    g.add(line)
+  }
+  return g
 }
 
 // ————— Plafonnier barre plate + spots cylindriques (Arvella / Virelia / Orphéane) —————
@@ -316,7 +339,7 @@ const exporter = new GLTFExporter()
 for (const [handle, build] of Object.entries(MODELS)) {
   const scene = new THREE.Scene()
   const model = build()
-  model.add(floorAnchor())
+  model.add(guideReperage(model))
   model.name = handle
   scene.add(model)
   await new Promise((res, rej) => {
