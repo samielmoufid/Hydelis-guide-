@@ -8,8 +8,6 @@
 
 <div class="vdn" id="vdn-{{ section.id }}" aria-hidden="true"
   style="
-    --vdn-sky-1: {{ section.settings.sky_1 }};
-    --vdn-sky-2: {{ section.settings.sky_2 }};
     --vdn-glow: {{ section.settings.glow }};
     --vdn-ground: {{ section.settings.ground }};
   "
@@ -37,7 +35,7 @@
     width: 100%;
     height: {{ section.settings.height_desktop }}px;
     overflow: hidden;
-    background: linear-gradient(180deg, var(--vdn-sky-1) 0%, var(--vdn-sky-2) 88%);
+    background: transparent;
     line-height: 0;
   }
   @media (max-width: 749px) {
@@ -54,8 +52,8 @@
     transform: translateX(-50%);
     border-radius: 50%;
     background: radial-gradient(circle,
-      color-mix(in srgb, var(--vdn-glow) 85%, transparent) 0%,
-      color-mix(in srgb, var(--vdn-glow) 34%, transparent) 34%,
+      color-mix(in srgb, var(--vdn-glow) 95%, transparent) 0%,
+      color-mix(in srgb, var(--vdn-glow) 42%, transparent) 36%,
       transparent 68%);
     animation: vdnBreathe 7s ease-in-out infinite;
     pointer-events: none;
@@ -111,8 +109,6 @@
     { "type": "range", "id": "height_mobile", "label": "Hauteur mobile (px)", "min": 120, "max": 360, "step": 10, "default": 200, "unit": "px" },
     { "type": "range", "id": "glow_x", "label": "Position du soleil (%)", "min": 40, "max": 90, "step": 1, "default": 72, "unit": "%" },
     { "type": "header", "content": "Couleurs" },
-    { "type": "color", "id": "sky_1", "label": "Ciel (haut)", "default": "#eadfcd" },
-    { "type": "color", "id": "sky_2", "label": "Ciel (bas)", "default": "#e3d4c0" },
     { "type": "color", "id": "glow", "label": "Lueur du soleil", "default": "#fff3d8" },
     { "type": "color", "id": "rim", "label": "Liseré des crêtes", "default": "#f3e9d6" },
     { "type": "color", "id": "dune_1", "label": "Dunes lointaines", "default": "#e7dac6" },
