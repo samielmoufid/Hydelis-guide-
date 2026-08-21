@@ -320,11 +320,87 @@ function trioPro() {
   return root
 }
 
+// ————— Notre histoire : le sceau Velluce —————
+// Pas un produit : la signature de la maison. Médaillon de laiton
+// frappé au monogramme V, cercle perlé et millésime en creux —
+// ce qu'on estampille au dos de ce qu'on assume.
+function sceauVelluce() {
+  const g = new THREE.Group()
+  const brass = new THREE.MeshStandardMaterial({ color: 0xc79a45, metalness: 1, roughness: 0.2 })
+  brass.name = 'laiton'
+  // Champ intérieur : émail ivoire mat. Non métallique, donc il ne part
+  // jamais dans le jaune saturé et fait ressortir le laiton du bord.
+  const email = new THREE.MeshPhysicalMaterial({
+    color: 0xece0c9, metalness: 0, roughness: 0.46,
+    clearcoat: 0.35, clearcoatRoughness: 0.4
+  })
+
+  const R = 0.088
+  // Palet principal, tranche légèrement bombée
+  const disque = new THREE.Mesh(new THREE.CylinderGeometry(R, R * 0.985, 0.019, 128), brass)
+  disque.rotation.x = Math.PI / 2
+  g.add(disque)
+
+  // Bourrelet de bord (le relief d'une pièce frappée)
+  const bord = new THREE.Mesh(new THREE.TorusGeometry(R - 0.004, 0.0062, 20, 140), brass)
+  bord.position.z = 0.0068
+  g.add(bord)
+
+  // Champ intérieur en creux, plus mat : le fond du sceau
+  const champ = new THREE.Mesh(new THREE.CylinderGeometry(R * 0.845, R * 0.845, 0.006, 96), email)
+  champ.rotation.x = Math.PI / 2
+  champ.position.z = 0.0088
+  g.add(champ)
+
+  // Cercle perlé
+  const PERLES = 56
+  for (let i = 0; i < PERLES; i++) {
+    const a = (i / PERLES) * Math.PI * 2
+    const perle = new THREE.Mesh(new THREE.SphereGeometry(0.0031, 12, 10), brass)
+    perle.position.set(Math.cos(a) * R * 0.775, Math.sin(a) * R * 0.775, 0.0122)
+    g.add(perle)
+  }
+
+  // Monogramme V, en relief franc
+  const v = new THREE.Shape()
+  v.moveTo(-0.0335, 0.036)
+  v.lineTo(-0.0205, 0.036)
+  v.lineTo(0, -0.0125)
+  v.lineTo(0.0205, 0.036)
+  v.lineTo(0.0335, 0.036)
+  v.lineTo(0, -0.0335)
+  v.closePath()
+  const vMesh = new THREE.Mesh(new THREE.ExtrudeGeometry(v, {
+    depth: 0.0092, bevelEnabled: true, bevelThickness: 0.0022,
+    bevelSize: 0.0022, bevelSegments: 4, curveSegments: 16
+  }), brass)
+  vMesh.position.set(0, 0.006, 0.0112)
+  g.add(vMesh)
+
+  // Filet sous le monogramme + deux points, comme une frappe de poinçon
+  const filet = new THREE.Mesh(new THREE.BoxGeometry(0.036, 0.0032, 0.0055), brass)
+  filet.position.set(0, -0.036, 0.0118)
+  g.add(filet)
+  ;[-0.026, 0.026].forEach((x) => {
+    const pt = new THREE.Mesh(new THREE.SphereGeometry(0.0028, 14, 10), brass)
+    pt.position.set(x, -0.036, 0.0126)
+    g.add(pt)
+  })
+
+  // Légère inclinaison : un objet posé, pas un logo à plat
+  g.rotation.x = -0.42
+  g.rotation.y = 0.22
+  const root = new THREE.Group()
+  root.add(g)
+  return root
+}
+
 const FILES = {
   'deco-bulles-faq': bullesFaq,
   'deco-bouclier-promesse': bouclierPromesse,
   'deco-edison-histoire': edisonHistoire,
-  'deco-trio-pro': trioPro
+  'deco-trio-pro': trioPro,
+  'deco-sceau-velluce': sceauVelluce
 }
 
 const exporter = new GLTFExporter()
