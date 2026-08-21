@@ -1,0 +1,408 @@
+{%- liquid
+  assign ab_font = section.settings.ab_font | default: 'cormorant'
+-%}
+{%- if ab_font != 'theme' -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  {%- if ab_font == 'cormorant' -%}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap">
+  {%- elsif ab_font == 'marcellus' -%}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap">
+  {%- elsif ab_font == 'italiana' -%}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&display=swap">
+  {%- endif -%}
+{%- endif -%}
+
+{% if section.blocks.size > 0 %}
+  <div
+    class="
+      announcement-bar vab vab--{{ ab_font }} color-{{ section.settings.color_scheme }}
+      {%- if section.settings.show_on_display == 'desktop_only' %} mobile-hide{% endif -%}
+      {%- if section.settings.show_on_display == 'mobile_only' %} desktop-hide{% endif -%}
+      {{ section.settings.additional_class }}
+    "
+    style="
+      --padding-top: {{ section.settings.padding_top }}px;
+      --padding-bottom: {{ section.settings.padding_bottom }}px;
+      --vab-size: {{ section.settings.ab_size }}px;
+      --vab-size-m: {{ section.settings.ab_size_m }}px;
+      --vab-track: {{ section.settings.ab_track }};
+      --vab-rule: {{ section.settings.ab_rule }};
+    "
+  >
+    <div class="announcement-bar__content">
+      {% capture announcements %}
+        {% content_for 'blocks' %}
+      {% endcapture %}
+
+      {% if section.blocks.size > 1 %}
+        {% render 'slider',
+          slides: announcements,
+          per_page_desktop: 1,
+          per_page_mobile: 1,
+          gap: 0,
+          show_arrows: section.settings.show_arrows,
+          show_pagination: false,
+          autoplay: section.settings.autoplay,
+          autoplay_speed: section.settings.autoplay_speed,
+          rewind: section.settings.rewind
+        %}
+      {% else %}
+        {{ announcements }}
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .announcement-bar {
+    width: 100%;
+    padding-top: var(--padding-top);
+    padding-bottom: var(--padding-bottom);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .announcement-bar__content {
+    width: 100%;
+  }
+
+  .announcement-bar__content .splide__arrow {
+    background: transparent;
+    border: none;
+
+    .icon {
+      font-size: 20px !important;
+    }
+  }
+
+  /* ————— Velluce : bande d'annonce premium ————— */
+  /* Filets haut et bas + fond légèrement dégradé : une bande, pas un bandeau. */
+  .vab {
+    position: relative;
+    background-image: linear-gradient(180deg, rgba(255,255,255,.10) 0%, rgba(0,0,0,.045) 100%);
+  }
+  .vab::before,
+  .vab::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--vab-rule);
+    opacity: .5;
+    pointer-events: none;
+  }
+  .vab::before { top: 0; }
+  .vab::after { bottom: 0; }
+
+  /* Typographie : capitales fines, très espacées, comme une gravure. */
+  .vab .announcement,
+  .vab .announcement p,
+  .vab .announcement span,
+  .vab .announcement a,
+  .vab .announcement .text {
+    font-size: var(--vab-size) !important;
+    letter-spacing: var(--vab-track) !important;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 1.25;
+    /* le premier caractère ne doit pas coller au bord de l'espacement */
+    text-indent: var(--vab-track);
+  }
+  .vab--cormorant .announcement,
+  .vab--cormorant .announcement p,
+  .vab--cormorant .announcement span,
+  .vab--cormorant .announcement a,
+  .vab--cormorant .announcement .text {
+    font-family: "Cormorant Garamond", Garamond, Georgia, serif !important;
+    font-weight: 600;
+  }
+  .vab--marcellus .announcement,
+  .vab--marcellus .announcement p,
+  .vab--marcellus .announcement span,
+  .vab--marcellus .announcement a,
+  .vab--marcellus .announcement .text {
+    font-family: "Marcellus", Georgia, serif !important;
+  }
+  .vab--italiana .announcement,
+  .vab--italiana .announcement p,
+  .vab--italiana .announcement span,
+  .vab--italiana .announcement a,
+  .vab--italiana .announcement .text {
+    font-family: "Italiana", Georgia, serif !important;
+  }
+
+  /* Ornements : un losange de part et d'autre du message. */
+  .vab .announcement .slide::before,
+  .vab .announcement .slide::after {
+    content: "";
+    width: 4px;
+    height: 4px;
+    flex: none;
+    transform: rotate(45deg);
+    background: currentColor;
+    opacity: .42;
+  }
+
+  /* Flèches discrètes, qui ne volent pas la vedette au message. */
+  .vab .splide__arrow {
+    opacity: .38;
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .vab .splide__arrow:hover { opacity: .85; }
+  .vab .splide__arrow--prev:hover { transform: translateX(-2px); }
+  .vab .splide__arrow--next:hover { transform: translateX(2px); }
+  .vab .splide__arrow .icon { font-size: 15px !important; }
+
+  /* Le message se fond d'une annonce à l'autre au lieu de sauter. */
+  .vab .splide__slide { transition: opacity .55s ease; }
+
+  @media (max-width: 749px) {
+    .vab .announcement,
+    .vab .announcement p,
+    .vab .announcement span,
+    .vab .announcement a,
+    .vab .announcement .text {
+      font-size: var(--vab-size-m) !important;
+      letter-spacing: calc(var(--vab-track) * .78) !important;
+    }
+    .vab .announcement .slide::before,
+    .vab .announcement .slide::after { width: 3px; height: 3px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:announcement_bar",
+  "blocks": [
+    {
+      "type": "_announcement"
+    }
+  ],
+  "settings": [
+    {
+      "type": "select",
+      "id": "show_on_display",
+      "label": "t:show_on_display",
+      "default": "desktop_and_mobile",
+      "options": [
+        {
+          "value": "desktop_and_mobile",
+          "label": "t:desktop_and_mobile"
+        },
+        {
+          "value": "desktop_only",
+          "label": "t:desktop_only"
+        },
+        {
+          "value": "mobile_only",
+          "label": "t:mobile_only"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Typographie Velluce"
+    },
+    {
+      "type": "select",
+      "id": "ab_font",
+      "label": "Police de la bande",
+      "default": "cormorant",
+      "options": [
+        {
+          "value": "cormorant",
+          "label": "Cormorant Garamond (luxe)"
+        },
+        {
+          "value": "marcellus",
+          "label": "Marcellus (romaine)"
+        },
+        {
+          "value": "italiana",
+          "label": "Italiana (haute couture)"
+        },
+        {
+          "value": "theme",
+          "label": "Police du thème"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "ab_size",
+      "label": "Taille du texte",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "ab_size_m",
+      "label": "Taille du texte — mobile",
+      "min": 9,
+      "max": 18,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "ab_track",
+      "label": "Espacement des lettres",
+      "default": "0.22em"
+    },
+    {
+      "type": "color",
+      "id": "ab_rule",
+      "label": "Couleur des filets",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "t:style"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:color_scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "header",
+      "content": "t:slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "t:show_arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "rewind",
+      "label": "t:rewind",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "t:autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "t:autoplay_speed",
+      "default": 4,
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "sec",
+      "visible_if": "{{ section.settings.autoplay }}"
+    },
+    {
+      "type": "header",
+      "content": "t:paddings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:padding_top",
+      "default": 12,
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:padding_bottom",
+      "default": 12,
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "t:advanced_settings"
+    },
+    {
+      "type": "text",
+      "id": "additional_class",
+      "label": "t:additional_class",
+      "info": "t:additional_class_info"
+    },
+    {
+      "type": "header",
+      "content": "t:go_further"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:go_further_description"
+    }
+  ],
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  },
+  "presets": [
+    {
+      "name": "t:announcement_bar",
+      "category": "t:header",
+      "blocks": [
+        {
+          "type": "_announcement",
+          "blocks": [
+            {
+              "type": "text",
+              "settings": {
+                "text": "t:announcement_default_text",
+                "text_style": "paragraph",
+                "alignment": "center",
+                "alignment_mobile": "center"
+              }
+            }
+          ]
+        },
+        {
+          "type": "_announcement",
+          "blocks": [
+            {
+              "type": "text",
+              "settings": {
+                "text": "t:announcement_default_text",
+                "text_style": "paragraph",
+                "alignment": "center",
+                "alignment_mobile": "center"
+              }
+            }
+          ]
+        },
+        {
+          "type": "_announcement",
+          "blocks": [
+            {
+              "type": "text",
+              "settings": {
+                "text": "t:announcement_default_text",
+                "text_style": "paragraph",
+                "alignment": "center",
+                "alignment_mobile": "center"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
