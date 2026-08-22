@@ -1,0 +1,802 @@
+{% comment %}
+  Velluce — Couche de mouvement globale.
+
+  Rendue une seule fois dans layout/theme.liquid, juste avant </body>.
+  Elle ne modifie aucune section : elle observe le DOM et ajoute du
+  mouvement par-dessus, sans toucher au HTML des sections existantes.
+
+  Ce qu'elle apporte
+  ------------------
+  1. Apparitions au défilement  — le contenu monte et se révèle en cascade.
+  2. Parallaxe douce            — les images éditoriales respirent au scroll.
+  3. Inclinaison 3D au curseur  — les cartes suivent la souris (desktop).
+  4. Onde au clic               — un anneau part du doigt sur chaque bouton.
+  5. Vol vers le panier         — le produit s'envole vers l'icône panier.
+  6. Voile de transition        — fondu beige entre les pages.
+
+  Garde-fous
+  ----------
+  - Rien n'est masqué par le CSS seul : si le JS ne tourne pas, la page
+    reste parfaitement lisible (l'état caché est posé par le JS).
+  - Ce qui est déjà visible au chargement n'est jamais animé : aucun
+    impact sur le LCP ni sur le référencement.
+  - prefers-reduced-motion coupe absolument tout.
+  - Parallaxe et inclinaison sont désactivées sur mobile et sur les
+    appareils peu puissants.
+  - Aucun élément possédant déjà une transformation CSS n'est touché,
+    pour ne jamais casser un effet de survol existant.
+{% endcomment %}
+
+<style id="vm-css">
+  html.vm-on [data-vm-r] {
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+  html.vm-on [data-vm-r='t'] { transform: translate3d(0, 22px, 0); }
+  html.vm-on [data-vm-r='m'] {
+    transform: translate3d(0, 16px, 0) scale(1.03);
+    clip-path: inset(0 0 13% 0);
+  }
+  html.vm-on [data-vm-r].vm-in {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+    transition:
+      opacity var(--vm-dur, 620ms) cubic-bezier(.22, .68, .18, 1) var(--vm-del, 0ms),
+      transform var(--vm-dur, 620ms) cubic-bezier(.22, .68, .18, 1) var(--vm-del, 0ms),
+      clip-path var(--vm-dur, 620ms) cubic-bezier(.22, .68, .18, 1) var(--vm-del, 0ms);
+  }
+  html.vm-on [data-vm-r].vm-done { will-change: auto; transition: none; }
+
+  .vm-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 2147482000;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .vm-ring {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border-radius: 50%;
+    border: 1.5px solid var(--vm-gold, #b08d57);
+    opacity: .85;
+    animation: vm-ring 620ms cubic-bezier(.16, .8, .3, 1) forwards;
+  }
+  @keyframes vm-ring {
+    to { transform: scale(7.5); opacity: 0; border-width: .5px; }
+  }
+
+  .vm-fly {
+    position: absolute;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 18px 40px rgba(44, 34, 22, .28);
+    transition:
+      transform 720ms cubic-bezier(.5, -0.05, .35, 1),
+      opacity 720ms ease-in,
+      border-radius 720ms ease;
+  }
+
+  .vm-veil {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    pointer-events: none;
+    background: var(--vm-sand, #f4efe8);
+    opacity: 0;
+    transition: opacity 260ms ease;
+  }
+  .vm-veil.vm-veil-on { opacity: 1; }
+
+  .vm-sheen {
+    position: absolute;
+    inset: -40%;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      42% 42% at var(--vm-sx, 50%) var(--vm-sy, 50%),
+      rgba(255, 246, 228, .34) 0%,
+      rgba(255, 246, 228, 0) 68%
+    );
+    transition: opacity 380ms ease;
+    z-index: 3;
+  }
+  .vm-tilted .vm-sheen { opacity: 1; }
+
+  .vm-cart-pulse { animation: vm-pulse 620ms cubic-bezier(.2, .8, .2, 1); }
+  @keyframes vm-pulse {
+    0% { transform: scale(1); }
+    32% { transform: scale(1.28); }
+    62% { transform: scale(.94); }
+    100% { transform: scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.vm-on [data-vm-r] { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+    .vm-ring, .vm-fly, .vm-veil, .vm-sheen { display: none !important; }
+  }
+</style>
+
+<script>
+  (function () {
+    'use strict';
+
+    if (window.__velluceMotion) return;
+    window.__velluceMotion = true;
+
+    var root = document.documentElement;
+
+    /* ------------------------------------------------------------------ */
+    /* Réglages                                                            */
+    /* ------------------------------------------------------------------ */
+    var CFG = {
+      gold: '{{ settings.colors_accent_1 | default: "#b08d57" }}',
+      sand: '#f4efe8',
+      stagger: 70,
+      maxStagger: 4,
+      durText: 620,
+      durMedia: 780,
+      parallaxMax: 10,
+      parallaxAmp: 18,
+      tiltMax: 60,
+      tiltDeg: 5,
+      veil: true
+    };
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduce.matches) return;
+
+    var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var small = window.matchMedia('(max-width: 900px)').matches;
+    var weak =
+      (navigator.deviceMemory && navigator.deviceMemory <= 2) ||
+      (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
+    var rich = fine && !small && !weak;
+
+    var design = !!(window.Shopify && window.Shopify.designMode);
+
+    root.style.setProperty('--vm-gold', CFG.gold);
+    root.style.setProperty('--vm-sand', CFG.sand);
+    root.classList.add('vm-on');
+
+    /* Couche de dessin (anneaux, vol vers le panier). */
+    var layer = document.createElement('div');
+    layer.className = 'vm-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(layer);
+
+    /* ------------------------------------------------------------------ */
+    /* Utilitaires                                                         */
+    /* ------------------------------------------------------------------ */
+    function cs(el) {
+      try { return window.getComputedStyle(el); } catch (e) { return null; }
+    }
+
+    /* Un élément déjà transformé par le thème ne doit jamais être touché :
+       une transformation en ligne écraserait son effet de survol. */
+    function movable(el) {
+      var s = cs(el);
+      if (!s) return false;
+      if (s.transform && s.transform !== 'none') return false;
+      if (s.position === 'fixed' || s.position === 'sticky') return false;
+      if (s.display === 'none' || s.visibility === 'hidden') return false;
+      if (parseFloat(s.opacity) === 0) return false;
+      return true;
+    }
+
+    function inScroller(el, stop) {
+      var n = el.parentElement;
+      while (n && n !== stop) {
+        var s = cs(n);
+        if (s && (s.overflowX === 'auto' || s.overflowX === 'scroll')) return true;
+        n = n.parentElement;
+      }
+      return false;
+    }
+
+    var SKIP_SEL = [
+      'header', 'footer', 'nav', 'dialog',
+      '.vdn', '.velluce-dunes',
+      '[data-vm-skip]',
+      '.shopify-section--announcement-bar',
+      '.cart-drawer', '.drawer', '.modal', '.popup',
+      '.vps-modal', '.v3m-modal'
+    ].join(',');
+
+    function shielded(el) {
+      return !!el.closest(SKIP_SEL);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* 1. Apparitions au défilement                                        */
+    /* ------------------------------------------------------------------ */
+
+    /* Descend tant qu'il n'y a qu'un seul enfant : on saute les
+       enveloppes <section><div class="inner"> pour atteindre le vrai
+       conteneur de contenu. */
+    function contentRoot(sec) {
+      var n = sec;
+      var guard = 0;
+      while (guard++ < 5) {
+        var kids = [];
+        for (var i = 0; i < n.children.length; i++) {
+          var k = n.children[i];
+          var t = k.tagName;
+          if (t === 'STYLE' || t === 'SCRIPT' || t === 'LINK' || t === 'TEMPLATE' || t === 'NOSCRIPT') continue;
+          kids.push(k);
+        }
+        if (kids.length === 1) { n = kids[0]; continue; }
+        return { node: n, kids: kids };
+      }
+      return { node: n, kids: [] };
+    }
+
+    var MEDIA_SEL = 'img,picture,video,model-viewer,svg,iframe,canvas';
+
+    function isMedia(el) {
+      if (el.matches(MEDIA_SEL)) return true;
+      var m = el.querySelectorAll(MEDIA_SEL);
+      if (!m.length) return false;
+      /* Média dominant : peu de texte à côté. */
+      var txt = (el.textContent || '').trim().length;
+      return txt < 90;
+    }
+
+    /* Un « bloc de texte » (sur-titre + titre + accroche + bouton) mérite
+       une cascade sur ses propres enfants plutôt qu'une seule apparition. */
+    function textCluster(el) {
+      if (!el.querySelector('h1,h2,h3,h4')) return null;
+      var kids = [];
+      for (var i = 0; i < el.children.length; i++) {
+        var k = el.children[i];
+        if (k.tagName === 'STYLE' || k.tagName === 'SCRIPT') continue;
+        kids.push(k);
+      }
+      if (kids.length < 2 || kids.length > 6) return null;
+      for (var j = 0; j < kids.length; j++) {
+        if (isMedia(kids[j])) return null;
+      }
+      return kids;
+    }
+
+    var io = null;
+    var tagged = 0;
+
+    /* Détection des sauts de défilement (ancre, retour navigateur, barre
+       de défilement tirée d'un coup). Après un saut, on révèle vite et
+       sans cascade : sinon l'écran resterait blanc une demi-seconde. */
+    var lastY = window.pageYOffset || 0;
+    var jumpUntil = 0;
+    window.addEventListener('scroll', function () {
+      var y = window.pageYOffset || 0;
+      if (Math.abs(y - lastY) > window.innerHeight * 1.2) {
+        jumpUntil = Date.now() + 420;
+      }
+      lastY = y;
+    }, { passive: true });
+
+    function ensureIO() {
+      if (io) return io;
+      io = new IntersectionObserver(function (entries) {
+        for (var i = 0; i < entries.length; i++) {
+          var e = entries[i];
+          if (!e.isIntersecting) continue;
+          var el = e.target;
+          io.unobserve(el);
+          var d = parseInt(el.getAttribute('data-vm-t') || '620', 10);
+          var del = parseInt(el.style.getPropertyValue('--vm-del') || '0', 10);
+          if (Date.now() < jumpUntil) {
+            d = 240;
+            del = 0;
+            el.style.setProperty('--vm-dur', '240ms');
+            el.style.setProperty('--vm-del', '0ms');
+          }
+          el.classList.add('vm-in');
+          window.setTimeout(function (node) {
+            return function () { node.classList.add('vm-done'); };
+          }(el), d + del + 60);
+        }
+      }, { rootMargin: '0px 0px 10% 0px', threshold: 0.01 });
+      return io;
+    }
+
+    function mark(el, kind, index, secIdx) {
+      if (el.hasAttribute('data-vm-r')) return false;
+      if (!movable(el)) return false;
+
+      var r = el.getBoundingClientRect();
+      if (r.width < 8 && r.height < 8) return false;
+      /* Les deux premières sections portent le LCP : on n'y touche jamais
+         quand elles sont déjà visibles sans défiler. Plus bas, on marque
+         sans condition — l'observateur révèle aussitôt ce qui est déjà à
+         l'écran, donc rien ne peut rester invisible. */
+      if (secIdx < 2 && r.top < window.innerHeight - 40) return false;
+      /* Enveloppe géante : l'animer n'apporte rien de lisible. */
+      if (r.height > window.innerHeight * 2.2) return false;
+
+      var dur = kind === 'm' ? CFG.durMedia : CFG.durText;
+      var del = Math.min(index, CFG.maxStagger) * CFG.stagger;
+
+      el.setAttribute('data-vm-r', kind);
+      el.setAttribute('data-vm-t', String(dur));
+      el.style.setProperty('--vm-dur', dur + 'ms');
+      el.style.setProperty('--vm-del', del + 'ms');
+      ensureIO().observe(el);
+      tagged++;
+      return true;
+    }
+
+    function scanSection(sec, secIdx) {
+      if (secIdx === undefined) secIdx = 9;
+      if (!sec || sec.hasAttribute('data-vm-seen')) return;
+      sec.setAttribute('data-vm-seen', '1');
+      if (shielded(sec)) return;
+
+      var cr = contentRoot(sec);
+      var units = cr.kids;
+      if (!units.length) return;
+
+      var index = 0;
+
+      for (var i = 0; i < units.length; i++) {
+        var u = units[i];
+        if (shielded(u) || inScroller(u, sec)) continue;
+
+        var cluster = textCluster(u);
+        if (cluster) {
+          for (var c = 0; c < cluster.length; c++) {
+            if (mark(cluster[c], 't', index, secIdx)) index++;
+          }
+          continue;
+        }
+
+        if (mark(u, isMedia(u) ? 'm' : 't', index, secIdx)) index++;
+      }
+    }
+
+    function scanAll() {
+      var secs = document.querySelectorAll(
+        '.shopify-section, [id^="shopify-section"], main > section'
+      );
+      for (var i = 0; i < secs.length; i++) scanSection(secs[i], i);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* 2. Parallaxe douce                                                  */
+    /* ------------------------------------------------------------------ */
+    var pxTargets = [];
+    var pxLive = [];
+    var pxIO = null;
+    var pxRAF = 0;
+
+    function parallaxScan() {
+      if (!rich || pxTargets.length >= CFG.parallaxMax) return;
+
+      var imgs = document.querySelectorAll('main img, [id^="shopify-section"] img');
+      for (var i = 0; i < imgs.length && pxTargets.length < CFG.parallaxMax; i++) {
+        var img = imgs[i];
+        if (img.hasAttribute('data-vm-px')) continue;
+        if (shielded(img)) continue;
+        /* Les cartes cliquables gardent leur zoom au survol : on n'y touche pas. */
+        if (img.closest('a[href]')) continue;
+        if (img.closest('[class*="card"],[class*="Card"]')) continue;
+        if (!movable(img)) continue;
+
+        var p = img.parentElement;
+        if (!p) continue;
+        var ps = cs(p);
+        if (!ps || ps.overflow !== 'hidden') continue;
+
+        var r = img.getBoundingClientRect();
+        if (r.height < 180 || r.width < 180) continue;
+
+        img.setAttribute('data-vm-px', '1');
+        img.style.willChange = 'transform';
+        pxTargets.push(img);
+
+        if (!pxIO) {
+          pxIO = new IntersectionObserver(function (entries) {
+            for (var k = 0; k < entries.length; k++) {
+              var t = entries[k].target;
+              var at = pxLive.indexOf(t);
+              if (entries[k].isIntersecting) {
+                if (at < 0) pxLive.push(t);
+              } else if (at >= 0) {
+                pxLive.splice(at, 1);
+                t.style.transform = '';
+              }
+            }
+            pxTick();
+          }, { rootMargin: '20% 0px 20% 0px' });
+        }
+        pxIO.observe(img);
+      }
+    }
+
+    function pxTick() {
+      if (pxRAF) return;
+      pxRAF = window.requestAnimationFrame(function () {
+        pxRAF = 0;
+        var vh = window.innerHeight;
+        for (var i = 0; i < pxLive.length; i++) {
+          var el = pxLive[i];
+          var r = el.getBoundingClientRect();
+          /* -1 en haut de l'écran, +1 en bas. */
+          var p = ((r.top + r.height / 2) / (vh + r.height)) * 2 - 1;
+          if (p < -1.4 || p > 1.4) continue;
+          var y = (p * CFG.parallaxAmp).toFixed(2);
+          el.style.transform = 'translate3d(0,' + y + 'px,0) scale(1.075)';
+        }
+      });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* 3. Inclinaison 3D au curseur                                        */
+    /* ------------------------------------------------------------------ */
+    function tiltScan() {
+      if (!rich) return;
+
+      var cands = document.querySelectorAll(
+        'main a[class*="card"], main [class*="card"] > a, ' +
+        '[id^="shopify-section"] a[class*="card"], ' +
+        'main .product-card, main .grid__item > a, main li > a[href*="/products/"]'
+      );
+
+      var count = 0;
+      for (var i = 0; i < cands.length && count < CFG.tiltMax; i++) {
+        var el = cands[i];
+        if (el.hasAttribute('data-vm-tilt')) continue;
+        if (shielded(el)) continue;
+        if (!el.querySelector('img,picture,svg,model-viewer')) continue;
+        if (!movable(el)) continue;
+
+        var r = el.getBoundingClientRect();
+        if (r.width < 120 || r.height < 120 || r.width > 780) continue;
+
+        el.setAttribute('data-vm-tilt', '1');
+        el.style.transformStyle = 'preserve-3d';
+        attachTilt(el);
+        count++;
+      }
+    }
+
+    function sheenHost(el) {
+      var kids = el.querySelectorAll('*');
+      for (var i = 0; i < kids.length && i < 12; i++) {
+        var s = cs(kids[i]);
+        if (!s) continue;
+        if (s.overflow === 'hidden' && s.position !== 'static') return kids[i];
+      }
+      return null;
+    }
+
+    function attachTilt(el) {
+      var host = sheenHost(el);
+      var sheen = null;
+      var raf = 0;
+      var tx = 0;
+      var ty = 0;
+
+      function apply() {
+        raf = 0;
+        el.style.transform =
+          'perspective(1000px) rotateX(' + ty.toFixed(2) + 'deg) rotateY(' + tx.toFixed(2) + 'deg)';
+      }
+
+      el.addEventListener('pointerenter', function () {
+        if (!sheen && host) {
+          sheen = document.createElement('span');
+          sheen.className = 'vm-sheen';
+          sheen.setAttribute('aria-hidden', 'true');
+          host.appendChild(sheen);
+        }
+        el.classList.add('vm-tilted');
+        el.style.willChange = 'transform';
+        el.style.transition = 'transform 140ms ease-out';
+      });
+
+      el.addEventListener('pointermove', function (ev) {
+        var r = el.getBoundingClientRect();
+        var nx = (ev.clientX - r.left) / r.width;
+        var ny = (ev.clientY - r.top) / r.height;
+        tx = (nx - 0.5) * 2 * CFG.tiltDeg;
+        ty = -(ny - 0.5) * 2 * CFG.tiltDeg;
+        if (sheen) {
+          sheen.style.setProperty('--vm-sx', (nx * 100).toFixed(1) + '%');
+          sheen.style.setProperty('--vm-sy', (ny * 100).toFixed(1) + '%');
+        }
+        if (!raf) raf = window.requestAnimationFrame(apply);
+      }, { passive: true });
+
+      el.addEventListener('pointerleave', function () {
+        el.classList.remove('vm-tilted');
+        el.style.transition = 'transform 520ms cubic-bezier(.2,.8,.2,1)';
+        el.style.transform = '';
+        window.setTimeout(function () {
+          el.style.willChange = 'auto';
+          el.style.transition = '';
+        }, 560);
+      });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* 4. Onde au clic                                                     */
+    /* ------------------------------------------------------------------ */
+    var CLICKABLE =
+      'button,a[href],[role="button"],input[type="submit"],input[type="button"],summary,label[for]';
+
+    document.addEventListener('pointerdown', function (ev) {
+      if (ev.button !== undefined && ev.button !== 0) return;
+      var t = ev.target;
+      if (!t || !t.closest) return;
+      if (!t.closest(CLICKABLE)) return;
+
+      var ring = document.createElement('span');
+      ring.className = 'vm-ring';
+      ring.style.left = ev.clientX + 'px';
+      ring.style.top = ev.clientY + 'px';
+      layer.appendChild(ring);
+      window.setTimeout(function () {
+        if (ring.parentNode) ring.parentNode.removeChild(ring);
+      }, 680);
+    }, { passive: true, capture: true });
+
+    /* ------------------------------------------------------------------ */
+    /* 5. Vol vers le panier                                               */
+    /* ------------------------------------------------------------------ */
+    function cartIcon() {
+      var sels = [
+        '#cart-icon-bubble',
+        '[data-cart-icon]',
+        'a[href$="/cart"]',
+        'a[href*="/cart"]',
+        '[class*="cart-icon"]',
+        '[class*="header__cart"]'
+      ];
+      for (var i = 0; i < sels.length; i++) {
+        var list = document.querySelectorAll(sels[i]);
+        for (var j = 0; j < list.length; j++) {
+          var r = list[j].getBoundingClientRect();
+          if (r.width > 6 && r.height > 6 && r.top < window.innerHeight) return list[j];
+        }
+      }
+      return null;
+    }
+
+    function bestProductImage(from) {
+      var scopes = [];
+      if (from) {
+        var f = from.closest('form,[class*="product"],[id^="shopify-section"]');
+        if (f) scopes.push(f);
+      }
+      scopes.push(document);
+
+      var best = null;
+      var bestArea = 0;
+      for (var s = 0; s < scopes.length; s++) {
+        var imgs = scopes[s].querySelectorAll('img');
+        for (var i = 0; i < imgs.length; i++) {
+          var im = imgs[i];
+          var r = im.getBoundingClientRect();
+          if (r.width < 60 || r.height < 60) continue;
+          if (r.bottom < 0 || r.top > window.innerHeight) continue;
+          var a = r.width * r.height;
+          if (a > bestArea) { bestArea = a; best = im; }
+        }
+        if (best) break;
+      }
+      return best;
+    }
+
+    function flyToCart(from) {
+      var icon = cartIcon();
+      var img = bestProductImage(from);
+      if (!icon || !img || !img.currentSrc && !img.src) return;
+
+      var r0 = img.getBoundingClientRect();
+      var r1 = icon.getBoundingClientRect();
+
+      var side = Math.min(Math.max(r0.width, 90), 190);
+      var ghost = document.createElement('img');
+      ghost.className = 'vm-fly';
+      ghost.src = img.currentSrc || img.src;
+      ghost.alt = '';
+      ghost.style.width = side + 'px';
+      ghost.style.height = side + 'px';
+      ghost.style.left = (r0.left + r0.width / 2 - side / 2) + 'px';
+      ghost.style.top = (r0.top + r0.height / 2 - side / 2) + 'px';
+      layer.appendChild(ghost);
+
+      var dx = (r1.left + r1.width / 2) - (r0.left + r0.width / 2);
+      var dy = (r1.top + r1.height / 2) - (r0.top + r0.height / 2);
+
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () {
+          ghost.style.transform = 'translate3d(' + dx + 'px,' + dy + 'px,0) scale(.12) rotate(9deg)';
+          ghost.style.opacity = '.15';
+          ghost.style.borderRadius = '50%';
+        });
+      });
+
+      window.setTimeout(function () {
+        if (ghost.parentNode) ghost.parentNode.removeChild(ghost);
+        icon.classList.add('vm-cart-pulse');
+        window.setTimeout(function () { icon.classList.remove('vm-cart-pulse'); }, 660);
+      }, 730);
+    }
+
+    var ADD_SEL = [
+      '[data-vpk-add]',
+      'button[name="add"]',
+      '[data-add-to-cart]',
+      '.product-form__submit',
+      '[class*="add-to-cart"]',
+      '[class*="addToCart"]'
+    ].join(',');
+
+    document.addEventListener('click', function (ev) {
+      var t = ev.target;
+      if (!t || !t.closest) return;
+      var btn = t.closest(ADD_SEL);
+      if (!btn || btn.disabled) return;
+      flyToCart(btn);
+    }, true);
+
+    /* ------------------------------------------------------------------ */
+    /* 6. Voile de transition entre les pages                              */
+    /* ------------------------------------------------------------------ */
+    if (CFG.veil) {
+      var veil = document.createElement('div');
+      veil.className = 'vm-veil';
+      veil.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(veil);
+
+      var KEY = 'vm-veil';
+      var leaving = false;
+
+      /* Arrivée : on part d'un voile déjà posé et on l'efface. */
+      try {
+        if (window.sessionStorage.getItem(KEY)) {
+          window.sessionStorage.removeItem(KEY);
+          veil.style.transition = 'none';
+          veil.style.opacity = '.62';
+          /* Double rAF : la première image peint le voile, la seconde
+             lance le fondu. Sans cela le navigateur fusionne les deux
+             changements et la transition ne joue jamais. */
+          window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(function () {
+              veil.style.transition = 'opacity 300ms ease';
+              veil.style.opacity = '0';
+            });
+          });
+        }
+      } catch (e) {}
+
+      document.addEventListener('click', function (ev) {
+        if (leaving) return;
+        if (ev.defaultPrevented) return;
+        if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+        if (ev.button !== undefined && ev.button !== 0) return;
+
+        var a = ev.target && ev.target.closest ? ev.target.closest('a[href]') : null;
+        if (!a) return;
+        if (a.target && a.target !== '_self') return;
+        if (a.hasAttribute('download')) return;
+
+        var href = a.getAttribute('href') || '';
+        if (!href || href.charAt(0) === '#') return;
+        if (/^(mailto:|tel:|javascript:)/i.test(href)) return;
+
+        var url;
+        try { url = new URL(a.href, window.location.href); } catch (e) { return; }
+        if (url.origin !== window.location.origin) return;
+        if (url.pathname === window.location.pathname && url.search === window.location.search) return;
+        /* Le panier s'ouvre en tiroir : pas de navigation, donc pas de voile. */
+        if (/\/cart\/?$/.test(url.pathname) && document.querySelector('.cart-drawer,[class*="cart-drawer"]')) return;
+
+        leaving = true;
+        try { window.sessionStorage.setItem(KEY, '1'); } catch (e) {}
+        veil.classList.add('vm-veil-on');
+
+        /* Filet de sécurité : si rien ne se passe, on retire le voile. */
+        window.setTimeout(function () {
+          if (!document.hidden) {
+            veil.classList.remove('vm-veil-on');
+            leaving = false;
+            try { window.sessionStorage.removeItem(KEY); } catch (e) {}
+          }
+        }, 2200);
+      }, true);
+
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          veil.classList.remove('vm-veil-on');
+          veil.style.opacity = '0';
+          leaving = false;
+        }
+      });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Démarrage et re-scans                                               */
+    /* ------------------------------------------------------------------ */
+    function boot() {
+      scanAll();
+      parallaxScan();
+      tiltScan();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+    window.addEventListener('load', function () {
+      parallaxScan();
+      tiltScan();
+    });
+
+    if (rich) {
+      window.addEventListener('scroll', pxTick, { passive: true });
+      window.addEventListener('resize', pxTick, { passive: true });
+    }
+
+    /* Contenu injecté plus tard (filtres, pagination, recherche). */
+    var reScan = 0;
+    function ours(list) {
+      for (var i = 0; i < list.length; i++) {
+        var m = list[i];
+        if (m.target && m.target.closest && m.target.closest('.vm-layer')) continue;
+        for (var j = 0; j < m.addedNodes.length; j++) {
+          var n = m.addedNodes[j];
+          if (n.nodeType !== 1) continue;
+          var c = n.className;
+          if (typeof c === 'string' && c.indexOf('vm-') === 0) continue;
+          return false;
+        }
+      }
+      return true;
+    }
+    var mo = new MutationObserver(function (list) {
+      if (ours(list)) return;
+      if (reScan) return;
+      reScan = window.setTimeout(function () {
+        reScan = 0;
+        scanAll();
+        parallaxScan();
+        tiltScan();
+      }, 320);
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    /* Éditeur de thème : une section rechargée doit apparaître aussitôt. */
+    if (design) {
+      document.addEventListener('shopify:section:load', function (e) {
+        var sec = e.target;
+        if (!sec) return;
+        sec.removeAttribute('data-vm-seen');
+        scanSection(sec, 9);
+        var hidden = sec.querySelectorAll('[data-vm-r]');
+        for (var i = 0; i < hidden.length; i++) hidden[i].classList.add('vm-in');
+      });
+      document.addEventListener('shopify:section:select', function (e) {
+        var hidden = e.target ? e.target.querySelectorAll('[data-vm-r]') : [];
+        for (var i = 0; i < hidden.length; i++) hidden[i].classList.add('vm-in');
+      });
+    }
+
+    /* Ultime garde-fou : si quoi que ce soit devait bloquer, plus rien
+       ne reste invisible au bout de 6 secondes. */
+    window.setTimeout(function () {
+      var stuck = document.querySelectorAll('[data-vm-r]:not(.vm-in)');
+      for (var i = 0; i < stuck.length; i++) {
+        var r = stuck[i].getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) stuck[i].classList.add('vm-in');
+      }
+    }, 6000);
+  })();
+</script>

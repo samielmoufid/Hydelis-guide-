@@ -1,1 +1,2512 @@
-{"sections":{"image_banner_VXNP89":{"type":"image-banner","blocks":{"image_banner_dBEabG":{"type":"_image-banner","disabled":true,"settings":{"media_type":"image","source":"uploaded","video_url":"","color_scheme":"scheme-4","banner_height":"medium","layout_justify":"flex-end","layout_align_items":"flex-start","same_as_desktop":true,"banner_height_mobile":"medium","layout_justify_mobile":"center","layout_align_items_mobile":"flex-start","image_filter_opacity":50,"image_filter_color":"#000000","padding_horizontal":0,"padding_vertical":15},"blocks":{"reviews_badge_464qB9":{"type":"reviews-badge","name":"t:reviews_badge_trustpilot","settings":{"review_badge_style":"trustpilot","wrap_in_a_badge":false,"color_scheme":"scheme-1","show_badge_border":false,"text_1":"Excellent","stars":"5","text_2":"+2 000 intérieurs illuminés","link":"","margin_top":0,"margin_bottom":0,"additional_class":"/* Étoiles style Trustpilot */.rating-stars {  display: inline-flex !important;  align-items: center !important;  gap: 3px !important;}/* Chaque étoile dans un carré vert */.rating-stars svg,.rating-stars .star,.rating-stars span {  background: #00b67a !important;  color: #ffffff !important;  fill: #ffffff !important;  width: 22px !important;  height: 22px !important;  min-width: 22px !important;  min-height: 22px !important;  padding: 3px !important;  box-sizing: border-box !important;  border-radius: 0px !important;}/* Si les étoiles sont en icônes SVG */.rating-stars svg path {  fill: #ffffff !important;}"},"blocks":{}},"reviews_badge_qUUwbt":{"type":"reviews-badge","name":"t:reviews_badge_trustpilot","disabled":true,"settings":{"review_badge_style":"google","wrap_in_a_badge":false,"color_scheme":"scheme-3","show_badge_border":false,"text_1":"Excellent","stars":"4,5","text_2":"1988 avis sur","link":"","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"group_nypGzr":{"type":"group","settings":{"show_on_display":"desktop_and_mobile","wrap_in_card":false,"card_link":"","color_scheme":"","show_card_border":false,"layout_type":"grid","width_desktop":67,"layout_direction_desktop":"row","layout_grid_columns_desktop":3,"layout_gap_desktop":0,"layout_wrap_desktop":"nowrap","layout_justify_desktop":"flex-start","layout_align_items_desktop":"flex-start","same_as_desktop":false,"width_mobile":98,"layout_direction_mobile":"column","layout_grid_columns_mobile":1,"layout_gap_mobile":0,"layout_wrap_mobile":"nowrap","layout_justify_mobile":"flex-start","layout_align_items_mobile":"flex-start","use_global_container_padding":true,"padding_horizontal":30,"padding_vertical":30,"margin_top":10,"margin_bottom":10,"additional_class":""},"blocks":{"rating_stars_4NUd3p":{"type":"rating-stars","name":"t:rating_stars","settings":{"show_on_display":"desktop_and_mobile","product":"","hide_rating_when_no_reviews":true,"rating":4.5,"show_note":true,"show_review_count":true,"review_count":123,"link":"","margin_top":0,"margin_bottom":0,"additional_class":"/* Étoiles style Trustpilot */.rating-stars {  display: inline-flex !important;  align-items: center !important;  gap: 3px !important;}/* Chaque étoile dans un carré vert */.rating-stars svg,.rating-stars .star,.rating-stars span {  background: #00b67a !important;  color: #ffffff !important;  fill: #ffffff !important;  width: 22px !important;  height: 22px !important;  min-width: 22px !important;  min-height: 22px !important;  padding: 3px !important;  box-sizing: border-box !important;  border-radius: 0px !important;}/* Si les étoiles sont en icônes SVG */.rating-stars svg path {  fill: #ffffff !important;}"},"blocks":{}},"group_wibFDH":{"type":"group","name":"Avis client (Groupe)","settings":{"show_on_display":"desktop_and_mobile","wrap_in_card":false,"card_link":"","color_scheme":"","show_card_border":false,"layout_type":"flex","width_desktop":100,"layout_direction_desktop":"row","layout_grid_columns_desktop":3,"layout_gap_desktop":3,"layout_wrap_desktop":"nowrap","layout_justify_desktop":"flex-start","layout_align_items_desktop":"center","same_as_desktop":true,"width_mobile":100,"layout_direction_mobile":"column","layout_grid_columns_mobile":1,"layout_gap_mobile":10,"layout_wrap_mobile":"nowrap","layout_justify_mobile":"flex-start","layout_align_items_mobile":"flex-start","use_global_container_padding":true,"padding_horizontal":30,"padding_vertical":30,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{"rating_stars_z9LL3m":{"type":"rating-stars","disabled":true,"settings":{"show_on_display":"desktop_and_mobile","product":"","hide_rating_when_no_reviews":true,"rating":4.7,"show_note":true,"show_review_count":true,"review_count":123,"link":"","margin_top":0,"margin_bottom":18,"additional_class":""},"blocks":{}},"text_mLtNpU":{"type":"text","settings":{"show_on_display":"desktop_only","text":"<p>Velluce — la lumière en velours</p>","text_style":"paragraph","paragraph_font_size":"normal","font_weight":400,"alignment":"left","alignment_mobile":"left","show_read_more":false,"read_more_length":50,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}}},"block_order":["rating_stars_z9LL3m","text_mLtNpU"]},"text_VJtMDF":{"type":"text","name":"Proposition de valeur","disabled":true,"settings":{"show_on_display":"desktop_and_mobile","text":"<p>Peu de modèles. Tous choisis pour l'heure où l'on allume.</p>","text_style":"h2","paragraph_font_size":"normal","font_weight":400,"alignment":"left","alignment_mobile":"left","show_read_more":false,"read_more_length":50,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"text_cJcTQA":{"type":"text","name":"t:title","settings":{"show_on_display":"desktop_and_mobile","text":"<h3>La lumière qui fait rester</h3><h3></h3>","text_style":"h3","paragraph_font_size":"normal","font_weight":400,"alignment":"left","alignment_mobile":"left","show_read_more":false,"read_more_length":50,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"text_8GW6GA":{"type":"text","name":"Sous titre","settings":{"show_on_display":"desktop_and_mobile","text":"<p>Suspensions, plafonniers, lustres et appliques — livrés avec les cotes de pose, la bonne hauteur et tout ce qu'il faut dans le carton.</p>","text_style":"paragraph","paragraph_font_size":"large","font_weight":500,"alignment":"left","alignment_mobile":"left","show_read_more":false,"read_more_length":50,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":4,"additional_class":""},"blocks":{}},"group_rFrEU8":{"type":"group","name":"Appel(s) à l'action (Groupe)","settings":{"show_on_display":"desktop_and_mobile","wrap_in_card":false,"card_link":"","color_scheme":"","show_card_border":false,"layout_type":"flex","width_desktop":100,"layout_direction_desktop":"row","layout_grid_columns_desktop":3,"layout_gap_desktop":10,"layout_wrap_desktop":"nowrap","layout_justify_desktop":"flex-start","layout_align_items_desktop":"flex-start","same_as_desktop":true,"width_mobile":100,"layout_direction_mobile":"column","layout_grid_columns_mobile":1,"layout_gap_mobile":10,"layout_wrap_mobile":"nowrap","layout_justify_mobile":"flex-start","layout_align_items_mobile":"flex-start","use_global_container_padding":true,"padding_horizontal":30,"padding_vertical":30,"margin_top":10,"margin_bottom":0,"additional_class":""},"blocks":{"button_JteLrC":{"type":"button","settings":{"show_on_display":"desktop_and_mobile","link":"shopify://collections","open_in_new_tab":false,"label":"Découvrir la sélection","button_style":"primary","button_shape":"default","icon":"none","icon_custom":"","icon_position":"end","margin_top":0,"margin_bottom":7,"additional_class":""},"blocks":{}},"button_bebe2nd":{"type":"button","disabled":true,"settings":{"show_on_display":"desktop_and_mobile","link":"shopify://collections/plafonniers","open_in_new_tab":false,"label":"Voir les plafonniers","button_style":"secondary","button_shape":"default","icon":"none","icon_custom":"","icon_position":"end","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}}},"block_order":["button_JteLrC","button_bebe2nd"]},"group_3Pie6V":{"type":"group","name":"Badges de confiance (Groupe)","settings":{"show_on_display":"desktop_and_mobile","wrap_in_card":false,"card_link":"","color_scheme":"","show_card_border":false,"layout_type":"flex","width_desktop":100,"layout_direction_desktop":"row","layout_grid_columns_desktop":3,"layout_gap_desktop":20,"layout_wrap_desktop":"wrap","layout_justify_desktop":"flex-start","layout_align_items_desktop":"flex-start","same_as_desktop":false,"width_mobile":100,"layout_direction_mobile":"column","layout_grid_columns_mobile":1,"layout_gap_mobile":10,"layout_wrap_mobile":"wrap","layout_justify_mobile":"center","layout_align_items_mobile":"flex-start","use_global_container_padding":true,"padding_horizontal":30,"padding_vertical":30,"margin_top":5,"margin_bottom":0,"additional_class":""},"blocks":{"icon_with_text_MPKKCD":{"type":"icon-with-text","settings":{"show_on_display":"desktop_and_mobile","layout_direction_desktop":"row","layout_gap_desktop":5,"same_as_desktop":true,"layout_direction_mobile":"column","layout_gap_mobile":10,"icon_type":"icon","icon":"delivery_truck_speed","icon_custom":"","icon_size":22,"icon_position":"start","text":"<p>Livraison suivie en France</p>","text_style":"paragraph","font_weight":400,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"icon_with_text_AdYCCm":{"type":"icon-with-text","settings":{"show_on_display":"desktop_and_mobile","layout_direction_desktop":"row","layout_gap_desktop":5,"same_as_desktop":true,"layout_direction_mobile":"column","layout_gap_mobile":10,"icon_type":"icon","icon":"package_2","icon_custom":"","icon_size":22,"icon_position":"start","text":"<p>Retours sous 30 jours</p>","text_style":"paragraph","font_weight":400,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}}},"block_order":["icon_with_text_MPKKCD","icon_with_text_AdYCCm"]}},"block_order":["rating_stars_4NUd3p","group_wibFDH","text_VJtMDF","text_cJcTQA","text_8GW6GA","group_rFrEU8","group_3Pie6V"]}},"block_order":["reviews_badge_464qB9","reviews_badge_qUUwbt","group_nypGzr"]}},"block_order":["image_banner_dBEabG"],"settings":{"show_on_display":"desktop_and_mobile","full_width":true,"color_scheme":"scheme-1","show_arrows":false,"show_pagination":true,"autoplay":false,"rewind":true,"autoplay_speed":4,"padding_top":0,"padding_bottom":0,"margin_top":0,"margin_bottom":0,"anchor_id":"","additional_class":""}},"banniere_hero_gMxea8":{"type":"banniere-hero","name":"Velluce Hero Impact","settings":{"desktop_video_url":"","desktop_image":"shopify://shop_images/ChatGPT_Image_16_aout_2026_12_06_04.png","desktop_position":"right center","mobile_video_url":"","mobile_image":"shopify://shop_images/7D62E0F5-C283-49B4-AD4B-874AD4986924.png","mobile_position":"center center","overlay_opacity":25,"desktop_height":780,"mobile_height":620,"rating_text":"4,7/5, + de 2 000 intérieurs illuminés","eyebrow":"N°1 du luminaire français","title":"La lumière qui fait rester","mobile_title":"La lumière qui fait rester","description":"Il y a la lumière qui sert à voir, et celle qui fait qu'on repose ses clés au lieu de repartir. Suspensions, plafonniers, lustres et appliques choisis un par un — pour la seconde.","mobile_description":"La lumière qu'on allume quand la journée est finie. Choisie un modèle à la fois.","primary_label":"Découvrir la sélection","primary_link":"shopify://collections/meilleurs-ventes","secondary_label":"","secondary_link":""}},"vgr_types_home":{"type":"velluce-grille","blocks":{"c_1":{"type":"carte","settings":{"collection":"suspensions","title":"Suspensions","image":"shopify://shop_images/IMG_9189.jpg","link":""}},"c_2":{"type":"carte","settings":{"collection":"plafonniers","title":"Plafonniers","image":"shopify://shop_images/IMG_9188.jpg","link":""}},"c_3":{"type":"carte","settings":{"collection":"appliques-murales","title":"Appliques murales","image":"shopify://shop_images/IMG_9198.jpg","link":""}},"c_4":{"type":"carte","settings":{"collection":"lustres","title":"Lustres","image":"shopify://shop_images/IMG_9195.jpg","link":""}},"c_5":{"type":"carte","settings":{"collection":"lampadaires","title":"Lampadaires","image":"shopify://shop_images/IMG_9197.jpg","link":""}},"c_6":{"type":"carte","settings":{"collection":"lampes","title":"Lampes à poser","image":"shopify://shop_images/IMG_9191.jpg","link":""}},"c_7":{"type":"carte","settings":{"collection":"ventilateurs-de-plafond","title":"Ventilateurs de plafond","image":"shopify://shop_images/17C6CA6A-32B6-4C14-A5AA-7C3B7D2449A6.png","link":""}},"c_8":{"type":"carte","settings":{"collection":"luminaires-exterieurs","title":"Luminaires d'extérieur","image":"shopify://shop_images/IMG_9199.jpg","link":""}}},"block_order":["c_1","c_2","c_3","c_4","c_5","c_6","c_7","c_8"],"disabled":true,"name":"Tous nos luminaires","settings":{"eyebrow":"TOUTE LA MAISON","title":"Voir tous nos","title_accent":"luminaires","intro":"Huit familles, une même exigence. Commencez par ce que vous cherchez à éclairer.","align":"left","show_count":true,"mode":"carrousel","per_view":4.5,"per_view_m":1.6,"show_dots":true,"show_arrows":true,"dot_color":"#cfc0ae","cta_label":"","cta_link":"","cols":4,"cols_m":2,"gap":20,"gap_m":14,"visuel_mode":"auto","card_height":300,"card_height_m":230,"frame_color":"#f7f2e9","gold":"#b08d57","frame_pad":10,"frame_pad_m":8,"radius_out":22,"radius_out_m":18,"radius_in":14,"radius_in_m":12,"edge_soft":0.6,"tilt":true,"tilt_strength":8,"glow":true,"accent":"#cfc0ae","ink":"#141210","muted":"#6a635c","rule_color":"#e9e4dd","bg":"#ffffff","title_size":40,"title_size_m":26,"plate_size":17,"plate_size_m":14,"max_width":1280,"head_gap":44,"head_gap_m":30,"pad_top":72,"pad_bottom":64,"pad_top_m":44,"pad_bottom_m":40,"reveal":true}},"collections_premium_AHr9UK":{"type":"collections-premium","blocks":{"collection_X9CMgW":{"type":"collection","settings":{"image":"shopify://shop_images/ChatGPT_Image_17_aout_2026_20_16_07.png","image_alt":"Suspension design au-dessus d'une table de salle à manger","title":"Suspensions","collection_url":"shopify://collections/suspensions"}},"collection_n6iYJz":{"type":"collection","settings":{"image":"shopify://shop_images/ChatGPT_Image_17_aout_2026_20_21_29.png","image_alt":"Plafonnier moderne dans un salon","title":"Plafonniers","collection_url":"shopify://collections/plafonniers"}},"collection_6N8ei8":{"type":"collection","settings":{"image":"shopify://shop_images/ChatGPT_Image_17_aout_2026_20_30_35.png","image_alt":"Lustre en cristal à pampilles","title":"Lustres","collection_url":"shopify://collections/lustres"}},"collection_prhfQg":{"type":"collection","settings":{"image":"shopify://shop_images/ChatGPT_Image_17_aout_2026_20_43_07.png","image_alt":"Lampe à poser en laiton","title":"Lampes à poser","collection_url":"shopify://collections/lampes"}},"collection_mDzTpY":{"type":"collection","settings":{"image_alt":"Applique murale LED linéaire","title":"Appliques murales","collection_url":"shopify://collections/appliques-murales"}},"collection_zce86f":{"type":"collection","settings":{"image_alt":"Applique extérieure lanterne","title":"Luminaires extérieurs","collection_url":"shopify://collections/luminaires-exterieurs"}},"collection_9pUHnk":{"type":"collection","settings":{"image_alt":"Lampadaire en bois","title":"Lampadaires","collection_url":"shopify://collections/lampadaires"}}},"block_order":["collection_X9CMgW","collection_n6iYJz","collection_6N8ei8","collection_prhfQg","collection_mDzTpY","collection_zce86f","collection_9pUHnk"],"name":"Velluce collections","settings":{"title":"Par type de luminaire","eyebrow":"Nos univers lumière","subtitle":"Suspension, applique, lampadaire : chaque famille éclaire autrement. Trouvez la vôtre.","cta_label":"Voir tout le catalogue","cta_url":"/collections/all","card_link_label":"Découvrir","title_size_desktop":44,"title_size_mobile":28,"bg_color":"#ffffff","text_color":"#1a1a1a","max_width":1560,"section_padding_vertical":60,"card_gap":16,"border_radius":16,"image_height_desktop":480,"image_height_mobile":300,"single_card_max_width":760,"cards_desktop":3,"cards_mobile":1,"enable_carousel":true,"enable_arrows":true,"enable_dots":true}},"par_espace_pfTfWn":{"type":"par-espace","blocks":{"espace_apky7a":{"type":"espace","settings":{"collection":"chambre","image":"shopify://shop_images/ChatGPT_Image_18_aout_2026_00_54_40_3.png","title":"Chambre","link_text":"Découvrir","custom_url":"","size":"third","text_pos":"bottom-left"}},"espace_mk4cU8":{"type":"espace","settings":{"collection":"salon","image":"shopify://shop_images/ChatGPT_Image_18_aout_2026_00_54_40_4.png","title":"Salon","link_text":"Découvrir","custom_url":"","size":"twothirds","text_pos":"bottom-left"}},"espace_Xz9PmP":{"type":"espace","settings":{"collection":"cuisine","image":"shopify://shop_images/ChatGPT_Image_18_aout_2026_00_54_40_1.png","title":"Cuisine","link_text":"Découvrir","custom_url":"","size":"twothirds","text_pos":"bottom-left"}},"espace_pYC8rV":{"type":"espace","settings":{"collection":"salle-de-bain","image":"shopify://shop_images/ChatGPT_Image_18_aout_2026_00_54_40_2.png","title":"Salle de bain","link_text":"Découvrir","custom_url":"","size":"third","text_pos":"bottom-left"}}},"block_order":["espace_apky7a","espace_mk4cU8","espace_Xz9PmP","espace_pYC8rV"],"name":"Espaces de vie","settings":{"title":"Chaque pièce, sa lumière","subtitle":"On n'éclaire pas une cuisine comme on éclaire une chambre. Commencez par la pièce.","button_text":"Voir toutes les pièces","button_url":"shopify://pages/espaces-de-vie","button_desktop":false,"title_font":"serif","title_size":42,"title_size_m":30,"title_weight":"400","title_italic":true,"title_spacing":0,"title_color":"#1a1a1a","subtitle_size":15,"subtitle_size_m":14,"subtitle_color":"#555555","card_title_size":20,"card_title_size_m":18,"card_title_uppercase":true,"card_title_weight":"700","card_title_color":"#ffffff","link_size":16,"link_size_m":15,"link_italic":true,"show_arrow":true,"link_color":"#ffffff","layout_desktop":"custom","gap":8,"height_mode":"fixed","card_height":540,"ratio_desktop":"landscape","radius":0,"overlay_opacity":90,"overlay_color":"#000000","hover_zoom":true,"zoom_scale":105,"anim_scroll":true,"mobile_layout":"carousel","card_width_m":85,"card_height_m":460,"show_dots":true,"btn_text_size":15,"btn_text_color":"#1a1a1a","btn_bg_color":"#ffffff","btn_border_color":"#1a1a1a","btn_radius":0,"bg_color":"#ffffff","full_width":true,"pad_top":60,"pad_bot":60,"pad_top_m":40,"pad_bot_m":40}},"collection_featured_ajDTpX":{"type":"collection-featured","blocks":{"group_TnrcY3":{"type":"group","settings":{"show_on_display":"desktop_and_mobile","wrap_in_card":false,"card_link":"","color_scheme":"scheme-3","show_card_border":false,"layout_type":"flex","width_desktop":100,"layout_direction_desktop":"row","layout_grid_columns_desktop":3,"layout_gap_desktop":10,"layout_wrap_desktop":"nowrap","layout_justify_desktop":"space-between","layout_align_items_desktop":"center","same_as_desktop":true,"width_mobile":100,"layout_direction_mobile":"column","layout_grid_columns_mobile":1,"layout_gap_mobile":10,"layout_wrap_mobile":"nowrap","layout_justify_mobile":"flex-start","layout_align_items_mobile":"flex-start","use_global_container_padding":true,"padding_horizontal":30,"padding_vertical":30,"margin_top":10,"margin_bottom":30,"additional_class":""},"blocks":{"group_rQPBJn":{"type":"group","name":"Groupe titre","settings":{"show_on_display":"desktop_and_mobile","wrap_in_card":false,"card_link":"","color_scheme":"","show_card_border":false,"layout_type":"flex","width_desktop":70,"layout_direction_desktop":"column","layout_grid_columns_desktop":3,"layout_gap_desktop":10,"layout_wrap_desktop":"nowrap","layout_justify_desktop":"flex-start","layout_align_items_desktop":"flex-start","same_as_desktop":false,"width_mobile":100,"layout_direction_mobile":"column","layout_grid_columns_mobile":1,"layout_gap_mobile":10,"layout_wrap_mobile":"nowrap","layout_justify_mobile":"flex-start","layout_align_items_mobile":"flex-start","use_global_container_padding":true,"padding_horizontal":30,"padding_vertical":30,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{"text_WeyhME":{"type":"text","settings":{"show_on_display":"desktop_and_mobile","text":"<p><strong>LES INDISPENSABLES</strong></p>","text_style":"h3","paragraph_font_size":"normal","font_weight":400,"alignment":"left","alignment_mobile":"left","show_read_more":false,"read_more_length":50,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"text_qzWhd3":{"type":"text","settings":{"show_on_display":"desktop_and_mobile","text":"<p>Si vous ne savez pas par où commencer, commencez ici. Ce sont les modèles qu'on recommande le plus souvent — et ceux qu'on remplace le moins.</p>","text_style":"paragraph","paragraph_font_size":"normal","font_weight":400,"alignment":"left","alignment_mobile":"left","show_read_more":false,"read_more_length":50,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}}},"block_order":["text_WeyhME","text_qzWhd3"]},"button_LtrWA3":{"type":"button","settings":{"show_on_display":"desktop_only","link":"{{ closest.collection.url }}","open_in_new_tab":false,"label":"Voir toute la sélection","button_style":"secondary","button_shape":"small","icon":"arrow_forward","icon_custom":"arrow_forward","icon_position":"end","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}}},"block_order":["group_rQPBJn","button_LtrWA3"]},"product-card":{"type":"_product-card","static":true,"settings":{"wrap_in_card":false,"color_scheme":"","layout_gap":15},"blocks":{"product_card_media_gallery_J4tKmY":{"type":"_product-card-media-gallery","settings":{"show_on_display":"desktop_and_mobile","show_slider":true,"media_rounded":true,"show_badges":true,"media_ratio":"1 / 1","additional_class":""},"blocks":{}},"product_card_group_9Ctb38":{"type":"_product-card-group","settings":{"show_on_display":"desktop_and_mobile","wrap_in_card":false,"color_scheme":"scheme-3","layout_direction_desktop":"column","layout_gap_desktop":5,"layout_wrap_desktop":"nowrap","layout_justify_desktop":"flex-start","layout_align_items_desktop":"flex-start","same_as_desktop":true,"layout_direction_mobile":"column","layout_gap_mobile":10,"layout_wrap_mobile":"nowrap","layout_justify_mobile":"flex-start","layout_align_items_mobile":"flex-start","margin_top":5,"margin_bottom":0,"additional_class":""},"blocks":{"text_UqjdpF":{"type":"text","settings":{"show_on_display":"desktop_and_mobile","text":"<h2>{{ closest.product.title }}</h2>","text_style":"paragraph","paragraph_font_size":"normal","font_weight":500,"alignment":"left","alignment_mobile":"left","show_read_more":false,"read_more_length":50,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"product_price_qEEaqN":{"type":"product-price","settings":{"show_on_display":"desktop_and_mobile","product":"{{ closest.product }}","sales_badge":"amount","show_sales_badge_text":false,"show_unit_price":false,"text_style":"paragraph","additional_class":""},"blocks":{}},"product_card_swatches_LJX6gJ":{"type":"_product-card-swatches","settings":{"show_on_display":"desktop_and_mobile","swatches_size":"small","swatches_rounded":true,"additional_class":""},"blocks":{}},"rating_stars_w3MWUh":{"type":"rating-stars","settings":{"show_on_display":"desktop_and_mobile","product":"{{ closest.product }}","hide_rating_when_no_reviews":true,"rating":4.5,"show_note":true,"show_review_count":true,"review_count":123,"link":"","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}}},"block_order":["text_UqjdpF","product_price_qEEaqN","product_card_swatches_LJX6gJ","rating_stars_w3MWUh"]}},"block_order":["product_card_media_gallery_J4tKmY","product_card_group_9Ctb38"]}},"block_order":["group_TnrcY3"],"settings":{"show_on_display":"desktop_and_mobile","color_scheme":"","collection":"meilleurs-ventes","max_products":6,"layout_type":"slider","grid_columns":4,"grid_columns_mobile":"2","slider_items":4,"slider_items_mobile":"1.8","show_arrows":true,"show_pagination":false,"rewind":true,"padding_top":50,"padding_bottom":50,"margin_top":0,"margin_bottom":0,"anchor_id":"","additional_class":""}},"reviews_gidWad":{"type":"reviews","blocks":{"review_slide_MRrigV":{"type":"_review-slide","name":"t:review_display_1","settings":{"show_on_display":"desktop_and_mobile","display_type":"1","wrap_in_card":true,"color_scheme":"scheme-1","show_card_border":true,"rating":4.5,"image_ratio":"landscape","source":"uploaded","video_url":"","title":"Excellent produit !","content":"<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>","author":"John Doe","date":"Le 11/03/2025","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"review_slide_jRXTRc":{"type":"_review-slide","name":"t:review_display_1","settings":{"show_on_display":"desktop_and_mobile","display_type":"1","wrap_in_card":true,"color_scheme":"scheme-1","show_card_border":true,"rating":4.5,"image_ratio":"landscape","source":"uploaded","video_url":"","title":"Excellent produit !","content":"<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>","author":"John Doe","date":"Le 11/03/2025","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"review_slide_VCAjKA":{"type":"_review-slide","name":"t:review_display_1","settings":{"show_on_display":"desktop_and_mobile","display_type":"1","wrap_in_card":true,"color_scheme":"scheme-1","show_card_border":true,"rating":4.5,"image_ratio":"landscape","source":"uploaded","video_url":"","title":"Excellent produit !","content":"<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>","author":"John Doe","date":"Le 11/03/2025","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"review_slide_x7Ja77":{"type":"_review-slide","name":"t:review_display_1","settings":{"show_on_display":"desktop_and_mobile","display_type":"1","wrap_in_card":true,"color_scheme":"scheme-1","show_card_border":true,"rating":4.5,"image_ratio":"landscape","source":"uploaded","video_url":"","title":"Excellent produit !","content":"<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>","author":"John Doe","date":"Le 11/03/2025","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"review_slide_EpDpnx":{"type":"_review-slide","name":"t:review_display_1","settings":{"show_on_display":"desktop_and_mobile","display_type":"1","wrap_in_card":true,"color_scheme":"scheme-1","show_card_border":true,"rating":4.5,"image_ratio":"landscape","source":"uploaded","video_url":"","title":"Excellent produit !","content":"<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>","author":"John Doe","date":"Le 11/03/2025","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"review_slide_gy6pGd":{"type":"_review-slide","name":"t:review_display_1","settings":{"show_on_display":"desktop_and_mobile","display_type":"1","wrap_in_card":true,"color_scheme":"scheme-1","show_card_border":true,"rating":4.5,"image_ratio":"landscape","source":"uploaded","video_url":"","title":"Excellent produit !","content":"<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>","author":"John Doe","date":"Le 11/03/2025","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"title":{"type":"text","static":true,"settings":{"show_on_display":"desktop_and_mobile","text":"<h3>Avis client</h3>","text_style":"h3","paragraph_font_size":"normal","font_weight":400,"alignment":"left","alignment_mobile":"left","show_read_more":false,"read_more_length":200,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":30,"additional_class":""},"blocks":{}}},"block_order":["review_slide_MRrigV","review_slide_jRXTRc","review_slide_VCAjKA","review_slide_x7Ja77","review_slide_EpDpnx","review_slide_gy6pGd"],"name":"t:reviews_slider","settings":{"show_on_display":"desktop_and_mobile","anchor":"reviews","color_scheme":"scheme-1","layout_type":"slider","grid_columns":3,"grid_columns_mobile":"1","slider_items":3,"slider_items_mobile":"1","show_arrows":false,"show_pagination":true,"rewind":false,"padding_top":50,"padding_bottom":50,"margin_top":0,"margin_bottom":0,"additional_class":""}},"choisir_velluce_dcVbQ7":{"type":"choisir-velluce","blocks":{"bloc_ETKdHR":{"type":"bloc","settings":{"image":"shopify://shop_images/ChatGPT_Image_16_aout_2026_13_42_50.png","title":"On a comparé à votre place","text":"Trier cinquante fiches produits à 23 h, personne n'en a envie. On l'a fait : commandé, déballé, monté, allumé. Ce qui reste en ligne est ce qui a passé l'épreuve."}},"bloc_aLmCAH":{"type":"bloc","settings":{"image":"shopify://shop_images/ChatGPT_Image_16_aout_2026_13_51_11.png","title":"Vous repeindrez. Il restera.","text":"Formes qui ne datent pas, ampoules LED standard, fixations éprouvées. Le luminaire est l'un des rares objets d'une maison qu'on décroche pour le remonter ailleurs."}},"bloc_6b6VjG":{"type":"bloc","settings":{"image":"shopify://shop_images/ChatGPT_Image_16_aout_2026_13_49_05.png","title":"Et si ça ne va pas, on règle","text":"Chaque luminaire est vérifié avant l'envoi. Garantie 24 mois incluse, support 7j/7 en français. Vous écrivez, on répond, on remplace."}}},"block_order":["bloc_ETKdHR","bloc_aLmCAH","bloc_6b6VjG"],"name":"Choisir Velluce","settings":{"eyebrow":"La méthode Velluce","intro":"Nous refusons plus de luminaires que nous n'en vendons. Voici pourquoi c'est une bonne nouvelle pour vous.","title":"Peu de modèles. Aucun regret.","title_desktop":52,"title_mobile":28,"image_desktop":250,"image_mobile":200,"padding_desktop":72,"padding_mobile":48,"gap":80,"bg_color":"#ffffff","text_color":"#1a1a1a","show_nav":true,"nav_color":"#cfc0ae","nav_active_color":"#cfc0ae"}},"velluce_comparatif":{"type":"velluce-comparatif","blocks":{"ligne_1":{"type":"ligne","settings":{"critere":"Le diamètre conseillé pour votre pièce"}},"ligne_2":{"type":"ligne","settings":{"critere":"La hauteur de pose, chiffrée"}},"ligne_3":{"type":"ligne","settings":{"critere":"Le prix expliqué, pas seulement barré"}},"ligne_4":{"type":"ligne","settings":{"critere":"On vous dit aussi quand ne rien acheter"}},"ligne_5":{"type":"ligne","settings":{"critere":"Aucun compte à rebours, aucune fausse urgence"}},"ligne_6":{"type":"ligne","settings":{"critere":"Une réponse humaine, en français, avant l'achat"}}},"block_order":["ligne_1","ligne_2","ligne_3","ligne_4","ligne_5","ligne_6"],"settings":{"fond":"#ffffff","kicker":"Le vrai comparatif","titre":"Ce que vous devriez exiger d'une boutique de luminaires","sous_titre":"Six critères vérifiables en deux minutes. Ouvrez n'importe quel autre site de luminaires dans un onglet et contrôlez-les un par un avant de commander ici.","marque":"VELLUCE","marque_sous":"Paris","col_criteres":"Critères","col_nous":"Velluce","col_ailleurs":"Ce qu'on trouve ailleurs*","note_1":"*Comparatif établi en analysant une à une 30 boutiques de luminaires françaises, en août 2026.","note_2":"Aucune n'indiquait de cote de pose."}},"manifeste_velluce":{"type":"velluce-manifeste","blocks":{"fact_1":{"type":"fact","settings":{"label":"SÉLECTION","value":"Peu de modèles"}},"fact_2":{"type":"fact","settings":{"label":"CONTRÔLE","value":"Avant mise en ligne"}},"fact_3":{"type":"fact","settings":{"label":"GARANTIE","value":"24 mois incluse"}}},"block_order":["fact_1","fact_2","fact_3"],"name":"Velluce — Manifeste","settings":{"eyebrow":"LE MOMENT VELLUCE","title":"L'heure où l'on","title_accent":"allume","intro":"<p>18 h 47 en décembre. 21 h 30 en juin. Ce n'est jamais la même heure, mais c'est toujours le même moment : celui où la maison bascule.</p>","text":"<p>On tire les rideaux, on allume, et la pièce cesse d'être un lieu de passage. Ce basculement-là ne tient à rien — une hauteur de câble, une température de couleur, un abat-jour qui diffuse au lieu d'éblouir.</p>","dropcap":true,"quote":"C'est notre métier de réussir ce basculement-là.","signature":"VELLUCE — LA LUMIÈRE EN VELOURS","image":"shopify://shop_images/452C6A57-DF96-458F-9138-8852DC59C455.png","image_alt":"Salon Velluce éclairé à la tombée du jour","image_caption":"SALON — 18 H 47","image_position":"right","img_height":560,"img_height_m":380,"img_radius":3,"img_radius_m":3,"ghost_text":"18:47","ghost_size":192,"ghost_opacity":0.3,"ghost_opacity_m":0.4,"cta_label":"EXPLORER NOS PIÈCES","cta_link":"shopify://pages/espaces-de-vie","cta_style":"link","accent":"#cfc0ae","ink":"#141210","muted":"#6a635c","rule_color":"#e9e4dd","bg":"#ffffff","title_size":60,"title_size_m":33,"intro_size":19,"intro_size_m":17,"text_size":16,"text_size_m":15,"quote_size":22,"quote_size_m":18,"max_width":1240,"gap":72,"title_gap":48,"body_offset":28,"pad_top":96,"pad_bottom":96,"pad_top_m":56,"pad_bottom_m":56,"reveal":true}},"17849106896a37e7ff":{"type":"apps","settings":{}},"carrousel_images_RDapf6":{"type":"carrousel-images","blocks":{"image_bRWVdP":{"type":"image","settings":{"video":"shopify://files/videos/copy_0D7F518D-3FBB-4515-9EC2-185BA68999EE.mov","caption":"","link":""}},"image_VaQFbK":{"type":"image","settings":{"image":"shopify://shop_images/WhatsApp_Image_2026-08-18_at_19.41.06.jpg","caption":"","link":""}},"image_NDVxYq":{"type":"image","settings":{"image":"shopify://shop_images/ChatGPT_Image_19_aout_2026_18_03_17_3.png","caption":"","link":""}},"image_GEcDcx":{"type":"image","settings":{"image":"shopify://shop_images/ChatGPT_Image_19_aout_2026_18_03_17_1.png","caption":"","link":""}},"image_nhALKL":{"type":"image","settings":{"video":"shopify://files/videos/copy_75B298A2-073F-4758-A6F8-714FABA4C2FE.mov","caption":"","link":""}},"image_GegmRn":{"type":"image","settings":{"video":"shopify://files/videos/copy_55C51242-A226-454E-A093-971EDAF6367A.mov","caption":"","link":""}},"image_erqTMd":{"type":"image","settings":{"image":"shopify://shop_images/ChatGPT_Image_19_aout_2026_17_38_36.png","caption":"","link":""}},"image_CpUbCz":{"type":"image","settings":{"image":"shopify://shop_images/ChatGPT_Image_19_aout_2026_18_53_53.png","caption":"","link":""}}},"block_order":["image_bRWVdP","image_VaQFbK","image_NDVxYq","image_GEcDcx","image_nhALKL","image_GegmRn","image_erqTMd","image_CpUbCz"],"name":"Carrousel d'images","settings":{"title":"Chez eux, à cette heure-ci","subtitle":"Des intérieurs comme le vôtre, pas des studios photo.","title_size":38,"title_size_m":26,"title_weight":"400","title_italic":true,"title_color":"#1a1a1a","sub_size":15,"sub_size_m":14,"sub_color":"#666666","center_h":720,"side_h":640,"center_h_m":560,"side_h_m":470,"cardpx":440,"cardpx_m":300,"gap":14,"radius":16,"side_opacity":100,"autoplay":true,"interval":4,"show_arrows":true,"cap_size":13,"cap_color":"#555555","cap_align":"center","nav_bg":"#ffffff","nav_color":"#1a1a1a","bg":"#ffffff","pad_top":56,"pad_bot":56,"pad_top_m":36,"pad_bot_m":36}},"chapitre_appliques":{"type":"velluce-chapitre","name":"Chapitre 01 — Appliques murales","settings":{"index":"01","eyebrow":"APPLIQUES MURALES","title":"Quand le plafond n'a plus rien","title_accent":"à dire","text":"<p>L'applique n'éclaire pas la pièce : elle éclaire l'endroit où vous êtes. C'est la lumière basse, celle qu'on allume après le dîner quand on ne veut plus du plafonnier.</p><p>Un couloir devient un passage. Un mur nu devient une composition. Et le jour, éteinte, elle reste un objet — pas un appareil.</p>","spec_1":"1,60 m du sol","spec_2":"Par deux autour d'un miroir","spec_3":"Gabarit de perçage fourni","image":"shopify://shop_images/ChatGPTImage10fevr.2026_22_47_14.png","image_alt":"Applique murale allumée sur un mur clair, en fin de journée","card_label":"Appliques murales","card_cta":"Découvrir","card_link":"shopify://collections/appliques-murales","media_position":"right","card_height":500,"card_height_m":300,"card_radius":30,"card_radius_m":26,"frame_color":"#f7f2e9","gold":"#b08d57","frame_pad":16,"frame_pad_m":12,"radius_in":20,"radius_in_m":17,"edge_soft":0.7,"plate_place":"out","tilt":true,"tilt_strength":7,"glow":true,"styles_label":"PAR STYLE","accent":"#cfc0ae","ink":"#141210","muted":"#6a635c","rule_color":"#e9e4dd","bg":"#ffffff","title_size":54,"title_size_m":31,"text_size":16,"text_size_m":15,"plate_size":30,"plate_size_m":22,"max_width":1240,"text_ratio":46,"gap":76,"pad_top":100,"pad_bottom":100,"pad_top_m":60,"pad_bottom_m":60,"reveal":true}},"chapitre_plafonniers":{"type":"velluce-chapitre","name":"Chapitre 02 — Plafonniers","settings":{"index":"02","eyebrow":"PLAFONNIERS","title":"Celui qu'on ne remarque","title_accent":"jamais","text":"<p>Un plafonnier réussi est invisible. Personne ne dit « quel joli plafonnier » — on dit simplement qu'on est bien dans cette pièce, sans savoir pourquoi.</p><p>Pas de coin resté sombre, pas de halo qui pique quand on lève la tête. Juste une clarté qui tient toute la pièce, du matin au soir.</p>","spec_1":"Ø 30 cm jusqu'à 10 m²","spec_2":"100 à 150 lumens par m²","spec_3":"Pensé pour les plafonds bas","image":"shopify://shop_images/IMG_9188.jpg","image_alt":"Plafonnier moderne diffusant une lumière homogène dans un séjour","card_label":"Plafonniers","card_cta":"Découvrir","card_link":"shopify://collections/plafonniers","media_position":"left","card_height":530,"card_height_m":300,"card_radius":30,"card_radius_m":26,"frame_color":"#f7f2e9","gold":"#b08d57","frame_pad":16,"frame_pad_m":12,"radius_in":20,"radius_in_m":17,"edge_soft":0.7,"plate_place":"out","tilt":true,"tilt_strength":7,"glow":true,"styles_label":"PAR STYLE","accent":"#cfc0ae","ink":"#141210","muted":"#6a635c","rule_color":"#e9e4dd","bg":"#faf8f5","title_size":54,"title_size_m":31,"text_size":16,"text_size_m":15,"plate_size":30,"plate_size_m":22,"max_width":1240,"text_ratio":46,"gap":76,"pad_top":100,"pad_bottom":100,"pad_top_m":60,"pad_bottom_m":60,"reveal":true}},"chapitre_suspensions":{"type":"velluce-chapitre","name":"Chapitre 03 — Suspensions","settings":{"index":"03","eyebrow":"SUSPENSIONS","title":"Le cercle autour de","title_accent":"la table","text":"<p>Une suspension ne décore pas une table : elle dessine un cercle de lumière, et personne n'en sort avant la fin du repas.</p><p>Tout se joue à quelques centimètres. Trop haut, le cercle se dilue. Trop bas, il coupe les regards. C'est pour ça qu'on vous donne la cote.</p>","spec_1":"75-85 cm du plateau","spec_2":"Diamètre = un tiers de la table","spec_3":"Hauteur réglable à la pose","image":"shopify://shop_images/Suspensionlumineuseenverrerose.png","image_alt":"Suspension design au-dessus d'une table de salle à manger","card_label":"Suspensions","card_cta":"Découvrir","card_link":"shopify://collections/suspensions","media_position":"right","card_height":530,"card_height_m":300,"card_radius":30,"card_radius_m":26,"frame_color":"#f7f2e9","gold":"#b08d57","frame_pad":16,"frame_pad_m":12,"radius_in":20,"radius_in_m":17,"edge_soft":0.7,"plate_place":"out","tilt":true,"tilt_strength":7,"glow":true,"styles_label":"PAR STYLE","accent":"#cfc0ae","ink":"#141210","muted":"#6a635c","rule_color":"#e9e4dd","bg":"#ffffff","title_size":54,"title_size_m":31,"text_size":16,"text_size_m":15,"plate_size":30,"plate_size_m":22,"max_width":1240,"text_ratio":46,"gap":76,"pad_top":100,"pad_bottom":100,"pad_top_m":60,"pad_bottom_m":60,"reveal":true}},"video_promo_cknbEL":{"type":"video-promo","name":"Velluce Video promo","settings":{"video":"shopify://files/videos/Prompt_use_the_202605172338 2.mp4","video_url":"","video_url_desktop":"","overlay_color":"#2c2c2c","overlay_opacity":80,"eyebrow":"CE QU'ON REFUSE DE VENDRE","title":"Beaucoup de choses.","subtitle":"Les modèles qui grésillent au variateur. Ceux dont la finition marque au premier coup de chiffon. Ceux qui donnent une lumière d'open-space. Ils sont commandés, déballés, montés, allumés — puis renvoyés. Ce que vous voyez ici est simplement ce qui est resté.","text_color":"#ffffff","accent_color":"#cfc0ae","title_size":52,"title_size_mobile":32,"subtitle_size":18,"subtitle_size_mobile":18,"button_label":"","button_link":"","button_bg":"#ffffff","button_text_color":"#2c2c2c","button_radius":30,"height":95,"height_mobile":75,"content_max_width":720}},"custom_section_NJxRD7":{"type":"custom-section","blocks":{"slider_XywcYe":{"type":"slider","name":"t:slider","settings":{"show_on_display":"desktop_and_mobile","per_page_desktop":4,"per_page_mobile":"1","gap":5,"show_arrows":false,"show_pagination":true,"rewind":false,"autoplay":true,"autoplay_speed":4,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{"slide_3jn6VD":{"type":"_slide","name":"t:slide","settings":{"wrap_in_card":false,"color_scheme":"","layout_direction":"column","layout_wrap":"nowrap","layout_gap":10,"layout_justify":"center","layout_align_items":"center","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{"icon_QFn4W7":{"type":"icon","name":"t:icon","settings":{"show_on_display":"desktop_and_mobile","icon_type":"icon","icon":"featured_seasonal_and_gifts","icon_custom":"","icon_size":42,"margin_top":0,"margin_bottom":0,"additional_class":"vllc-icon-beige"},"blocks":{}},"text_6Ym7L4":{"type":"text","name":"t:text","settings":{"show_on_display":"desktop_and_mobile","text":"<p>Livraison offerte</p>","text_style":"h6","paragraph_font_size":"normal","font_weight":400,"alignment":"center","alignment_mobile":"center","show_read_more":false,"read_more_length":200,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"text_iBFrW4":{"type":"text","name":"t:text","settings":{"show_on_display":"desktop_and_mobile","text":"<p>Sans minimum d'achat. Les frais de port sont pour nous, même pour un seul article.</p>","text_style":"paragraph","paragraph_font_size":"normal","font_weight":400,"alignment":"center","alignment_mobile":"center","show_read_more":false,"read_more_length":200,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}}},"block_order":["icon_QFn4W7","text_6Ym7L4","text_iBFrW4"]},"slide_RW8GLP":{"type":"_slide","name":"t:slide","settings":{"wrap_in_card":false,"color_scheme":"","layout_direction":"column","layout_wrap":"nowrap","layout_gap":10,"layout_justify":"center","layout_align_items":"center","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{"icon_gijhrF":{"type":"icon","name":"t:icon","settings":{"show_on_display":"desktop_and_mobile","icon_type":"icon","icon":"delivery_truck_speed","icon_custom":"","icon_size":42,"margin_top":0,"margin_bottom":0,"additional_class":"vllc-icon-beige"},"blocks":{}},"text_HFNaPW":{"type":"text","name":"t:text","settings":{"show_on_display":"desktop_and_mobile","text":"<p>Expédié en 24 à 48 h</p>","text_style":"h6","paragraph_font_size":"normal","font_weight":400,"alignment":"center","alignment_mobile":"center","show_read_more":false,"read_more_length":200,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"text_U8mQc9":{"type":"text","name":"t:text","settings":{"show_on_display":"desktop_and_mobile","text":"<p>Votre commande part sous 24 à 48 h ouvrées, avec un numéro de suivi dès le départ.</p>","text_style":"paragraph","paragraph_font_size":"normal","font_weight":400,"alignment":"center","alignment_mobile":"center","show_read_more":false,"read_more_length":200,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}}},"block_order":["icon_gijhrF","text_HFNaPW","text_U8mQc9"]},"slide_e7r7wK":{"type":"_slide","name":"t:slide","settings":{"wrap_in_card":false,"color_scheme":"","layout_direction":"column","layout_wrap":"nowrap","layout_gap":10,"layout_justify":"center","layout_align_items":"center","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{"icon_6mtVWT":{"type":"icon","name":"t:icon","settings":{"show_on_display":"desktop_and_mobile","icon_type":"icon","icon":"encrypted","icon_custom":"","icon_size":42,"margin_top":0,"margin_bottom":0,"additional_class":"vllc-icon-beige"},"blocks":{}},"text_i9Cyej":{"type":"text","name":"t:text","settings":{"show_on_display":"desktop_and_mobile","text":"<p>Paiement sécurisé</p>","text_style":"h6","paragraph_font_size":"normal","font_weight":400,"alignment":"center","alignment_mobile":"center","show_read_more":false,"read_more_length":200,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"text_XVrxp8":{"type":"text","name":"t:text","settings":{"show_on_display":"desktop_and_mobile","text":"<p>CB, Apple Pay, PayPal ou Klarna. Vos données sont chiffrées en SSL.</p>","text_style":"paragraph","paragraph_font_size":"normal","font_weight":400,"alignment":"center","alignment_mobile":"center","show_read_more":false,"read_more_length":200,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}}},"block_order":["icon_6mtVWT","text_i9Cyej","text_XVrxp8"]},"slide_FVXyh8":{"type":"_slide","name":"t:slide","settings":{"wrap_in_card":false,"color_scheme":"","layout_direction":"column","layout_wrap":"nowrap","layout_gap":10,"layout_justify":"center","layout_align_items":"center","margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{"icon_xdzmxK":{"type":"icon","name":"t:icon","settings":{"show_on_display":"desktop_and_mobile","icon_type":"icon","icon":"verified","icon_custom":"","icon_size":42,"margin_top":0,"margin_bottom":0,"additional_class":"vllc-icon-beige"},"blocks":{}},"text_daEqnk":{"type":"text","name":"t:text","settings":{"show_on_display":"desktop_and_mobile","text":"<p>Garantie 24 mois</p>","text_style":"h6","paragraph_font_size":"normal","font_weight":400,"alignment":"center","alignment_mobile":"center","show_read_more":false,"read_more_length":200,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}},"text_RN7htP":{"type":"text","name":"t:text","settings":{"show_on_display":"desktop_and_mobile","text":"<p>Vérifié avant l'envoi, couvert deux ans. Un souci ? On remplace ou on rembourse.</p>","text_style":"paragraph","paragraph_font_size":"normal","font_weight":400,"alignment":"center","alignment_mobile":"center","show_read_more":false,"read_more_length":200,"read_more_text":"Voir plus","read_less_text":"Voir moins","truncate":false,"truncate_length":2,"margin_top":0,"margin_bottom":0,"additional_class":""},"blocks":{}}},"block_order":["icon_xdzmxK","text_daEqnk","text_RN7htP"]}},"block_order":["slide_3jn6VD","slide_RW8GLP","slide_e7r7wK","slide_FVXyh8"]}},"block_order":["slider_XywcYe"],"name":"t:reassurances_slider","settings":{"show_on_display":"desktop_and_mobile","color_scheme":"","wrap_in_card":false,"color_scheme_card":"","section_width":"normal","layout_type":"flex","layout_flex_direction_desktop":"column","layout_grid_columns_desktop":3,"layout_gap_desktop":20,"layout_wrap_desktop":"nowrap","layout_flex_justify_desktop":"flex-start","layout_flex_align_items_desktop":"flex-start","same_as_desktop":true,"layout_flex_direction_mobile":"column","layout_gap_mobile":20,"layout_wrap_mobile":"nowrap","layout_flex_justify_mobile":"flex-start","layout_flex_align_items_mobile":"flex-start","layout_grid_columns_mobile":1,"padding_top":50,"padding_bottom":50,"margin_top":0,"margin_bottom":0,"anchor_id":"","additional_class":""}},"image_texte_premium_dbmmzi":{"type":"image-texte-premium","name":"Image texte premium","settings":{"image":"shopify://shop_images/ChatGPT_Image_19_aout_2026_15_25_01.png","caption":"","image_inner_border":true,"image_position":"left","eyebrow":"L'engagement Velluce","title":"Garantie 24 mois, sans astérisque","text":"<p>Un luminaire, on le pose une fois. Il reste au-dessus de la table pendant les devoirs, les dimanches midi, les soirs où l'on ne fait rien. Il n'a pas le droit de lâcher.</p><p>Chaque référence Velluce est vérifiée, certifiée CE et conforme aux normes européennes en vigueur — et couverte <strong>24 mois</strong>, incluse d'office, sans surcoût et sans conditions cachées.</p><p>Un problème dans les deux ans ? Vous écrivez, on répond 7j/7 en français, on remplace ou on rembourse. Pas d'expertise à vos frais, pas de formulaire à rallonge, pas de service client qui vous fatigue jusqu'à ce que vous abandonniez.</p>","point_1":"Garantie 24 mois","point_1_sub":"incluse, sans surcoût","point_2":"Livraison offerte","point_2_sub":"partout en France","point_3":"Retour sous 14 jours","point_3_sub":"si le rendu ne vous plaît pas","button_text":"LIRE NOTRE PROMESSE","button_link":"shopify://pages/notre-promesse","button_style":"link","section_bg":"#ffffff","title_color":"#111111","text_color":"#111111","accent_color":"#a08d74","button_bg":"#cfc0ae","button_text_color":"#ffffff","title_size_desktop":46,"title_size_mobile":28,"mobile_title_one_line":false,"text_size_desktop":16,"text_size_mobile":16,"text_line_height":1.7,"paragraph_spacing":14,"button_text_size":15,"button_text_size_mobile":15,"button_height_desktop":58,"button_height_mobile":54,"button_padding_x_desktop":34,"button_radius":10,"button_margin_top":38,"button_margin_top_mobile":34,"max_width":1280,"gap_desktop":76,"desktop_image_height":460,"desktop_padding_y":50,"image_radius":8,"mobile_image_height":280,"mobile_content_padding_y":32,"mobile_content_padding_left":16,"text_line_height_mobile":1.6,"mobile_paragraphs":"1","mobile_padding_top":88,"mobile_padding_bottom":28,"padding_top":80,"padding_bottom":80}},"faq_premium_HYDcNb":{"type":"faq-premium","blocks":{"faq_item_home_1":{"type":"faq_item","settings":{"question":"Comment savoir quelle taille prendre ?","answer":"<p>C'est la question qu'on nous pose le plus, et personne n'y répond dans ce secteur. Règle simple : additionnez la longueur et la largeur de votre pièce en mètres, le résultat vous donne le diamètre conseillé en centimètres. Une pièce de 4 × 5 m appelle un luminaire d'environ 45 cm. Au-dessus d'une table, visez le tiers de sa longueur. Chaque fiche produit contient le détail des cotes de pose.</p>"}},"faq_item_home_2":{"type":"faq_item","settings":{"question":"Je ne suis pas bricoleur. Est-ce que je vais y arriver ?","answer":"<p>Oui, dans l'immense majorité des cas. Si votre plafond a déjà un point lumineux, la pose consiste à couper le courant au disjoncteur, fixer une platine et raccorder trois fils. La visserie adaptée à votre support est fournie, la notice est en français avec des schémas, et notre équipe reste joignable sur WhatsApp pendant que vous êtes sur l'escabeau. Pour une applique murale sans sortie électrique existante, écrivez-nous avant de commander : on vous dira franchement ce qui est faisable.</p>"}},"faq_item_home_3":{"type":"faq_item","settings":{"question":"Les ampoules sont-elles incluses ?","answer":"<p>Non, et c'est un choix. Le rendu d'un luminaire dépend énormément de l'ampoule : la même suspension peut donner une lumière chaleureuse ou une lumière de bureau selon ce qu'on visse dedans. Le culot est indiqué sur chaque fiche. Pour un salon ou une salle à manger, prenez une LED blanc chaud autour de 2700 K, dimmable si vous avez un variateur.</p>"}},"faq_item_home_4":{"type":"faq_item","settings":{"question":"Quels sont les délais de livraison ?","answer":"<p>Votre commande est préparée sous 24 à 48 heures ouvrées puis expédiée depuis notre entrepôt européen. Comptez ensuite 4 à 8 jours ouvrés. La livraison est offerte, sans minimum d'achat, et vous recevez un numéro de suivi dès le départ du colis.</p>"}},"faq_item_home_5":{"type":"faq_item","settings":{"question":"Et si le luminaire ne me plaît pas une fois posé ?","answer":"<p>Vous avez 30 jours à compter de la réception pour changer d'avis, sans avoir à vous justifier. Retour ou échange : vous écrivez, on s'en occupe. C'est aussi pour ça qu'on donne les cotes avant l'achat — le meilleur retour est celui qui n'a pas lieu.</p>"}},"faq_item_home_6":{"type":"faq_item","settings":{"question":"Vos luminaires sont-ils vraiment contrôlés ?","answer":"<p>Chaque référence est commandée, déballée, montée et allumée avant d'entrer au catalogue. On vérifie la conformité CE, la sécurité électrique, la tenue des fixations et la qualité des finitions. Les modèles qui grésillent au variateur ou dont la finition marque sont renvoyés. Ceux qui restent sont couverts par une garantie de 24 mois, incluse d'office.</p>"}}},"block_order":["faq_item_home_1","faq_item_home_2","faq_item_home_3","faq_item_home_4","faq_item_home_5","faq_item_home_6"],"name":"FAQ Premium","settings":{"title":"Vos questions, nos réponses.","subtitle":"Y compris celles que les autres boutiques évitent.","button_text":"Voir toutes les questions","button_link":"shopify://pages/f-a-q","single_open":true,"title_size":40,"title_size_m":30,"sub_size":16,"sub_size_m":15,"q_size":18,"q_size_m":16,"a_size":16,"a_size_m":15,"row_pad":20,"bg":"#ffffff","title_color":"#1a1a1a","sub_color":"#6b6b6b","q_color":"#1a1a1a","a_color":"#5f5f5f","ico_color":"#c98a6b","divider":"#ececec","btn_bg":"#1a1a1a","btn_text":"#ffffff","btn_size":15,"btn_radius":8,"max_width":820,"pad_top":64,"pad_bot":64,"pad_top_m":40,"pad_bot_m":40}},"support_steps_ihi6Df":{"type":"support-steps","blocks":{"step_card_iDjqW7":{"type":"step_card","settings":{"card_title":"Avant d'acheter","card_text":"Envoyez-nous les dimensions de votre pièce : on vous dit quelle taille prendre."}},"step_card_PRnhki":{"type":"step_card","settings":{"card_title":"Pendant la pose","card_text":"Un doute sur un fil, une fixation, une hauteur ? On répond pendant que vous y êtes."}},"step_card_PTUN9c":{"type":"step_card","settings":{"card_title":"Après la livraison","card_text":"Une pièce manquante, un souci en 18 mois : la garantie 24 mois s'applique, sans discussion."}}},"block_order":["step_card_iDjqW7","step_card_PRnhki","step_card_PTUN9c"],"name":"Support whatsapp Steps","settings":{"label_text":"AVANT • PENDANT • APRÈS","title":"Quelqu'un au bout du fil, vraiment","cta_title":"Une question avant de commander ?","cta_desc":"Écrivez-nous : réponse en français, 7j/7, par une personne qui connaît le produit.","whatsapp_link":"https://wa.me/message/V5U35J5ZWYZOA1","whatsapp_btn_text":"Nous écrire sur WhatsApp","bg_image_opacity":10,"primary_color":"#cfc0ae","bg_color":"#ffffff","title_size_desktop":48,"title_size_mobile":28,"padding_top":80,"padding_bottom":80,"padding_top_mobile":36,"padding_bottom_mobile":36,"max_width":1200}},"newsletter_velluce":{"type":"velluce-lettre-simple","settings":{"eyebrow":"La lettre Velluce","title":"Deux e-mails par mois. Pas un de plus.","placeholder":"Votre adresse e-mail","button":"Je m'inscris","legal":"Désinscription en un clic, à tout moment.","success":"C'est noté. Votre première lettre arrive bientôt.","bg":"#faf8f5","ink":"#2c2c2c","accent":"#b08d57","btn_bg":"#cfc0ae","btn_ink":"#2c2c2c","pad":64,"pad_m":40}},"bas_footer_NhGUjw":{"type":"velluce-dunes","settings":{"height_desktop":300,"height_mobile":180}}},"order":["image_banner_VXNP89","banniere_hero_gMxea8","vgr_types_home","collections_premium_AHr9UK","par_espace_pfTfWn","collection_featured_ajDTpX","reviews_gidWad","choisir_velluce_dcVbQ7","velluce_comparatif","manifeste_velluce","17849106896a37e7ff","carrousel_images_RDapf6","chapitre_appliques","chapitre_plafonniers","chapitre_suspensions","video_promo_cknbEL","custom_section_NJxRD7","image_texte_premium_dbmmzi","faq_premium_HYDcNb","support_steps_ihi6Df","newsletter_velluce","bas_footer_NhGUjw"]}
+{
+  "sections": {
+    "image_banner_VXNP89": {
+      "type": "image-banner",
+      "blocks": {
+        "image_banner_dBEabG": {
+          "type": "_image-banner",
+          "disabled": true,
+          "settings": {
+            "media_type": "image",
+            "source": "uploaded",
+            "video_url": "",
+            "color_scheme": "scheme-4",
+            "banner_height": "medium",
+            "layout_justify": "flex-end",
+            "layout_align_items": "flex-start",
+            "same_as_desktop": true,
+            "banner_height_mobile": "medium",
+            "layout_justify_mobile": "center",
+            "layout_align_items_mobile": "flex-start",
+            "image_filter_opacity": 50,
+            "image_filter_color": "#000000",
+            "padding_horizontal": 0,
+            "padding_vertical": 15
+          },
+          "blocks": {
+            "reviews_badge_464qB9": {
+              "type": "reviews-badge",
+              "name": "t:reviews_badge_trustpilot",
+              "settings": {
+                "review_badge_style": "trustpilot",
+                "wrap_in_a_badge": false,
+                "color_scheme": "scheme-1",
+                "show_badge_border": false,
+                "text_1": "Excellent",
+                "stars": "5",
+                "text_2": "+2 000 intérieurs illuminés",
+                "link": "",
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": "/* Étoiles style Trustpilot */.rating-stars {  display: inline-flex !important;  align-items: center !important;  gap: 3px !important;}/* Chaque étoile dans un carré vert */.rating-stars svg,.rating-stars .star,.rating-stars span {  background: #00b67a !important;  color: #ffffff !important;  fill: #ffffff !important;  width: 22px !important;  height: 22px !important;  min-width: 22px !important;  min-height: 22px !important;  padding: 3px !important;  box-sizing: border-box !important;  border-radius: 0px !important;}/* Si les étoiles sont en icônes SVG */.rating-stars svg path {  fill: #ffffff !important;}"
+              },
+              "blocks": {}
+            },
+            "reviews_badge_qUUwbt": {
+              "type": "reviews-badge",
+              "name": "t:reviews_badge_trustpilot",
+              "disabled": true,
+              "settings": {
+                "review_badge_style": "google",
+                "wrap_in_a_badge": false,
+                "color_scheme": "scheme-3",
+                "show_badge_border": false,
+                "text_1": "Excellent",
+                "stars": "4,5",
+                "text_2": "1988 avis sur",
+                "link": "",
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            },
+            "group_nypGzr": {
+              "type": "group",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "wrap_in_card": false,
+                "card_link": "",
+                "color_scheme": "",
+                "show_card_border": false,
+                "layout_type": "grid",
+                "width_desktop": 67,
+                "layout_direction_desktop": "row",
+                "layout_grid_columns_desktop": 3,
+                "layout_gap_desktop": 0,
+                "layout_wrap_desktop": "nowrap",
+                "layout_justify_desktop": "flex-start",
+                "layout_align_items_desktop": "flex-start",
+                "same_as_desktop": false,
+                "width_mobile": 98,
+                "layout_direction_mobile": "column",
+                "layout_grid_columns_mobile": 1,
+                "layout_gap_mobile": 0,
+                "layout_wrap_mobile": "nowrap",
+                "layout_justify_mobile": "flex-start",
+                "layout_align_items_mobile": "flex-start",
+                "use_global_container_padding": true,
+                "padding_horizontal": 30,
+                "padding_vertical": 30,
+                "margin_top": 10,
+                "margin_bottom": 10,
+                "additional_class": ""
+              },
+              "blocks": {
+                "rating_stars_4NUd3p": {
+                  "type": "rating-stars",
+                  "name": "t:rating_stars",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "product": "",
+                    "hide_rating_when_no_reviews": true,
+                    "rating": 4.5,
+                    "show_note": true,
+                    "show_review_count": true,
+                    "review_count": 123,
+                    "link": "",
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": "/* Étoiles style Trustpilot */.rating-stars {  display: inline-flex !important;  align-items: center !important;  gap: 3px !important;}/* Chaque étoile dans un carré vert */.rating-stars svg,.rating-stars .star,.rating-stars span {  background: #00b67a !important;  color: #ffffff !important;  fill: #ffffff !important;  width: 22px !important;  height: 22px !important;  min-width: 22px !important;  min-height: 22px !important;  padding: 3px !important;  box-sizing: border-box !important;  border-radius: 0px !important;}/* Si les étoiles sont en icônes SVG */.rating-stars svg path {  fill: #ffffff !important;}"
+                  },
+                  "blocks": {}
+                },
+                "group_wibFDH": {
+                  "type": "group",
+                  "name": "Avis client (Groupe)",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "wrap_in_card": false,
+                    "card_link": "",
+                    "color_scheme": "",
+                    "show_card_border": false,
+                    "layout_type": "flex",
+                    "width_desktop": 100,
+                    "layout_direction_desktop": "row",
+                    "layout_grid_columns_desktop": 3,
+                    "layout_gap_desktop": 3,
+                    "layout_wrap_desktop": "nowrap",
+                    "layout_justify_desktop": "flex-start",
+                    "layout_align_items_desktop": "center",
+                    "same_as_desktop": true,
+                    "width_mobile": 100,
+                    "layout_direction_mobile": "column",
+                    "layout_grid_columns_mobile": 1,
+                    "layout_gap_mobile": 10,
+                    "layout_wrap_mobile": "nowrap",
+                    "layout_justify_mobile": "flex-start",
+                    "layout_align_items_mobile": "flex-start",
+                    "use_global_container_padding": true,
+                    "padding_horizontal": 30,
+                    "padding_vertical": 30,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {
+                    "rating_stars_z9LL3m": {
+                      "type": "rating-stars",
+                      "disabled": true,
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "product": "",
+                        "hide_rating_when_no_reviews": true,
+                        "rating": 4.7,
+                        "show_note": true,
+                        "show_review_count": true,
+                        "review_count": 123,
+                        "link": "",
+                        "margin_top": 0,
+                        "margin_bottom": 18,
+                        "additional_class": ""
+                      },
+                      "blocks": {}
+                    },
+                    "text_mLtNpU": {
+                      "type": "text",
+                      "settings": {
+                        "show_on_display": "desktop_only",
+                        "text": "<p>Velluce — la lumière en velours</p>",
+                        "text_style": "paragraph",
+                        "paragraph_font_size": "normal",
+                        "font_weight": 400,
+                        "alignment": "left",
+                        "alignment_mobile": "left",
+                        "show_read_more": false,
+                        "read_more_length": 50,
+                        "read_more_text": "Voir plus",
+                        "read_less_text": "Voir moins",
+                        "truncate": false,
+                        "truncate_length": 2,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "rating_stars_z9LL3m",
+                    "text_mLtNpU"
+                  ]
+                },
+                "text_VJtMDF": {
+                  "type": "text",
+                  "name": "Proposition de valeur",
+                  "disabled": true,
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Peu de modèles. Tous choisis pour l'heure où l'on allume.</p>",
+                    "text_style": "h2",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "left",
+                    "alignment_mobile": "left",
+                    "show_read_more": false,
+                    "read_more_length": 50,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "text_cJcTQA": {
+                  "type": "text",
+                  "name": "t:title",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<h3>La lumière qui fait rester</h3><h3></h3>",
+                    "text_style": "h3",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "left",
+                    "alignment_mobile": "left",
+                    "show_read_more": false,
+                    "read_more_length": 50,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "text_8GW6GA": {
+                  "type": "text",
+                  "name": "Sous titre",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Suspensions, plafonniers, lustres et appliques — livrés avec les cotes de pose, la bonne hauteur et tout ce qu'il faut dans le carton.</p>",
+                    "text_style": "paragraph",
+                    "paragraph_font_size": "large",
+                    "font_weight": 500,
+                    "alignment": "left",
+                    "alignment_mobile": "left",
+                    "show_read_more": false,
+                    "read_more_length": 50,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 4,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "group_rFrEU8": {
+                  "type": "group",
+                  "name": "Appel(s) à l'action (Groupe)",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "wrap_in_card": false,
+                    "card_link": "",
+                    "color_scheme": "",
+                    "show_card_border": false,
+                    "layout_type": "flex",
+                    "width_desktop": 100,
+                    "layout_direction_desktop": "row",
+                    "layout_grid_columns_desktop": 3,
+                    "layout_gap_desktop": 10,
+                    "layout_wrap_desktop": "nowrap",
+                    "layout_justify_desktop": "flex-start",
+                    "layout_align_items_desktop": "flex-start",
+                    "same_as_desktop": true,
+                    "width_mobile": 100,
+                    "layout_direction_mobile": "column",
+                    "layout_grid_columns_mobile": 1,
+                    "layout_gap_mobile": 10,
+                    "layout_wrap_mobile": "nowrap",
+                    "layout_justify_mobile": "flex-start",
+                    "layout_align_items_mobile": "flex-start",
+                    "use_global_container_padding": true,
+                    "padding_horizontal": 30,
+                    "padding_vertical": 30,
+                    "margin_top": 10,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {
+                    "button_JteLrC": {
+                      "type": "button",
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "link": "shopify://collections",
+                        "open_in_new_tab": false,
+                        "label": "Découvrir la sélection",
+                        "button_style": "primary",
+                        "button_shape": "default",
+                        "icon": "none",
+                        "icon_custom": "",
+                        "icon_position": "end",
+                        "margin_top": 0,
+                        "margin_bottom": 7,
+                        "additional_class": ""
+                      },
+                      "blocks": {}
+                    },
+                    "button_bebe2nd": {
+                      "type": "button",
+                      "disabled": true,
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "link": "shopify://collections/plafonniers",
+                        "open_in_new_tab": false,
+                        "label": "Voir les plafonniers",
+                        "button_style": "secondary",
+                        "button_shape": "default",
+                        "icon": "none",
+                        "icon_custom": "",
+                        "icon_position": "end",
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "button_JteLrC",
+                    "button_bebe2nd"
+                  ]
+                },
+                "group_3Pie6V": {
+                  "type": "group",
+                  "name": "Badges de confiance (Groupe)",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "wrap_in_card": false,
+                    "card_link": "",
+                    "color_scheme": "",
+                    "show_card_border": false,
+                    "layout_type": "flex",
+                    "width_desktop": 100,
+                    "layout_direction_desktop": "row",
+                    "layout_grid_columns_desktop": 3,
+                    "layout_gap_desktop": 20,
+                    "layout_wrap_desktop": "wrap",
+                    "layout_justify_desktop": "flex-start",
+                    "layout_align_items_desktop": "flex-start",
+                    "same_as_desktop": false,
+                    "width_mobile": 100,
+                    "layout_direction_mobile": "column",
+                    "layout_grid_columns_mobile": 1,
+                    "layout_gap_mobile": 10,
+                    "layout_wrap_mobile": "wrap",
+                    "layout_justify_mobile": "center",
+                    "layout_align_items_mobile": "flex-start",
+                    "use_global_container_padding": true,
+                    "padding_horizontal": 30,
+                    "padding_vertical": 30,
+                    "margin_top": 5,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {
+                    "icon_with_text_MPKKCD": {
+                      "type": "icon-with-text",
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "layout_direction_desktop": "row",
+                        "layout_gap_desktop": 5,
+                        "same_as_desktop": true,
+                        "layout_direction_mobile": "column",
+                        "layout_gap_mobile": 10,
+                        "icon_type": "icon",
+                        "icon": "delivery_truck_speed",
+                        "icon_custom": "",
+                        "icon_size": 22,
+                        "icon_position": "start",
+                        "text": "<p>Livraison suivie en France</p>",
+                        "text_style": "paragraph",
+                        "font_weight": 400,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      },
+                      "blocks": {}
+                    },
+                    "icon_with_text_AdYCCm": {
+                      "type": "icon-with-text",
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "layout_direction_desktop": "row",
+                        "layout_gap_desktop": 5,
+                        "same_as_desktop": true,
+                        "layout_direction_mobile": "column",
+                        "layout_gap_mobile": 10,
+                        "icon_type": "icon",
+                        "icon": "package_2",
+                        "icon_custom": "",
+                        "icon_size": 22,
+                        "icon_position": "start",
+                        "text": "<p>Retours sous 30 jours</p>",
+                        "text_style": "paragraph",
+                        "font_weight": 400,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "icon_with_text_MPKKCD",
+                    "icon_with_text_AdYCCm"
+                  ]
+                }
+              },
+              "block_order": [
+                "rating_stars_4NUd3p",
+                "group_wibFDH",
+                "text_VJtMDF",
+                "text_cJcTQA",
+                "text_8GW6GA",
+                "group_rFrEU8",
+                "group_3Pie6V"
+              ]
+            }
+          },
+          "block_order": [
+            "reviews_badge_464qB9",
+            "reviews_badge_qUUwbt",
+            "group_nypGzr"
+          ]
+        }
+      },
+      "block_order": [
+        "image_banner_dBEabG"
+      ],
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "full_width": true,
+        "color_scheme": "scheme-1",
+        "show_arrows": false,
+        "show_pagination": true,
+        "autoplay": false,
+        "rewind": true,
+        "autoplay_speed": 4,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "anchor_id": "",
+        "additional_class": ""
+      }
+    },
+    "banniere_hero_gMxea8": {
+      "type": "banniere-hero",
+      "name": "Velluce Hero Impact",
+      "settings": {
+        "desktop_video_url": "",
+        "desktop_image": "shopify://shop_images/ChatGPT_Image_16_aout_2026_12_06_04.png",
+        "desktop_position": "right center",
+        "mobile_video_url": "",
+        "mobile_image": "shopify://shop_images/7D62E0F5-C283-49B4-AD4B-874AD4986924.png",
+        "mobile_position": "center center",
+        "overlay_opacity": 25,
+        "desktop_height": 780,
+        "mobile_height": 620,
+        "rating_text": "4,7/5, + de 2 000 intérieurs illuminés",
+        "eyebrow": "N°1 du luminaire français",
+        "title": "La lumière qui fait rester",
+        "mobile_title": "La lumière qui fait rester",
+        "description": "Il y a la lumière qui sert à voir, et celle qui fait qu'on repose ses clés au lieu de repartir. Suspensions, plafonniers, lustres et appliques choisis un par un — pour la seconde.",
+        "mobile_description": "La lumière qu'on allume quand la journée est finie. Choisie un modèle à la fois.",
+        "primary_label": "Découvrir la sélection",
+        "primary_link": "shopify://collections/meilleurs-ventes",
+        "secondary_label": "",
+        "secondary_link": ""
+      }
+    },
+    "vgr_types_home": {
+      "type": "velluce-grille",
+      "blocks": {
+        "c_1": {
+          "type": "carte",
+          "settings": {
+            "collection": "suspensions",
+            "title": "Suspensions",
+            "image": "shopify://shop_images/IMG_9189.jpg",
+            "link": ""
+          }
+        },
+        "c_2": {
+          "type": "carte",
+          "settings": {
+            "collection": "plafonniers",
+            "title": "Plafonniers",
+            "image": "shopify://shop_images/IMG_9188.jpg",
+            "link": ""
+          }
+        },
+        "c_3": {
+          "type": "carte",
+          "settings": {
+            "collection": "appliques-murales",
+            "title": "Appliques murales",
+            "image": "shopify://shop_images/IMG_9198.jpg",
+            "link": ""
+          }
+        },
+        "c_4": {
+          "type": "carte",
+          "settings": {
+            "collection": "lustres",
+            "title": "Lustres",
+            "image": "shopify://shop_images/IMG_9195.jpg",
+            "link": ""
+          }
+        },
+        "c_5": {
+          "type": "carte",
+          "settings": {
+            "collection": "lampadaires",
+            "title": "Lampadaires",
+            "image": "shopify://shop_images/IMG_9197.jpg",
+            "link": ""
+          }
+        },
+        "c_6": {
+          "type": "carte",
+          "settings": {
+            "collection": "lampes",
+            "title": "Lampes à poser",
+            "image": "shopify://shop_images/IMG_9191.jpg",
+            "link": ""
+          }
+        },
+        "c_7": {
+          "type": "carte",
+          "settings": {
+            "collection": "ventilateurs-de-plafond",
+            "title": "Ventilateurs de plafond",
+            "image": "shopify://shop_images/17C6CA6A-32B6-4C14-A5AA-7C3B7D2449A6.png",
+            "link": ""
+          }
+        },
+        "c_8": {
+          "type": "carte",
+          "settings": {
+            "collection": "luminaires-exterieurs",
+            "title": "Luminaires d'extérieur",
+            "image": "shopify://shop_images/IMG_9199.jpg",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "c_1",
+        "c_2",
+        "c_3",
+        "c_4",
+        "c_5",
+        "c_6",
+        "c_7",
+        "c_8"
+      ],
+      "disabled": true,
+      "name": "Tous nos luminaires",
+      "settings": {
+        "eyebrow": "TOUTE LA MAISON",
+        "title": "Voir tous nos",
+        "title_accent": "luminaires",
+        "intro": "Huit familles, une même exigence. Commencez par ce que vous cherchez à éclairer.",
+        "align": "left",
+        "show_count": true,
+        "mode": "carrousel",
+        "per_view": 4.5,
+        "per_view_m": 1.6,
+        "show_dots": true,
+        "show_arrows": true,
+        "dot_color": "#cfc0ae",
+        "cta_label": "",
+        "cta_link": "",
+        "cols": 4,
+        "cols_m": 2,
+        "gap": 20,
+        "gap_m": 14,
+        "visuel_mode": "auto",
+        "card_height": 300,
+        "card_height_m": 230,
+        "frame_color": "#f7f2e9",
+        "gold": "#b08d57",
+        "frame_pad": 10,
+        "frame_pad_m": 8,
+        "radius_out": 22,
+        "radius_out_m": 18,
+        "radius_in": 14,
+        "radius_in_m": 12,
+        "edge_soft": 0.6,
+        "tilt": true,
+        "tilt_strength": 8,
+        "glow": true,
+        "accent": "#cfc0ae",
+        "ink": "#141210",
+        "muted": "#6a635c",
+        "rule_color": "#e9e4dd",
+        "bg": "#ffffff",
+        "title_size": 40,
+        "title_size_m": 26,
+        "plate_size": 17,
+        "plate_size_m": 14,
+        "max_width": 1280,
+        "head_gap": 44,
+        "head_gap_m": 30,
+        "pad_top": 72,
+        "pad_bottom": 64,
+        "pad_top_m": 44,
+        "pad_bottom_m": 40,
+        "reveal": true
+      }
+    },
+    "collections_premium_AHr9UK": {
+      "type": "collections-premium",
+      "blocks": {
+        "collection_X9CMgW": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_17_aout_2026_20_16_07.png",
+            "image_alt": "Suspension design au-dessus d'une table de salle à manger",
+            "title": "Suspensions",
+            "collection_url": "shopify://collections/suspensions"
+          }
+        },
+        "collection_n6iYJz": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_17_aout_2026_20_21_29.png",
+            "image_alt": "Plafonnier moderne dans un salon",
+            "title": "Plafonniers",
+            "collection_url": "shopify://collections/plafonniers"
+          }
+        },
+        "collection_6N8ei8": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_17_aout_2026_20_30_35.png",
+            "image_alt": "Lustre en cristal à pampilles",
+            "title": "Lustres",
+            "collection_url": "shopify://collections/lustres"
+          }
+        },
+        "collection_prhfQg": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_17_aout_2026_20_43_07.png",
+            "image_alt": "Lampe à poser en laiton",
+            "title": "Lampes à poser",
+            "collection_url": "shopify://collections/lampes"
+          }
+        },
+        "collection_mDzTpY": {
+          "type": "collection",
+          "settings": {
+            "image_alt": "Applique murale LED linéaire",
+            "title": "Appliques murales",
+            "collection_url": "shopify://collections/appliques-murales"
+          }
+        },
+        "collection_zce86f": {
+          "type": "collection",
+          "settings": {
+            "image_alt": "Applique extérieure lanterne",
+            "title": "Luminaires extérieurs",
+            "collection_url": "shopify://collections/luminaires-exterieurs"
+          }
+        },
+        "collection_9pUHnk": {
+          "type": "collection",
+          "settings": {
+            "image_alt": "Lampadaire en bois",
+            "title": "Lampadaires",
+            "collection_url": "shopify://collections/lampadaires"
+          }
+        }
+      },
+      "block_order": [
+        "collection_X9CMgW",
+        "collection_n6iYJz",
+        "collection_6N8ei8",
+        "collection_prhfQg",
+        "collection_mDzTpY",
+        "collection_zce86f",
+        "collection_9pUHnk"
+      ],
+      "name": "Velluce collections",
+      "settings": {
+        "title": "Par type de luminaire",
+        "eyebrow": "Nos univers lumière",
+        "subtitle": "Suspension, applique, lampadaire : chaque famille éclaire autrement. Trouvez la vôtre.",
+        "cta_label": "Voir tout le catalogue",
+        "cta_url": "/collections/all",
+        "card_link_label": "Découvrir",
+        "title_size_desktop": 44,
+        "title_size_mobile": 28,
+        "bg_color": "#ffffff",
+        "text_color": "#1a1a1a",
+        "max_width": 1560,
+        "section_padding_vertical": 60,
+        "card_gap": 16,
+        "border_radius": 16,
+        "image_height_desktop": 480,
+        "image_height_mobile": 300,
+        "single_card_max_width": 760,
+        "cards_desktop": 3,
+        "cards_mobile": 1,
+        "enable_carousel": true,
+        "enable_arrows": true,
+        "enable_dots": true
+      }
+    },
+    "par_espace_pfTfWn": {
+      "type": "par-espace",
+      "blocks": {
+        "espace_apky7a": {
+          "type": "espace",
+          "settings": {
+            "collection": "chambre",
+            "image": "shopify://shop_images/ChatGPT_Image_18_aout_2026_00_54_40_3.png",
+            "title": "Chambre",
+            "link_text": "Découvrir",
+            "custom_url": "",
+            "size": "third",
+            "text_pos": "bottom-left"
+          }
+        },
+        "espace_mk4cU8": {
+          "type": "espace",
+          "settings": {
+            "collection": "salon",
+            "image": "shopify://shop_images/ChatGPT_Image_18_aout_2026_00_54_40_4.png",
+            "title": "Salon",
+            "link_text": "Découvrir",
+            "custom_url": "",
+            "size": "twothirds",
+            "text_pos": "bottom-left"
+          }
+        },
+        "espace_Xz9PmP": {
+          "type": "espace",
+          "settings": {
+            "collection": "cuisine",
+            "image": "shopify://shop_images/ChatGPT_Image_18_aout_2026_00_54_40_1.png",
+            "title": "Cuisine",
+            "link_text": "Découvrir",
+            "custom_url": "",
+            "size": "twothirds",
+            "text_pos": "bottom-left"
+          }
+        },
+        "espace_pYC8rV": {
+          "type": "espace",
+          "settings": {
+            "collection": "salle-de-bain",
+            "image": "shopify://shop_images/ChatGPT_Image_18_aout_2026_00_54_40_2.png",
+            "title": "Salle de bain",
+            "link_text": "Découvrir",
+            "custom_url": "",
+            "size": "third",
+            "text_pos": "bottom-left"
+          }
+        }
+      },
+      "block_order": [
+        "espace_apky7a",
+        "espace_mk4cU8",
+        "espace_Xz9PmP",
+        "espace_pYC8rV"
+      ],
+      "name": "Espaces de vie",
+      "settings": {
+        "title": "Chaque pièce, sa lumière",
+        "subtitle": "On n'éclaire pas une cuisine comme on éclaire une chambre. Commencez par la pièce.",
+        "button_text": "Voir toutes les pièces",
+        "button_url": "shopify://pages/espaces-de-vie",
+        "button_desktop": false,
+        "title_font": "serif",
+        "title_size": 42,
+        "title_size_m": 30,
+        "title_weight": "400",
+        "title_italic": true,
+        "title_spacing": 0,
+        "title_color": "#1a1a1a",
+        "subtitle_size": 15,
+        "subtitle_size_m": 14,
+        "subtitle_color": "#555555",
+        "card_title_size": 20,
+        "card_title_size_m": 18,
+        "card_title_uppercase": true,
+        "card_title_weight": "700",
+        "card_title_color": "#ffffff",
+        "link_size": 16,
+        "link_size_m": 15,
+        "link_italic": true,
+        "show_arrow": true,
+        "link_color": "#ffffff",
+        "layout_desktop": "custom",
+        "gap": 8,
+        "height_mode": "fixed",
+        "card_height": 540,
+        "ratio_desktop": "landscape",
+        "radius": 0,
+        "overlay_opacity": 90,
+        "overlay_color": "#000000",
+        "hover_zoom": true,
+        "zoom_scale": 105,
+        "anim_scroll": true,
+        "mobile_layout": "carousel",
+        "card_width_m": 85,
+        "card_height_m": 460,
+        "show_dots": true,
+        "btn_text_size": 15,
+        "btn_text_color": "#1a1a1a",
+        "btn_bg_color": "#ffffff",
+        "btn_border_color": "#1a1a1a",
+        "btn_radius": 0,
+        "bg_color": "#ffffff",
+        "full_width": true,
+        "pad_top": 60,
+        "pad_bot": 60,
+        "pad_top_m": 40,
+        "pad_bot_m": 40
+      }
+    },
+    "collection_featured_ajDTpX": {
+      "type": "collection-featured",
+      "blocks": {
+        "group_TnrcY3": {
+          "type": "group",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "wrap_in_card": false,
+            "card_link": "",
+            "color_scheme": "scheme-3",
+            "show_card_border": false,
+            "layout_type": "flex",
+            "width_desktop": 100,
+            "layout_direction_desktop": "row",
+            "layout_grid_columns_desktop": 3,
+            "layout_gap_desktop": 10,
+            "layout_wrap_desktop": "nowrap",
+            "layout_justify_desktop": "space-between",
+            "layout_align_items_desktop": "center",
+            "same_as_desktop": true,
+            "width_mobile": 100,
+            "layout_direction_mobile": "column",
+            "layout_grid_columns_mobile": 1,
+            "layout_gap_mobile": 10,
+            "layout_wrap_mobile": "nowrap",
+            "layout_justify_mobile": "flex-start",
+            "layout_align_items_mobile": "flex-start",
+            "use_global_container_padding": true,
+            "padding_horizontal": 30,
+            "padding_vertical": 30,
+            "margin_top": 10,
+            "margin_bottom": 30,
+            "additional_class": ""
+          },
+          "blocks": {
+            "group_rQPBJn": {
+              "type": "group",
+              "name": "Groupe titre",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "wrap_in_card": false,
+                "card_link": "",
+                "color_scheme": "",
+                "show_card_border": false,
+                "layout_type": "flex",
+                "width_desktop": 70,
+                "layout_direction_desktop": "column",
+                "layout_grid_columns_desktop": 3,
+                "layout_gap_desktop": 10,
+                "layout_wrap_desktop": "nowrap",
+                "layout_justify_desktop": "flex-start",
+                "layout_align_items_desktop": "flex-start",
+                "same_as_desktop": false,
+                "width_mobile": 100,
+                "layout_direction_mobile": "column",
+                "layout_grid_columns_mobile": 1,
+                "layout_gap_mobile": 10,
+                "layout_wrap_mobile": "nowrap",
+                "layout_justify_mobile": "flex-start",
+                "layout_align_items_mobile": "flex-start",
+                "use_global_container_padding": true,
+                "padding_horizontal": 30,
+                "padding_vertical": 30,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {
+                "text_WeyhME": {
+                  "type": "text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p><strong>LES INDISPENSABLES</strong></p>",
+                    "text_style": "h3",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "left",
+                    "alignment_mobile": "left",
+                    "show_read_more": false,
+                    "read_more_length": 50,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "text_qzWhd3": {
+                  "type": "text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Si vous ne savez pas par où commencer, commencez ici. Ce sont les modèles qu'on recommande le plus souvent — et ceux qu'on remplace le moins.</p>",
+                    "text_style": "paragraph",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "left",
+                    "alignment_mobile": "left",
+                    "show_read_more": false,
+                    "read_more_length": 50,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_WeyhME",
+                "text_qzWhd3"
+              ]
+            },
+            "button_LtrWA3": {
+              "type": "button",
+              "settings": {
+                "show_on_display": "desktop_only",
+                "link": "{{ closest.collection.url }}",
+                "open_in_new_tab": false,
+                "label": "Voir toute la sélection",
+                "button_style": "secondary",
+                "button_shape": "small",
+                "icon": "arrow_forward",
+                "icon_custom": "arrow_forward",
+                "icon_position": "end",
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "group_rQPBJn",
+            "button_LtrWA3"
+          ]
+        },
+        "product-card": {
+          "type": "_product-card",
+          "static": true,
+          "settings": {
+            "wrap_in_card": false,
+            "color_scheme": "",
+            "layout_gap": 15
+          },
+          "blocks": {
+            "product_card_media_gallery_J4tKmY": {
+              "type": "_product-card-media-gallery",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "show_slider": true,
+                "media_rounded": true,
+                "show_badges": true,
+                "media_ratio": "1 / 1",
+                "additional_class": ""
+              },
+              "blocks": {}
+            },
+            "product_card_group_9Ctb38": {
+              "type": "_product-card-group",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "wrap_in_card": false,
+                "color_scheme": "scheme-3",
+                "layout_direction_desktop": "column",
+                "layout_gap_desktop": 5,
+                "layout_wrap_desktop": "nowrap",
+                "layout_justify_desktop": "flex-start",
+                "layout_align_items_desktop": "flex-start",
+                "same_as_desktop": true,
+                "layout_direction_mobile": "column",
+                "layout_gap_mobile": 10,
+                "layout_wrap_mobile": "nowrap",
+                "layout_justify_mobile": "flex-start",
+                "layout_align_items_mobile": "flex-start",
+                "margin_top": 5,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {
+                "text_UqjdpF": {
+                  "type": "text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<h2>{{ closest.product.title }}</h2>",
+                    "text_style": "paragraph",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 500,
+                    "alignment": "left",
+                    "alignment_mobile": "left",
+                    "show_read_more": false,
+                    "read_more_length": 50,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "product_price_qEEaqN": {
+                  "type": "product-price",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "product": "{{ closest.product }}",
+                    "sales_badge": "amount",
+                    "show_sales_badge_text": false,
+                    "show_unit_price": false,
+                    "text_style": "paragraph",
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "product_card_swatches_LJX6gJ": {
+                  "type": "_product-card-swatches",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "swatches_size": "small",
+                    "swatches_rounded": true,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "rating_stars_w3MWUh": {
+                  "type": "rating-stars",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "product": "{{ closest.product }}",
+                    "hide_rating_when_no_reviews": true,
+                    "rating": 4.5,
+                    "show_note": true,
+                    "show_review_count": true,
+                    "review_count": 123,
+                    "link": "",
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_UqjdpF",
+                "product_price_qEEaqN",
+                "product_card_swatches_LJX6gJ",
+                "rating_stars_w3MWUh"
+              ]
+            }
+          },
+          "block_order": [
+            "product_card_media_gallery_J4tKmY",
+            "product_card_group_9Ctb38"
+          ]
+        }
+      },
+      "block_order": [
+        "group_TnrcY3"
+      ],
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "color_scheme": "",
+        "collection": "meilleurs-ventes",
+        "max_products": 6,
+        "layout_type": "slider",
+        "grid_columns": 4,
+        "grid_columns_mobile": "2",
+        "slider_items": 4,
+        "slider_items_mobile": "1.8",
+        "show_arrows": true,
+        "show_pagination": false,
+        "rewind": true,
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "anchor_id": "",
+        "additional_class": ""
+      }
+    },
+    "reviews_gidWad": {
+      "type": "reviews",
+      "blocks": {
+        "review_slide_MRrigV": {
+          "type": "_review-slide",
+          "name": "t:review_display_1",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "display_type": "1",
+            "wrap_in_card": true,
+            "color_scheme": "scheme-1",
+            "show_card_border": true,
+            "rating": 4.5,
+            "image_ratio": "landscape",
+            "source": "uploaded",
+            "video_url": "",
+            "title": "Excellent produit !",
+            "content": "<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>",
+            "author": "John Doe",
+            "date": "Le 11/03/2025",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "review_slide_jRXTRc": {
+          "type": "_review-slide",
+          "name": "t:review_display_1",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "display_type": "1",
+            "wrap_in_card": true,
+            "color_scheme": "scheme-1",
+            "show_card_border": true,
+            "rating": 4.5,
+            "image_ratio": "landscape",
+            "source": "uploaded",
+            "video_url": "",
+            "title": "Excellent produit !",
+            "content": "<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>",
+            "author": "John Doe",
+            "date": "Le 11/03/2025",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "review_slide_VCAjKA": {
+          "type": "_review-slide",
+          "name": "t:review_display_1",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "display_type": "1",
+            "wrap_in_card": true,
+            "color_scheme": "scheme-1",
+            "show_card_border": true,
+            "rating": 4.5,
+            "image_ratio": "landscape",
+            "source": "uploaded",
+            "video_url": "",
+            "title": "Excellent produit !",
+            "content": "<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>",
+            "author": "John Doe",
+            "date": "Le 11/03/2025",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "review_slide_x7Ja77": {
+          "type": "_review-slide",
+          "name": "t:review_display_1",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "display_type": "1",
+            "wrap_in_card": true,
+            "color_scheme": "scheme-1",
+            "show_card_border": true,
+            "rating": 4.5,
+            "image_ratio": "landscape",
+            "source": "uploaded",
+            "video_url": "",
+            "title": "Excellent produit !",
+            "content": "<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>",
+            "author": "John Doe",
+            "date": "Le 11/03/2025",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "review_slide_EpDpnx": {
+          "type": "_review-slide",
+          "name": "t:review_display_1",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "display_type": "1",
+            "wrap_in_card": true,
+            "color_scheme": "scheme-1",
+            "show_card_border": true,
+            "rating": 4.5,
+            "image_ratio": "landscape",
+            "source": "uploaded",
+            "video_url": "",
+            "title": "Excellent produit !",
+            "content": "<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>",
+            "author": "John Doe",
+            "date": "Le 11/03/2025",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "review_slide_gy6pGd": {
+          "type": "_review-slide",
+          "name": "t:review_display_1",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "display_type": "1",
+            "wrap_in_card": true,
+            "color_scheme": "scheme-1",
+            "show_card_border": true,
+            "rating": 4.5,
+            "image_ratio": "landscape",
+            "source": "uploaded",
+            "video_url": "",
+            "title": "Excellent produit !",
+            "content": "<p>Écrivez un retour à propos de vos produits. Ajustez le nombre de colonnes en fonction de la taille moyenne des messages.</p>",
+            "author": "John Doe",
+            "date": "Le 11/03/2025",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "title": {
+          "type": "text",
+          "static": true,
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "text": "<h3>Avis client</h3>",
+            "text_style": "h3",
+            "paragraph_font_size": "normal",
+            "font_weight": 400,
+            "alignment": "left",
+            "alignment_mobile": "left",
+            "show_read_more": false,
+            "read_more_length": 200,
+            "read_more_text": "Voir plus",
+            "read_less_text": "Voir moins",
+            "truncate": false,
+            "truncate_length": 2,
+            "margin_top": 0,
+            "margin_bottom": 30,
+            "additional_class": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "review_slide_MRrigV",
+        "review_slide_jRXTRc",
+        "review_slide_VCAjKA",
+        "review_slide_x7Ja77",
+        "review_slide_EpDpnx",
+        "review_slide_gy6pGd"
+      ],
+      "name": "t:reviews_slider",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "anchor": "reviews",
+        "color_scheme": "scheme-1",
+        "layout_type": "slider",
+        "grid_columns": 3,
+        "grid_columns_mobile": "1",
+        "slider_items": 3,
+        "slider_items_mobile": "1",
+        "show_arrows": false,
+        "show_pagination": true,
+        "rewind": false,
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "choisir_velluce_dcVbQ7": {
+      "type": "choisir-velluce",
+      "blocks": {
+        "bloc_ETKdHR": {
+          "type": "bloc",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_16_aout_2026_13_42_50.png",
+            "title": "On a comparé à votre place",
+            "text": "Trier cinquante fiches produits à 23 h, personne n'en a envie. On l'a fait : commandé, déballé, monté, allumé. Ce qui reste en ligne est ce qui a passé l'épreuve."
+          }
+        },
+        "bloc_aLmCAH": {
+          "type": "bloc",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_16_aout_2026_13_51_11.png",
+            "title": "Vous repeindrez. Il restera.",
+            "text": "Formes qui ne datent pas, ampoules LED standard, fixations éprouvées. Le luminaire est l'un des rares objets d'une maison qu'on décroche pour le remonter ailleurs."
+          }
+        },
+        "bloc_6b6VjG": {
+          "type": "bloc",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_16_aout_2026_13_49_05.png",
+            "title": "Et si ça ne va pas, on règle",
+            "text": "Chaque luminaire est vérifié avant l'envoi. Garantie 24 mois incluse, support 7j/7 en français. Vous écrivez, on répond, on remplace."
+          }
+        }
+      },
+      "block_order": [
+        "bloc_ETKdHR",
+        "bloc_aLmCAH",
+        "bloc_6b6VjG"
+      ],
+      "name": "Choisir Velluce",
+      "settings": {
+        "eyebrow": "La méthode Velluce",
+        "intro": "Nous refusons plus de luminaires que nous n'en vendons. Voici pourquoi c'est une bonne nouvelle pour vous.",
+        "title": "Peu de modèles. Aucun regret.",
+        "title_desktop": 52,
+        "title_mobile": 28,
+        "image_desktop": 250,
+        "image_mobile": 200,
+        "padding_desktop": 72,
+        "padding_mobile": 48,
+        "gap": 80,
+        "bg_color": "#ffffff",
+        "text_color": "#1a1a1a",
+        "show_nav": true,
+        "nav_color": "#cfc0ae",
+        "nav_active_color": "#cfc0ae"
+      }
+    },
+    "velluce_comparatif": {
+      "type": "velluce-comparatif",
+      "blocks": {
+        "ligne_1": {
+          "type": "ligne",
+          "settings": {
+            "critere": "Le diamètre conseillé pour votre pièce"
+          }
+        },
+        "ligne_2": {
+          "type": "ligne",
+          "settings": {
+            "critere": "La hauteur de pose, chiffrée"
+          }
+        },
+        "ligne_3": {
+          "type": "ligne",
+          "settings": {
+            "critere": "Le prix expliqué, pas seulement barré"
+          }
+        },
+        "ligne_4": {
+          "type": "ligne",
+          "settings": {
+            "critere": "On vous dit aussi quand ne rien acheter"
+          }
+        },
+        "ligne_5": {
+          "type": "ligne",
+          "settings": {
+            "critere": "Aucun compte à rebours, aucune fausse urgence"
+          }
+        },
+        "ligne_6": {
+          "type": "ligne",
+          "settings": {
+            "critere": "Une réponse humaine, en français, avant l'achat"
+          }
+        }
+      },
+      "block_order": [
+        "ligne_1",
+        "ligne_2",
+        "ligne_3",
+        "ligne_4",
+        "ligne_5",
+        "ligne_6"
+      ],
+      "settings": {
+        "fond": "#ffffff",
+        "kicker": "Le vrai comparatif",
+        "titre": "Ce que vous devriez exiger d'une boutique de luminaires",
+        "sous_titre": "Six critères vérifiables en deux minutes. Ouvrez n'importe quel autre site de luminaires dans un onglet et contrôlez-les un par un avant de commander ici.",
+        "marque": "VELLUCE",
+        "marque_sous": "Paris",
+        "col_criteres": "Critères",
+        "col_nous": "Velluce",
+        "col_ailleurs": "Ce qu'on trouve ailleurs*",
+        "note_1": "*Comparatif établi en analysant une à une 30 boutiques de luminaires françaises, en août 2026.",
+        "note_2": "Aucune n'indiquait de cote de pose."
+      }
+    },
+    "manifeste_velluce": {
+      "type": "velluce-manifeste",
+      "blocks": {
+        "fact_1": {
+          "type": "fact",
+          "settings": {
+            "label": "SÉLECTION",
+            "value": "Peu de modèles"
+          }
+        },
+        "fact_2": {
+          "type": "fact",
+          "settings": {
+            "label": "CONTRÔLE",
+            "value": "Avant mise en ligne"
+          }
+        },
+        "fact_3": {
+          "type": "fact",
+          "settings": {
+            "label": "GARANTIE",
+            "value": "24 mois incluse"
+          }
+        }
+      },
+      "block_order": [
+        "fact_1",
+        "fact_2",
+        "fact_3"
+      ],
+      "name": "Velluce — Manifeste",
+      "settings": {
+        "eyebrow": "LE MOMENT VELLUCE",
+        "title": "L'heure où l'on",
+        "title_accent": "allume",
+        "intro": "<p>18 h 47 en décembre. 21 h 30 en juin. Ce n'est jamais la même heure, mais c'est toujours le même moment : celui où la maison bascule.</p>",
+        "text": "<p>On tire les rideaux, on allume, et la pièce cesse d'être un lieu de passage. Ce basculement-là ne tient à rien — une hauteur de câble, une température de couleur, un abat-jour qui diffuse au lieu d'éblouir.</p>",
+        "dropcap": true,
+        "quote": "C'est notre métier de réussir ce basculement-là.",
+        "signature": "VELLUCE — LA LUMIÈRE EN VELOURS",
+        "image": "shopify://shop_images/452C6A57-DF96-458F-9138-8852DC59C455.png",
+        "image_alt": "Salon Velluce éclairé à la tombée du jour",
+        "image_caption": "SALON — 18 H 47",
+        "image_position": "right",
+        "img_height": 560,
+        "img_height_m": 380,
+        "img_radius": 3,
+        "img_radius_m": 3,
+        "ghost_text": "18:47",
+        "ghost_size": 192,
+        "ghost_opacity": 0.3,
+        "ghost_opacity_m": 0.4,
+        "cta_label": "EXPLORER NOS PIÈCES",
+        "cta_link": "shopify://pages/espaces-de-vie",
+        "cta_style": "link",
+        "accent": "#cfc0ae",
+        "ink": "#141210",
+        "muted": "#6a635c",
+        "rule_color": "#e9e4dd",
+        "bg": "#ffffff",
+        "title_size": 60,
+        "title_size_m": 33,
+        "intro_size": 19,
+        "intro_size_m": 17,
+        "text_size": 16,
+        "text_size_m": 15,
+        "quote_size": 22,
+        "quote_size_m": 18,
+        "max_width": 1240,
+        "gap": 72,
+        "title_gap": 48,
+        "body_offset": 28,
+        "pad_top": 96,
+        "pad_bottom": 96,
+        "pad_top_m": 56,
+        "pad_bottom_m": 56,
+        "reveal": true
+      }
+    },
+    "17849106896a37e7ff": {
+      "type": "apps",
+      "settings": {}
+    },
+    "carrousel_images_RDapf6": {
+      "type": "carrousel-images",
+      "blocks": {
+        "image_bRWVdP": {
+          "type": "image",
+          "settings": {
+            "video": "shopify://files/videos/copy_0D7F518D-3FBB-4515-9EC2-185BA68999EE.mov",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_VaQFbK": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-08-18_at_19.41.06.jpg",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_NDVxYq": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_19_aout_2026_18_03_17_3.png",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_GEcDcx": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_19_aout_2026_18_03_17_1.png",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_nhALKL": {
+          "type": "image",
+          "settings": {
+            "video": "shopify://files/videos/copy_75B298A2-073F-4758-A6F8-714FABA4C2FE.mov",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_GegmRn": {
+          "type": "image",
+          "settings": {
+            "video": "shopify://files/videos/copy_55C51242-A226-454E-A093-971EDAF6367A.mov",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_erqTMd": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_19_aout_2026_17_38_36.png",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_CpUbCz": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_19_aout_2026_18_53_53.png",
+            "caption": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_bRWVdP",
+        "image_VaQFbK",
+        "image_NDVxYq",
+        "image_GEcDcx",
+        "image_nhALKL",
+        "image_GegmRn",
+        "image_erqTMd",
+        "image_CpUbCz"
+      ],
+      "name": "Carrousel d'images",
+      "settings": {
+        "title": "Chez eux, à cette heure-ci",
+        "subtitle": "Des intérieurs comme le vôtre, pas des studios photo.",
+        "title_size": 38,
+        "title_size_m": 26,
+        "title_weight": "400",
+        "title_italic": true,
+        "title_color": "#1a1a1a",
+        "sub_size": 15,
+        "sub_size_m": 14,
+        "sub_color": "#666666",
+        "center_h": 720,
+        "side_h": 640,
+        "center_h_m": 560,
+        "side_h_m": 470,
+        "cardpx": 440,
+        "cardpx_m": 300,
+        "gap": 14,
+        "radius": 16,
+        "side_opacity": 100,
+        "autoplay": true,
+        "interval": 4,
+        "show_arrows": true,
+        "cap_size": 13,
+        "cap_color": "#555555",
+        "cap_align": "center",
+        "nav_bg": "#ffffff",
+        "nav_color": "#1a1a1a",
+        "bg": "#ffffff",
+        "pad_top": 56,
+        "pad_bot": 56,
+        "pad_top_m": 36,
+        "pad_bot_m": 36
+      }
+    },
+    "chapitre_appliques": {
+      "type": "velluce-chapitre",
+      "name": "Chapitre 01 — Appliques murales",
+      "settings": {
+        "index": "01",
+        "eyebrow": "APPLIQUES MURALES",
+        "title": "Quand le plafond n'a plus rien",
+        "title_accent": "à dire",
+        "text": "<p>L'applique n'éclaire pas la pièce : elle éclaire l'endroit où vous êtes. C'est la lumière basse, celle qu'on allume après le dîner quand on ne veut plus du plafonnier.</p><p>Un couloir devient un passage. Un mur nu devient une composition. Et le jour, éteinte, elle reste un objet — pas un appareil.</p>",
+        "spec_1": "1,60 m du sol",
+        "spec_2": "Par deux autour d'un miroir",
+        "spec_3": "Gabarit de perçage fourni",
+        "image": "shopify://shop_images/ChatGPTImage10fevr.2026_22_47_14.png",
+        "image_alt": "Applique murale allumée sur un mur clair, en fin de journée",
+        "card_label": "Appliques murales",
+        "card_cta": "Découvrir",
+        "card_link": "shopify://collections/appliques-murales",
+        "media_position": "right",
+        "card_height": 500,
+        "card_height_m": 300,
+        "card_radius": 30,
+        "card_radius_m": 26,
+        "frame_color": "#f7f2e9",
+        "gold": "#b08d57",
+        "frame_pad": 16,
+        "frame_pad_m": 12,
+        "radius_in": 20,
+        "radius_in_m": 17,
+        "edge_soft": 0.7,
+        "plate_place": "out",
+        "tilt": true,
+        "tilt_strength": 7,
+        "glow": true,
+        "styles_label": "PAR STYLE",
+        "accent": "#cfc0ae",
+        "ink": "#141210",
+        "muted": "#6a635c",
+        "rule_color": "#e9e4dd",
+        "bg": "#ffffff",
+        "title_size": 54,
+        "title_size_m": 31,
+        "text_size": 16,
+        "text_size_m": 15,
+        "plate_size": 30,
+        "plate_size_m": 22,
+        "max_width": 1240,
+        "text_ratio": 46,
+        "gap": 76,
+        "pad_top": 100,
+        "pad_bottom": 100,
+        "pad_top_m": 60,
+        "pad_bottom_m": 60,
+        "reveal": true
+      }
+    },
+    "chapitre_plafonniers": {
+      "type": "velluce-chapitre",
+      "name": "Chapitre 02 — Plafonniers",
+      "settings": {
+        "index": "02",
+        "eyebrow": "PLAFONNIERS",
+        "title": "Celui qu'on ne remarque",
+        "title_accent": "jamais",
+        "text": "<p>Un plafonnier réussi est invisible. Personne ne dit « quel joli plafonnier » — on dit simplement qu'on est bien dans cette pièce, sans savoir pourquoi.</p><p>Pas de coin resté sombre, pas de halo qui pique quand on lève la tête. Juste une clarté qui tient toute la pièce, du matin au soir.</p>",
+        "spec_1": "Ø 30 cm jusqu'à 10 m²",
+        "spec_2": "100 à 150 lumens par m²",
+        "spec_3": "Pensé pour les plafonds bas",
+        "image": "shopify://shop_images/IMG_9188.jpg",
+        "image_alt": "Plafonnier moderne diffusant une lumière homogène dans un séjour",
+        "card_label": "Plafonniers",
+        "card_cta": "Découvrir",
+        "card_link": "shopify://collections/plafonniers",
+        "media_position": "left",
+        "card_height": 530,
+        "card_height_m": 300,
+        "card_radius": 30,
+        "card_radius_m": 26,
+        "frame_color": "#f7f2e9",
+        "gold": "#b08d57",
+        "frame_pad": 16,
+        "frame_pad_m": 12,
+        "radius_in": 20,
+        "radius_in_m": 17,
+        "edge_soft": 0.7,
+        "plate_place": "out",
+        "tilt": true,
+        "tilt_strength": 7,
+        "glow": true,
+        "styles_label": "PAR STYLE",
+        "accent": "#cfc0ae",
+        "ink": "#141210",
+        "muted": "#6a635c",
+        "rule_color": "#e9e4dd",
+        "bg": "#faf8f5",
+        "title_size": 54,
+        "title_size_m": 31,
+        "text_size": 16,
+        "text_size_m": 15,
+        "plate_size": 30,
+        "plate_size_m": 22,
+        "max_width": 1240,
+        "text_ratio": 46,
+        "gap": 76,
+        "pad_top": 100,
+        "pad_bottom": 100,
+        "pad_top_m": 60,
+        "pad_bottom_m": 60,
+        "reveal": true
+      }
+    },
+    "chapitre_suspensions": {
+      "type": "velluce-chapitre",
+      "name": "Chapitre 03 — Suspensions",
+      "settings": {
+        "index": "03",
+        "eyebrow": "SUSPENSIONS",
+        "title": "Le cercle autour de",
+        "title_accent": "la table",
+        "text": "<p>Une suspension ne décore pas une table : elle dessine un cercle de lumière, et personne n'en sort avant la fin du repas.</p><p>Tout se joue à quelques centimètres. Trop haut, le cercle se dilue. Trop bas, il coupe les regards. C'est pour ça qu'on vous donne la cote.</p>",
+        "spec_1": "75-85 cm du plateau",
+        "spec_2": "Diamètre = un tiers de la table",
+        "spec_3": "Hauteur réglable à la pose",
+        "image": "shopify://shop_images/Suspensionlumineuseenverrerose.png",
+        "image_alt": "Suspension design au-dessus d'une table de salle à manger",
+        "card_label": "Suspensions",
+        "card_cta": "Découvrir",
+        "card_link": "shopify://collections/suspensions",
+        "media_position": "right",
+        "card_height": 530,
+        "card_height_m": 300,
+        "card_radius": 30,
+        "card_radius_m": 26,
+        "frame_color": "#f7f2e9",
+        "gold": "#b08d57",
+        "frame_pad": 16,
+        "frame_pad_m": 12,
+        "radius_in": 20,
+        "radius_in_m": 17,
+        "edge_soft": 0.7,
+        "plate_place": "out",
+        "tilt": true,
+        "tilt_strength": 7,
+        "glow": true,
+        "styles_label": "PAR STYLE",
+        "accent": "#cfc0ae",
+        "ink": "#141210",
+        "muted": "#6a635c",
+        "rule_color": "#e9e4dd",
+        "bg": "#ffffff",
+        "title_size": 54,
+        "title_size_m": 31,
+        "text_size": 16,
+        "text_size_m": 15,
+        "plate_size": 30,
+        "plate_size_m": 22,
+        "max_width": 1240,
+        "text_ratio": 46,
+        "gap": 76,
+        "pad_top": 100,
+        "pad_bottom": 100,
+        "pad_top_m": 60,
+        "pad_bottom_m": 60,
+        "reveal": true
+      }
+    },
+    "video_promo_cknbEL": {
+      "type": "video-promo",
+      "name": "Velluce Video promo",
+      "settings": {
+        "video": "shopify://files/videos/Prompt_use_the_202605172338 2.mp4",
+        "video_url": "",
+        "video_url_desktop": "",
+        "overlay_color": "#2c2c2c",
+        "overlay_opacity": 80,
+        "eyebrow": "CE QU'ON REFUSE DE VENDRE",
+        "title": "Beaucoup de choses.",
+        "subtitle": "Les modèles qui grésillent au variateur. Ceux dont la finition marque au premier coup de chiffon. Ceux qui donnent une lumière d'open-space. Ils sont commandés, déballés, montés, allumés — puis renvoyés. Ce que vous voyez ici est simplement ce qui est resté.",
+        "text_color": "#ffffff",
+        "accent_color": "#cfc0ae",
+        "title_size": 52,
+        "title_size_mobile": 32,
+        "subtitle_size": 18,
+        "subtitle_size_mobile": 18,
+        "button_label": "",
+        "button_link": "",
+        "button_bg": "#ffffff",
+        "button_text_color": "#2c2c2c",
+        "button_radius": 30,
+        "height": 95,
+        "height_mobile": 75,
+        "content_max_width": 720
+      }
+    },
+    "custom_section_NJxRD7": {
+      "type": "custom-section",
+      "blocks": {
+        "slider_XywcYe": {
+          "type": "slider",
+          "name": "t:slider",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "per_page_desktop": 4,
+            "per_page_mobile": "1",
+            "gap": 5,
+            "show_arrows": false,
+            "show_pagination": true,
+            "rewind": false,
+            "autoplay": true,
+            "autoplay_speed": 4,
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {
+            "slide_3jn6VD": {
+              "type": "_slide",
+              "name": "t:slide",
+              "settings": {
+                "wrap_in_card": false,
+                "color_scheme": "",
+                "layout_direction": "column",
+                "layout_wrap": "nowrap",
+                "layout_gap": 10,
+                "layout_justify": "center",
+                "layout_align_items": "center",
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {
+                "icon_QFn4W7": {
+                  "type": "icon",
+                  "name": "t:icon",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "icon_type": "icon",
+                    "icon": "featured_seasonal_and_gifts",
+                    "icon_custom": "",
+                    "icon_size": 42,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": "vllc-icon-beige"
+                  },
+                  "blocks": {}
+                },
+                "text_6Ym7L4": {
+                  "type": "text",
+                  "name": "t:text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Livraison offerte</p>",
+                    "text_style": "h6",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "center",
+                    "alignment_mobile": "center",
+                    "show_read_more": false,
+                    "read_more_length": 200,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "text_iBFrW4": {
+                  "type": "text",
+                  "name": "t:text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Sans minimum d'achat. Les frais de port sont pour nous, même pour un seul article.</p>",
+                    "text_style": "paragraph",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "center",
+                    "alignment_mobile": "center",
+                    "show_read_more": false,
+                    "read_more_length": 200,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "icon_QFn4W7",
+                "text_6Ym7L4",
+                "text_iBFrW4"
+              ]
+            },
+            "slide_RW8GLP": {
+              "type": "_slide",
+              "name": "t:slide",
+              "settings": {
+                "wrap_in_card": false,
+                "color_scheme": "",
+                "layout_direction": "column",
+                "layout_wrap": "nowrap",
+                "layout_gap": 10,
+                "layout_justify": "center",
+                "layout_align_items": "center",
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {
+                "icon_gijhrF": {
+                  "type": "icon",
+                  "name": "t:icon",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "icon_type": "icon",
+                    "icon": "delivery_truck_speed",
+                    "icon_custom": "",
+                    "icon_size": 42,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": "vllc-icon-beige"
+                  },
+                  "blocks": {}
+                },
+                "text_HFNaPW": {
+                  "type": "text",
+                  "name": "t:text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Expédié en 24 à 48 h</p>",
+                    "text_style": "h6",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "center",
+                    "alignment_mobile": "center",
+                    "show_read_more": false,
+                    "read_more_length": 200,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "text_U8mQc9": {
+                  "type": "text",
+                  "name": "t:text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Votre commande part sous 24 à 48 h ouvrées, avec un numéro de suivi dès le départ.</p>",
+                    "text_style": "paragraph",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "center",
+                    "alignment_mobile": "center",
+                    "show_read_more": false,
+                    "read_more_length": 200,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "icon_gijhrF",
+                "text_HFNaPW",
+                "text_U8mQc9"
+              ]
+            },
+            "slide_e7r7wK": {
+              "type": "_slide",
+              "name": "t:slide",
+              "settings": {
+                "wrap_in_card": false,
+                "color_scheme": "",
+                "layout_direction": "column",
+                "layout_wrap": "nowrap",
+                "layout_gap": 10,
+                "layout_justify": "center",
+                "layout_align_items": "center",
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {
+                "icon_6mtVWT": {
+                  "type": "icon",
+                  "name": "t:icon",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "icon_type": "icon",
+                    "icon": "encrypted",
+                    "icon_custom": "",
+                    "icon_size": 42,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": "vllc-icon-beige"
+                  },
+                  "blocks": {}
+                },
+                "text_i9Cyej": {
+                  "type": "text",
+                  "name": "t:text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Paiement sécurisé</p>",
+                    "text_style": "h6",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "center",
+                    "alignment_mobile": "center",
+                    "show_read_more": false,
+                    "read_more_length": 200,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "text_XVrxp8": {
+                  "type": "text",
+                  "name": "t:text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>CB, Apple Pay, PayPal ou Klarna. Vos données sont chiffrées en SSL.</p>",
+                    "text_style": "paragraph",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "center",
+                    "alignment_mobile": "center",
+                    "show_read_more": false,
+                    "read_more_length": 200,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "icon_6mtVWT",
+                "text_i9Cyej",
+                "text_XVrxp8"
+              ]
+            },
+            "slide_FVXyh8": {
+              "type": "_slide",
+              "name": "t:slide",
+              "settings": {
+                "wrap_in_card": false,
+                "color_scheme": "",
+                "layout_direction": "column",
+                "layout_wrap": "nowrap",
+                "layout_gap": 10,
+                "layout_justify": "center",
+                "layout_align_items": "center",
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {
+                "icon_xdzmxK": {
+                  "type": "icon",
+                  "name": "t:icon",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "icon_type": "icon",
+                    "icon": "verified",
+                    "icon_custom": "",
+                    "icon_size": 42,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": "vllc-icon-beige"
+                  },
+                  "blocks": {}
+                },
+                "text_daEqnk": {
+                  "type": "text",
+                  "name": "t:text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Garantie 24 mois</p>",
+                    "text_style": "h6",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "center",
+                    "alignment_mobile": "center",
+                    "show_read_more": false,
+                    "read_more_length": 200,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "text_RN7htP": {
+                  "type": "text",
+                  "name": "t:text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Vérifié avant l'envoi, couvert deux ans. Un souci ? On remplace ou on rembourse.</p>",
+                    "text_style": "paragraph",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "center",
+                    "alignment_mobile": "center",
+                    "show_read_more": false,
+                    "read_more_length": 200,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "icon_xdzmxK",
+                "text_daEqnk",
+                "text_RN7htP"
+              ]
+            }
+          },
+          "block_order": [
+            "slide_3jn6VD",
+            "slide_RW8GLP",
+            "slide_e7r7wK",
+            "slide_FVXyh8"
+          ]
+        }
+      },
+      "block_order": [
+        "slider_XywcYe"
+      ],
+      "name": "t:reassurances_slider",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "color_scheme": "",
+        "wrap_in_card": false,
+        "color_scheme_card": "",
+        "section_width": "normal",
+        "layout_type": "flex",
+        "layout_flex_direction_desktop": "column",
+        "layout_grid_columns_desktop": 3,
+        "layout_gap_desktop": 20,
+        "layout_wrap_desktop": "nowrap",
+        "layout_flex_justify_desktop": "flex-start",
+        "layout_flex_align_items_desktop": "flex-start",
+        "same_as_desktop": true,
+        "layout_flex_direction_mobile": "column",
+        "layout_gap_mobile": 20,
+        "layout_wrap_mobile": "nowrap",
+        "layout_flex_justify_mobile": "flex-start",
+        "layout_flex_align_items_mobile": "flex-start",
+        "layout_grid_columns_mobile": 1,
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "anchor_id": "",
+        "additional_class": ""
+      }
+    },
+    "image_texte_premium_dbmmzi": {
+      "type": "image-texte-premium",
+      "name": "Image texte premium",
+      "settings": {
+        "image": "shopify://shop_images/ChatGPT_Image_19_aout_2026_15_25_01.png",
+        "caption": "",
+        "image_inner_border": true,
+        "image_position": "left",
+        "eyebrow": "L'engagement Velluce",
+        "title": "Garantie 24 mois, sans astérisque",
+        "text": "<p>Un luminaire, on le pose une fois. Il reste au-dessus de la table pendant les devoirs, les dimanches midi, les soirs où l'on ne fait rien. Il n'a pas le droit de lâcher.</p><p>Chaque référence Velluce est vérifiée, certifiée CE et conforme aux normes européennes en vigueur — et couverte <strong>24 mois</strong>, incluse d'office, sans surcoût et sans conditions cachées.</p><p>Un problème dans les deux ans ? Vous écrivez, on répond 7j/7 en français, on remplace ou on rembourse. Pas d'expertise à vos frais, pas de formulaire à rallonge, pas de service client qui vous fatigue jusqu'à ce que vous abandonniez.</p>",
+        "point_1": "Garantie 24 mois",
+        "point_1_sub": "incluse, sans surcoût",
+        "point_2": "Livraison offerte",
+        "point_2_sub": "partout en France",
+        "point_3": "Retour sous 14 jours",
+        "point_3_sub": "si le rendu ne vous plaît pas",
+        "button_text": "LIRE NOTRE PROMESSE",
+        "button_link": "shopify://pages/notre-promesse",
+        "button_style": "link",
+        "section_bg": "#ffffff",
+        "title_color": "#111111",
+        "text_color": "#111111",
+        "accent_color": "#a08d74",
+        "button_bg": "#cfc0ae",
+        "button_text_color": "#ffffff",
+        "title_size_desktop": 46,
+        "title_size_mobile": 28,
+        "mobile_title_one_line": false,
+        "text_size_desktop": 16,
+        "text_size_mobile": 16,
+        "text_line_height": 1.7,
+        "paragraph_spacing": 14,
+        "button_text_size": 15,
+        "button_text_size_mobile": 15,
+        "button_height_desktop": 58,
+        "button_height_mobile": 54,
+        "button_padding_x_desktop": 34,
+        "button_radius": 10,
+        "button_margin_top": 38,
+        "button_margin_top_mobile": 34,
+        "max_width": 1280,
+        "gap_desktop": 76,
+        "desktop_image_height": 460,
+        "desktop_padding_y": 50,
+        "image_radius": 8,
+        "mobile_image_height": 280,
+        "mobile_content_padding_y": 32,
+        "mobile_content_padding_left": 16,
+        "text_line_height_mobile": 1.6,
+        "mobile_paragraphs": "1",
+        "mobile_padding_top": 88,
+        "mobile_padding_bottom": 28,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "faq_premium_HYDcNb": {
+      "type": "faq-premium",
+      "blocks": {
+        "faq_item_home_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment savoir quelle taille prendre ?",
+            "answer": "<p>C'est la question qu'on nous pose le plus, et personne n'y répond dans ce secteur. Règle simple : additionnez la longueur et la largeur de votre pièce en mètres, le résultat vous donne le diamètre conseillé en centimètres. Une pièce de 4 × 5 m appelle un luminaire d'environ 45 cm. Au-dessus d'une table, visez le tiers de sa longueur. Chaque fiche produit contient le détail des cotes de pose.</p>"
+          }
+        },
+        "faq_item_home_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Je ne suis pas bricoleur. Est-ce que je vais y arriver ?",
+            "answer": "<p>Oui, dans l'immense majorité des cas. Si votre plafond a déjà un point lumineux, la pose consiste à couper le courant au disjoncteur, fixer une platine et raccorder trois fils. La visserie adaptée à votre support est fournie, la notice est en français avec des schémas, et notre équipe reste joignable sur WhatsApp pendant que vous êtes sur l'escabeau. Pour une applique murale sans sortie électrique existante, écrivez-nous avant de commander : on vous dira franchement ce qui est faisable.</p>"
+          }
+        },
+        "faq_item_home_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Les ampoules sont-elles incluses ?",
+            "answer": "<p>Non, et c'est un choix. Le rendu d'un luminaire dépend énormément de l'ampoule : la même suspension peut donner une lumière chaleureuse ou une lumière de bureau selon ce qu'on visse dedans. Le culot est indiqué sur chaque fiche. Pour un salon ou une salle à manger, prenez une LED blanc chaud autour de 2700 K, dimmable si vous avez un variateur.</p>"
+          }
+        },
+        "faq_item_home_4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Quels sont les délais de livraison ?",
+            "answer": "<p>Votre commande est préparée sous 24 à 48 heures ouvrées puis expédiée depuis notre entrepôt européen. Comptez ensuite 4 à 8 jours ouvrés. La livraison est offerte, sans minimum d'achat, et vous recevez un numéro de suivi dès le départ du colis.</p>"
+          }
+        },
+        "faq_item_home_5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Et si le luminaire ne me plaît pas une fois posé ?",
+            "answer": "<p>Vous avez 30 jours à compter de la réception pour changer d'avis, sans avoir à vous justifier. Retour ou échange : vous écrivez, on s'en occupe. C'est aussi pour ça qu'on donne les cotes avant l'achat — le meilleur retour est celui qui n'a pas lieu.</p>"
+          }
+        },
+        "faq_item_home_6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Vos luminaires sont-ils vraiment contrôlés ?",
+            "answer": "<p>Chaque référence est commandée, déballée, montée et allumée avant d'entrer au catalogue. On vérifie la conformité CE, la sécurité électrique, la tenue des fixations et la qualité des finitions. Les modèles qui grésillent au variateur ou dont la finition marque sont renvoyés. Ceux qui restent sont couverts par une garantie de 24 mois, incluse d'office.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_home_1",
+        "faq_item_home_2",
+        "faq_item_home_3",
+        "faq_item_home_4",
+        "faq_item_home_5",
+        "faq_item_home_6"
+      ],
+      "name": "FAQ Premium",
+      "settings": {
+        "title": "Vos questions, nos réponses.",
+        "subtitle": "Y compris celles que les autres boutiques évitent.",
+        "button_text": "Voir toutes les questions",
+        "button_link": "shopify://pages/f-a-q",
+        "single_open": true,
+        "title_size": 40,
+        "title_size_m": 30,
+        "sub_size": 16,
+        "sub_size_m": 15,
+        "q_size": 18,
+        "q_size_m": 16,
+        "a_size": 16,
+        "a_size_m": 15,
+        "row_pad": 20,
+        "bg": "#ffffff",
+        "title_color": "#1a1a1a",
+        "sub_color": "#6b6b6b",
+        "q_color": "#1a1a1a",
+        "a_color": "#5f5f5f",
+        "ico_color": "#c98a6b",
+        "divider": "#ececec",
+        "btn_bg": "#1a1a1a",
+        "btn_text": "#ffffff",
+        "btn_size": 15,
+        "btn_radius": 8,
+        "max_width": 820,
+        "pad_top": 64,
+        "pad_bot": 64,
+        "pad_top_m": 40,
+        "pad_bot_m": 40
+      }
+    },
+    "support_steps_ihi6Df": {
+      "type": "support-steps",
+      "blocks": {
+        "step_card_iDjqW7": {
+          "type": "step_card",
+          "settings": {
+            "card_title": "Avant d'acheter",
+            "card_text": "Envoyez-nous les dimensions de votre pièce : on vous dit quelle taille prendre."
+          }
+        },
+        "step_card_PRnhki": {
+          "type": "step_card",
+          "settings": {
+            "card_title": "Pendant la pose",
+            "card_text": "Un doute sur un fil, une fixation, une hauteur ? On répond pendant que vous y êtes."
+          }
+        },
+        "step_card_PTUN9c": {
+          "type": "step_card",
+          "settings": {
+            "card_title": "Après la livraison",
+            "card_text": "Une pièce manquante, un souci en 18 mois : la garantie 24 mois s'applique, sans discussion."
+          }
+        }
+      },
+      "block_order": [
+        "step_card_iDjqW7",
+        "step_card_PRnhki",
+        "step_card_PTUN9c"
+      ],
+      "name": "Support whatsapp Steps",
+      "settings": {
+        "label_text": "AVANT • PENDANT • APRÈS",
+        "title": "Quelqu'un au bout du fil, vraiment",
+        "cta_title": "Une question avant de commander ?",
+        "cta_desc": "Écrivez-nous : réponse en français, 7j/7, par une personne qui connaît le produit.",
+        "whatsapp_link": "https://wa.me/message/V5U35J5ZWYZOA1",
+        "whatsapp_btn_text": "Nous écrire sur WhatsApp",
+        "bg_image_opacity": 10,
+        "primary_color": "#cfc0ae",
+        "bg_color": "#ffffff",
+        "title_size_desktop": 48,
+        "title_size_mobile": 28,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36,
+        "max_width": 1200
+      }
+    },
+    "newsletter_velluce": {
+      "type": "velluce-lettre-simple",
+      "settings": {
+        "eyebrow": "La lettre Velluce",
+        "title": "Deux e-mails par mois. Pas un de plus.",
+        "placeholder": "Votre adresse e-mail",
+        "button": "Je m'inscris",
+        "legal": "Désinscription en un clic, à tout moment.",
+        "success": "C'est noté. Votre première lettre arrive bientôt.",
+        "bg": "#faf8f5",
+        "ink": "#2c2c2c",
+        "accent": "#b08d57",
+        "btn_bg": "#cfc0ae",
+        "btn_ink": "#2c2c2c",
+        "pad": 64,
+        "pad_m": 40
+      }
+    },
+    "bas_footer_NhGUjw": {
+      "type": "velluce-dunes",
+      "settings": {
+        "height_desktop": 300,
+        "height_mobile": 180
+      }
+    },
+    "scene_3d_velluce": {
+      "type": "velluce-scroll-3d",
+      "blocks": {
+        "etape_1": {
+          "type": "etape",
+          "settings": {
+            "title": "Tout commence éteint.",
+            "text": "Une pièce, un volume, une lumière à trouver. C'est là que notre travail commence."
+          }
+        },
+        "etape_2": {
+          "type": "etape",
+          "settings": {
+            "title": "On règle la chaleur.",
+            "text": "2700 kelvins : la teinte du soir, celle qui détend les visages et repose les yeux."
+          }
+        },
+        "etape_3": {
+          "type": "etape",
+          "settings": {
+            "title": "Et la pièce change.",
+            "text": "Le même salon, la même heure. Sauf qu'on a envie d'y rester."
+          }
+        }
+      },
+      "block_order": [
+        "etape_1",
+        "etape_2",
+        "etape_3"
+      ],
+      "settings": {
+        "eyebrow": "L'atelier Velluce",
+        "model_url": "https://cdn.shopify.com/s/files/1/1015/2122/8163/files/deco-ampoule-velluce-v2.glb?v=1787244213",
+        "cta_label": "Voir la sélection",
+        "cta_link": "/collections/all",
+        "bg": "#17120e",
+        "ink": "#f6efe6",
+        "mute": "#b9ada0",
+        "accent": "#cfa76a",
+        "glow": "#ffca7a",
+        "scroll_len": 280,
+        "scroll_len_m": 220
+      }
+    }
+  },
+  "order": [
+    "image_banner_VXNP89",
+    "banniere_hero_gMxea8",
+    "vgr_types_home",
+    "collections_premium_AHr9UK",
+    "scene_3d_velluce",
+    "par_espace_pfTfWn",
+    "collection_featured_ajDTpX",
+    "reviews_gidWad",
+    "choisir_velluce_dcVbQ7",
+    "velluce_comparatif",
+    "manifeste_velluce",
+    "17849106896a37e7ff",
+    "carrousel_images_RDapf6",
+    "chapitre_appliques",
+    "chapitre_plafonniers",
+    "chapitre_suspensions",
+    "video_promo_cknbEL",
+    "custom_section_NJxRD7",
+    "image_texte_premium_dbmmzi",
+    "faq_premium_HYDcNb",
+    "support_steps_ihi6Df",
+    "newsletter_velluce",
+    "bas_footer_NhGUjw"
+  ]
+}
