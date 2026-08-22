@@ -1,178 +1,52 @@
-{% comment %}
-  Velluce — Récapitulatif du panier.
-
-  Deux informations, deux lignes, rien de plus :
-
-  1. Une mention fine sur l'offre quantité. Si elle est déjà acquise, elle
-     confirme et donne le montant gagné ; sinon elle indique ce qu'il
-     manque pour l'obtenir.
-  2. Le total économisé sur le panier, qui additionne les prix barrés et
-     les remises réellement appliquées (automatiques et codes).
-
-  L'offre suit les remises automatiques de la boutique : à partir de deux
-  luminaires puis de trois, quels qu'ils soient.
-{% endcomment %}
-
-{%- liquid
-  assign count = cart.item_count
-
-  assign ref_total = 0
-  for item in cart.items
-    assign unit_ref = item.original_price
-    if item.variant.compare_at_price > unit_ref
-      assign unit_ref = item.variant.compare_at_price
-    endif
-    assign line_ref = unit_ref | times: item.quantity
-    assign ref_total = ref_total | plus: line_ref
-  endfor
-  assign total_saving = ref_total | minus: cart.total_price
-
-  assign pack_saving = 0
-  for d in cart.cart_level_discount_applications
-    assign pack_saving = pack_saving | plus: d.total_allocated_amount
-  endfor
-
-  assign tier = 0
-  if count >= block.settings.tier2_qty
-    assign tier = 2
-  elsif count >= block.settings.tier1_qty
-    assign tier = 1
-  endif
-
-  assign free_from = block.settings.ship_free_from | times: 100
-  assign ship_free = false
-  if free_from > 0 and cart.total_price >= free_from
-    assign ship_free = true
-  endif
--%}
-
 <div
-  class="cart-footer-resume-blocks vcart{% if block.settings.wrap_in_card %} card color-{{ block.settings.color_scheme }}{% endif %}"
+  class="cart-footer-resume-blocks{% if block.settings.wrap_in_card %} card color-{{ block.settings.color_scheme }}{% endif %}"
   style="--margin-top: {{ block.settings.margin_top }}px; --margin-bottom: {{ block.settings.margin_bottom }}px;"
 >
   {% content_for 'blocks' %}
 
-  {%- if block.settings.show_offer and cart != empty -%}
-    <div class="vcart__offer{% if tier > 0 %} vcart__offer--on{% endif %}">
-      <span class="vcart__offer-text">
-        {%- if tier > 0 -%}
-          <svg class="vcart__ic" viewBox="0 0 20 20" aria-hidden="true">
-            <path
-              d="M4.5 10.4l3.4 3.4 7.6-7.6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          {%- if tier == 2 -%}{{ block.settings.tier2_on }}{%- else -%}{{ block.settings.tier1_on }}{%- endif -%}
-        {%- else -%}
-          <svg class="vcart__ic" viewBox="0 0 20 20" aria-hidden="true">
-            <path
-              d="M10 4.6v10.8M4.6 10h10.8"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
-          {{ block.settings.tier1_off }}
-        {%- endif -%}
-      </span>
+  {%- if cart.cart_level_discount_applications.size > 0 -%}
+    <div class="cart__discounts">
+      {%- for discount in cart.cart_level_discount_applications -%}
+        <div class="cart__discount">
+          {% render 'icon', icon: 'shoppingmode' %}
+          <span>{{ discount.title }} (-{{ discount.total_allocated_amount | money }})</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
 
-      {%- if tier > 0 and pack_saving > 0 -%}
-        <span class="vcart__offer-amount vcart__num">&minus;{{ pack_saving | money }}</span>
+  {%- if cart.original_total_price != cart.total_price -%}
+    <div class="cart__reductions">
+      <p>{{ 'cart.discount' | t }}</p>
+      <div class="cart__reductions-value">
+        {% assign reduction = cart.original_total_price | minus: cart.total_price %}
+        {% render 'price', price: reduction, sales_badge: 'none' %}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="cart__totals">
+    <p>{{ 'cart.estimated_total' | t }}</p>
+    <div class="cart__totals-value">
+      {% assign real_cart_original_total_price = 0 %}
+
+      {% for item in cart.items %}
+        {% assign compare_price = item.original_price %}
+        {% if item.variant.compare_at_price > item.original_price %}
+          {% assign compare_price = item.variant.compare_at_price | times: item.quantity %}
+        {% else %}
+          {% assign compare_price = item.original_price | times: item.quantity %}
+        {% endif %}
+        {% assign real_cart_original_total_price = real_cart_original_total_price | plus: compare_price %}
+      {% endfor %}
+
+      {%- if real_cart_original_total_price > cart.total_price -%}
+        {% render 'price', price: cart.total_price, compare_price: real_cart_original_total_price, sales_badge: 'none' %}
+      {%- else -%}
+        {% render 'price', price: cart.total_price, sales_badge: 'none' %}
       {%- endif -%}
     </div>
-
-    {%- if tier == 1 and block.settings.tier2_next != blank -%}
-      <p class="vcart__nudge">{{ block.settings.tier2_next }}</p>
-    {%- endif -%}
-  {%- endif -%}
-
-  <div class="vcart__lines">
-    {%- if total_saving > 0 -%}
-      <div class="vcart__line vcart__line--save">
-        <span>{{ block.settings.save_label }}</span>
-        <span class="vcart__num">&minus;{{ total_saving | money }}</span>
-      </div>
-    {%- endif -%}
-
-    <div class="vcart__line">
-      <span>{{ block.settings.subtotal_label }}</span>
-      <span class="vcart__line-value">
-        {%- if ref_total > cart.total_price -%}
-          <s class="vcart__num">{{ ref_total | money }}</s>
-        {%- endif -%}
-        <strong class="vcart__num">{{ cart.total_price | money }}</strong>
-      </span>
-    </div>
-
-    {%- if block.settings.show_shipping -%}
-      <div class="vcart__line">
-        <span>{{ block.settings.shipping_label }}</span>
-        <span class="vcart__line-value">
-          {%- if ship_free -%}
-            <strong class="vcart__free">{{ block.settings.shipping_free }}</strong>
-          {%- else -%}
-            <span class="vcart__soft">{{ block.settings.shipping_next }}</span>
-          {%- endif -%}
-        </span>
-      </div>
-    {%- endif -%}
   </div>
-
-  <div class="vcart__total">
-    <span class="vcart__total-label">{{ block.settings.total_label }}</span>
-    <span class="vcart__total-value vcart__num">{{ cart.total_price | money }}</span>
-  </div>
-
-  {%- if block.settings.tax_note != blank -%}
-    <p class="vcart__tax">{{ block.settings.tax_note }}</p>
-  {%- endif -%}
-
-  {%- if block.settings.show_trust -%}
-    <ul class="vcart__trust">
-      <li>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M12 2.8l7 2.6v5.3c0 4.3-2.9 8.2-7 9.5-4.1-1.3-7-5.2-7-9.5V5.4z"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linejoin="round"
-          />
-        </svg>
-        {{ block.settings.trust_1 }}
-      </li>
-      <li>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M4 11a8 8 0 1 1 2.3 5.7M4 16.5V11h5.5"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        {{ block.settings.trust_2 }}
-      </li>
-      <li>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M6.5 10.5V8a5.5 5.5 0 1 1 11 0v2.5M5 10.5h14v9H5z"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linejoin="round"
-          />
-        </svg>
-        {{ block.settings.trust_3 }}
-      </li>
-    </ul>
-  {%- endif -%}
 </div>
 
 {% stylesheet %}
@@ -183,148 +57,6 @@
     flex-direction: column;
     gap: var(--gap-sm);
   }
-
-  .vcart {
-    --vc-gold: #a8813f;
-    --vc-ink: rgb(var(--color-foreground));
-    --vc-soft: rgba(var(--color-foreground), .62);
-    --vc-rule: rgba(var(--color-foreground), .13);
-  }
-
-  /* Les chiffres du thème sont en chiffres elzéviriens : le 7 descend,
-     le 8 monte. On repasse en chiffres alignés et de largeur fixe pour
-     que les montants restent bien droits. */
-  .vcart__num {
-    font-family: var(--font-body-family, "Jost", system-ui, sans-serif);
-    font-variant-numeric: lining-nums tabular-nums;
-    font-feature-settings: "lnum" 1, "tnum" 1;
-  }
-
-  /* La mention sur l'offre quantité */
-  .vcart__offer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 9px 0 0;
-    border-top: 1px solid var(--vc-rule);
-    font-size: 12.5px;
-    line-height: 1.35;
-    color: var(--vc-soft);
-  }
-
-  .vcart__offer--on { color: var(--vc-gold); }
-
-  .vcart__offer-text {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    min-width: 0;
-  }
-
-  .vcart__ic { width: 13px; height: 13px; flex: 0 0 13px; }
-
-  .vcart__offer-amount {
-    font-weight: 700;
-    white-space: nowrap;
-    color: var(--vc-gold);
-  }
-
-  .vcart__nudge {
-    margin: -4px 0 0 20px;
-    font-size: 11.5px;
-    line-height: 1.35;
-    color: var(--vc-soft);
-  }
-
-  /* Le détail */
-  .vcart__lines { display: flex; flex-direction: column; gap: 6px; }
-
-  .vcart__line {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-    font-size: 14px;
-    color: var(--vc-soft);
-  }
-
-  .vcart__line--save,
-  .vcart__line--save .vcart__num {
-    color: var(--vc-gold);
-    font-weight: 600;
-  }
-
-  .vcart__line-value { display: inline-flex; align-items: baseline; gap: 8px; }
-  .vcart__line-value s { opacity: .55; }
-  .vcart__line-value strong { font-weight: 600; color: var(--vc-ink); }
-  .vcart__free { color: var(--vc-gold) !important; }
-  .vcart__soft { font-size: 13px; }
-
-  /* Le total */
-  .vcart__total {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--vc-rule);
-  }
-
-  .vcart__total-label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--vc-ink);
-  }
-
-  .vcart__total-value {
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: -.01em;
-    color: var(--vc-ink);
-  }
-
-  .vcart__tax { margin: -2px 0 0; font-size: 11.5px; color: var(--vc-soft); }
-
-  /* La réassurance */
-  .vcart__trust {
-    margin: 2px 0 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 14px;
-  }
-
-  .vcart__trust li {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11.5px;
-    line-height: 1.3;
-    color: var(--vc-soft);
-  }
-
-  .vcart__trust svg { width: 13px; height: 13px; flex: 0 0 13px; }
-
-  @media (width <= 640px) {
-    .vcart__lines { gap: 5px; }
-    .vcart__line { font-size: 13.5px; }
-    .vcart__total { padding-top: 10px; }
-    .vcart__total-value { font-size: 22px; }
-    .vcart__trust { gap: 4px 11px; }
-    .vcart__trust li { font-size: 10.5px; gap: 4px; }
-    .vcart__trust svg { width: 11px; height: 11px; flex: 0 0 11px; }
-  }
-
-  @media (width <= 360px) {
-    .vcart__offer { font-size: 12px; }
-    .vcart__total-value { font-size: 20px; }
-    .vcart__trust { gap: 3px 8px; }
-  }
 {% endstylesheet %}
 
 {% schema %}
@@ -332,101 +64,44 @@
   "name": "t:cart_footer_resume_blocks",
   "tag": null,
   "blocks": [
-    { "type": "_cart-note" },
-    { "type": "_cart-progress-bar" },
-    { "type": "accordions" },
-    { "type": "text" },
-    { "type": "separator" },
-    { "type": "_discount-code" },
-    { "type": "cross-sell" },
-    { "type": "slider" },
-    { "type": "delivery-estimation" },
-    { "type": "information-slider" }
+    {
+      "type": "_cart-note"
+    },
+    {
+      "type": "_cart-progress-bar"
+    },
+    {
+      "type": "accordions"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "separator"
+    },
+    {
+      "type": "_discount-code"
+    },
+    {
+      "type": "cross-sell"
+    },
+    {
+      "type": "slider"
+    },
+    {
+      "type": "delivery-estimation"
+    },
+    {
+      "type": "information-slider"
+    }
   ],
   "settings": [
-    { "type": "header", "content": "Offre quantité" },
     {
       "type": "checkbox",
-      "id": "show_offer",
-      "label": "Afficher la mention",
-      "default": true,
-      "info": "Doit correspondre à vos remises automatiques."
+      "id": "wrap_in_card",
+      "label": "t:wrap_in_card",
+      "default": false
     },
-    {
-      "type": "range",
-      "id": "tier1_qty",
-      "label": "1er palier — à partir de",
-      "min": 2,
-      "max": 6,
-      "step": 1,
-      "default": 2,
-      "unit": "art"
-    },
-    {
-      "type": "text",
-      "id": "tier1_on",
-      "label": "1er palier — atteint",
-      "default": "Pack Duo appliqué : −10 % sur le panier"
-    },
-    {
-      "type": "text",
-      "id": "tier1_off",
-      "label": "1er palier — pas encore",
-      "default": "Ajoutez un 2ᵉ luminaire : −10 % sur tout le panier"
-    },
-    {
-      "type": "range",
-      "id": "tier2_qty",
-      "label": "2e palier — à partir de",
-      "min": 3,
-      "max": 8,
-      "step": 1,
-      "default": 3,
-      "unit": "art"
-    },
-    {
-      "type": "text",
-      "id": "tier2_on",
-      "label": "2e palier — atteint",
-      "default": "Pack Famille appliqué : −15 % sur le panier"
-    },
-    {
-      "type": "text",
-      "id": "tier2_next",
-      "label": "Relance vers le 2e palier",
-      "default": "Un 3ᵉ luminaire et la remise passe à −15 %."
-    },
-    { "type": "header", "content": "Détail" },
-    { "type": "text", "id": "save_label", "label": "Ligne des économies", "default": "Vous économisez" },
-    { "type": "text", "id": "subtotal_label", "label": "Sous-total", "default": "Sous-total" },
-    { "type": "checkbox", "id": "show_shipping", "label": "Afficher la ligne livraison", "default": true },
-    { "type": "text", "id": "shipping_label", "label": "Livraison", "default": "Livraison" },
-    { "type": "text", "id": "shipping_free", "label": "Livraison offerte", "default": "Offerte" },
-    {
-      "type": "text",
-      "id": "shipping_next",
-      "label": "Livraison à calculer",
-      "default": "Calculée à l'étape suivante"
-    },
-    {
-      "type": "range",
-      "id": "ship_free_from",
-      "label": "Livraison offerte à partir de",
-      "min": 0,
-      "max": 200,
-      "step": 5,
-      "default": 30,
-      "unit": "€"
-    },
-    { "type": "text", "id": "total_label", "label": "Total", "default": "Total" },
-    { "type": "text", "id": "tax_note", "label": "Mention sous le total" },
-    { "type": "header", "content": "Réassurance" },
-    { "type": "checkbox", "id": "show_trust", "label": "Afficher la ligne de réassurance", "default": true },
-    { "type": "text", "id": "trust_1", "label": "Argument 1", "default": "Garantie 24 mois" },
-    { "type": "text", "id": "trust_2", "label": "Argument 2", "default": "Retours 30 jours" },
-    { "type": "text", "id": "trust_3", "label": "Argument 3", "default": "Paiement sécurisé" },
-    { "type": "header", "content": "t:style" },
-    { "type": "checkbox", "id": "wrap_in_card", "label": "t:wrap_in_card", "default": false },
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -434,7 +109,10 @@
       "default": "scheme-2",
       "visible_if": "{{ block.settings.wrap_in_card }}"
     },
-    { "type": "header", "content": "t:margins" },
+    {
+      "type": "header",
+      "content": "t:margins"
+    },
     {
       "type": "range",
       "id": "margin_top",
@@ -456,6 +134,10 @@
       "unit": "px"
     }
   ],
-  "presets": [{ "name": "t:cart_footer_resume_blocks" }]
+  "presets": [
+    {
+      "name": "t:cart_footer_resume_blocks"
+    }
+  ]
 }
 {% endschema %}

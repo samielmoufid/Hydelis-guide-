@@ -14,8 +14,35 @@
             "margin_top": 0,
             "margin_bottom": 0
           },
-          "blocks": {},
-          "block_order": []
+          "blocks": {
+            "cart_progress_bar_dtN84U": {
+              "type": "_cart-progress-bar",
+              "name": "t:progress_bar",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "progress_bar_based_on": "value",
+                "collection": "",
+                "step1_text": "Plus que # et la livraison est offerte !",
+                "step1_value": 30,
+                "step1_quantity": 3,
+                "step1_label": "",
+                "step2_text": "",
+                "step2_quantity": 0,
+                "step2_label": "",
+                "step3_text": "",
+                "step3_quantity": 0,
+                "step3_label": "",
+                "step_completed_text": "Félicitations vous bénéficiez de la livraison offerte !",
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "cart_progress_bar_dtN84U"
+          ]
         },
         "cart_footer_resume_blocks": {
           "type": "_cart-footer-resume-blocks",
