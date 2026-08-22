@@ -26,6 +26,19 @@
     border-left: 1px solid var(--vk-rule);
   }
 
+  /* Les polices serif du thème utilisent des chiffres elzéviriens : le 7
+     plonge sous la ligne, le 8 la dépasse. On force partout des chiffres
+     alignés et de largeur fixe pour que les montants restent droits. */
+  .cart-drawer .cart-drawer__header_title > p,
+  .cart-drawer .cart-drawer__item-price,
+  .cart-drawer .cart-drawer__item-price *,
+  .cart-drawer [class*='price'],
+  .cart-drawer [class*='price'] *,
+  .cart-drawer [class*='quantity'] input {
+    font-variant-numeric: lining-nums tabular-nums;
+    font-feature-settings: 'lnum' 1, 'tnum' 1;
+  }
+
   /* ---- L'en-tête ----------------------------------------------------- */
   .cart-drawer .cart-drawer__header {
     background: var(--vk-sand);

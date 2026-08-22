@@ -1,0 +1,203 @@
+{% comment %}
+  En-tête du panier.
+
+  Ajout Velluce : un petit repère de parcours en haut du tiroir —
+  « Votre récapitulatif » et deux jalons reliés par un filet, Panier puis
+  Paiement. Il remplace le message de livraison offerte, qui faisait
+  bavard pour une information déjà présente dans le récapitulatif.
+{% endcomment %}
+
+{%- if block.settings.show_steps -%}
+  <div class="vsteps">
+    <div class="vsteps__top">
+      <span class="vsteps__eyebrow">{{ block.settings.steps_title }}</span>
+      {%- if block.settings.steps_hint != blank -%}
+        <span class="vsteps__hint">{{ block.settings.steps_hint }}</span>
+      {%- endif -%}
+    </div>
+
+    <ol class="vsteps__row">
+      <li class="vsteps__item vsteps__item--on">
+        <span class="vsteps__dot" aria-hidden="true"></span>
+        <span class="vsteps__name">{{ block.settings.step_1 }}</span>
+      </li>
+      <li class="vsteps__item">
+        <span class="vsteps__dot" aria-hidden="true"></span>
+        <span class="vsteps__name">{{ block.settings.step_2 }}</span>
+      </li>
+    </ol>
+  </div>
+{%- endif -%}
+
+<div
+  class="cart-header-blocks{% if block.settings.wrap_in_card %} card color-{{ block.settings.color_scheme }}{% endif %}"
+  style="--margin-top: {{ block.settings.margin_top }}px; --margin-bottom: {{ block.settings.margin_bottom }}px;"
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% stylesheet %}
+  .cart-header-blocks {
+    margin-top: var(--margin-top);
+    margin-bottom: var(--margin-bottom);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+  }
+
+  .cart-drawer .cart-header-blocks:not(.card) > div:first-of-type {
+    margin-top: var(--padding-md);
+  }
+
+  /* Le repère de parcours */
+  .vsteps {
+    --vs-gold: #b08d57;
+    --vs-rule: rgba(var(--color-foreground), .16);
+    margin-top: 14px;
+  }
+
+  .vsteps__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 13px;
+  }
+
+  .vsteps__eyebrow {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground), .62);
+  }
+
+  .vsteps__hint {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    color: var(--vs-gold);
+    white-space: nowrap;
+  }
+
+  .vsteps__row {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+  }
+
+  /* Le filet qui relie les deux jalons, glissé derrière les pastilles. */
+  .vsteps__row::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 12px;
+    right: 12px;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      var(--vs-gold) 0%,
+      var(--vs-rule) 42%,
+      var(--vs-rule) 100%
+    );
+  }
+
+  .vsteps__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .vsteps__item:first-child { align-items: flex-start; }
+  .vsteps__item:last-child { align-items: flex-end; }
+
+  .vsteps__dot {
+    position: relative;
+    z-index: 1;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-background, #fff);
+    box-shadow: 0 0 0 1px var(--vs-rule), 0 0 0 4px var(--color-background, #fff);
+  }
+
+  .vsteps__item--on .vsteps__dot {
+    background: var(--vs-gold);
+    box-shadow:
+      0 0 0 1px var(--vs-gold),
+      0 0 0 4px var(--color-background, #fff),
+      0 0 0 6px rgba(176, 141, 87, .22);
+  }
+
+  .vsteps__name {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground), .5);
+    line-height: 1;
+  }
+
+  .vsteps__item--on .vsteps__name { color: rgb(var(--color-foreground)); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:cart_header_blocks",
+  "tag": null,
+  "settings": [
+    { "type": "header", "content": "Repère de parcours" },
+    { "type": "checkbox", "id": "show_steps", "label": "Afficher le repère", "default": true },
+    { "type": "text", "id": "steps_title", "label": "Titre", "default": "Votre récapitulatif" },
+    { "type": "text", "id": "steps_hint", "label": "Mention à droite", "default": "Plus qu'une étape" },
+    { "type": "text", "id": "step_1", "label": "Jalon 1", "default": "Panier" },
+    { "type": "text", "id": "step_2", "label": "Jalon 2", "default": "Paiement" },
+    { "type": "header", "content": "t:style" },
+    { "type": "checkbox", "id": "wrap_in_card", "label": "t:wrap_in_card", "default": false },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:color_scheme",
+      "default": "scheme-2",
+      "visible_if": "{{ block.settings.wrap_in_card }}"
+    },
+    { "type": "header", "content": "t:margins" },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "t:margin_top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "t:margin_bottom",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    { "type": "text" },
+    { "type": "_cart-progress-bar" },
+    { "type": "separator" },
+    { "type": "slider" },
+    { "type": "reviews-badge" },
+    { "type": "countdown" },
+    { "type": "information-slider" }
+  ],
+  "presets": [{ "name": "t:cart_header_blocks" }]
+}
+{% endschema %}
