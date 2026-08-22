@@ -1,0 +1,227 @@
+{% comment %}
+  Velluce — Habillage du panier latéral.
+
+  Uniquement du style : aucune structure n'est modifiée, donc le
+  fonctionnement du tiroir (quantités, suppression, mise à jour) reste
+  celui du thème. Chargé depuis layout/theme.liquid, après le thème,
+  pour passer devant ses propres règles.
+{% endcomment %}
+
+<style id="velluce-cart-skin">
+  .cart-drawer {
+    --vk-sand: #fbf9f6;
+    --vk-card: #ffffff;
+    --vk-ink: #2c2c2c;
+    --vk-soft: #6f675e;
+    --vk-gold: #b08d57;
+    --vk-beige: #cfc0ae;
+    --vk-rule: rgba(44, 40, 34, .1);
+  }
+
+  /* ---- Le panneau ---------------------------------------------------- */
+  .cart-drawer .cart-drawer__inner {
+    background: var(--vk-sand);
+    color: var(--vk-ink);
+    box-shadow: -28px 0 70px rgba(38, 30, 20, .18);
+    border-left: 1px solid var(--vk-rule);
+  }
+
+  /* ---- L'en-tête ----------------------------------------------------- */
+  .cart-drawer .cart-drawer__header {
+    background: var(--vk-sand);
+    border-bottom: 1px solid var(--vk-rule);
+    padding-top: 22px;
+    padding-bottom: 16px;
+  }
+
+  .cart-drawer .cart-drawer__header_title > p {
+    margin: 0;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: .04em;
+    color: var(--vk-ink);
+  }
+
+  .cart-drawer .cart-drawer__close {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--vk-ink);
+    transition: background .25s ease, transform .25s ease;
+  }
+  .cart-drawer .cart-drawer__close:hover {
+    background: rgba(176, 141, 87, .13);
+    transform: rotate(90deg);
+  }
+
+  /* ---- La barre de livraison offerte ---------------------------------- */
+  .cart-drawer .cart-progress-bar__bar,
+  .cart-drawer [class*='progress-bar'] [class*='__progress'],
+  .cart-drawer progress {
+    accent-color: var(--vk-gold);
+  }
+  .cart-drawer [class*='progress-bar'] p,
+  .cart-drawer [class*='progress-bar'] span {
+    letter-spacing: .01em;
+  }
+
+  /* ---- Les articles --------------------------------------------------- */
+  .cart-drawer .cart-drawer__body { padding-top: 18px; }
+
+  .cart-drawer .cart-drawer__item {
+    background: var(--vk-card);
+    border: 1px solid var(--vk-rule);
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(44, 34, 22, .04);
+    transition: box-shadow .3s ease, border-color .3s ease;
+  }
+  .cart-drawer .cart-drawer__item:hover {
+    box-shadow: 0 10px 26px rgba(44, 34, 22, .09);
+    border-color: rgba(176, 141, 87, .34);
+  }
+
+  .cart-drawer .cart-drawer__item img {
+    border-radius: 11px;
+    background: #f4f0ea;
+  }
+
+  .cart-drawer .cart-drawer__item-name {
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.28;
+    letter-spacing: .005em;
+    color: var(--vk-ink);
+  }
+
+  .cart-drawer .cart-drawer__item-options,
+  .cart-drawer .cart-drawer__item-options p,
+  .cart-drawer .cart-drawer__item-options span {
+    font-size: 12px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--vk-soft);
+  }
+
+  .cart-drawer .cart-drawer__item-price { font-size: 14px; font-weight: 600; }
+  .cart-drawer .cart-drawer__item-price s,
+  .cart-drawer .cart-drawer__item-compare-price { color: var(--vk-soft); font-weight: 400; }
+
+  .cart-drawer .cart-drawer__item-discount {
+    background: rgba(176, 141, 87, .14);
+    color: #8a6b3c;
+    border: 0;
+    border-radius: 999px;
+    padding: 3px 9px;
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+  .cart-drawer .cart-drawer__item-discount span { max-width: 130px; }
+
+  .cart-drawer .cart-drawer__item-actions-wrapper [class*='quantity'] {
+    border-radius: 999px;
+    border-color: var(--vk-rule);
+  }
+
+  /* ---- Le pied -------------------------------------------------------- */
+  .cart-drawer .cart-drawer__footer {
+    background: var(--vk-card);
+    border-top: 1px solid var(--vk-rule);
+    padding-top: 16px;
+    padding-bottom: 16px;
+    box-shadow: 0 -14px 30px rgba(44, 34, 22, .05);
+  }
+
+  .cart-drawer .cart-drawer__footer .accordion__header,
+  .cart-drawer .cart-drawer__footer summary {
+    font-size: 13px;
+    letter-spacing: .03em;
+    color: var(--vk-soft);
+  }
+
+  /* ---- Le bouton Commander -------------------------------------------- */
+  .cart-drawer .cart-drawer__ctas button[name='checkout'] {
+    position: relative;
+    overflow: hidden;
+    min-height: 56px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--vk-beige);
+    color: var(--vk-ink);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 22px rgba(176, 141, 87, .28);
+    transition: transform .22s ease, box-shadow .28s ease, filter .22s ease;
+  }
+  .cart-drawer .cart-drawer__ctas button[name='checkout']:hover:not([disabled]) {
+    transform: translateY(-1px);
+    filter: brightness(1.03);
+    box-shadow: 0 14px 30px rgba(176, 141, 87, .36);
+  }
+  .cart-drawer .cart-drawer__ctas button[name='checkout']:active:not([disabled]) {
+    transform: translateY(0);
+  }
+
+  /* Un reflet qui traverse le bouton au survol. */
+  .cart-drawer .cart-drawer__ctas button[name='checkout']::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -60%;
+    width: 45%;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, .55) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-18deg);
+  }
+  .cart-drawer .cart-drawer__ctas button[name='checkout']:hover::after {
+    animation: vkSheen .9s ease forwards;
+  }
+  @keyframes vkSheen {
+    to { left: 120%; }
+  }
+
+  /* ---- Les icônes de paiement ----------------------------------------- */
+  .cart-drawer .payment-methods {
+    gap: 7px;
+    padding-top: 4px;
+  }
+  .cart-drawer .payment-methods svg {
+    border-radius: 4px;
+    box-shadow: 0 0 0 1px rgba(44, 34, 22, .07);
+  }
+
+  /* ---- Le panier vide -------------------------------------------------- */
+  .cart-drawer .cart-drawer__inner-empty > p {
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-weight: 400;
+    letter-spacing: .01em;
+  }
+
+  @media (width <= 640px) {
+    .cart-drawer .cart-drawer__header { padding-top: 16px; padding-bottom: 12px; }
+    .cart-drawer .cart-drawer__header_title > p { font-size: 17px; }
+    .cart-drawer .cart-drawer__body { padding-top: 12px; }
+    .cart-drawer .cart-drawer__item { padding: 10px; margin-bottom: 10px; border-radius: 14px; }
+    .cart-drawer .cart-drawer__footer { padding-top: 12px; padding-bottom: 12px; }
+    .cart-drawer .cart-drawer__ctas button[name='checkout'] { min-height: 52px; letter-spacing: .1em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cart-drawer .cart-drawer__close:hover { transform: none; }
+    .cart-drawer .cart-drawer__ctas button[name='checkout']:hover::after { animation: none; }
+  }
+</style>
