@@ -357,7 +357,7 @@
         "ratio_desktop": "landscape",
         "radius": 0,
         "overlay_opacity": 90,
-        "overlay_color": "#000000",
+        "overlay_color": "#22332A",
         "hover_zoom": true,
         "zoom_scale": 105,
         "anim_scroll": true,
@@ -688,7 +688,7 @@
           "settings": {
             "image": "",
             "title": "Et si le son ne vous parle pas",
-            "text": "30 jours pour changer d'avis, sans avoir à vous justifier. Un instrument, ça se ressent — on préfère un retour à un objet qui prend la poussière dans un coin."
+            "text": "30 jours pour changer d'avis, sans avoir à vous justifier. Un instrument, ça se ressent — on préfère un retour à un objet qui prend la poussière dans un coin. Et au-delà de ces 30 jours, la garantie 24 mois prend le relais sur tout défaut de fabrication."
           }
         }
       },
@@ -801,12 +801,20 @@
             "label": "ESSAI",
             "value": "30 jours inclus"
           }
+        },
+        "fact_4": {
+          "type": "fact",
+          "settings": {
+            "label": "GARANTIE",
+            "value": "24 mois incluse"
+          }
         }
       },
       "block_order": [
         "fact_1",
         "fact_2",
-        "fact_3"
+        "fact_3",
+        "fact_4"
       ],
       "name": "Zensea — Manifeste",
       "settings": {
@@ -1520,13 +1528,98 @@
                 "text_daEqnk",
                 "text_RN7htP"
               ]
+            },
+            "slide_GAR24": {
+              "type": "_slide",
+              "name": "t:slide",
+              "settings": {
+                "wrap_in_card": false,
+                "color_scheme": "",
+                "layout_direction": "column",
+                "layout_wrap": "nowrap",
+                "layout_gap": 10,
+                "layout_justify": "center",
+                "layout_align_items": "center",
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {
+                "icon_g240": {
+                  "type": "icon",
+                  "name": "t:icon",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "icon_type": "icon",
+                    "icon": "verified_user",
+                    "icon_custom": "",
+                    "icon_size": 42,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": "vllc-icon-beige"
+                  },
+                  "blocks": {}
+                },
+                "text_g241": {
+                  "type": "text",
+                  "name": "t:text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Garantie 24 mois</p>",
+                    "text_style": "h6",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "center",
+                    "alignment_mobile": "center",
+                    "show_read_more": false,
+                    "read_more_length": 200,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "text_g242": {
+                  "type": "text",
+                  "name": "t:text",
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "text": "<p>Incluse sur tout le catalogue. Défaut de fabrication constaté : on remplace ou on rembourse.</p>",
+                    "text_style": "paragraph",
+                    "paragraph_font_size": "normal",
+                    "font_weight": 400,
+                    "alignment": "center",
+                    "alignment_mobile": "center",
+                    "show_read_more": false,
+                    "read_more_length": 200,
+                    "read_more_text": "Voir plus",
+                    "read_less_text": "Voir moins",
+                    "truncate": false,
+                    "truncate_length": 2,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "icon_g240",
+                "text_g241",
+                "text_g242"
+              ]
             }
           },
           "block_order": [
             "slide_3jn6VD",
             "slide_RW8GLP",
             "slide_e7r7wK",
-            "slide_FVXyh8"
+            "slide_FVXyh8",
+            "slide_GAR24"
           ]
         }
       },
@@ -1601,8 +1694,8 @@
         "image_inner_border": true,
         "image_position": "left",
         "eyebrow": "L'engagement Zensea",
-        "title": "Accordé avant l'envoi, garanti après",
-        "text": "<p>Un handpan, on l'achète une fois. Il reste posé dans le salon pendant des années, on le prend le soir sans y penser, on le tend à quelqu'un qui n'a jamais joué. Il n'a pas le droit de sonner faux.</p><p>Chaque instrument Zensea est joué note par note et contrôlé au <strong>diapason 440 Hz</strong> avant de quitter l'atelier. La gamme est écrite noir sur blanc sur la fiche — pas « gamme au choix du fabricant », pas de surprise à l'ouverture du carton.</p><p>Un souci après réception ? Vous écrivez, on répond en français, on remplace ou on rembourse. Pas d'expertise à vos frais, pas de formulaire à rallonge, pas de service client qui vous fatigue jusqu'à ce que vous abandonniez.</p>",
+        "title": "Accordé avant l'envoi, garanti 24 mois",
+        "text": "<p>Un handpan, on l'achète une fois. Il reste posé dans le salon pendant des années, on le prend le soir sans y penser, on le tend à quelqu'un qui n'a jamais joué. Il n'a pas le droit de sonner faux.</p><p>Chaque instrument Zensea est joué note par note et contrôlé au <strong>diapason 440 Hz</strong> avant de quitter l'atelier. La gamme est écrite noir sur blanc sur la fiche — pas « gamme au choix du fabricant », pas de surprise à l'ouverture du carton.</p><p>Chaque instrument est couvert par une <strong>garantie de 24 mois</strong>, incluse d'office, sans option à cocher ni extension à payer. Elle couvre l'instrument lui-même : un défaut de fabrication, une soudure qui lâche, une note qui décroche sans qu'on y soit pour rien.</p><p>Un souci après réception ? Vous écrivez, on répond en français, on remplace ou on rembourse. Pas d'expertise à vos frais, pas de formulaire à rallonge, pas de service client qui vous fatigue jusqu'à ce que vous abandonniez.</p>",
         "point_1": "Accordage vérifié",
         "point_1_sub": "à l'oreille, en 440 Hz",
         "point_2": "Livraison offerte",
@@ -1646,7 +1739,9 @@
         "mobile_padding_top": 88,
         "mobile_padding_bottom": 28,
         "padding_top": 80,
-        "padding_bottom": 80
+        "padding_bottom": 80,
+        "point_4": "Garantie 24 mois",
+        "point_4_sub": "incluse, sans surcoût"
       }
     },
     "faq": {
@@ -1693,6 +1788,13 @@
             "question": "Et si le son ne me plaît pas ?",
             "answer": "<p>Vous avez 30 jours à compter de la réception pour changer d'avis, sans avoir à vous justifier. Les frais de retour sont à votre charge et le remboursement intervient sous 7 à 14 jours. C'est aussi pour ça qu'on écrit la gamme exacte sur chaque fiche et qu'on vous répond avant l'achat : le meilleur retour est celui qui n'a pas lieu.</p>"
           }
+        },
+        "faq_item_home_7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "L'instrument est garanti combien de temps ?",
+            "answer": "<p><strong>24 mois</strong>, sur tout le catalogue, incluse dans le prix. Aucune extension à acheter, aucune case à cocher au moment de payer.</p><p>Elle couvre les défauts de fabrication : une soudure qui cède, une note qui décroche alors que l'instrument a été traité normalement, un accessoire défectueux à la réception. Vous écrivez, on répond en français, on remplace ou on rembourse — sans expertise à vos frais.</p><p>À ne pas confondre avec les 30 jours pour changer d'avis : ça, c'est le droit de nous renvoyer l'instrument parce que le son ne vous parle pas. Les deux se cumulent.</p>"
+          }
         }
       },
       "block_order": [
@@ -1701,7 +1803,8 @@
         "faq_item_home_3",
         "faq_item_home_4",
         "faq_item_home_5",
-        "faq_item_home_6"
+        "faq_item_home_6",
+        "faq_item_home_7"
       ],
       "name": "FAQ Premium",
       "settings": {

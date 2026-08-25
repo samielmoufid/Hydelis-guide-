@@ -1,1 +1,799 @@
-{"sections":{"faq_head":{"type":"custom-code","settings":{"show_on_display":"desktop_and_mobile","custom_liquid":"<div class=\"vllc-faq-head\">\n  <p class=\"vllc-faq-eyebrow\">Centre d'aide Zensea</p>\n  <h1 class=\"vllc-faq-title\">Tout ce que vous devez savoir<br>avant de poser les mains dessus.</h1>\n  <p class=\"vllc-faq-sub\">Nous avons rassemblé ici les questions qu'on nous pose vraiment — gammes, nombre de notes, prise en main, accordage, entretien, livraison, retours. Prenez ce dont vous avez besoin, ignorez le reste. Et s'il vous manque une réponse, une vraie personne vous répond en bas de page.</p>\n  <div class=\"vllc-faq-jump\">\n    <a href=\"#vllc-choisir\">Bien choisir</a>\n    <a href=\"#vllc-installation\">Prise en main</a>\n    <a href=\"#vllc-lumiere\">Accordage</a>\n    <a href=\"#vllc-livraison\">Livraison</a>\n    <a href=\"#vllc-retours\">Retours</a>\n    <a href=\"#vllc-securite\">Qualité</a>\n    <a href=\"#vllc-ventilateurs\">Bols &amp; éveil</a>\n  </div>\n</div>\n<style>\n.vllc-faq-head{max-width:900px;margin:0 auto;padding:72px 24px 8px;text-align:center}\n.vllc-faq-eyebrow{text-transform:uppercase;letter-spacing:2.4px;font-size:11.5px;font-weight:600;color:#B98A2E;margin:0 0 16px}\n.vllc-faq-title{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:48px;line-height:1.14;color:#22332A;margin:0 0 18px;letter-spacing:-.4px}\n.vllc-faq-sub{font-size:16.5px;line-height:1.75;color:#5A6B60;margin:0 auto;max-width:660px}\n.vllc-faq-jump{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:30px auto 0;max-width:760px}\n.vllc-faq-jump a{display:inline-block;padding:9px 16px;border:1px solid #e6dcd0;border-radius:999px;background:#FBF9F4;color:#22332A;font-size:13.5px;text-decoration:none;transition:background .2s ease,border-color .2s ease}\n.vllc-faq-jump a:hover{background:#2E5E46;border-color:#2E5E46;color:#22332A}\n@media(max-width:600px){.vllc-faq-title{font-size:31px}.vllc-faq-head{padding-top:52px}.vllc-faq-sub{font-size:15.5px}}\n</style>","margin_top":0,"margin_bottom":0,"additional_class":""}},"anchor_faq_choisir":{"type":"custom-code","settings":{"show_on_display":"desktop_and_mobile","custom_liquid":"<div id=\"vllc-choisir\" style=\"position:relative;top:-70px\"></div>","margin_top":0,"margin_bottom":0,"additional_class":""}},"faq_choisir":{"type":"faq-premium","blocks":{"faq_choisir_q1":{"type":"faq_item","settings":{"question":"Il faut savoir jouer d'un instrument pour commencer ?","answer":"<p>Non, et ce n'est pas une formule commerciale. Sur un handpan comme sur un tongue drum, <strong>toutes les notes appartiennent à une seule et même gamme</strong> : elles s'accordent entre elles quel que soit l'ordre dans lequel vous les jouez. La fausse note n'existe pas.</p><p>C'est ce qui rend l'instrument unique : vous ne travaillez pas, vous cherchez. Et vous tombez toujours sur quelque chose de beau. La majorité de nos clients n'avaient jamais touché un instrument, et jouent quelque chose d'agréable dès le premier soir.</p>"}},"faq_choisir_q2":{"type":"faq_item","settings":{"question":"9, 10 ou 12 notes : lequel prendre ?","answer":"<p><strong>9 notes</strong> pour débuter : le format le plus lisible, on repère les notes du regard et on improvise sans réfléchir. C'est le choix que personne n'a jamais regretté.</p><p><strong>10 notes</strong> ajoutent une couleur harmonique sans compliquer la lecture. Le bon compromis si vous hésitez.</p><p><strong>12 notes</strong> offrent la palette la plus large et permettent de vrais morceaux avec des accords. Demande quelques mois de pratique pour être exploité.</p><p>Dans le doute, prenez neuf. On progresse toujours vers plus de notes, jamais l'inverse.</p>"}},"faq_choisir_q3":{"type":"faq_item","settings":{"question":"Qu'est-ce qu'une gamme, et laquelle choisir ?","answer":"<p>La gamme est l'ensemble des notes gravées sur l'instrument. Elle décide de la <strong>couleur émotionnelle</strong> de tout ce que vous jouerez — bien plus que le nombre de notes.</p><p>Les gammes <strong>mineures</strong> (D Kurd, Celtic minor, Amara) sonnent profondes, contemplatives, un peu mélancoliques. Elles représentent l'immense majorité des handpans joués, et c'est le son qu'on a en tête quand on pense « handpan ».</p><p>Les gammes <strong>majeures</strong> sont plus lumineuses, plus joyeuses, et beaucoup plus rares.</p><p>Si vous ne savez pas, prenez une gamme mineure : c'est ce que vous avez entendu et ce qui vous a donné envie.</p>"}},"faq_choisir_q4":{"type":"faq_item","settings":{"question":"Handpan ou tongue drum : quelle différence ?","answer":"<p>Le <strong>handpan</strong> est une coupole d'acier martelé qu'on joue aux mains. La résonance est ample, longue, elle remplit la pièce. C'est l'instrument le plus expressif des deux, et le plus cher.</p><p>Le <strong>tongue drum</strong> est une sphère ou un disque d'acier découpé en lames, qu'on joue aux mailloches ou du bout des doigts. Le son est plus doux, plus court, plus contenu. Il coûte cinq à dix fois moins cher.</p><p>Beaucoup commencent par le tongue drum et gardent les deux. Aucun des deux ne remplace l'autre.</p>"}},"faq_choisir_q5":{"type":"faq_item","settings":{"question":"Quel budget prévoir vraiment ?","answer":"<p>Un tongue drum d'entrée de gamme se trouve autour de <strong>25 €</strong>, un modèle de salon à onze notes autour de <strong>70 €</strong>. Une kalimba tourne autour de <strong>30 à 60 €</strong>, un bol chantant entre <strong>50 et 150 €</strong> selon le format.</p><p>Un handpan sérieux commence autour de <strong>400 €</strong>. En dessous de 250 €, méfiez-vous : ce sont presque toujours des instruments mal accordés dont les notes bavent les unes sur les autres dès qu'on enchaîne.</p><p>Le pack complet — housse, mailloches, huile, livret — est inclus chez nous. Ailleurs, il faut souvent compter 60 à 100 € de plus.</p>"}},"faq_choisir_q6":{"type":"faq_item","settings":{"question":"Est-ce un bon cadeau pour quelqu'un qui n'est pas musicien ?","answer":"<p>C'est probablement le meilleur cas d'usage. Un handpan ou un tongue drum ne demande aucune compétence préalable, sonne juste dès la première minute, et ne provoque jamais la frustration d'un instrument qu'on n'arrive pas à faire sonner.</p><p>Pour un cadeau, prenez un <strong>9 notes en gamme mineure</strong> ou un <strong>tongue drum 11 notes</strong> : les deux formats les plus immédiats. Et si le son ne parle pas à la personne, elle a 30 jours pour changer d'avis.</p>"}},"faq_choisir_q7":{"type":"faq_item","settings":{"question":"Est-ce que les enfants peuvent en jouer ?","answer":"<p>Oui, et c'est souvent eux qui s'en emparent le plus vite. Le tongue drum est particulièrement adapté : léger, sans arête vive, impossible à désaccorder en jouant, et immédiatement gratifiant.</p><p>Pour un enfant de moins de huit ans, préférez un <strong>tongue drum 15 cm</strong> ou une <strong>kalimba</strong>. Un handpan de 22 pouces reste lourd et encombrant pour de petites mains.</p>"}},"faq_choisir_q8":{"type":"faq_item","settings":{"question":"Puis-je jouer en appartement sans gêner les voisins ?","answer":"<p>Un tongue drum, une kalimba et un ocarina se jouent sans problème le soir : le volume reste proche de celui d'une conversation.</p><p>Un handpan porte davantage — comptez le volume d'une guitare acoustique jouée doucement. En appartement, jouez-le sur les genoux plutôt que sur un support (le corps absorbe une partie des vibrations) et évitez de le poser directement sur une table, qui fait caisse de résonance.</p>"}}},"block_order":["faq_choisir_q1","faq_choisir_q2","faq_choisir_q3","faq_choisir_q4","faq_choisir_q5","faq_choisir_q6","faq_choisir_q7","faq_choisir_q8"],"settings":{"title":"Bien choisir son instrument","subtitle":"Les questions qu'on se pose devant l'écran, avant de cliquer.","button_text":"","button_link":"","single_open":true,"title_size":34,"title_size_m":26,"sub_size":16,"sub_size_m":15,"q_size":17,"q_size_m":16,"a_size":16,"a_size_m":15,"row_pad":20,"bg":"#ffffff","title_color":"#22332A","sub_color":"#5A6B60","q_color":"#22332A","a_color":"#5A6B60","ico_color":"#B98A2E","divider":"#ece2d3","btn_bg":"#22332A","btn_text":"#ffffff","btn_size":15,"btn_radius":8,"max_width":880,"pad_top":56,"pad_bot":56,"pad_top_m":32,"pad_bot_m":32}},"anchor_faq_installation":{"type":"custom-code","settings":{"show_on_display":"desktop_and_mobile","custom_liquid":"<div id=\"vllc-installation\" style=\"position:relative;top:-70px\"></div>","margin_top":0,"margin_bottom":0,"additional_class":""}},"faq_installation":{"type":"faq-premium","blocks":{"faq_installation_q1":{"type":"faq_item","settings":{"question":"Comment tenir un handpan correctement ?","answer":"<p>Sur les genoux, le creux tourné vers vous, légèrement incliné. Les avant-bras restent détendus et les épaules basses : <strong>la position fait la moitié du son</strong>. Un instrument tenu de façon crispée sonne mat.</p><p>Évitez de le poser à plat sur une table : le contact étouffe la résonance. Si vous voulez jouer debout ou longtemps, un support dédié laisse l'instrument vibrer librement.</p>"}},"faq_installation_q2":{"type":"faq_item","settings":{"question":"Avec quoi frappe-t-on : les doigts, la paume, les mailloches ?","answer":"<p>Sur un handpan : <strong>le bout des doigts, jamais la paume et jamais la force</strong>. Un rebond sec au centre de la note, et l'acier chante tout seul pendant plusieurs secondes. Frapper fort ne donne pas plus de son, seulement un son plus dur — et à la longue, cela désaccorde l'instrument.</p><p>Sur un tongue drum : mailloches ou doigts, au choix. Les mailloches donnent une attaque nette, les doigts un son plus rond. La plupart des joueurs alternent selon le morceau.</p>"}},"faq_installation_q3":{"type":"faq_item","settings":{"question":"Combien de temps avant de jouer quelque chose d'écoutable ?","answer":"<p>Une soirée. Ce n'est pas une exagération : comme toutes les notes s'accordent entre elles, votre premier enchaînement au hasard sonne déjà juste.</p><p>Ce que vous travaillerez ensuite, ce n'est pas la justesse mais le <strong>rythme</strong> et les <strong>nuances</strong> — jouer plus doux, laisser respirer, ne pas remplir tous les silences. C'est là que se joue la différence entre quelqu'un qui débute et quelqu'un qui joue depuis un an.</p>"}},"faq_installation_q4":{"type":"faq_item","settings":{"question":"Faut-il prendre des cours ?","answer":"<p>Non, et c'est rare de pouvoir le dire d'un instrument. La majorité des joueurs de handpan sont autodidactes.</p><p>Le livret de partitions numérotées fourni suffit pour vos premiers morceaux. Ensuite, quelques vidéos suffisent à comprendre les techniques de base — le roulement des doigts, l'attaque sur le bord de la note, l'usage des harmoniques.</p><p>Un cours devient utile après six mois ou un an, quand on cherche à structurer ce qu'on improvise.</p>"}},"faq_installation_q5":{"type":"faq_item","settings":{"question":"Comment lire le livret de partitions ?","answer":"<p>Les notes sont <strong>numérotées</strong> sur l'instrument et le livret indique simplement quel numéro jouer, dans quel ordre. Vous lisez des chiffres, pas du solfège.</p><p>C'est le même principe sur la kalimba, dont les lames sont numérotées, et sur l'ocarina, dont le livret montre chaque doigté en image, trou par trou.</p>"}},"faq_installation_q6":{"type":"faq_item","settings":{"question":"Puis-je jouer avec d'autres instruments ?","answer":"<p>Oui, à condition que la gamme soit compatible. Tous nos instruments sont accordés au <strong>diapason 440 Hz</strong> — l'accordage standard international — donc ils sont justes par rapport à un piano, une guitare ou un violon.</p><p>Reste la question de la gamme : un handpan en D Kurd s'accorde naturellement avec tout ce qui est en ré mineur. Indiquez-nous ce avec quoi vous voulez jouer, on vous oriente vers la bonne gamme.</p>"}},"faq_installation_q7":{"type":"faq_item","settings":{"question":"Mon instrument sonne mat, qu'est-ce que je fais mal ?","answer":"<p>Trois causes, dans l'ordre de fréquence. <strong>Vous frappez trop fort</strong> : l'acier n'a pas le temps de vibrer. <strong>Vous frappez avec la paume</strong> ou avec la pulpe entière du doigt au lieu du bout. <strong>L'instrument est posé sur une surface qui l'étouffe</strong> — une table, un coussin trop mou, vos cuisses trop serrées.</p><p>Essayez : posez-le sur les genoux légèrement écartés, et frappez du bout de l'index avec un rebond immédiat. La différence est spectaculaire.</p>"}},"faq_installation_q8":{"type":"faq_item","settings":{"question":"Quel accessoire est vraiment utile au début ?","answer":"<p>La <strong>housse</strong>, et elle est déjà dans le carton. C'est le seul accessoire indispensable : la quasi-totalité des instruments désaccordés le sont à cause d'un choc pendant un transport.</p><p>Le <strong>support</strong> devient utile si vous jouez souvent plus d'une heure ou si vous jouez debout. Les <strong>mailloches de rechange</strong> et l'<strong>huile d'entretien</strong> peuvent attendre quelques mois.</p>"}}},"block_order":["faq_installation_q1","faq_installation_q2","faq_installation_q3","faq_installation_q4","faq_installation_q5","faq_installation_q6","faq_installation_q7","faq_installation_q8"],"settings":{"title":"Prise en main & premiers pas","subtitle":"Vous n'êtes pas musicien. Ce n'est pas un problème.","button_text":"","button_link":"","single_open":true,"title_size":34,"title_size_m":26,"sub_size":16,"sub_size_m":15,"q_size":17,"q_size_m":16,"a_size":16,"a_size_m":15,"row_pad":20,"bg":"#fdfbf8","title_color":"#22332A","sub_color":"#5A6B60","q_color":"#22332A","a_color":"#5A6B60","ico_color":"#B98A2E","divider":"#ece2d3","btn_bg":"#22332A","btn_text":"#ffffff","btn_size":15,"btn_radius":8,"max_width":880,"pad_top":56,"pad_bot":56,"pad_top_m":32,"pad_bot_m":32}},"anchor_faq_lumiere":{"type":"custom-code","settings":{"show_on_display":"desktop_and_mobile","custom_liquid":"<div id=\"vllc-lumiere\" style=\"position:relative;top:-70px\"></div>","margin_top":0,"margin_bottom":0,"additional_class":""}},"faq_lumiere":{"type":"faq-premium","blocks":{"faq_lumiere_q1":{"type":"faq_item","settings":{"question":"Qu'est-ce que le 440 Hz, et pourquoi c'est important ?","answer":"<p>440 Hz est la fréquence du la de référence, le <strong>standard international</strong> utilisé par tous les orchestres et tous les instruments du commerce.</p><p>Un instrument accordé en 440 Hz est jouable avec n'importe quel autre instrument. Un instrument accordé en 432 Hz — qu'on trouve parfois dans le milieu du bien-être — sonne très bien seul, mais devient faux dès que vous jouez avec quelqu'un.</p><p>Tous nos instruments sont en 440 Hz, et c'est écrit sur chaque fiche.</p>"}},"faq_lumiere_q2":{"type":"faq_item","settings":{"question":"Est-ce que ça se désaccorde avec le temps ?","answer":"<p>Un handpan bien traité garde son accord <strong>des années</strong>. Ce qui désaccorde un instrument, ce n'est jamais l'usage normal : c'est un choc, une chaleur excessive ou la corrosion.</p><p>Trois règles suffisent : ne jamais le laisser en plein soleil ou dans une voiture l'été, ne jamais frapper avec la paume ou avec un objet dur, et le ranger dans sa housse dès qu'il ne sert pas.</p>"}},"faq_lumiere_q3":{"type":"faq_item","settings":{"question":"Comment entretenir l'acier ?","answer":"<p>Un passage de chiffon microfibre après chaque séance pour retirer la transpiration — c'est elle qui attaque l'acier, pas l'air.</p><p>Une fois par mois, quelques gouttes de l'<strong>huile fournie</strong> réparties au chiffon sur toute la surface. Cela crée un film protecteur invisible contre la corrosion.</p><p>Si des points de rouille apparaissent malgré tout, un chiffon légèrement abrasif et de l'huile suffisent à les faire disparaître avant qu'ils ne s'installent.</p>"}},"faq_lumiere_q4":{"type":"faq_item","settings":{"question":"Peut-on faire réaccorder un handpan ?","answer":"<p>Oui. C'est un travail d'accordeur spécialisé, qui remartèle les zones concernées au marteau et à l'oreille. Comptez généralement 100 à 200 € et quelques semaines de délai.</p><p>En pratique, la question ne se pose qu'après un choc ou après plusieurs années d'usage intensif. Écrivez-nous : on vous orientera vers un accordeur près de chez vous.</p>"}},"faq_lumiere_q5":{"type":"faq_item","settings":{"question":"En quel acier sont faits vos handpans ?","answer":"<p>En acier <strong>nitruré</strong>, traité thermiquement pour durcir la surface et résister à la corrosion. C'est le traitement qui donne la teinte sombre caractéristique et qui permet à l'instrument de tenir son accord dans le temps.</p><p>Un handpan en acier brut non traité coûte moins cher à produire mais rouille en quelques mois si vous ne l'huilez pas religieusement.</p>"}},"faq_lumiere_q6":{"type":"faq_item","settings":{"question":"Comment le transporter en avion ou en train ?","answer":"<p>En train, aucun problème : la housse suffit. En avion, un handpan dans sa housse rembourrée passe généralement en <strong>bagage cabine</strong> sur les compagnies régulières, mais la règle varie — vérifiez les dimensions autorisées avant de réserver.</p><p>Ne le mettez jamais en soute sans caisse rigide : c'est le meilleur moyen de le récupérer désaccordé.</p>"}},"faq_lumiere_q7":{"type":"faq_item","settings":{"question":"La kalimba a besoin d'être accordée ?","answer":"<p>Oui, de temps en temps, et c'est très simple. Un <strong>marteau d'accordage</strong> est fourni : on tape légèrement sur la lame pour la faire coulisser. La lame s'allonge, la note descend ; elle raccourcit, la note monte.</p><p>Une application gratuite d'accordeur sur téléphone suffit à contrôler. Comptez cinq minutes pour l'instrument entier, deux à trois fois par an.</p>"}},"faq_lumiere_q8":{"type":"faq_item","settings":{"question":"Le bol chantant demande-t-il un entretien ?","answer":"<p>Très peu. Un chiffon sec après usage suffit : le laiton se patine avec le temps, et cette patine fait partie de l'objet — la faire disparaître au produit abrasif abîme le son.</p><p>Gardez simplement le coussin propre et sec : c'est lui qui isole le bol de la table et qui laisse la résonance se développer.</p>"}}},"block_order":["faq_lumiere_q1","faq_lumiere_q2","faq_lumiere_q3","faq_lumiere_q4","faq_lumiere_q5","faq_lumiere_q6","faq_lumiere_q7","faq_lumiere_q8"],"settings":{"title":"Accordage, gammes & entretien","subtitle":"Ce qui fait qu'un instrument reste juste dix ans.","button_text":"","button_link":"","single_open":true,"title_size":34,"title_size_m":26,"sub_size":16,"sub_size_m":15,"q_size":17,"q_size_m":16,"a_size":16,"a_size_m":15,"row_pad":20,"bg":"#ffffff","title_color":"#22332A","sub_color":"#5A6B60","q_color":"#22332A","a_color":"#5A6B60","ico_color":"#B98A2E","divider":"#ece2d3","btn_bg":"#22332A","btn_text":"#ffffff","btn_size":15,"btn_radius":8,"max_width":880,"pad_top":56,"pad_bot":56,"pad_top_m":32,"pad_bot_m":32}},"anchor_faq_livraison":{"type":"custom-code","settings":{"show_on_display":"desktop_and_mobile","custom_liquid":"<div id=\"vllc-livraison\" style=\"position:relative;top:-70px\"></div>","margin_top":0,"margin_bottom":0,"additional_class":""}},"faq_livraison":{"type":"faq-premium","blocks":{"faq_livraison_q1":{"type":"faq_item","settings":{"question":"Quels sont vos délais de livraison ?","answer":"<p>Préparation en <strong>24 à 48 h ouvrées</strong> après votre commande, puis <strong>7 à 13 jours ouvrés</strong> de transport. Soit <strong>8 à 15 jours ouvrés au total</strong>.</p><p>Vous recevez un numéro de suivi par e-mail dès le départ du colis.</p>"}},"faq_livraison_q2":{"type":"faq_item","settings":{"question":"La livraison est-elle gratuite ?","answer":"<p>La livraison est <strong>offerte dès 30 € d'achat</strong>. En dessous, les frais s'affichent au panier, avant validation — jamais à la dernière étape.</p>"}},"faq_livraison_q3":{"type":"faq_item","settings":{"question":"Comment mes instruments sont-ils emballés ?","answer":"<p>C'est le premier reproche fait aux vendeurs d'instruments en ligne, et le point sur lequel nous ne transigeons pas : <strong>housse déjà en place autour de l'instrument</strong>, puis calage mousse, puis double carton.</p><p>Un handpan qui bouge dans son colis est un handpan qui arrive désaccordé. Le nôtre ne bouge pas.</p>"}},"faq_livraison_q4":{"type":"faq_item","settings":{"question":"Puis-je suivre ma commande et changer l'adresse ?","answer":"<p>Le suivi est disponible dès l'expédition, via le lien reçu par e-mail.</p><p>Pour un changement d'adresse, écrivez-nous <strong>le plus vite possible</strong> à contact.zensea@gmail.com : tant que le colis n'est pas parti, c'est traité dans la journée.</p>"}},"faq_livraison_q5":{"type":"faq_item","settings":{"question":"Livrez-vous hors de France ?","answer":"<p>Nous livrons en <strong>France métropolitaine</strong>, ainsi qu'en Belgique, au Luxembourg et en Suisse. Les délais et frais éventuels apparaissent au moment du paiement, avant validation.</p><p>Pour la Corse et les DOM-TOM, écrivez-nous avant de commander : les délais sont plus longs et nous préférons vous les annoncer honnêtement.</p>"}},"faq_livraison_q6":{"type":"faq_item","settings":{"question":"Que se passe-t-il si je ne suis pas là à la livraison ?","answer":"<p>Le transporteur laisse un avis de passage et propose une nouvelle date ou un point relais.</p><p>Un conseil : ne faites pas livrer un handpan en point relais si vous pouvez l'éviter. Un colis manipulé une fois de plus est un risque de plus.</p>"}}},"block_order":["faq_livraison_q1","faq_livraison_q2","faq_livraison_q3","faq_livraison_q4","faq_livraison_q5","faq_livraison_q6"],"settings":{"title":"Livraison & suivi","subtitle":"Un instrument accordé voyage bien, à condition d'être bien calé.","button_text":"","button_link":"","single_open":true,"title_size":34,"title_size_m":26,"sub_size":16,"sub_size_m":15,"q_size":17,"q_size_m":16,"a_size":16,"a_size_m":15,"row_pad":20,"bg":"#fdfbf8","title_color":"#22332A","sub_color":"#5A6B60","q_color":"#22332A","a_color":"#5A6B60","ico_color":"#B98A2E","divider":"#ece2d3","btn_bg":"#22332A","btn_text":"#ffffff","btn_size":15,"btn_radius":8,"max_width":880,"pad_top":56,"pad_bot":56,"pad_top_m":32,"pad_bot_m":32}},"anchor_faq_retours":{"type":"custom-code","settings":{"show_on_display":"desktop_and_mobile","custom_liquid":"<div id=\"vllc-retours\" style=\"position:relative;top:-70px\"></div>","margin_top":0,"margin_bottom":0,"additional_class":""}},"faq_retours":{"type":"faq-premium","blocks":{"faq_retours_q1":{"type":"faq_item","settings":{"question":"Mon instrument est arrivé abîmé. Que faire ?","answer":"<p>Vous êtes couvert, entièrement. En vente à distance, <strong>le vendeur est responsable du colis jusqu'à sa réception</strong>.</p><p>Prenez une photo du carton et de l'instrument, envoyez-la à contact.zensea@gmail.com dans les jours qui suivent, et nous remplaçons ou remboursons. Aucune expertise à vos frais, aucun formulaire à rallonge.</p>"}},"faq_retours_q2":{"type":"faq_item","settings":{"question":"Puis-je retourner un instrument si le son ne me plaît pas ?","answer":"<p>Oui. Vous disposez de <strong>30 jours</strong> à compter de la réception pour changer d'avis, sans avoir à vous justifier — bien au-delà des 14 jours légaux.</p><p>L'instrument doit revenir dans son emballage d'origine et en état de revente. <strong>Les frais de retour sont à votre charge.</strong></p>"}},"faq_retours_q3":{"type":"faq_item","settings":{"question":"Comment se passe un remboursement ?","answer":"<p>Sur le <strong>moyen de paiement utilisé à la commande</strong>, sous <strong>7 à 14 jours</strong> après réception et validation du retour.</p><p>Vous recevez un e-mail de confirmation au moment où le remboursement part de chez nous.</p>"}},"faq_retours_q4":{"type":"faq_item","settings":{"question":"Et si l'instrument arrive désaccordé ?","answer":"<p>C'est un défaut de conformité, pas un changement d'avis : dans ce cas <strong>nous prenons les frais de retour à notre charge</strong> et nous remplaçons l'instrument.</p><p>Chaque instrument est joué note par note avant expédition, donc le cas est rare — mais il peut arriver après un transport violent, et c'est notre responsabilité.</p>"}},"faq_retours_q5":{"type":"faq_item","settings":{"question":"Puis-je annuler ou modifier ma commande ?","answer":"<p>Oui, tant qu'elle n'est pas expédiée. Écrivez-nous immédiatement, c'est traité dans la journée.</p><p>Après l'expédition, il faut passer par le retour classique sous 30 jours.</p>"}},"faq_retours_q6":{"type":"faq_item","settings":{"question":"Vendez-vous les accessoires séparément ?","answer":"<p>Oui : housses, supports, mailloches de rechange, huile d'entretien et livrets sont disponibles à l'unité dans la rubrique Accessoires.</p><p>Si vous cherchez une pièce précise qui n'y figure pas, écrivez-nous — on trouve généralement.</p>"}},"faq_retours_q7":{"type":"faq_item","settings":{"question":"Faites-vous des factures pour une structure ?","answer":"<p>Oui. Écoles de musique, associations, praticiens : ouvrez un compte via l'Espace pro et vous recevrez une facture au nom de votre structure, avec des tarifs dégressifs et un paiement à 30 jours possible.</p>"}}},"block_order":["faq_retours_q1","faq_retours_q2","faq_retours_q3","faq_retours_q4","faq_retours_q5","faq_retours_q6","faq_retours_q7"],"settings":{"title":"Retours & remboursement","subtitle":"Nos engagements, écrits noir sur blanc — et vos droits.","button_text":"","button_link":"","single_open":true,"title_size":34,"title_size_m":26,"sub_size":16,"sub_size_m":15,"q_size":17,"q_size_m":16,"a_size":16,"a_size_m":15,"row_pad":20,"bg":"#ffffff","title_color":"#22332A","sub_color":"#5A6B60","q_color":"#22332A","a_color":"#5A6B60","ico_color":"#B98A2E","divider":"#ece2d3","btn_bg":"#22332A","btn_text":"#ffffff","btn_size":15,"btn_radius":8,"max_width":880,"pad_top":56,"pad_bot":56,"pad_top_m":32,"pad_bot_m":32}},"anchor_faq_securite":{"type":"custom-code","settings":{"show_on_display":"desktop_and_mobile","custom_liquid":"<div id=\"vllc-securite\" style=\"position:relative;top:-70px\"></div>","margin_top":0,"margin_bottom":0,"additional_class":""}},"faq_securite":{"type":"faq-premium","blocks":{"faq_securite_q1":{"type":"faq_item","settings":{"question":"Comment contrôlez-vous l'accordage ?","answer":"<p>Chaque instrument est <strong>joué note par note</strong> avant expédition et contrôlé au diapason 440 Hz. Pas un scan automatique : une oreille humaine, un instrument à la fois.</p><p>On vérifie trois choses : la justesse de chaque note, la longueur de la résonance, et l'absence de <strong>bavure</strong> — ce phénomène où deux notes voisines se déclenchent l'une l'autre, qui rend un instrument bon marché inutilisable dès qu'on enchaîne.</p>"}},"faq_securite_q2":{"type":"faq_item","settings":{"question":"Qu'est-ce qui fait qu'un handpan est mauvais ?","answer":"<p>Trois défauts, toujours les mêmes. <strong>Les notes bavent</strong> les unes sur les autres. <strong>La résonance est courte</strong>, une seconde au lieu de cinq. <strong>La gamme n'est pas indiquée</strong>, parce que le fabricant lui-même ne la garantit pas.</p><p>Ce sont exactement les trois points sur lesquels un instrument est refusé chez nous.</p>"}},"faq_securite_q3":{"type":"faq_item","settings":{"question":"Combien d'instruments refusez-vous ?","answer":"<p>Beaucoup, et c'est le cœur du travail. Nous gardons peu de modèles, volontairement : un instrument qui ne passe pas le contrôle d'accordage ne part pas en ligne.</p><p>C'est plus simple à dire qu'à faire — cela veut dire renvoyer des cartons entiers — mais c'est ce qui vous évite les mauvaises surprises.</p>"}},"faq_securite_q4":{"type":"faq_item","settings":{"question":"Qui êtes-vous vraiment ? Zensea est une entreprise française ?","answer":"<p>Oui. Zensea est éditée par <strong>Abdellah El Moufid</strong>, 10 rue de Provence, 87220 Feytiat, France. Siren 994 612 109, Siret 99461210900011, APE 4791A.</p><p>Le service client est français et répond du lundi au vendredi, de 9h à 18h, à contact.zensea@gmail.com ou au +33 7 56 88 21 12.</p>"}},"faq_securite_q5":{"type":"faq_item","settings":{"question":"Vos instruments sont-ils fabriqués en France ?","answer":"<p>Non, et nous préférons le dire clairement plutôt que de laisser planer le doute. Nos instruments sont fabriqués par des ateliers spécialisés, puis <strong>contrôlés et réaccordés si nécessaire</strong> avant expédition.</p><p>Ce que nous apportons, ce n'est pas la fabrication : c'est la sélection, le contrôle et le fait de vous répondre en français quand vous avez une question.</p>"}},"faq_securite_q6":{"type":"faq_item","settings":{"question":"Proposez-vous des instruments d'occasion ou reconditionnés ?","answer":"<p>Pas pour l'instant. Un handpan d'occasion peut être excellent, mais son accord dépend entièrement de la façon dont il a été traité — et cela ne se voit pas sur une photo.</p><p>Si vous en avez un à faire évaluer, écrivez-nous : on vous dira ce qu'il vaut, même si nous ne le rachetons pas.</p>"}}},"block_order":["faq_securite_q1","faq_securite_q2","faq_securite_q3","faq_securite_q4","faq_securite_q5","faq_securite_q6"],"settings":{"title":"Qualité, contrôle & la marque","subtitle":"Ce qui distingue un instrument d'un objet décoratif.","button_text":"","button_link":"","single_open":true,"title_size":34,"title_size_m":26,"sub_size":16,"sub_size_m":15,"q_size":17,"q_size_m":16,"a_size":16,"a_size_m":15,"row_pad":20,"bg":"#fdfbf8","title_color":"#22332A","sub_color":"#5A6B60","q_color":"#22332A","a_color":"#5A6B60","ico_color":"#B98A2E","divider":"#ece2d3","btn_bg":"#22332A","btn_text":"#ffffff","btn_size":15,"btn_radius":8,"max_width":880,"pad_top":56,"pad_bot":56,"pad_top_m":32,"pad_bot_m":32}},"anchor_faq_ventilateurs":{"type":"custom-code","settings":{"show_on_display":"desktop_and_mobile","custom_liquid":"<div id=\"vllc-ventilateurs\" style=\"position:relative;top:-70px\"></div>","margin_top":0,"margin_bottom":0,"additional_class":""}},"faq_ventilateurs":{"type":"faq-premium","blocks":{"faq_ventilateurs_q1":{"type":"faq_item","settings":{"question":"Comment fait-on chanter un bol ?","answer":"<p>Posez le bol sur son coussin. <strong>Frappez une fois le bord</strong> avec le maillet pour lancer la note, puis faites tourner le maillet lentement contre la paroi extérieure, en gardant une <strong>pression constante</strong>.</p><p>Le son monte au bout de deux ou trois tours. Le seul vrai point d'attention est la régularité du geste, pas la force.</p>"}},"faq_ventilateurs_q2":{"type":"faq_item","settings":{"question":"Quel format de bol choisir ?","answer":"<p><strong>12 à 15 cm</strong> : une note claire, montante, qui s'installe vite. C'est le bol qu'on garde à côté de soi pour marquer un début et une fin de séance.</p><p><strong>20 à 25 cm</strong> : le son descend, s'épaissit, et la résonance tient beaucoup plus longtemps. C'est celui qu'utilisent les praticiens, et celui qu'on entend dans toute la pièce.</p>"}},"faq_ventilateurs_q3":{"type":"faq_item","settings":{"question":"Martelé main ou usiné : ça change quelque chose ?","answer":"<p>Oui, nettement. Un bol martelé à la main porte des <strong>micro-irrégularités</strong> qui enrichissent le spectre : le son est moins pur, plus vivant, avec des battements qui donnent cette impression de vibration flottante.</p><p>Un bol usiné sonne plus « propre » et plus prévisible. C'est le martelé que nous sélectionnons.</p>"}},"faq_ventilateurs_q4":{"type":"faq_item","settings":{"question":"La kalimba, c'est pour les enfants ?","answer":"<p>Pas seulement, même si c'est un excellent premier instrument. La kalimba est un vrai instrument mélodique : on y joue des morceaux complets, à deux pouces, avec des accompagnements.</p><p>Sa force est ailleurs : elle tient dans une poche, elle se joue à volume très bas, et elle ne demande aucune installation. C'est l'instrument du train et du bureau.</p>"}},"faq_ventilateurs_q5":{"type":"faq_item","settings":{"question":"L'ocarina demande-t-il du souffle ?","answer":"<p>Beaucoup moins qu'une flûte. Il n'y a <strong>ni embouchure à former, ni pression à maîtriser</strong> : vous soufflez doucement et régulièrement, et la note sort juste.</p><p>La seule règle : ne pas forcer. Souffler trop fort fait monter la note d'un demi-ton et sonne faux. C'est le seul vrai apprentissage, et il tient en une phrase.</p>"}}},"block_order":["faq_ventilateurs_q1","faq_ventilateurs_q2","faq_ventilateurs_q3","faq_ventilateurs_q4","faq_ventilateurs_q5"],"settings":{"title":"Bols chantants & instruments d'éveil","subtitle":"Ceux qu'on choisit pour l'ambiance plutôt que pour la mélodie.","button_text":"","button_link":"","single_open":true,"title_size":34,"title_size_m":26,"sub_size":16,"sub_size_m":15,"q_size":17,"q_size_m":16,"a_size":16,"a_size_m":15,"row_pad":20,"bg":"#ffffff","title_color":"#22332A","sub_color":"#5A6B60","q_color":"#22332A","a_color":"#5A6B60","ico_color":"#B98A2E","divider":"#ece2d3","btn_bg":"#22332A","btn_text":"#ffffff","btn_size":15,"btn_radius":8,"max_width":880,"pad_top":56,"pad_bot":56,"pad_top_m":32,"pad_bot_m":32}},"faq_contact":{"type":"custom-code","settings":{"show_on_display":"desktop_and_mobile","custom_liquid":"<div class=\"vllc-faq-end\">\n  <p class=\"vllc-faq-end-eyebrow\">Il reste une question</p>\n  <h3>Alors posez-la. On répond vraiment.</h3>\n  <p class=\"vllc-faq-end-txt\">Une gamme dont vous n'êtes pas sûr, un nombre de notes à valider, un doute sur la prise en main : écrivez-nous. Vous aurez une réponse d'une personne qui a l'instrument entre les mains, pas un message automatique.</p>\n  <div class=\"vllc-faq-end-grid\">\n    <a class=\"vllc-faq-end-card\" href=\"mailto:contact.zensea@gmail.com target=\"_blank\" rel=\"noopener\">\n      <span class=\"vllc-faq-end-ic\">WhatsApp</span>\n      <strong>Écrire un e-mail</strong>\n      <em>Réponse sous 24 h en semaine</em>\n    </a>\n    <a class=\"vllc-faq-end-card\" href=\"mailto:contact.zensea@gmail.com\">\n      <span class=\"vllc-faq-end-ic\">E-mail</span>\n      <strong>contact.zensea@gmail.com</strong>\n      <em>Réponse sous 24 h, du lundi au vendredi</em>\n    </a>\n    <a class=\"vllc-faq-end-card\" href=\"/pages/contact\">\n      <span class=\"vllc-faq-end-ic\">Formulaire</span>\n      <strong>Page contact</strong>\n      <em>Pour les demandes détaillées</em>\n    </a>\n  </div>\n</div>\n<style>\n.vllc-faq-end{max-width:960px;margin:8px auto 84px;padding:52px 30px;text-align:center;background:linear-gradient(180deg,#FBF9F4 0%,#f4ede4 100%);border:1px solid #ece2d3;border-radius:24px}\n.vllc-faq-end-eyebrow{text-transform:uppercase;letter-spacing:2.2px;font-size:11px;font-weight:600;color:#B98A2E;margin:0 0 12px}\n.vllc-faq-end h3{font-family:Georgia,serif;font-weight:400;font-size:31px;line-height:1.2;color:#22332A;margin:0 0 14px}\n.vllc-faq-end-txt{font-size:15.5px;line-height:1.7;color:#5A6B60;margin:0 auto 30px;max-width:620px}\n.vllc-faq-end-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}\n.vllc-faq-end-card{display:block;padding:20px 22px;background:#fff;border:1px solid #ece2d3;border-radius:16px;text-decoration:none;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}\n.vllc-faq-end-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(185, 138, 46,.13);border-color:#2E5E46}\n.vllc-faq-end-ic{display:block;text-transform:uppercase;letter-spacing:1.6px;font-size:10.5px;font-weight:600;color:#B98A2E;margin-bottom:9px}\n.vllc-faq-end-card strong{display:block;font-size:16px;color:#22332A;margin-bottom:5px}\n.vllc-faq-end-card em{display:block;font-style:normal;font-size:13px;color:#7d7d7d}\n@media(max-width:760px){.vllc-faq-end-grid{grid-template-columns:1fr}.vllc-faq-end{padding:40px 20px;border-radius:20px}.vllc-faq-end h3{font-size:25px}}\n</style>","margin_top":0,"margin_bottom":0,"additional_class":""}},"velluce_hero_3d":{"type":"velluce-hero-3d","settings":{"eyebrow":"F.A.Q Zensea","heading":"48 vraies réponses, sans détour.","subheading":"La hauteur idéale au-dessus d'une table, les délais réels de livraison, ce que couvre la garantie : tout ce qu'on nous demande est ici, écrit simplement. S'il manque votre question, on y répond en personne.","badge_text":"Mise à jour régulièrement · Réponse humaine en semaine","model_url":"","camera_orbit":"18deg 78deg 0.55m","camera_target":"0m 0.015m 0m","fov":"30deg"}},"velluce_dunes":{"type":"velluce-dunes","settings":{"height_desktop":300,"height_mobile":180}}},"order":["velluce_hero_3d","faq_head","anchor_faq_choisir","faq_choisir","anchor_faq_installation","faq_installation","anchor_faq_lumiere","faq_lumiere","anchor_faq_livraison","faq_livraison","anchor_faq_retours","faq_retours","anchor_faq_securite","faq_securite","anchor_faq_ventilateurs","faq_ventilateurs","faq_contact","velluce_dunes"]}
+{
+  "sections": {
+    "faq_head": {
+      "type": "custom-code",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "custom_liquid": "<div class=\"vllc-faq-head\">\n  <p class=\"vllc-faq-eyebrow\">Centre d'aide Zensea</p>\n  <h1 class=\"vllc-faq-title\">Tout ce que vous devez savoir<br>avant de poser les mains dessus.</h1>\n  <p class=\"vllc-faq-sub\">Nous avons rassemblé ici les questions qu'on nous pose vraiment — gammes, nombre de notes, prise en main, accordage, entretien, livraison, retours. Prenez ce dont vous avez besoin, ignorez le reste. Et s'il vous manque une réponse, une vraie personne vous répond en bas de page.</p>\n  <div class=\"vllc-faq-jump\">\n    <a href=\"#vllc-choisir\">Bien choisir</a>\n    <a href=\"#vllc-installation\">Prise en main</a>\n    <a href=\"#vllc-lumiere\">Accordage</a>\n    <a href=\"#vllc-livraison\">Livraison</a>\n    <a href=\"#vllc-retours\">Retours</a>\n    <a href=\"#vllc-securite\">Qualité</a>\n    <a href=\"#vllc-ventilateurs\">Bols &amp; éveil</a>\n  </div>\n</div>\n<style>\n.vllc-faq-head{max-width:900px;margin:0 auto;padding:72px 24px 8px;text-align:center}\n.vllc-faq-eyebrow{text-transform:uppercase;letter-spacing:2.4px;font-size:11.5px;font-weight:600;color:#B98A2E;margin:0 0 16px}\n.vllc-faq-title{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:48px;line-height:1.14;color:#22332A;margin:0 0 18px;letter-spacing:-.4px}\n.vllc-faq-sub{font-size:16.5px;line-height:1.75;color:#5A6B60;margin:0 auto;max-width:660px}\n.vllc-faq-jump{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:30px auto 0;max-width:760px}\n.vllc-faq-jump a{display:inline-block;padding:9px 16px;border:1px solid #ECF1E8;border-radius:999px;background:#FBF9F4;color:#22332A;font-size:13.5px;text-decoration:none;transition:background .2s ease,border-color .2s ease}\n.vllc-faq-jump a:hover{background:#2E5E46;border-color:#2E5E46;color:#22332A}\n@media(max-width:600px){.vllc-faq-title{font-size:31px}.vllc-faq-head{padding-top:52px}.vllc-faq-sub{font-size:15.5px}}\n</style>",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "anchor_faq_choisir": {
+      "type": "custom-code",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "custom_liquid": "<div id=\"vllc-choisir\" style=\"position:relative;top:-70px\"></div>",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "faq_choisir": {
+      "type": "faq-premium",
+      "blocks": {
+        "faq_choisir_q1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Il faut savoir jouer d'un instrument pour commencer ?",
+            "answer": "<p>Non, et ce n'est pas une formule commerciale. Sur un handpan comme sur un tongue drum, <strong>toutes les notes appartiennent à une seule et même gamme</strong> : elles s'accordent entre elles quel que soit l'ordre dans lequel vous les jouez. La fausse note n'existe pas.</p><p>C'est ce qui rend l'instrument unique : vous ne travaillez pas, vous cherchez. Et vous tombez toujours sur quelque chose de beau. La majorité de nos clients n'avaient jamais touché un instrument, et jouent quelque chose d'agréable dès le premier soir.</p>"
+          }
+        },
+        "faq_choisir_q2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "9, 10 ou 12 notes : lequel prendre ?",
+            "answer": "<p><strong>9 notes</strong> pour débuter : le format le plus lisible, on repère les notes du regard et on improvise sans réfléchir. C'est le choix que personne n'a jamais regretté.</p><p><strong>10 notes</strong> ajoutent une couleur harmonique sans compliquer la lecture. Le bon compromis si vous hésitez.</p><p><strong>12 notes</strong> offrent la palette la plus large et permettent de vrais morceaux avec des accords. Demande quelques mois de pratique pour être exploité.</p><p>Dans le doute, prenez neuf. On progresse toujours vers plus de notes, jamais l'inverse.</p>"
+          }
+        },
+        "faq_choisir_q3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Qu'est-ce qu'une gamme, et laquelle choisir ?",
+            "answer": "<p>La gamme est l'ensemble des notes gravées sur l'instrument. Elle décide de la <strong>couleur émotionnelle</strong> de tout ce que vous jouerez — bien plus que le nombre de notes.</p><p>Les gammes <strong>mineures</strong> (D Kurd, Celtic minor, Amara) sonnent profondes, contemplatives, un peu mélancoliques. Elles représentent l'immense majorité des handpans joués, et c'est le son qu'on a en tête quand on pense « handpan ».</p><p>Les gammes <strong>majeures</strong> sont plus lumineuses, plus joyeuses, et beaucoup plus rares.</p><p>Si vous ne savez pas, prenez une gamme mineure : c'est ce que vous avez entendu et ce qui vous a donné envie.</p>"
+          }
+        },
+        "faq_choisir_q4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Handpan ou tongue drum : quelle différence ?",
+            "answer": "<p>Le <strong>handpan</strong> est une coupole d'acier martelé qu'on joue aux mains. La résonance est ample, longue, elle remplit la pièce. C'est l'instrument le plus expressif des deux, et le plus cher.</p><p>Le <strong>tongue drum</strong> est une sphère ou un disque d'acier découpé en lames, qu'on joue aux mailloches ou du bout des doigts. Le son est plus doux, plus court, plus contenu. Il coûte cinq à dix fois moins cher.</p><p>Beaucoup commencent par le tongue drum et gardent les deux. Aucun des deux ne remplace l'autre.</p>"
+          }
+        },
+        "faq_choisir_q5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Quel budget prévoir vraiment ?",
+            "answer": "<p>Un tongue drum d'entrée de gamme se trouve autour de <strong>25 €</strong>, un modèle de salon à onze notes autour de <strong>70 €</strong>. Une kalimba tourne autour de <strong>30 à 60 €</strong>, un bol chantant entre <strong>50 et 150 €</strong> selon le format.</p><p>Un handpan sérieux commence autour de <strong>400 €</strong>. En dessous de 250 €, méfiez-vous : ce sont presque toujours des instruments mal accordés dont les notes bavent les unes sur les autres dès qu'on enchaîne.</p><p>Le pack complet — housse, mailloches, huile, livret — est inclus chez nous. Ailleurs, il faut souvent compter 60 à 100 € de plus.</p>"
+          }
+        },
+        "faq_choisir_q6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Est-ce un bon cadeau pour quelqu'un qui n'est pas musicien ?",
+            "answer": "<p>C'est probablement le meilleur cas d'usage. Un handpan ou un tongue drum ne demande aucune compétence préalable, sonne juste dès la première minute, et ne provoque jamais la frustration d'un instrument qu'on n'arrive pas à faire sonner.</p><p>Pour un cadeau, prenez un <strong>9 notes en gamme mineure</strong> ou un <strong>tongue drum 11 notes</strong> : les deux formats les plus immédiats. Et si le son ne parle pas à la personne, elle a 30 jours pour changer d'avis.</p>"
+          }
+        },
+        "faq_choisir_q7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Est-ce que les enfants peuvent en jouer ?",
+            "answer": "<p>Oui, et c'est souvent eux qui s'en emparent le plus vite. Le tongue drum est particulièrement adapté : léger, sans arête vive, impossible à désaccorder en jouant, et immédiatement gratifiant.</p><p>Pour un enfant de moins de huit ans, préférez un <strong>tongue drum 15 cm</strong> ou une <strong>kalimba</strong>. Un handpan de 22 pouces reste lourd et encombrant pour de petites mains.</p>"
+          }
+        },
+        "faq_choisir_q8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Puis-je jouer en appartement sans gêner les voisins ?",
+            "answer": "<p>Un tongue drum, une kalimba et un ocarina se jouent sans problème le soir : le volume reste proche de celui d'une conversation.</p><p>Un handpan porte davantage — comptez le volume d'une guitare acoustique jouée doucement. En appartement, jouez-le sur les genoux plutôt que sur un support (le corps absorbe une partie des vibrations) et évitez de le poser directement sur une table, qui fait caisse de résonance.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_choisir_q1",
+        "faq_choisir_q2",
+        "faq_choisir_q3",
+        "faq_choisir_q4",
+        "faq_choisir_q5",
+        "faq_choisir_q6",
+        "faq_choisir_q7",
+        "faq_choisir_q8"
+      ],
+      "settings": {
+        "title": "Bien choisir son instrument",
+        "subtitle": "Les questions qu'on se pose devant l'écran, avant de cliquer.",
+        "button_text": "",
+        "button_link": "",
+        "single_open": true,
+        "title_size": 34,
+        "title_size_m": 26,
+        "sub_size": 16,
+        "sub_size_m": 15,
+        "q_size": 17,
+        "q_size_m": 16,
+        "a_size": 16,
+        "a_size_m": 15,
+        "row_pad": 20,
+        "bg": "#ffffff",
+        "title_color": "#22332A",
+        "sub_color": "#5A6B60",
+        "q_color": "#22332A",
+        "a_color": "#5A6B60",
+        "ico_color": "#B98A2E",
+        "divider": "#ECF1E8",
+        "btn_bg": "#22332A",
+        "btn_text": "#ffffff",
+        "btn_size": 15,
+        "btn_radius": 8,
+        "max_width": 880,
+        "pad_top": 56,
+        "pad_bot": 56,
+        "pad_top_m": 32,
+        "pad_bot_m": 32
+      }
+    },
+    "anchor_faq_installation": {
+      "type": "custom-code",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "custom_liquid": "<div id=\"vllc-installation\" style=\"position:relative;top:-70px\"></div>",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "faq_installation": {
+      "type": "faq-premium",
+      "blocks": {
+        "faq_installation_q1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment tenir un handpan correctement ?",
+            "answer": "<p>Sur les genoux, le creux tourné vers vous, légèrement incliné. Les avant-bras restent détendus et les épaules basses : <strong>la position fait la moitié du son</strong>. Un instrument tenu de façon crispée sonne mat.</p><p>Évitez de le poser à plat sur une table : le contact étouffe la résonance. Si vous voulez jouer debout ou longtemps, un support dédié laisse l'instrument vibrer librement.</p>"
+          }
+        },
+        "faq_installation_q2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Avec quoi frappe-t-on : les doigts, la paume, les mailloches ?",
+            "answer": "<p>Sur un handpan : <strong>le bout des doigts, jamais la paume et jamais la force</strong>. Un rebond sec au centre de la note, et l'acier chante tout seul pendant plusieurs secondes. Frapper fort ne donne pas plus de son, seulement un son plus dur — et à la longue, cela désaccorde l'instrument.</p><p>Sur un tongue drum : mailloches ou doigts, au choix. Les mailloches donnent une attaque nette, les doigts un son plus rond. La plupart des joueurs alternent selon le morceau.</p>"
+          }
+        },
+        "faq_installation_q3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Combien de temps avant de jouer quelque chose d'écoutable ?",
+            "answer": "<p>Une soirée. Ce n'est pas une exagération : comme toutes les notes s'accordent entre elles, votre premier enchaînement au hasard sonne déjà juste.</p><p>Ce que vous travaillerez ensuite, ce n'est pas la justesse mais le <strong>rythme</strong> et les <strong>nuances</strong> — jouer plus doux, laisser respirer, ne pas remplir tous les silences. C'est là que se joue la différence entre quelqu'un qui débute et quelqu'un qui joue depuis un an.</p>"
+          }
+        },
+        "faq_installation_q4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Faut-il prendre des cours ?",
+            "answer": "<p>Non, et c'est rare de pouvoir le dire d'un instrument. La majorité des joueurs de handpan sont autodidactes.</p><p>Le livret de partitions numérotées fourni suffit pour vos premiers morceaux. Ensuite, quelques vidéos suffisent à comprendre les techniques de base — le roulement des doigts, l'attaque sur le bord de la note, l'usage des harmoniques.</p><p>Un cours devient utile après six mois ou un an, quand on cherche à structurer ce qu'on improvise.</p>"
+          }
+        },
+        "faq_installation_q5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment lire le livret de partitions ?",
+            "answer": "<p>Les notes sont <strong>numérotées</strong> sur l'instrument et le livret indique simplement quel numéro jouer, dans quel ordre. Vous lisez des chiffres, pas du solfège.</p><p>C'est le même principe sur la kalimba, dont les lames sont numérotées, et sur l'ocarina, dont le livret montre chaque doigté en image, trou par trou.</p>"
+          }
+        },
+        "faq_installation_q6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Puis-je jouer avec d'autres instruments ?",
+            "answer": "<p>Oui, à condition que la gamme soit compatible. Tous nos instruments sont accordés au <strong>diapason 440 Hz</strong> — l'accordage standard international — donc ils sont justes par rapport à un piano, une guitare ou un violon.</p><p>Reste la question de la gamme : un handpan en D Kurd s'accorde naturellement avec tout ce qui est en ré mineur. Indiquez-nous ce avec quoi vous voulez jouer, on vous oriente vers la bonne gamme.</p>"
+          }
+        },
+        "faq_installation_q7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Mon instrument sonne mat, qu'est-ce que je fais mal ?",
+            "answer": "<p>Trois causes, dans l'ordre de fréquence. <strong>Vous frappez trop fort</strong> : l'acier n'a pas le temps de vibrer. <strong>Vous frappez avec la paume</strong> ou avec la pulpe entière du doigt au lieu du bout. <strong>L'instrument est posé sur une surface qui l'étouffe</strong> — une table, un coussin trop mou, vos cuisses trop serrées.</p><p>Essayez : posez-le sur les genoux légèrement écartés, et frappez du bout de l'index avec un rebond immédiat. La différence est spectaculaire.</p>"
+          }
+        },
+        "faq_installation_q8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Quel accessoire est vraiment utile au début ?",
+            "answer": "<p>La <strong>housse</strong>, et elle est déjà dans le carton. C'est le seul accessoire indispensable : la quasi-totalité des instruments désaccordés le sont à cause d'un choc pendant un transport.</p><p>Le <strong>support</strong> devient utile si vous jouez souvent plus d'une heure ou si vous jouez debout. Les <strong>mailloches de rechange</strong> et l'<strong>huile d'entretien</strong> peuvent attendre quelques mois.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_installation_q1",
+        "faq_installation_q2",
+        "faq_installation_q3",
+        "faq_installation_q4",
+        "faq_installation_q5",
+        "faq_installation_q6",
+        "faq_installation_q7",
+        "faq_installation_q8"
+      ],
+      "settings": {
+        "title": "Prise en main & premiers pas",
+        "subtitle": "Vous n'êtes pas musicien. Ce n'est pas un problème.",
+        "button_text": "",
+        "button_link": "",
+        "single_open": true,
+        "title_size": 34,
+        "title_size_m": 26,
+        "sub_size": 16,
+        "sub_size_m": 15,
+        "q_size": 17,
+        "q_size_m": 16,
+        "a_size": 16,
+        "a_size_m": 15,
+        "row_pad": 20,
+        "bg": "#FBF9F4",
+        "title_color": "#22332A",
+        "sub_color": "#5A6B60",
+        "q_color": "#22332A",
+        "a_color": "#5A6B60",
+        "ico_color": "#B98A2E",
+        "divider": "#ECF1E8",
+        "btn_bg": "#22332A",
+        "btn_text": "#ffffff",
+        "btn_size": 15,
+        "btn_radius": 8,
+        "max_width": 880,
+        "pad_top": 56,
+        "pad_bot": 56,
+        "pad_top_m": 32,
+        "pad_bot_m": 32
+      }
+    },
+    "anchor_faq_lumiere": {
+      "type": "custom-code",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "custom_liquid": "<div id=\"vllc-lumiere\" style=\"position:relative;top:-70px\"></div>",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "faq_lumiere": {
+      "type": "faq-premium",
+      "blocks": {
+        "faq_lumiere_q1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Qu'est-ce que le 440 Hz, et pourquoi c'est important ?",
+            "answer": "<p>440 Hz est la fréquence du la de référence, le <strong>standard international</strong> utilisé par tous les orchestres et tous les instruments du commerce.</p><p>Un instrument accordé en 440 Hz est jouable avec n'importe quel autre instrument. Un instrument accordé en 432 Hz — qu'on trouve parfois dans le milieu du bien-être — sonne très bien seul, mais devient faux dès que vous jouez avec quelqu'un.</p><p>Tous nos instruments sont en 440 Hz, et c'est écrit sur chaque fiche.</p>"
+          }
+        },
+        "faq_lumiere_q2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Est-ce que ça se désaccorde avec le temps ?",
+            "answer": "<p>Un handpan bien traité garde son accord <strong>des années</strong>. Ce qui désaccorde un instrument, ce n'est jamais l'usage normal : c'est un choc, une chaleur excessive ou la corrosion.</p><p>Trois règles suffisent : ne jamais le laisser en plein soleil ou dans une voiture l'été, ne jamais frapper avec la paume ou avec un objet dur, et le ranger dans sa housse dès qu'il ne sert pas.</p>"
+          }
+        },
+        "faq_lumiere_q3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment entretenir l'acier ?",
+            "answer": "<p>Un passage de chiffon microfibre après chaque séance pour retirer la transpiration — c'est elle qui attaque l'acier, pas l'air.</p><p>Une fois par mois, quelques gouttes de l'<strong>huile fournie</strong> réparties au chiffon sur toute la surface. Cela crée un film protecteur invisible contre la corrosion.</p><p>Si des points de rouille apparaissent malgré tout, un chiffon légèrement abrasif et de l'huile suffisent à les faire disparaître avant qu'ils ne s'installent.</p>"
+          }
+        },
+        "faq_lumiere_q4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Peut-on faire réaccorder un handpan ?",
+            "answer": "<p>Oui. C'est un travail d'accordeur spécialisé, qui remartèle les zones concernées au marteau et à l'oreille. Comptez généralement 100 à 200 € et quelques semaines de délai.</p><p>En pratique, la question ne se pose qu'après un choc ou après plusieurs années d'usage intensif. Écrivez-nous : on vous orientera vers un accordeur près de chez vous.</p>"
+          }
+        },
+        "faq_lumiere_q5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "En quel acier sont faits vos handpans ?",
+            "answer": "<p>En acier <strong>nitruré</strong>, traité thermiquement pour durcir la surface et résister à la corrosion. C'est le traitement qui donne la teinte sombre caractéristique et qui permet à l'instrument de tenir son accord dans le temps.</p><p>Un handpan en acier brut non traité coûte moins cher à produire mais rouille en quelques mois si vous ne l'huilez pas religieusement.</p>"
+          }
+        },
+        "faq_lumiere_q6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment le transporter en avion ou en train ?",
+            "answer": "<p>En train, aucun problème : la housse suffit. En avion, un handpan dans sa housse rembourrée passe généralement en <strong>bagage cabine</strong> sur les compagnies régulières, mais la règle varie — vérifiez les dimensions autorisées avant de réserver.</p><p>Ne le mettez jamais en soute sans caisse rigide : c'est le meilleur moyen de le récupérer désaccordé.</p>"
+          }
+        },
+        "faq_lumiere_q7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "La kalimba a besoin d'être accordée ?",
+            "answer": "<p>Oui, de temps en temps, et c'est très simple. Un <strong>marteau d'accordage</strong> est fourni : on tape légèrement sur la lame pour la faire coulisser. La lame s'allonge, la note descend ; elle raccourcit, la note monte.</p><p>Une application gratuite d'accordeur sur téléphone suffit à contrôler. Comptez cinq minutes pour l'instrument entier, deux à trois fois par an.</p>"
+          }
+        },
+        "faq_lumiere_q8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Le bol chantant demande-t-il un entretien ?",
+            "answer": "<p>Très peu. Un chiffon sec après usage suffit : le laiton se patine avec le temps, et cette patine fait partie de l'objet — la faire disparaître au produit abrasif abîme le son.</p><p>Gardez simplement le coussin propre et sec : c'est lui qui isole le bol de la table et qui laisse la résonance se développer.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_lumiere_q1",
+        "faq_lumiere_q2",
+        "faq_lumiere_q3",
+        "faq_lumiere_q4",
+        "faq_lumiere_q5",
+        "faq_lumiere_q6",
+        "faq_lumiere_q7",
+        "faq_lumiere_q8"
+      ],
+      "settings": {
+        "title": "Accordage, gammes & entretien",
+        "subtitle": "Ce qui fait qu'un instrument reste juste dix ans.",
+        "button_text": "",
+        "button_link": "",
+        "single_open": true,
+        "title_size": 34,
+        "title_size_m": 26,
+        "sub_size": 16,
+        "sub_size_m": 15,
+        "q_size": 17,
+        "q_size_m": 16,
+        "a_size": 16,
+        "a_size_m": 15,
+        "row_pad": 20,
+        "bg": "#ffffff",
+        "title_color": "#22332A",
+        "sub_color": "#5A6B60",
+        "q_color": "#22332A",
+        "a_color": "#5A6B60",
+        "ico_color": "#B98A2E",
+        "divider": "#ECF1E8",
+        "btn_bg": "#22332A",
+        "btn_text": "#ffffff",
+        "btn_size": 15,
+        "btn_radius": 8,
+        "max_width": 880,
+        "pad_top": 56,
+        "pad_bot": 56,
+        "pad_top_m": 32,
+        "pad_bot_m": 32
+      }
+    },
+    "anchor_faq_livraison": {
+      "type": "custom-code",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "custom_liquid": "<div id=\"vllc-livraison\" style=\"position:relative;top:-70px\"></div>",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "faq_livraison": {
+      "type": "faq-premium",
+      "blocks": {
+        "faq_livraison_q1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Quels sont vos délais de livraison ?",
+            "answer": "<p>Préparation en <strong>24 à 48 h ouvrées</strong> après votre commande, puis <strong>7 à 13 jours ouvrés</strong> de transport. Soit <strong>8 à 15 jours ouvrés au total</strong>.</p><p>Vous recevez un numéro de suivi par e-mail dès le départ du colis.</p>"
+          }
+        },
+        "faq_livraison_q2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "La livraison est-elle gratuite ?",
+            "answer": "<p>La livraison est <strong>offerte dès 30 € d'achat</strong>. En dessous, les frais s'affichent au panier, avant validation — jamais à la dernière étape.</p>"
+          }
+        },
+        "faq_livraison_q3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment mes instruments sont-ils emballés ?",
+            "answer": "<p>C'est le premier reproche fait aux vendeurs d'instruments en ligne, et le point sur lequel nous ne transigeons pas : <strong>housse déjà en place autour de l'instrument</strong>, puis calage mousse, puis double carton.</p><p>Un handpan qui bouge dans son colis est un handpan qui arrive désaccordé. Le nôtre ne bouge pas.</p>"
+          }
+        },
+        "faq_livraison_q4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Puis-je suivre ma commande et changer l'adresse ?",
+            "answer": "<p>Le suivi est disponible dès l'expédition, via le lien reçu par e-mail.</p><p>Pour un changement d'adresse, écrivez-nous <strong>le plus vite possible</strong> à contact.zensea@gmail.com : tant que le colis n'est pas parti, c'est traité dans la journée.</p>"
+          }
+        },
+        "faq_livraison_q5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Livrez-vous hors de France ?",
+            "answer": "<p>Nous livrons en <strong>France métropolitaine</strong>, ainsi qu'en Belgique, au Luxembourg et en Suisse. Les délais et frais éventuels apparaissent au moment du paiement, avant validation.</p><p>Pour la Corse et les DOM-TOM, écrivez-nous avant de commander : les délais sont plus longs et nous préférons vous les annoncer honnêtement.</p>"
+          }
+        },
+        "faq_livraison_q6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Que se passe-t-il si je ne suis pas là à la livraison ?",
+            "answer": "<p>Le transporteur laisse un avis de passage et propose une nouvelle date ou un point relais.</p><p>Un conseil : ne faites pas livrer un handpan en point relais si vous pouvez l'éviter. Un colis manipulé une fois de plus est un risque de plus.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_livraison_q1",
+        "faq_livraison_q2",
+        "faq_livraison_q3",
+        "faq_livraison_q4",
+        "faq_livraison_q5",
+        "faq_livraison_q6"
+      ],
+      "settings": {
+        "title": "Livraison & suivi",
+        "subtitle": "Un instrument accordé voyage bien, à condition d'être bien calé.",
+        "button_text": "",
+        "button_link": "",
+        "single_open": true,
+        "title_size": 34,
+        "title_size_m": 26,
+        "sub_size": 16,
+        "sub_size_m": 15,
+        "q_size": 17,
+        "q_size_m": 16,
+        "a_size": 16,
+        "a_size_m": 15,
+        "row_pad": 20,
+        "bg": "#FBF9F4",
+        "title_color": "#22332A",
+        "sub_color": "#5A6B60",
+        "q_color": "#22332A",
+        "a_color": "#5A6B60",
+        "ico_color": "#B98A2E",
+        "divider": "#ECF1E8",
+        "btn_bg": "#22332A",
+        "btn_text": "#ffffff",
+        "btn_size": 15,
+        "btn_radius": 8,
+        "max_width": 880,
+        "pad_top": 56,
+        "pad_bot": 56,
+        "pad_top_m": 32,
+        "pad_bot_m": 32
+      }
+    },
+    "anchor_faq_retours": {
+      "type": "custom-code",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "custom_liquid": "<div id=\"vllc-retours\" style=\"position:relative;top:-70px\"></div>",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "faq_retours": {
+      "type": "faq-premium",
+      "blocks": {
+        "faq_retours_q1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Mon instrument est arrivé abîmé. Que faire ?",
+            "answer": "<p>Vous êtes couvert, entièrement. En vente à distance, <strong>le vendeur est responsable du colis jusqu'à sa réception</strong>.</p><p>Prenez une photo du carton et de l'instrument, envoyez-la à contact.zensea@gmail.com dans les jours qui suivent, et nous remplaçons ou remboursons. Aucune expertise à vos frais, aucun formulaire à rallonge.</p>"
+          }
+        },
+        "faq_retours_q2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Puis-je retourner un instrument si le son ne me plaît pas ?",
+            "answer": "<p>Oui. Vous disposez de <strong>30 jours</strong> à compter de la réception pour changer d'avis, sans avoir à vous justifier — bien au-delà des 14 jours légaux.</p><p>L'instrument doit revenir dans son emballage d'origine et en état de revente. <strong>Les frais de retour sont à votre charge.</strong></p>"
+          }
+        },
+        "faq_retours_q3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment se passe un remboursement ?",
+            "answer": "<p>Sur le <strong>moyen de paiement utilisé à la commande</strong>, sous <strong>7 à 14 jours</strong> après réception et validation du retour.</p><p>Vous recevez un e-mail de confirmation au moment où le remboursement part de chez nous.</p>"
+          }
+        },
+        "faq_retours_q4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Et si l'instrument arrive désaccordé ?",
+            "answer": "<p>C'est un défaut de conformité, pas un changement d'avis : dans ce cas <strong>nous prenons les frais de retour à notre charge</strong> et nous remplaçons l'instrument.</p><p>Chaque instrument est joué note par note avant expédition, donc le cas est rare — mais il peut arriver après un transport violent, et c'est notre responsabilité.</p>"
+          }
+        },
+        "faq_retours_q5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Puis-je annuler ou modifier ma commande ?",
+            "answer": "<p>Oui, tant qu'elle n'est pas expédiée. Écrivez-nous immédiatement, c'est traité dans la journée.</p><p>Après l'expédition, il faut passer par le retour classique sous 30 jours.</p>"
+          }
+        },
+        "faq_retours_q6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Vendez-vous les accessoires séparément ?",
+            "answer": "<p>Oui : housses, supports, mailloches de rechange, huile d'entretien et livrets sont disponibles à l'unité dans la rubrique Accessoires.</p><p>Si vous cherchez une pièce précise qui n'y figure pas, écrivez-nous — on trouve généralement.</p>"
+          }
+        },
+        "faq_retours_q7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Faites-vous des factures pour une structure ?",
+            "answer": "<p>Oui. Écoles de musique, associations, praticiens : ouvrez un compte via l'Espace pro et vous recevrez une facture au nom de votre structure, avec des tarifs dégressifs et un paiement à 30 jours possible.</p>"
+          }
+        },
+        "faq_retours_q8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Que couvre exactement la garantie 24 mois ?",
+            "answer": "<p>Elle couvre l'instrument contre les <strong>défauts de fabrication</strong> pendant 24 mois à compter de la réception : soudure, assemblage, accordage qui décroche sans cause extérieure, accessoire livré défectueux.</p><p>Elle ne couvre pas ce qui relève de l'usage : un choc, une chute, un instrument laissé dehors sous la pluie ou dans une voiture en plein soleil, un accordage tenté soi-même avec un marteau. Rien de piégeux là-dedans — ce sont les mêmes règles que pour n'importe quel instrument en acier.</p><p>Mise en oeuvre : un e-mail à contact.zensea@gmail.com avec deux photos et, si possible, un court enregistrement. On répond sous 24 h ouvrées et on remplace ou on rembourse. Pas d'expertise à vos frais, pas de formulaire à rallonge.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_retours_q1",
+        "faq_retours_q2",
+        "faq_retours_q3",
+        "faq_retours_q4",
+        "faq_retours_q5",
+        "faq_retours_q6",
+        "faq_retours_q7",
+        "faq_retours_q8"
+      ],
+      "settings": {
+        "title": "Retours & remboursement",
+        "subtitle": "Nos engagements, écrits noir sur blanc — et vos droits.",
+        "button_text": "",
+        "button_link": "",
+        "single_open": true,
+        "title_size": 34,
+        "title_size_m": 26,
+        "sub_size": 16,
+        "sub_size_m": 15,
+        "q_size": 17,
+        "q_size_m": 16,
+        "a_size": 16,
+        "a_size_m": 15,
+        "row_pad": 20,
+        "bg": "#ffffff",
+        "title_color": "#22332A",
+        "sub_color": "#5A6B60",
+        "q_color": "#22332A",
+        "a_color": "#5A6B60",
+        "ico_color": "#B98A2E",
+        "divider": "#ECF1E8",
+        "btn_bg": "#22332A",
+        "btn_text": "#ffffff",
+        "btn_size": 15,
+        "btn_radius": 8,
+        "max_width": 880,
+        "pad_top": 56,
+        "pad_bot": 56,
+        "pad_top_m": 32,
+        "pad_bot_m": 32
+      }
+    },
+    "anchor_faq_securite": {
+      "type": "custom-code",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "custom_liquid": "<div id=\"vllc-securite\" style=\"position:relative;top:-70px\"></div>",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "faq_securite": {
+      "type": "faq-premium",
+      "blocks": {
+        "faq_securite_q1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment contrôlez-vous l'accordage ?",
+            "answer": "<p>Chaque instrument est <strong>joué note par note</strong> avant expédition et contrôlé au diapason 440 Hz. Pas un scan automatique : une oreille humaine, un instrument à la fois.</p><p>On vérifie trois choses : la justesse de chaque note, la longueur de la résonance, et l'absence de <strong>bavure</strong> — ce phénomène où deux notes voisines se déclenchent l'une l'autre, qui rend un instrument bon marché inutilisable dès qu'on enchaîne.</p>"
+          }
+        },
+        "faq_securite_q2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Qu'est-ce qui fait qu'un handpan est mauvais ?",
+            "answer": "<p>Trois défauts, toujours les mêmes. <strong>Les notes bavent</strong> les unes sur les autres. <strong>La résonance est courte</strong>, une seconde au lieu de cinq. <strong>La gamme n'est pas indiquée</strong>, parce que le fabricant lui-même ne la garantit pas.</p><p>Ce sont exactement les trois points sur lesquels un instrument est refusé chez nous.</p>"
+          }
+        },
+        "faq_securite_q3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Combien d'instruments refusez-vous ?",
+            "answer": "<p>Beaucoup, et c'est le cœur du travail. Nous gardons peu de modèles, volontairement : un instrument qui ne passe pas le contrôle d'accordage ne part pas en ligne.</p><p>C'est plus simple à dire qu'à faire — cela veut dire renvoyer des cartons entiers — mais c'est ce qui vous évite les mauvaises surprises.</p>"
+          }
+        },
+        "faq_securite_q4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Qui êtes-vous vraiment ? Zensea est une entreprise française ?",
+            "answer": "<p>Oui. Zensea est éditée par <strong>Abdellah El Moufid</strong>, 10 rue de Provence, 87220 Feytiat, France. Siren 994 612 109, Siret 99461210900011, APE 4791A.</p><p>Le service client est français et répond du lundi au vendredi, de 9h à 18h, à contact.zensea@gmail.com ou au +33 7 56 88 21 12.</p>"
+          }
+        },
+        "faq_securite_q5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Vos instruments sont-ils fabriqués en France ?",
+            "answer": "<p>Non, et nous préférons le dire clairement plutôt que de laisser planer le doute. Nos instruments sont fabriqués par des ateliers spécialisés, puis <strong>contrôlés et réaccordés si nécessaire</strong> avant expédition.</p><p>Ce que nous apportons, ce n'est pas la fabrication : c'est la sélection, le contrôle et le fait de vous répondre en français quand vous avez une question.</p>"
+          }
+        },
+        "faq_securite_q6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Proposez-vous des instruments d'occasion ou reconditionnés ?",
+            "answer": "<p>Pas pour l'instant. Un handpan d'occasion peut être excellent, mais son accord dépend entièrement de la façon dont il a été traité — et cela ne se voit pas sur une photo.</p><p>Si vous en avez un à faire évaluer, écrivez-nous : on vous dira ce qu'il vaut, même si nous ne le rachetons pas.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_securite_q1",
+        "faq_securite_q2",
+        "faq_securite_q3",
+        "faq_securite_q4",
+        "faq_securite_q5",
+        "faq_securite_q6"
+      ],
+      "settings": {
+        "title": "Qualité, contrôle & la marque",
+        "subtitle": "Ce qui distingue un instrument d'un objet décoratif.",
+        "button_text": "",
+        "button_link": "",
+        "single_open": true,
+        "title_size": 34,
+        "title_size_m": 26,
+        "sub_size": 16,
+        "sub_size_m": 15,
+        "q_size": 17,
+        "q_size_m": 16,
+        "a_size": 16,
+        "a_size_m": 15,
+        "row_pad": 20,
+        "bg": "#FBF9F4",
+        "title_color": "#22332A",
+        "sub_color": "#5A6B60",
+        "q_color": "#22332A",
+        "a_color": "#5A6B60",
+        "ico_color": "#B98A2E",
+        "divider": "#ECF1E8",
+        "btn_bg": "#22332A",
+        "btn_text": "#ffffff",
+        "btn_size": 15,
+        "btn_radius": 8,
+        "max_width": 880,
+        "pad_top": 56,
+        "pad_bot": 56,
+        "pad_top_m": 32,
+        "pad_bot_m": 32
+      }
+    },
+    "anchor_faq_ventilateurs": {
+      "type": "custom-code",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "custom_liquid": "<div id=\"vllc-ventilateurs\" style=\"position:relative;top:-70px\"></div>",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "faq_ventilateurs": {
+      "type": "faq-premium",
+      "blocks": {
+        "faq_ventilateurs_q1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment fait-on chanter un bol ?",
+            "answer": "<p>Posez le bol sur son coussin. <strong>Frappez une fois le bord</strong> avec le maillet pour lancer la note, puis faites tourner le maillet lentement contre la paroi extérieure, en gardant une <strong>pression constante</strong>.</p><p>Le son monte au bout de deux ou trois tours. Le seul vrai point d'attention est la régularité du geste, pas la force.</p>"
+          }
+        },
+        "faq_ventilateurs_q2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Quel format de bol choisir ?",
+            "answer": "<p><strong>12 à 15 cm</strong> : une note claire, montante, qui s'installe vite. C'est le bol qu'on garde à côté de soi pour marquer un début et une fin de séance.</p><p><strong>20 à 25 cm</strong> : le son descend, s'épaissit, et la résonance tient beaucoup plus longtemps. C'est celui qu'utilisent les praticiens, et celui qu'on entend dans toute la pièce.</p>"
+          }
+        },
+        "faq_ventilateurs_q3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Martelé main ou usiné : ça change quelque chose ?",
+            "answer": "<p>Oui, nettement. Un bol martelé à la main porte des <strong>micro-irrégularités</strong> qui enrichissent le spectre : le son est moins pur, plus vivant, avec des battements qui donnent cette impression de vibration flottante.</p><p>Un bol usiné sonne plus « propre » et plus prévisible. C'est le martelé que nous sélectionnons.</p>"
+          }
+        },
+        "faq_ventilateurs_q4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "La kalimba, c'est pour les enfants ?",
+            "answer": "<p>Pas seulement, même si c'est un excellent premier instrument. La kalimba est un vrai instrument mélodique : on y joue des morceaux complets, à deux pouces, avec des accompagnements.</p><p>Sa force est ailleurs : elle tient dans une poche, elle se joue à volume très bas, et elle ne demande aucune installation. C'est l'instrument du train et du bureau.</p>"
+          }
+        },
+        "faq_ventilateurs_q5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "L'ocarina demande-t-il du souffle ?",
+            "answer": "<p>Beaucoup moins qu'une flûte. Il n'y a <strong>ni embouchure à former, ni pression à maîtriser</strong> : vous soufflez doucement et régulièrement, et la note sort juste.</p><p>La seule règle : ne pas forcer. Souffler trop fort fait monter la note d'un demi-ton et sonne faux. C'est le seul vrai apprentissage, et il tient en une phrase.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_ventilateurs_q1",
+        "faq_ventilateurs_q2",
+        "faq_ventilateurs_q3",
+        "faq_ventilateurs_q4",
+        "faq_ventilateurs_q5"
+      ],
+      "settings": {
+        "title": "Bols chantants & instruments d'éveil",
+        "subtitle": "Ceux qu'on choisit pour l'ambiance plutôt que pour la mélodie.",
+        "button_text": "",
+        "button_link": "",
+        "single_open": true,
+        "title_size": 34,
+        "title_size_m": 26,
+        "sub_size": 16,
+        "sub_size_m": 15,
+        "q_size": 17,
+        "q_size_m": 16,
+        "a_size": 16,
+        "a_size_m": 15,
+        "row_pad": 20,
+        "bg": "#ffffff",
+        "title_color": "#22332A",
+        "sub_color": "#5A6B60",
+        "q_color": "#22332A",
+        "a_color": "#5A6B60",
+        "ico_color": "#B98A2E",
+        "divider": "#ECF1E8",
+        "btn_bg": "#22332A",
+        "btn_text": "#ffffff",
+        "btn_size": 15,
+        "btn_radius": 8,
+        "max_width": 880,
+        "pad_top": 56,
+        "pad_bot": 56,
+        "pad_top_m": 32,
+        "pad_bot_m": 32
+      }
+    },
+    "faq_contact": {
+      "type": "custom-code",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "custom_liquid": "<div class=\"vllc-faq-end\">\n  <p class=\"vllc-faq-end-eyebrow\">Il reste une question</p>\n  <h3>Alors posez-la. On répond vraiment.</h3>\n  <p class=\"vllc-faq-end-txt\">Une gamme dont vous n'êtes pas sûr, un nombre de notes à valider, un doute sur la prise en main : écrivez-nous. Vous aurez une réponse d'une personne qui a l'instrument entre les mains, pas un message automatique.</p>\n  <div class=\"vllc-faq-end-grid\">\n    <a class=\"vllc-faq-end-card\" href=\"mailto:contact.zensea@gmail.com target=\"_blank\" rel=\"noopener\">\n      <span class=\"vllc-faq-end-ic\">WhatsApp</span>\n      <strong>Écrire un e-mail</strong>\n      <em>Réponse sous 24 h en semaine</em>\n    </a>\n    <a class=\"vllc-faq-end-card\" href=\"mailto:contact.zensea@gmail.com\">\n      <span class=\"vllc-faq-end-ic\">E-mail</span>\n      <strong>contact.zensea@gmail.com</strong>\n      <em>Réponse sous 24 h, du lundi au vendredi</em>\n    </a>\n    <a class=\"vllc-faq-end-card\" href=\"/pages/contact\">\n      <span class=\"vllc-faq-end-ic\">Formulaire</span>\n      <strong>Page contact</strong>\n      <em>Pour les demandes détaillées</em>\n    </a>\n  </div>\n</div>\n<style>\n.vllc-faq-end{max-width:960px;margin:8px auto 84px;padding:52px 30px;text-align:center;background:linear-gradient(180deg,#FBF9F4 0%,#ECF1E8 100%);border:1px solid #ECF1E8;border-radius:24px}\n.vllc-faq-end-eyebrow{text-transform:uppercase;letter-spacing:2.2px;font-size:11px;font-weight:600;color:#B98A2E;margin:0 0 12px}\n.vllc-faq-end h3{font-family:Georgia,serif;font-weight:400;font-size:31px;line-height:1.2;color:#22332A;margin:0 0 14px}\n.vllc-faq-end-txt{font-size:15.5px;line-height:1.7;color:#5A6B60;margin:0 auto 30px;max-width:620px}\n.vllc-faq-end-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;text-align:left}\n.vllc-faq-end-card{display:block;padding:20px 22px;background:#fff;border:1px solid #ECF1E8;border-radius:16px;text-decoration:none;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}\n.vllc-faq-end-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(185, 138, 46,.13);border-color:#2E5E46}\n.vllc-faq-end-ic{display:block;text-transform:uppercase;letter-spacing:1.6px;font-size:10.5px;font-weight:600;color:#B98A2E;margin-bottom:9px}\n.vllc-faq-end-card strong{display:block;font-size:16px;color:#22332A;margin-bottom:5px}\n.vllc-faq-end-card em{display:block;font-style:normal;font-size:13px;color:#5A6B60}\n@media(max-width:760px){.vllc-faq-end-grid{grid-template-columns:1fr}.vllc-faq-end{padding:40px 20px;border-radius:20px}.vllc-faq-end h3{font-size:25px}}\n</style>",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "velluce_hero_3d": {
+      "type": "velluce-hero-3d",
+      "settings": {
+        "eyebrow": "F.A.Q Zensea",
+        "heading": "48 vraies réponses, sans détour.",
+        "subheading": "La hauteur idéale au-dessus d'une table, les délais réels de livraison, ce que couvre la garantie : tout ce qu'on nous demande est ici, écrit simplement. S'il manque votre question, on y répond en personne.",
+        "badge_text": "Mise à jour régulièrement · Réponse humaine en semaine",
+        "model_url": "",
+        "camera_orbit": "18deg 78deg 0.55m",
+        "camera_target": "0m 0.015m 0m",
+        "fov": "30deg"
+      }
+    },
+    "velluce_dunes": {
+      "type": "velluce-dunes",
+      "settings": {
+        "height_desktop": 300,
+        "height_mobile": 180
+      }
+    }
+  },
+  "order": [
+    "velluce_hero_3d",
+    "faq_head",
+    "anchor_faq_choisir",
+    "faq_choisir",
+    "anchor_faq_installation",
+    "faq_installation",
+    "anchor_faq_lumiere",
+    "faq_lumiere",
+    "anchor_faq_livraison",
+    "faq_livraison",
+    "anchor_faq_retours",
+    "faq_retours",
+    "anchor_faq_securite",
+    "faq_securite",
+    "anchor_faq_ventilateurs",
+    "faq_ventilateurs",
+    "faq_contact",
+    "velluce_dunes"
+  ]
+}

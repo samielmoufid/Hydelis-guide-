@@ -106,12 +106,47 @@
           "block_order": [
             "txt"
           ]
+        },
+        "a4": {
+          "type": "_announcement",
+          "settings": {
+            "layout_gap": 10,
+            "additional_class": ""
+          },
+          "blocks": {
+            "txt": {
+              "type": "text",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "text": "<p>GARANTIE 24 MOIS INCLUSE</p>",
+                "text_style": "paragraph",
+                "paragraph_font_size": "normal",
+                "font_weight": 400,
+                "alignment": "center",
+                "alignment_mobile": "center",
+                "show_read_more": false,
+                "read_more_length": 50,
+                "read_more_text": "Voir plus",
+                "read_less_text": "Voir moins",
+                "truncate": false,
+                "truncate_length": 2,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "txt"
+          ]
         }
       },
       "block_order": [
         "a1",
         "a2",
-        "a3"
+        "a3",
+        "a4"
       ],
       "name": "t:announcement_bar",
       "settings": {
@@ -267,7 +302,7 @@
                         "card_height": "very_small",
                         "color_scheme": "scheme-3",
                         "image_filter_opacity": 25,
-                        "image_filter_color": "#000000",
+                        "image_filter_color": "#22332A",
                         "layout_justify": "flex-end",
                         "layout_align_items": "flex-start",
                         "padding_horizontal": 0,
@@ -326,7 +361,7 @@
                         "card_height": "very_small",
                         "color_scheme": "scheme-3",
                         "image_filter_opacity": 25,
-                        "image_filter_color": "#000000",
+                        "image_filter_color": "#22332A",
                         "layout_justify": "flex-end",
                         "layout_align_items": "flex-start",
                         "padding_horizontal": 0,
@@ -385,7 +420,7 @@
                         "card_height": "very_small",
                         "color_scheme": "scheme-3",
                         "image_filter_opacity": 25,
-                        "image_filter_color": "#000000",
+                        "image_filter_color": "#22332A",
                         "layout_justify": "flex-end",
                         "layout_align_items": "flex-start",
                         "padding_horizontal": 0,
@@ -557,7 +592,7 @@
                         "card_height": "very_small",
                         "color_scheme": "scheme-3",
                         "image_filter_opacity": 25,
-                        "image_filter_color": "#000000",
+                        "image_filter_color": "#22332A",
                         "layout_justify": "flex-end",
                         "layout_align_items": "flex-start",
                         "padding_horizontal": 0,
@@ -616,7 +651,7 @@
                         "card_height": "very_small",
                         "color_scheme": "scheme-3",
                         "image_filter_opacity": 25,
-                        "image_filter_color": "#000000",
+                        "image_filter_color": "#22332A",
                         "layout_justify": "flex-end",
                         "layout_align_items": "flex-start",
                         "padding_horizontal": 0,
