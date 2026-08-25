@@ -1,0 +1,275 @@
+{
+  "type": "footer",
+  "name": "t:footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "group_y4aNMX": {
+          "type": "group",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "wrap_in_card": false,
+            "card_link": "",
+            "color_scheme": "",
+            "show_card_border": false,
+            "layout_type": "flex",
+            "width_desktop": 100,
+            "layout_direction_desktop": "column",
+            "layout_grid_columns_desktop": 3,
+            "layout_gap_desktop": 20,
+            "layout_wrap_desktop": "nowrap",
+            "layout_justify_desktop": "flex-start",
+            "layout_align_items_desktop": "flex-start",
+            "same_as_desktop": true,
+            "width_mobile": 100,
+            "layout_direction_mobile": "column",
+            "layout_grid_columns_mobile": 1,
+            "layout_gap_mobile": 10,
+            "layout_wrap_mobile": "nowrap",
+            "layout_justify_mobile": "flex-start",
+            "layout_align_items_mobile": "flex-start",
+            "use_global_container_padding": true,
+            "padding_horizontal": 30,
+            "padding_vertical": 30,
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {
+            "logo_MKbnJy": {
+              "type": "logo",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "logo_height": 36,
+                "inverse": false,
+                "activate_link": true,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            },
+            "text_hzJHEn": {
+              "type": "text",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "text": "<p>Zensea sélectionne des handpans, tongue drums et bols chantants accordés à la main. Des instruments dont on joue dès le premier soir, sans solfège, et un accompagnement en français avant comme après l’achat.</p>",
+                "text_style": "paragraph",
+                "paragraph_font_size": "normal",
+                "font_weight": 400,
+                "alignment": "left",
+                "alignment_mobile": "left",
+                "show_read_more": false,
+                "read_more_length": 50,
+                "read_more_text": "Voir plus",
+                "read_less_text": "Voir moins",
+                "truncate": false,
+                "truncate_length": 2,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "logo_MKbnJy",
+            "text_hzJHEn"
+          ]
+        },
+        "menu_K3tacq": {
+          "type": "menu",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "alignment_desktop": "center",
+            "alignment_mobile": "flex-start",
+            "title": "<h3>Boutique</h3>",
+            "title_style": "h6",
+            "menu": "main-menu",
+            "menu_direction": "column",
+            "underline_links": false,
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "menu_rnCAbX": {
+          "type": "menu",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "alignment_desktop": "center",
+            "alignment_mobile": "flex-start",
+            "title": "<h3>Informations</h3>",
+            "title_style": "h6",
+            "menu": "footer",
+            "menu_direction": "column",
+            "underline_links": false,
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "group_BxVQwU": {
+          "type": "group",
+          "disabled": true,
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "wrap_in_card": false,
+            "card_link": "",
+            "color_scheme": "",
+            "show_card_border": false,
+            "layout_type": "flex",
+            "width_desktop": 100,
+            "layout_direction_desktop": "column",
+            "layout_grid_columns_desktop": 3,
+            "layout_gap_desktop": 10,
+            "layout_wrap_desktop": "nowrap",
+            "layout_justify_desktop": "flex-start",
+            "layout_align_items_desktop": "flex-start",
+            "same_as_desktop": true,
+            "width_mobile": 100,
+            "layout_direction_mobile": "column",
+            "layout_grid_columns_mobile": 1,
+            "layout_gap_mobile": 10,
+            "layout_wrap_mobile": "nowrap",
+            "layout_justify_mobile": "flex-start",
+            "layout_align_items_mobile": "flex-start",
+            "use_global_container_padding": true,
+            "padding_horizontal": 30,
+            "padding_vertical": 30,
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {
+            "text_RtFCiT": {
+              "type": "text",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "text": "<p>Recevez nos conseils de jeu et nos arrivages</p>",
+                "text_style": "h6",
+                "paragraph_font_size": "normal",
+                "font_weight": 400,
+                "alignment": "left",
+                "alignment_mobile": "left",
+                "show_read_more": false,
+                "read_more_length": 50,
+                "read_more_text": "Voir plus",
+                "read_less_text": "Voir moins",
+                "truncate": false,
+                "truncate_length": 2,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            },
+            "newsletter_signup_tUYiRB": {
+              "type": "newsletter-signup",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "newsletter_label": "Adresse email",
+                "tag": "newsletter",
+                "margin_top": 10,
+                "margin_bottom": 10,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_RtFCiT",
+            "newsletter_signup_tUYiRB"
+          ]
+        },
+        "footer-policy-list": {
+          "type": "_footer-policy-list",
+          "disabled": true,
+          "static": true,
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "padding_top": 60,
+            "padding_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "footer-bottom-bar": {
+          "type": "_footer-bottom-bar",
+          "static": true,
+          "settings": {
+            "show_top_border": false,
+            "layout_grid_columns_desktop": 3,
+            "layout_gap_desktop": 20,
+            "layout_gap_mobile": 20,
+            "layout_grid_columns_mobile": 1,
+            "padding_top": 20,
+            "padding_bottom": 20,
+            "margin_top": 0,
+            "additional_class": ""
+          },
+          "blocks": {
+            "payment_methods_W3BxcW": {
+              "type": "payment-methods",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "alignment_desktop": "flex-start",
+                "alignment_mobile": "center",
+                "icon_size": 35,
+                "margin_top": 10,
+                "margin_bottom": 10,
+                "additional_class": ""
+              },
+              "blocks": {}
+            },
+            "copyright_AMhhCc": {
+              "type": "copyright",
+              "settings": {
+                "alignment_desktop": "center",
+                "alignment_mobile": "center"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "payment_methods_W3BxcW",
+            "copyright_AMhhCc"
+          ]
+        }
+      },
+      "block_order": [
+        "group_y4aNMX",
+        "menu_K3tacq",
+        "menu_rnCAbX",
+        "group_BxVQwU"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "show_top_border": false,
+        "layout_type": "grid",
+        "layout_direction_desktop": "row",
+        "layout_grid_columns_desktop": 4,
+        "layout_gap_desktop": 30,
+        "layout_wrap_desktop": "nowrap",
+        "layout_justify_desktop": "flex-start",
+        "layout_align_items_desktop": "flex-start",
+        "same_as_desktop": false,
+        "layout_direction_mobile": "column",
+        "layout_grid_columns_mobile": 1,
+        "layout_gap_mobile": 40,
+        "layout_wrap_mobile": "nowrap",
+        "layout_justify_mobile": "flex-start",
+        "layout_align_items_mobile": "flex-start",
+        "padding_top": 50,
+        "padding_bottom": 0,
+        "margin_top": 0
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}
