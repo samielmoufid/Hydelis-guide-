@@ -1,0 +1,1206 @@
+{
+  "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "disabled": true,
+      "name": "Breadcrumbs",
+      "settings": {
+        "breadcrumbs_enabled": false,
+        "breadcrumbs_enabled_on_products": true,
+        "breadcrumbs_enabled_on_pages": true,
+        "breadcrumbs_enabled_on_collections": true,
+        "breadcrumbs_enabled_on_blogs": true,
+        "breadcrumbs_enabled_on_articles": true,
+        "breadcrumbs_menu_definition": "main-menu",
+        "prefer_shortest_path": true,
+        "separator_shape": "triangle",
+        "color_scheme": "",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "additional_class": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "cc_banner": {
+          "type": "custom-code",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "custom_liquid": "<div id=\"zensea-sale-banner-{{ section.id }}\" class=\"zensea-sale-banner\">\n  <div class=\"zensea-sale-icon\">\n    <svg viewBox=\"0 0 24 24\" fill=\"none\">\n      <path d=\"M20 12.5L12.5 20a2 2 0 0 1-2.8 0L3 13.3V4h9.3L20 11.7a.6.6 0 0 1 0 .8Z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"/>\n      <circle cx=\"8\" cy=\"8\" r=\"1.4\" fill=\"currentColor\"/>\n    </svg>\n  </div>\n\n  <div class=\"zensea-sale-text\">\n    <div class=\"zensea-sale-kicker\">OFFRE LIMITÉE</div>\n    <div class=\"zensea-sale-main\">Jusqu'à <strong>-25%</strong> sur une sélection d'articles</div>\n  </div>\n</div>\n\n<style>\n#zensea-sale-banner-{{ section.id }}{\n  display:flex;\n  align-items:center;\n  gap:8px;\n  width:100%;\n  max-width:520px;\n  padding:7px 11px;\n  border:1px solid #e5e5e5;\n  border-left:4px solid #2E5E46;\n  border-radius:10px;\n  background:#fff;\n  box-shadow:0 1px 2px rgba(0,0,0,.035);\n}\n\n#zensea-sale-banner-{{ section.id }} .zensea-sale-icon{\n  width:30px;\n  height:30px;\n  min-width:30px;\n  border-radius:50%;\n  background:rgba(46, 94, 70,.14);\n  color:#2E5E46;\n  display:flex;\n  align-items:center;\n  justify-content:center;\n}\n\n#zensea-sale-banner-{{ section.id }} .zensea-sale-icon svg{\n  width:15px;\n  height:15px;\n}\n\n#zensea-sale-banner-{{ section.id }} .zensea-sale-text{\n  line-height:1;\n}\n\n#zensea-sale-banner-{{ section.id }} .zensea-sale-kicker{\n  font-family:Arial,sans-serif;\n  font-size:8px;\n  font-weight:800;\n  letter-spacing:.12em;\n  color:#8a8a8a;\n  text-transform:uppercase;\n  line-height:1;\n  margin-bottom:2px;\n}\n\n#zensea-sale-banner-{{ section.id }} .zensea-sale-main{\n  font-family:Arial,sans-serif;\n  font-size:14px;\n  font-weight:500;\n  color:#111;\n  line-height:1.05;\n}\n\n#zensea-sale-banner-{{ section.id }} .zensea-sale-main strong{\n  color:#2E5E46;\n  font-weight:800;\n}\n\n@media(max-width:749px){\n  #zensea-sale-banner-{{ section.id }}{\n    max-width:100%;\n    padding:6px 9px;\n    gap:7px;\n    border-radius:9px;\n  }\n\n  #zensea-sale-banner-{{ section.id }} .zensea-sale-icon{\n    width:28px;\n    height:28px;\n    min-width:28px;\n  }\n\n  #zensea-sale-banner-{{ section.id }} .zensea-sale-icon svg{\n    width:14px;\n    height:14px;\n  }\n\n  #zensea-sale-banner-{{ section.id }} .zensea-sale-kicker{\n    font-size:7px;\n  }\n\n  #zensea-sale-banner-{{ section.id }} .zensea-sale-main{\n    font-size:13px;\n  }\n}\n</style>",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "text_zLqMQw": {
+          "type": "text",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "text": "<p>{{ product.title }}</p>",
+            "text_style": "h3",
+            "paragraph_font_size": "normal",
+            "font_weight": 400,
+            "alignment": "left",
+            "alignment_mobile": "left",
+            "show_read_more": false,
+            "read_more_length": 50,
+            "read_more_text": "Voir plus",
+            "read_less_text": "Voir moins",
+            "truncate": false,
+            "truncate_length": 2,
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "rating_stars_Krck47": {
+          "type": "rating-stars",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "product": "{{ closest.product }}",
+            "hide_rating_when_no_reviews": true,
+            "rating": 4.5,
+            "show_note": true,
+            "show_review_count": true,
+            "review_count": 123,
+            "link": "#reviews",
+            "margin_top": 10,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "price_yEeMeb": {
+          "type": "product-price",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "product": "{{ closest.product }}",
+            "sales_badge": "percentage",
+            "show_sales_badge_text": false,
+            "show_unit_price": false,
+            "text_style": "paragraph",
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "cc_delivery": {
+          "type": "custom-code",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "custom_liquid": "<style>\n  .zensea-delivery-line {\n    display: flex;\n    align-items: center;\n    gap: 6px;\n    margin: 10px 0;\n    color: #2E5E46;\n    font-size: 13.5px;\n    font-weight: 700;\n    line-height: 1.15;\n    white-space: nowrap;\n    max-width: 100%;\n    overflow: hidden;\n  }\n\n  .zensea-delivery-dot {\n    width: 9px;\n    height: 9px;\n    border-radius: 50%;\n    background: #2E5E46;\n    flex-shrink: 0;\n    position: relative;\n    animation: zenseaBlink 1.3s infinite;\n  }\n\n  .zensea-delivery-dot::after {\n    content: \"\";\n    position: absolute;\n    inset: -5px;\n    border-radius: 50%;\n    background: rgba(46, 94, 70, 0.22);\n    animation: zenseaPulse 1.3s infinite;\n  }\n\n  .zensea-delivery-text {\n    color: #2E5E46;\n    overflow: hidden;\n    text-overflow: ellipsis;\n  }\n\n  .zensea-delivery-date {\n    font-weight: 800;\n  }\n\n  @keyframes zenseaBlink {\n    0%, 100% {\n      opacity: 1;\n      transform: scale(1);\n    }\n    50% {\n      opacity: 0.45;\n      transform: scale(0.85);\n    }\n  }\n\n  @keyframes zenseaPulse {\n    0% {\n      transform: scale(0.7);\n      opacity: 0.55;\n    }\n    70% {\n      transform: scale(1.45);\n      opacity: 0;\n    }\n    100% {\n      transform: scale(1.45);\n      opacity: 0;\n    }\n  }\n\n  @media screen and (max-width: 480px) {\n    .zensea-delivery-line {\n      font-size: 11.8px;\n      gap: 5px;\n      margin: 9px 0;\n    }\n\n    .zensea-delivery-dot {\n      width: 8px;\n      height: 8px;\n    }\n  }\n</style>\n\n<div class=\"zensea-delivery-line\" data-zensea-delivery>\n  <span class=\"zensea-delivery-dot\"></span>\n  <span class=\"zensea-delivery-text\">\n    Expédié demain · livré\n    <span class=\"zensea-delivery-date\" data-date-start></span>&nbsp;-&nbsp;<span class=\"zensea-delivery-date\" data-date-end></span>\n  </span>\n</div>\n\n<script>\n  document.addEventListener(\"DOMContentLoaded\", function () {\n    document.querySelectorAll(\"[data-zensea-delivery]\").forEach(function (block) {\n      var startElement = block.querySelector(\"[data-date-start]\");\n      var endElement = block.querySelector(\"[data-date-end]\");\n\n      if (!startElement || !endElement) return;\n\n      var startDate = new Date();\n      var endDate = new Date();\n\n      startDate.setDate(startDate.getDate() + 3);\n      endDate.setDate(endDate.getDate() + 10);\n\n      var sameMonth = startDate.getMonth() === endDate.getMonth() &&\n                      startDate.getFullYear() === endDate.getFullYear();\n\n      var shortMonth = {\n        day: \"numeric\",\n        month: \"short\"\n      };\n\n      if (sameMonth) {\n        startElement.textContent = startDate.getDate();\n        endElement.textContent = endDate.toLocaleDateString(\"fr-FR\", shortMonth).replace(\".\", \"\");\n      } else {\n        startElement.textContent = startDate.toLocaleDateString(\"fr-FR\", shortMonth).replace(\".\", \"\");\n        endElement.textContent = endDate.toLocaleDateString(\"fr-FR\", shortMonth).replace(\".\", \"\");\n      }\n    });\n  });\n</script>",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "cc_compat": {
+          "type": "custom-code",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "custom_liquid": "<style>\n.zensea-compat-line{\n  width:100%;\n  background:#fff;\n  border:1px solid #e5e7eb;\n  border-radius:14px;\n  padding:14px 20px;\n  display:flex;\n  align-items:center;\n  gap:12px;\n  color:#141827;\n  font-size:17px;\n  line-height:1.2;\n  font-weight:700;\n  letter-spacing:-.2px;\n  white-space:nowrap;\n}\n.zensea-compat-line:before{\n  content:\"\";\n  width:6px;\n  height:26px;\n  background:#2E5E46;\n  border-radius:99px;\n  flex:0 0 6px;\n}\n@media(max-width:749px){\n  .zensea-compat-line{\n    font-size:13px;\n    padding:12px 14px;\n    border-radius:12px;\n    gap:9px;\n    white-space:normal;\n  }\n  .zensea-compat-line:before{\n    height:22px;\n    width:5px;\n    flex-basis:5px;\n  }\n}\n</style>\n\n<div class=\"zensea-compat-line\">\n  Accordé en 440 Hz — marteau d'accordage et livret numéroté inclus\n</div>",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "cc_benefits": {
+          "type": "custom-code",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "custom_liquid": "<style>\n.benefits{display:grid;gap:7px;margin:14px 0}\n.benefit{display:flex;align-items:flex-start;gap:8px;font-size:14px;line-height:1.4}\n.benefit strong{font-weight:700;color:#22332A}\n.benefit .b-sub{color:#6b645c}\n.benefit:before{content:\"\\2713\";display:grid;place-items:center;width:18px;height:18px;\n border:1.5px solid #fff;border-radius:50%;background:#2E5E46;color:#fff;font-size:11px;\n font-weight:700;flex:none;margin-top:1px}\n@media(max-width:749px){.benefit{font-size:13px;gap:7px}.benefit:before{width:17px;height:17px}}\n</style>\n\n<div class=\"benefits\">\n  <div class=\"benefit\"><span><strong>Les dimensions réelles</strong> <span class=\"b-sub\">— hauteur et diamètre donnés</span></span></div>\n  <div class=\"benefit\"><span><strong>Prête à brancher</strong> <span class=\"b-sub\">— cordon, interrupteur, douille E27</span></span></div>\n  <div class=\"benefit\"><span><strong>Douce le soir</strong> <span class=\"b-sub\">— pour lire sans agresser les yeux</span></span></div>\n  <div class=\"benefit\"><span><strong>30 jours pour changer d'avis</strong> <span class=\"b-sub\">— sans justification</span></span></div>\n</div>",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "text_yQdqF8": {
+          "type": "text",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "text": "{{ closest.product.description }}",
+            "text_style": "paragraph",
+            "paragraph_font_size": "normal",
+            "font_weight": 400,
+            "alignment": "left",
+            "alignment_mobile": "left",
+            "show_read_more": false,
+            "read_more_length": 50,
+            "read_more_text": "Voir plus",
+            "read_less_text": "Voir moins",
+            "truncate": true,
+            "truncate_length": 2,
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "product_form_grYQk6": {
+          "type": "_product-form",
+          "settings": {},
+          "blocks": {
+            "product_variant_picker_xWC3wF": {
+              "type": "_product-variant-picker",
+              "settings": {
+                "show_option_name": true,
+                "variant_picker_type": "buttons",
+                "show_swatches": true,
+                "swatches_size": "normal",
+                "swatches_rounded": true,
+                "margin_top": 0,
+                "margin_bottom": 15,
+                "additional_class": ""
+              },
+              "blocks": {
+                "product-variant-popup": {
+                  "type": "_product-variant-popup",
+                  "disabled": true,
+                  "static": true,
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "show_on_option_name": "Taille",
+                    "color_scheme": "scheme-1",
+                    "button_style": "button",
+                    "button_label": "Bien choisir sa kalimba",
+                    "icon": "straighten",
+                    "icon_custom": "",
+                    "icon_position": "end",
+                    "additional_class": ""
+                  },
+                  "blocks": {
+                    "text_LfyX9A": {
+                      "type": "text",
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "text": "<h1>Bien choisir sa kalimba</h1>",
+                        "text_style": "h3",
+                        "paragraph_font_size": "normal",
+                        "font_weight": 400,
+                        "alignment": "left",
+                        "alignment_mobile": "left",
+                        "show_read_more": false,
+                        "read_more_length": 50,
+                        "read_more_text": "Voir plus",
+                        "read_less_text": "Voir moins",
+                        "truncate": false,
+                        "truncate_length": 2,
+                        "margin_top": 0,
+                        "margin_bottom": 10,
+                        "additional_class": ""
+                      },
+                      "blocks": {}
+                    },
+                    "text_99rHbT": {
+                      "type": "text",
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "text": "<p>Toutes les notes d'un handpan appartiennent à la même gamme. C'est le principe même de l'instrument : posez les mains, ce qui sort est juste. Le premier soir comme le centième.</p>",
+                        "text_style": "paragraph",
+                        "paragraph_font_size": "normal",
+                        "font_weight": 400,
+                        "alignment": "left",
+                        "alignment_mobile": "left",
+                        "show_read_more": false,
+                        "read_more_length": 50,
+                        "read_more_text": "Voir plus",
+                        "read_less_text": "Voir moins",
+                        "truncate": false,
+                        "truncate_length": 2,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "text_LfyX9A",
+                    "text_99rHbT"
+                  ]
+                }
+              },
+              "block_order": []
+            },
+            "product-add-to-cart-button": {
+              "type": "_product-add-to-cart-button",
+              "static": true,
+              "settings": {
+                "enable_sticky_add_to_cart": true,
+                "button_style": "primary",
+                "show_price": true,
+                "icon": "none",
+                "icon_custom": "",
+                "icon_position": "end",
+                "enable_preorder": false,
+                "enable_preorder_on_empty_stock_only": true,
+                "preorder_cart_message": "Livraison à partir du JJ/MM",
+                "additional_class": ""
+              },
+              "blocks": {
+                "product-quantity-selector": {
+                  "type": "_product-quantity-selector",
+                  "disabled": true,
+                  "static": true,
+                  "settings": {
+                    "show_on_display": "desktop_and_mobile",
+                    "additional_class": ""
+                  },
+                  "blocks": {}
+                },
+                "add-to-wishlist-button": {
+                  "type": "_add-to-wishlist-button",
+                  "static": true,
+                  "settings": {},
+                  "blocks": {}
+                }
+              },
+              "block_order": []
+            },
+            "accelerated-checkout": {
+              "type": "_accelerated-checkout",
+              "static": true,
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "full_width": true,
+                "button_style": "primary",
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_variant_picker_xWC3wF"
+          ]
+        },
+        "payment_methods_BdjpFB": {
+          "type": "custom-code",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "custom_liquid": "<style>\nproduct-form .shopify-payment-button, product-form shopify-accelerated-checkout, .accelerated-checkout, accelerated-checkout, [class*='accelerated-checkout']{display:none!important}\n.payment-icons-row {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  gap: 6px;\n  flex-wrap: wrap;\n  margin: 16px 0;\n}\n.payment-icons-row svg {\n  height: 18px;\n  width: auto;\n}\n</style>\n<div class=\"payment-icons-row\">\n  {%- for type in shop.enabled_payment_types -%}\n    {%- unless type == 'cb' or type == 'shopify_pay' or type == 'shop_pay' -%}\n      {{ type | payment_type_svg_tag: class: 'payment-icon' }}\n    {%- endunless -%}\n  {%- endfor -%}\n</div>",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "velluce_3d_mini": {
+          "type": "velluce-3d-mini",
+          "settings": {},
+          "blocks": {}
+        },
+        "cc_trust": {
+          "type": "custom-code",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "custom_liquid": "<style>\n.trust-badges {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 8px;\n  margin: 20px 0;\n  padding: 0 16px;\n}\n\n.trust-badges__item {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  padding: 12px 14px;\n  border: 1px solid #e5e5e5;\n  border-radius: 10px;\n  background: #fff;\n}\n\n.trust-badges__item--full {\n  grid-column: 1 / -1;\n  justify-content: center;\n}\n\n.trust-badges__icon {\n  width: 32px;\n  height: 32px;\n  border-radius: 50%;\n  background: #2E5E461a;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n\n.trust-badges__icon svg {\n  width: 16px;\n  height: 16px;\n  stroke: #2E5E46;\n}\n\n.trust-badges__text {\n  font-size: 14px;\n  font-weight: 600;\n  color: #22332A;\n}\n\n.trust-badges__sub {\n  font-size: 12px;\n  font-weight: 400;\n  color: #999;\n  margin-left: 3px;\n}\n\n@media screen and (max-width: 480px) {\n  .trust-badges {\n    padding: 0 12px;\n    gap: 6px;\n  }\n\n  .trust-badges__item {\n    padding: 10px 10px;\n    gap: 8px;\n  }\n\n  .trust-badges__icon {\n    width: 28px;\n    height: 28px;\n  }\n\n  .trust-badges__icon svg {\n    width: 14px;\n    height: 14px;\n  }\n\n  .trust-badges__text {\n    font-size: 12px;\n  }\n\n  .trust-badges__sub {\n    font-size: 11px;\n    display: block;\n    margin-left: 0;\n  }\n}\n</style>\n\n<div class=\"trust-badges\">\n  <div class=\"trust-badges__item\">\n    <div class=\"trust-badges__icon\">\n      <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <rect x=\"1\" y=\"6\" width=\"13\" height=\"10\"></rect>\n        <polygon points=\"14 9 18 9 22 13 22 16 14 16 14 9\"></polygon>\n        <circle cx=\"5.5\" cy=\"18\" r=\"2\"></circle>\n        <circle cx=\"17.5\" cy=\"18\" r=\"2\"></circle>\n      </svg>\n    </div>\n    <span class=\"trust-badges__text\">\n      Livraison\n      <span class=\"trust-badges__sub\">4 à 8 jours</span>\n    </span>\n  </div>\n\n  <div class=\"trust-badges__item\">\n    <div class=\"trust-badges__icon\">\n      <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <path d=\"M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z\"></path>\n      </svg>\n    </div>\n    <span class=\"trust-badges__text\">\n      Support client\n      <span class=\"trust-badges__sub\">7j/7</span>\n    </span>\n  </div>\n\n  <div class=\"trust-badges__item trust-badges__item--full\">\n    <div class=\"trust-badges__icon\">\n      <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n        <path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path>\n        <path d=\"M9 12l2 2 4-4\"></path>\n      </svg>\n    </div>\n    <span class=\"trust-badges__text\">Garantie 24 mois</span>\n  </div>\n</div>",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "group_dddxG7": {
+          "type": "group",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "wrap_in_card": true,
+            "card_link": "",
+            "color_scheme": "scheme-2",
+            "show_card_border": false,
+            "layout_type": "flex",
+            "width_desktop": 100,
+            "layout_direction_desktop": "row",
+            "layout_grid_columns_desktop": 3,
+            "layout_gap_desktop": 10,
+            "layout_wrap_desktop": "nowrap",
+            "layout_justify_desktop": "space-around",
+            "layout_align_items_desktop": "center",
+            "same_as_desktop": true,
+            "width_mobile": 100,
+            "layout_direction_mobile": "column",
+            "layout_grid_columns_mobile": 1,
+            "layout_gap_mobile": 10,
+            "layout_wrap_mobile": "nowrap",
+            "layout_justify_mobile": "flex-start",
+            "layout_align_items_mobile": "flex-start",
+            "use_global_container_padding": true,
+            "padding_horizontal": 30,
+            "padding_vertical": 30,
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {
+            "icon_with_text_DWkBqr": {
+              "type": "icon-with-text",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "layout_direction_desktop": "column",
+                "layout_gap_desktop": 5,
+                "same_as_desktop": true,
+                "layout_direction_mobile": "column",
+                "layout_gap_mobile": 10,
+                "icon_type": "icon",
+                "icon": "delivery_truck_speed",
+                "icon_custom": "",
+                "icon_size": 32,
+                "icon_position": "start",
+                "text": "<p>Expédition suivie</p>",
+                "text_style": "paragraph",
+                "font_weight": 500,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            },
+            "icon_with_text_LqjaQL": {
+              "type": "icon-with-text",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "layout_direction_desktop": "column",
+                "layout_gap_desktop": 5,
+                "same_as_desktop": true,
+                "layout_direction_mobile": "column",
+                "layout_gap_mobile": 10,
+                "icon_type": "icon",
+                "icon": "encrypted",
+                "icon_custom": "",
+                "icon_size": 32,
+                "icon_position": "start",
+                "text": "<p>Paiement sécurisé</p>",
+                "text_style": "paragraph",
+                "font_weight": 500,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            },
+            "icon_with_text_Y6hka8": {
+              "type": "icon-with-text",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "layout_direction_desktop": "column",
+                "layout_gap_desktop": 5,
+                "same_as_desktop": true,
+                "layout_direction_mobile": "column",
+                "layout_gap_mobile": 10,
+                "icon_type": "icon",
+                "icon": "package_2",
+                "icon_custom": "",
+                "icon_size": 32,
+                "icon_position": "start",
+                "text": "<p>Retours sous 30 jours</p>",
+                "text_style": "paragraph",
+                "font_weight": 500,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "icon_with_text_DWkBqr",
+            "icon_with_text_LqjaQL",
+            "icon_with_text_Y6hka8"
+          ]
+        },
+        "cc_accordions": {
+          "type": "custom-code",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "custom_liquid": "<style>.bb-acc{border-top:1px solid #2E5E46}.bb-acc:last-of-type{border-bottom:1px solid #2E5E46}.bb-acc summary{display:flex;justify-content:space-between;align-items:center;padding:16px 2px;cursor:pointer;font-weight:700;font-size:15px;color:#22332A;list-style:none}.bb-acc summary::-webkit-details-marker{display:none}.bb-acc summary:after{content:\"+\";font-size:20px;color:#2E5E46;font-weight:400;transition:transform .2s}.bb-acc[open] summary:after{transform:rotate(45deg)}.bb-acc .bb-acc-body{padding:0 2px 16px;font-size:14px;line-height:1.6;color:#444}</style><details class=\"bb-acc\"><summary>Livraison &amp; retours</summary><div class=\"bb-acc-body\"><p>Votre commande est préparée sous 24 à 48 heures ouvrées et expédiée<br/>depuis notre entrepôt européen.</p><p>Nos délais de livraison sont généralement compris entre 3 et 6 jours ouvrés.</p><p><br/>À chaque commande passée, vous recevrez un e-mail de confirmation puis un second e-mail avec votre confirmation d'expédition incluant votre numéro de suivi de commande.</p><p><br/>Vous disposez d'un délai de 30 jours à compter de la réception de votre colis pour exercer votre droit de rétractation et demander un retour ou un échange, sans avoir à justifier de motif.</p></div></details><details class=\"bb-acc\"><summary>Qualité &amp; sécurité</summary><div class=\"bb-acc-body\"><p>Tous nos instruments sont <strong>vérifiés, certifiés CE et conformes aux normes européennes</strong> en vigueur. Métal laqué, acier, verre ou béton : finitions contrôlées, sécurité électrique testée — nous n'installerions rien d'autre dans notre propre salon.</p></div></details><details class=\"bb-acc\"><summary>Garantie 24 mois</summary><div class=\"bb-acc-body\"><p>Chaque produit Zensea est couvert par une <strong>garantie de 24 mois</strong>. Un souci ? Notre support 7j/7 vous répond et remplace ou rembourse sans discussion.</p></div></details>",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "cc_infocard": {
+          "type": "custom-code",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "custom_liquid": "<style>\n  .zensea-info-card {\n    display: flex;\n    align-items: center;\n    gap: 14px;\n    width: 100%;\n    margin: 16px 0;\n    padding: 13px 14px;\n    border: 1px solid #e9e9e9;\n    border-radius: 14px;\n    background: #ffffff;\n    text-decoration: none;\n    color: inherit;\n    box-sizing: border-box;\n    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;\n  }\n\n  .zensea-info-card:hover {\n    border-color: #2E5E46;\n    box-shadow: 0 8px 22px rgba(46, 94, 70, 0.12);\n    transform: translateY(-1px);\n  }\n\n  .zensea-info-card__image {\n    width: 82px;\n    height: 82px;\n    min-width: 82px;\n    border-radius: 12px;\n    overflow: hidden;\n    background: #f5f5f5;\n  }\n\n  .zensea-info-card__image img {\n    width: 100%;\n    height: 100%;\n    display: block;\n    object-fit: cover;\n    object-position: center;\n  }\n\n  .zensea-info-card__content {\n    flex: 1;\n    min-width: 0;\n  }\n\n  .zensea-info-card__title {\n    margin: 0 0 5px;\n    color: #22332A;\n    font-size: 15.5px;\n    line-height: 1.2;\n    font-weight: 800;\n    letter-spacing: -0.01em;\n  }\n\n  .zensea-info-card__text {\n    margin: 0 0 8px;\n    color: #5A6B60;\n    font-size: 13px;\n    line-height: 1.35;\n    font-weight: 400;\n  }\n\n  .zensea-info-card__link {\n    display: inline-flex;\n    align-items: center;\n    gap: 5px;\n    color: #22332A;\n    font-size: 13px;\n    line-height: 1.2;\n    font-weight: 750;\n    text-decoration: underline;\n    text-underline-offset: 3px;\n    white-space: nowrap;\n  }\n\n  .zensea-info-card__arrow {\n    color: #2E5E46;\n    font-size: 16px;\n    font-weight: 900;\n    line-height: 1;\n    transition: transform 0.2s ease;\n  }\n\n  .zensea-info-card:hover .zensea-info-card__arrow {\n    transform: translateX(3px);\n  }\n\n  @media screen and (max-width: 480px) {\n    .zensea-info-card {\n      gap: 11px;\n      padding: 12px;\n      margin: 14px 0;\n      border-radius: 13px;\n    }\n\n    .zensea-info-card__image {\n      width: 70px;\n      height: 70px;\n      min-width: 70px;\n      border-radius: 10px;\n    }\n\n    .zensea-info-card__title {\n      font-size: 14px;\n      margin-bottom: 4px;\n    }\n\n    .zensea-info-card__text {\n      font-size: 12.2px;\n      line-height: 1.32;\n      margin-bottom: 7px;\n    }\n\n    .zensea-info-card__link {\n      font-size: 12.3px;\n    }\n\n    .zensea-info-card__arrow {\n      font-size: 15px;\n    }\n  }\n</style>\n\n<a href=\"/pages/notre-promesse\" class=\"zensea-info-card\">\n  <div class=\"zensea-info-card__image\">\n    <img \n      src=\"https://cdn.shopify.com/s/files/1/1077/9439/9581/files/ChatGPT_Image_22_juil._2026_01_21_47.png?v=1784676121\" \n      alt=\"Engagement qualité Zensea\" \n      loading=\"lazy\"\n    >\n  </div>\n\n  <div class=\"zensea-info-card__content\">\n    <p class=\"zensea-info-card__title\">\n      Notre engagement qualité\n    </p>\n\n    <p class=\"zensea-info-card__text\">\n      Garantie 24 mois, produits contrôlés et accompagnement sérieux avant comme après votre commande.\n    </p>\n\n    <span class=\"zensea-info-card__link\">\n      Découvrir notre engagement <span class=\"zensea-info-card__arrow\">→</span>\n    </span>\n  </div>\n</a>",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "product_media_gallery": {
+          "type": "_product-media-gallery",
+          "static": true,
+          "settings": {
+            "hide_variants": false,
+            "media_display": "carrousel",
+            "media_ratio": "1 / 1",
+            "media_rounded": true,
+            "grid_columns": "2",
+            "grid_gap": 10,
+            "main_image_full_width": true,
+            "show_a_bit_of_next_image_on_mobile": false,
+            "show_arrows": false,
+            "show_pagination": false,
+            "show_thumbnails": true,
+            "show_thumbnails_on_display": "desktop_and_mobile",
+            "thumbnails_show_arrows": false,
+            "video_loop": true,
+            "enable_video_controls": true,
+            "show_badges": true,
+            "additional_class": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "cc_banner",
+        "text_zLqMQw",
+        "rating_stars_Krck47",
+        "price_yEeMeb",
+        "cc_delivery",
+        "cc_compat",
+        "cc_benefits",
+        "text_yQdqF8",
+        "product_form_grYQk6",
+        "payment_methods_BdjpFB",
+        "velluce_3d_mini",
+        "cc_trust",
+        "group_dddxG7",
+        "cc_accordions",
+        "cc_infocard"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_product_info_card": false,
+        "color_scheme_product_info": "",
+        "image_position": "row",
+        "product_info_width": 50,
+        "gap": 60,
+        "carrousel_sticky": false,
+        "product_info_sticky": false,
+        "carrousel_full_width": true,
+        "padding_top": 30,
+        "padding_bottom": 50,
+        "margin_top": 0,
+        "margin_bottom": 0
+      }
+    },
+    "tout_est_dans_le_carton_P9V33C": {
+      "type": "tout-est-dans-le-carton",
+      "blocks": {
+        "item_BRYW6y": {
+          "type": "item",
+          "settings": {
+            "card_title": "Votre kalimba",
+            "card_desc": "Joué un par un avant expédition, prêt à jouer.",
+            "highlight": false
+          }
+        },
+        "item_pQA7J9": {
+          "type": "item",
+          "settings": {
+            "card_title": "Livret de partitions",
+            "card_desc": "Un livret de partitions numérotées, fourni avec chaque instrument.",
+            "highlight": false
+          }
+        },
+        "item_8iKt9f": {
+          "type": "item",
+          "settings": {
+            "card_title": "Marteau d'accordage inclus",
+            "card_desc": "Tout le nécessaire est fourni, rien à racheter.",
+            "highlight": false
+          }
+        },
+        "item_PCaCVy": {
+          "type": "item",
+          "settings": {
+            "card_title": "Accordage vérifié",
+            "card_desc": "Chaque instrument est joué note par note avant de partir.",
+            "highlight": false
+          }
+        },
+        "item_zkbw4G": {
+          "type": "item",
+          "settings": {
+            "card_title": "Contrôle d'accordage",
+            "card_desc": "Accordé au diapason 440 Hz, note par note.",
+            "highlight": false
+          }
+        },
+        "item_hcFA93": {
+          "type": "item",
+          "settings": {
+            "card_title": "Service client français",
+            "card_desc": "Une équipe française, du lundi au vendredi de 9h à 18h.",
+            "highlight": false
+          }
+        }
+      },
+      "block_order": [
+        "item_BRYW6y",
+        "item_pQA7J9",
+        "item_8iKt9f",
+        "item_PCaCVy",
+        "item_zkbw4G",
+        "item_hcFA93"
+      ],
+      "name": "Tout est dans le carton",
+      "settings": {
+        "title": "Tout est dans le carton.",
+        "bg_color": "#ffffff",
+        "card_color": "#ffffff",
+        "border_color": "#e5e5e5",
+        "icon_color": "#2E5E46",
+        "check_color": "#ffffff",
+        "text_color": "#22332A",
+        "desc_color": "#5A6B60",
+        "title_size_desktop": 36,
+        "title_size_mobile": 28,
+        "card_title_size_desktop": 17,
+        "card_desc_size_desktop": 16,
+        "card_title_size_mobile": 12,
+        "card_desc_size_mobile": 11,
+        "mobile_desc_lines": 3,
+        "icon_size_mobile": 24,
+        "card_radius": 14,
+        "padding_top": 64,
+        "padding_bottom": 64,
+        "padding_top_mobile": 28,
+        "padding_bottom_mobile": 28,
+        "max_width": 1000
+      }
+    },
+    "assurance_jd4XHT": {
+      "type": "assurance",
+      "name": "Installation guidée",
+      "settings": {
+        "badge": "PRISE EN MAIN IMMÉDIATE",
+        "title": "Prise en main en quelques minutes.",
+        "description": "Chaque kalimba arrive complète, avec son livret numéroté et son marteau d'accordage. Vous déballez, vous posez les pouces, le son fait le reste.",
+        "step_1_title": "Déballez sereinement",
+        "step_1_text": "Vérifiez le contenu : housse, mailloches, huile d'entretien et livret de partitions.",
+        "step_2_title": "Suivez les numéros",
+        "step_2_text": "Les lames sont numérotées et le livret suit la même numérotation. Aucun solfège.",
+        "step_3_title": "Laissez venir le son",
+        "step_3_text": "En quelques minutes, vous jouez votre première mélodie.",
+        "video_url": "",
+        "video_autoplay": true,
+        "video_fit": "auto",
+        "video_height_desktop": 560,
+        "video_height_mobile": 320,
+        "image": "",
+        "image_position": "right",
+        "bg_color": "#f7fafb",
+        "accent_color": "#2E5E46",
+        "title_size_desktop": 42,
+        "title_size_mobile": 28,
+        "padding_top_desktop": 96,
+        "padding_bottom_desktop": 96,
+        "padding_top_mobile": 56,
+        "padding_bottom_mobile": 56
+      }
+    },
+    "image_text_premium_KgNxUY": {
+      "type": "image-texte-premium",
+      "name": "Image + Texte Premium",
+      "settings": {
+        "image": "",
+        "caption": "",
+        "image_inner_border": true,
+        "image_position": "right",
+        "eyebrow": "Ce que ça change",
+        "title": "La pièce n'est plus la même le soir",
+        "text": "<p>Un instrument qui fait du bruit, tout le monde peut en fabriquer un. Ce qu'on cherche vraiment, c'est le moment où l'on pose les mains sans savoir quoi jouer, et où il est minuit sans qu'on s'en soit rendu compte.</p><p>C'est le seul critère qu'on retient chez Zensea : la justesse des notes entre elles, la longueur de la résonance, la façon dont le son remplit la pièce. Le reste n'est que de l'acier.</p>",
+        "point_1": "Accordé en 440 Hz",
+        "point_1_sub": "jouable avec tout autre instrument",
+        "point_2": "Diffusion douce",
+        "point_2_sub": "sans agressivité",
+        "point_3": "Sustain long",
+        "point_3_sub": "plusieurs secondes de résonance",
+        "button_text": "Voir tous nos instruments",
+        "button_link": "",
+        "button_style": "link",
+        "section_bg": "#ffffff",
+        "title_color": "#14100c",
+        "text_color": "#14100c",
+        "accent_color": "#5A6B60",
+        "button_bg": "#14100c",
+        "button_text_color": "#ffffff",
+        "title_size_desktop": 44,
+        "title_size_mobile": 32,
+        "mobile_title_one_line": true,
+        "text_size_desktop": 17,
+        "text_size_mobile": 16,
+        "text_line_height": 1.8,
+        "paragraph_spacing": 16,
+        "button_text_size": 13,
+        "button_text_size_mobile": 12,
+        "button_height_desktop": 56,
+        "button_height_mobile": 54,
+        "button_padding_x_desktop": 36,
+        "button_radius": 0,
+        "button_margin_top": 36,
+        "button_margin_top_mobile": 28,
+        "max_width": 1360,
+        "gap_desktop": 76,
+        "desktop_image_height": 540,
+        "desktop_padding_y": 10,
+        "image_radius": 4,
+        "mobile_image_height": 360,
+        "mobile_content_padding_y": 30,
+        "mobile_content_padding_left": 22,
+        "text_line_height_mobile": 1.6,
+        "mobile_paragraphs": "1",
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40,
+        "padding_top": 88,
+        "padding_bottom": 40
+      }
+    },
+    "image_text_premium_wBPW3U": {
+      "type": "image-text-premium",
+      "custom_css": [
+        ".itp-wrapper {direction: rtl;}",
+        ".itp-wrapper > * {direction: ltr;}"
+      ],
+      "name": "Image + Texte Premium",
+      "settings": {
+        "image": "",
+        "video_height_desktop": 420,
+        "video_height_mobile": 300,
+        "video_zoom": 100,
+        "title": "La justesse avant tout.",
+        "feature_1_title": "Pensé pour durer :",
+        "feature_1_desc": "des instruments qui traversent les années sans perdre leur accord",
+        "feature_2_title": "Accordage vérifié :",
+        "feature_2_desc": "30 jours pour changer d'avis sur tout le catalogue",
+        "paragraph": "Achetez une fois. Jouez longtemps.",
+        "bg_color": "#ffffff",
+        "icon_color": "#22332A",
+        "padding_top": 32,
+        "padding_bottom": 60
+      }
+    },
+    "image_text_premium_xyThbp": {
+      "type": "image-text-premium",
+      "custom_css": [],
+      "name": "Image + Texte Premium",
+      "settings": {
+        "image": "",
+        "video_height_desktop": 420,
+        "video_height_mobile": 300,
+        "video_zoom": 100,
+        "title": "Son & Durabilité",
+        "feature_1_title": "Un instrument dont vous serez fier :",
+        "feature_1_desc": "une coupole sculpturale qui se pose et se regarde",
+        "feature_2_title": "Robuste par nature :",
+        "feature_2_desc": "un acier traité pour tenir l'accord des années",
+        "paragraph": "Juste le premier jour. Juste dans dix ans.",
+        "bg_color": "#fafafa",
+        "icon_color": "#22332A",
+        "padding_top": 24,
+        "padding_bottom": 8
+      }
+    },
+    "image_texte_promesse_velluce": {
+      "type": "image-texte-premium",
+      "name": "Image texte premium",
+      "settings": {
+        "image": "",
+        "caption": "",
+        "image_inner_border": true,
+        "image_position": "left",
+        "eyebrow": "Notre sélection",
+        "title": "Choisi comme pour nos propres mains",
+        "text": "<p>Pas de catalogue interminable, pas de références « pour faire du volume ».</p><p>On sélectionne peu, mais bien : uniquement des instruments qu'on garderait pour nous. Chacun est reçu, joué, contrôlé au diapason — et gardé seulement s'il tient la promesse de sa fiche.</p>",
+        "point_1": "Sélection resserrée",
+        "point_1_sub": "chaque instrument est joué avant d'entrer au catalogue",
+        "point_2": "Accordé avant expédition",
+        "point_2_sub": "acier, accord, résonance",
+        "point_3": "Diapason 440 Hz",
+        "point_3_sub": "accordage standard international",
+        "button_text": "Notre histoire",
+        "button_link": "",
+        "button_style": "link",
+        "section_bg": "#ffffff",
+        "title_color": "#14100c",
+        "text_color": "#14100c",
+        "accent_color": "#5A6B60",
+        "button_bg": "#14100c",
+        "button_text_color": "#ffffff",
+        "title_size_desktop": 44,
+        "title_size_mobile": 32,
+        "mobile_title_one_line": true,
+        "text_size_desktop": 17,
+        "text_size_mobile": 16,
+        "text_line_height": 1.8,
+        "paragraph_spacing": 16,
+        "button_text_size": 13,
+        "button_text_size_mobile": 12,
+        "button_height_desktop": 56,
+        "button_height_mobile": 54,
+        "button_padding_x_desktop": 36,
+        "button_radius": 0,
+        "button_margin_top": 36,
+        "button_margin_top_mobile": 28,
+        "max_width": 1360,
+        "gap_desktop": 76,
+        "desktop_image_height": 540,
+        "desktop_padding_y": 10,
+        "image_radius": 4,
+        "mobile_image_height": 360,
+        "mobile_content_padding_y": 30,
+        "mobile_content_padding_left": 22,
+        "text_line_height_mobile": 1.6,
+        "mobile_paragraphs": "1",
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "av_apres_premium_QxjAAq": {
+      "type": "av-apres-premium",
+      "disabled": true,
+      "name": "Avant Apres Premium",
+      "settings": {
+        "title": "Avant & Après",
+        "subtitle": "Un simple geste, une vraie différence.",
+        "title_font": "times",
+        "max_width": 1560,
+        "side_padding_desktop": 80,
+        "height_desktop": 900,
+        "height_mobile": 300,
+        "border_radius": 40,
+        "bg_color": "#fafafa",
+        "title_size_desktop": 36,
+        "title_size_mobile": 28,
+        "subtitle_size_desktop": 15,
+        "subtitle_size_mobile": 15
+      }
+    },
+    "featured_products": {
+      "type": "velluce-vous-aimerez",
+      "settings": {
+        "collection": "",
+        "max_products": 12,
+        "eyebrow": "Dans le même esprit",
+        "title": "Vous aimerez aussi",
+        "subtitle": "Choisis avec le même soin, dans le même univers sonore.",
+        "link_text": "Voir toute la collection",
+        "link_url": "",
+        "image_ratio": "4 / 5",
+        "image_fit": "cover",
+        "hover_second_image": true,
+        "show_badge": true,
+        "card_radius": 6,
+        "per_view": 4,
+        "per_view_tablet": 3,
+        "per_view_mobile": 1,
+        "peek": 70,
+        "gap": 20,
+        "gap_mobile": 14,
+        "section_bg": "#ffffff",
+        "card_bg": "#f4f0eb",
+        "title_color": "#14100c",
+        "accent_color": "#5A6B60",
+        "title_size": 38,
+        "title_size_mobile": 28,
+        "max_width": 1440,
+        "padding_top": 84,
+        "padding_bottom": 84
+      }
+    },
+    "garantie_24_mois_velluce": {
+      "type": "image-texte-premium",
+      "name": "Image texte premium",
+      "settings": {
+        "image": "",
+        "caption": "",
+        "image_inner_border": true,
+        "image_position": "right",
+        "eyebrow": "L'engagement Zensea",
+        "title": "Accordé avant l'envoi, repris sous 30 jours",
+        "text": "<p>Un handpan, on l'achète une fois. Il reste posé dans le salon pendant des années, on le prend le soir sans y penser, on le tend à quelqu'un qui n'a jamais joué. Il n'a pas le droit de sonner faux.</p><p>Chaque instrument Zensea est joué note par note et contrôlé au <strong>diapason 440 Hz</strong> avant de quitter l'atelier. La gamme est écrite noir sur blanc sur la fiche — pas « au choix du fabricant », pas de surprise à l'ouverture du carton.</p><p>Un souci après réception ? Vous écrivez, on répond en français, on remplace ou on rembourse. Vous disposez de 30 jours pour changer d'avis, sans avoir à vous justifier.</p>",
+        "point_1": "Accordage vérifié",
+        "point_1_sub": "à l'oreille, en 440 Hz",
+        "point_2": "Livraison offerte",
+        "point_2_sub": "dès 30 € d'achat",
+        "point_3": "30 jours pour changer d'avis",
+        "point_3_sub": "retour simple, sans justification",
+        "button_text": "Lire notre promesse",
+        "button_link": "",
+        "button_style": "link",
+        "section_bg": "#ffffff",
+        "title_color": "#14100c",
+        "text_color": "#14100c",
+        "accent_color": "#5A6B60",
+        "button_bg": "#14100c",
+        "button_text_color": "#ffffff",
+        "title_size_desktop": 44,
+        "title_size_mobile": 32,
+        "mobile_title_one_line": true,
+        "text_size_desktop": 17,
+        "text_size_mobile": 16,
+        "text_line_height": 1.8,
+        "paragraph_spacing": 16,
+        "button_text_size": 13,
+        "button_text_size_mobile": 12,
+        "button_height_desktop": 56,
+        "button_height_mobile": 54,
+        "button_padding_x_desktop": 36,
+        "button_radius": 0,
+        "button_margin_top": 36,
+        "button_margin_top_mobile": 28,
+        "max_width": 1360,
+        "gap_desktop": 76,
+        "desktop_image_height": 540,
+        "desktop_padding_y": 10,
+        "image_radius": 4,
+        "mobile_image_height": 360,
+        "mobile_content_padding_y": 30,
+        "mobile_content_padding_left": 22,
+        "text_line_height_mobile": 1.6,
+        "mobile_paragraphs": "1",
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40,
+        "padding_top": 40,
+        "padding_bottom": 88
+      }
+    },
+    "faq_premium_Jj3fCF": {
+      "type": "faq-premium",
+      "blocks": {
+        "faq_item_JzaUMe": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Combien de temps prend la livraison ?",
+            "answer": "<p>Toutes les commandes sont préparées sous 24 à 48 h ouvrées, hors week-ends et jours fériés. Comptez ensuite 7 à 13 jours ouvrés, soit 8 à 15 jours ouvrés au total.</p>"
+          }
+        },
+        "faq_item_6LMmnE": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Comment suivre ma commande ?",
+            "answer": "<p>Une fois votre commande expédiée, vous recevez un numéro de suivi par e-mail.<br><br>Vous pouvez suivre votre colis depuis notre page <strong>Suivi de commande</strong></p>"
+          }
+        },
+        "faq_item_4yVCdJ": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Faut-il savoir lire une partition ?",
+            "answer": "<p>Non. Les lames d'une kalimba sont numérotées, et le livret fourni indique simplement quel numéro jouer, dans quel ordre. Vous lisez des chiffres, pas des notes. En vingt minutes, vous jouez votre première mélodie reconnaissable.</p>"
+          }
+        },
+        "faq_item_9yEcQN": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Vos instruments sont-ils vraiment accordés ?",
+            "answer": "<p>Oui. Chaque instrument est <strong>joué, écouté et contrôlé au diapason 440 Hz</strong> avant l'expédition. La gamme est indiquée noir sur blanc sur la fiche, et vous disposez de <strong>30 jours</strong> pour changer d'avis si le son ne vous parle pas.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_JzaUMe",
+        "faq_item_6LMmnE",
+        "faq_item_4yVCdJ",
+        "faq_item_9yEcQN"
+      ],
+      "name": "FAQ Premium",
+      "settings": {
+        "title": "Vos questions, nos réponses.",
+        "subtitle": "Tout ce qu'il faut savoir avant de commander chez Zensea.",
+        "button_text": "Voir toutes les questions",
+        "button_link": "",
+        "single_open": true,
+        "title_size": 40,
+        "title_size_m": 30,
+        "sub_size": 16,
+        "sub_size_m": 15,
+        "q_size": 18,
+        "q_size_m": 16,
+        "a_size": 16,
+        "a_size_m": 15,
+        "row_pad": 20,
+        "bg": "#ffffff",
+        "title_color": "#22332A",
+        "sub_color": "#5A6B60",
+        "q_color": "#22332A",
+        "a_color": "#5A6B60",
+        "ico_color": "#B98A2E",
+        "divider": "#ECF1E8",
+        "btn_bg": "#22332A",
+        "btn_text": "#ffffff",
+        "btn_size": 15,
+        "btn_radius": 8,
+        "max_width": 820,
+        "pad_top": 64,
+        "pad_bot": 64,
+        "pad_top_m": 40,
+        "pad_bot_m": 40
+      }
+    },
+    "carrousel_images_bbly": {
+      "type": "carrousel-images",
+      "blocks": {
+        "image_HmWd3L": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_iJqLFW": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_6ahqgJ": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_3dWiyV": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_UQPcEp": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_hXg6YA": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_8kFRxP": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_fAzA3n": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_tFFAkg": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_QEN8dx": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_G9QBHX": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_bRWVdP": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_VaQFbK": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_GegmRn": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "image_HGBFH7": {
+          "type": "image",
+          "settings": {
+            "image": "",
+            "caption": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_HmWd3L",
+        "image_iJqLFW",
+        "image_6ahqgJ",
+        "image_3dWiyV",
+        "image_UQPcEp",
+        "image_hXg6YA",
+        "image_8kFRxP",
+        "image_fAzA3n",
+        "image_tFFAkg",
+        "image_QEN8dx",
+        "image_G9QBHX",
+        "image_bRWVdP",
+        "image_VaQFbK",
+        "image_GegmRn",
+        "image_HGBFH7"
+      ],
+      "name": "Carrousel d'images",
+      "settings": {
+        "title": "Ils en jouent tous les jours",
+        "subtitle": "Des joueurs comme vous",
+        "title_size": 38,
+        "title_size_m": 26,
+        "title_weight": "400",
+        "title_italic": true,
+        "title_color": "#22332A",
+        "sub_size": 15,
+        "sub_size_m": 14,
+        "sub_color": "#5A6B60",
+        "center_h": 630,
+        "side_h": 490,
+        "center_h_m": 470,
+        "side_h_m": 360,
+        "cardpx": 440,
+        "cardpx_m": 300,
+        "gap": 14,
+        "radius": 16,
+        "side_opacity": 100,
+        "autoplay": true,
+        "interval": 4,
+        "show_arrows": true,
+        "cap_size": 13,
+        "cap_color": "#5A6B60",
+        "cap_align": "center",
+        "nav_bg": "#ffffff",
+        "nav_color": "#22332A",
+        "bg": "#ffffff",
+        "pad_top": 56,
+        "pad_bot": 56,
+        "pad_top_m": 36,
+        "pad_bot_m": 36
+      }
+    },
+    "support_steps_hmqFkC": {
+      "type": "support-steps",
+      "blocks": {
+        "step_card_ithhNW": {
+          "type": "step_card",
+          "settings": {
+            "card_title": "Avant l'achat",
+            "card_text": "On vous aide à choisir votre gamme et vos notes."
+          }
+        },
+        "step_card_bqEn4n": {
+          "type": "step_card",
+          "settings": {
+            "card_title": "Pendant la commande",
+            "card_text": "Nous vous tenons informé à chaque étape."
+          }
+        },
+        "step_card_xTdVK4": {
+          "type": "step_card",
+          "settings": {
+            "card_title": "Après la livraison",
+            "card_text": "Nous restons disponibles si vous avez besoin de nous."
+          }
+        }
+      },
+      "block_order": [
+        "step_card_ithhNW",
+        "step_card_bqEn4n",
+        "step_card_xTdVK4"
+      ],
+      "name": "Support WhatsApp Steps",
+      "settings": {
+        "label_text": "AVANT • PENDANT • APRÈS",
+        "title": "On vous aide à chaque étape",
+        "cta_title": "Besoin d'un accompagnement humain ?",
+        "cta_desc": "Notre équipe est là pour vous, rapidement et avec bienveillance.",
+        "whatsapp_link": "mailto:contact.zensea@gmail.com",
+        "whatsapp_btn_text": "Nous écrire par e-mail",
+        "bg_image_opacity": 10,
+        "primary_color": "#2E5E46",
+        "bg_color": "#ffffff",
+        "title_size_desktop": 48,
+        "title_size_mobile": 28,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "padding_top_mobile": 36,
+        "padding_bottom_mobile": 36,
+        "max_width": 1200
+      }
+    },
+    "bas_footer_kpatWN": {
+      "type": "velluce-dunes",
+      "settings": {
+        "height_desktop": 300,
+        "height_mobile": 180
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs",
+    "main",
+    "tout_est_dans_le_carton_P9V33C",
+    "assurance_jd4XHT",
+    "image_text_premium_KgNxUY",
+    "image_text_premium_wBPW3U",
+    "image_text_premium_xyThbp",
+    "image_texte_promesse_velluce",
+    "av_apres_premium_QxjAAq",
+    "featured_products",
+    "garantie_24_mois_velluce",
+    "faq_premium_Jj3fCF",
+    "carrousel_images_bbly",
+    "support_steps_hmqFkC",
+    "bas_footer_kpatWN"
+  ]
+}
