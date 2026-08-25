@@ -1,0 +1,764 @@
+{
+  "type": "header",
+  "name": "t:header",
+  "sections": {
+    "announcement_bar_r8QCCw": {
+      "type": "announcement-bar",
+      "blocks": {
+        "a1": {
+          "type": "_announcement",
+          "settings": {
+            "layout_gap": 10,
+            "additional_class": ""
+          },
+          "blocks": {
+            "txt": {
+              "type": "text",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "text": "<p>LIVRAISON OFFERTE DÈS 30 €</p>",
+                "text_style": "paragraph",
+                "paragraph_font_size": "normal",
+                "font_weight": 400,
+                "alignment": "center",
+                "alignment_mobile": "center",
+                "show_read_more": false,
+                "read_more_length": 50,
+                "read_more_text": "Voir plus",
+                "read_less_text": "Voir moins",
+                "truncate": false,
+                "truncate_length": 2,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "txt"
+          ]
+        },
+        "a2": {
+          "type": "_announcement",
+          "settings": {
+            "layout_gap": 10,
+            "additional_class": ""
+          },
+          "blocks": {
+            "txt": {
+              "type": "text",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "text": "<p>ACCORDAGE VÉRIFIÉ AVANT EXPÉDITION</p>",
+                "text_style": "paragraph",
+                "paragraph_font_size": "normal",
+                "font_weight": 400,
+                "alignment": "center",
+                "alignment_mobile": "center",
+                "show_read_more": false,
+                "read_more_length": 50,
+                "read_more_text": "Voir plus",
+                "read_less_text": "Voir moins",
+                "truncate": false,
+                "truncate_length": 2,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "txt"
+          ]
+        },
+        "a3": {
+          "type": "_announcement",
+          "settings": {
+            "layout_gap": 10,
+            "additional_class": ""
+          },
+          "blocks": {
+            "txt": {
+              "type": "text",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "text": "<p>30 JOURS POUR CHANGER D’AVIS</p>",
+                "text_style": "paragraph",
+                "paragraph_font_size": "normal",
+                "font_weight": 400,
+                "alignment": "center",
+                "alignment_mobile": "center",
+                "show_read_more": false,
+                "read_more_length": 50,
+                "read_more_text": "Voir plus",
+                "read_less_text": "Voir moins",
+                "truncate": false,
+                "truncate_length": 2,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "txt"
+          ]
+        }
+      },
+      "block_order": [
+        "a1",
+        "a2",
+        "a3"
+      ],
+      "name": "t:announcement_bar",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "ab_font": "marcellus",
+        "ab_size": 16,
+        "ab_size_m": 13,
+        "ab_track": "0.13em",
+        "ab_ink": "#FBF9F4",
+        "ab_rule": "#ffffff",
+        "color_scheme": "scheme-3",
+        "show_arrows": true,
+        "rewind": true,
+        "autoplay": true,
+        "autoplay_speed": 4,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "additional_class": ""
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "button-header": {
+          "type": "button",
+          "disabled": true,
+          "static": true,
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "link": "",
+            "open_in_new_tab": false,
+            "label": "S'abonner",
+            "button_style": "secondary",
+            "button_shape": "small",
+            "icon": "none",
+            "icon_custom": "",
+            "icon_position": "start",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {}
+        },
+        "header-advanced-megamenus": {
+          "type": "_header-advanced-megamenus",
+          "static": true,
+          "settings": {},
+          "blocks": {
+            "megamenu_handpans": {
+              "type": "_header-megamenu",
+              "settings": {
+                "title": "Handpans",
+                "position_within_the_menu": "0",
+                "layout_type": "flex",
+                "layout_direction": "row",
+                "layout_grid_columns": 4,
+                "layout_gap": 20,
+                "layout_wrap": "nowrap",
+                "layout_justify": "flex-start",
+                "layout_align_items": "flex-start",
+                "additional_class": ""
+              },
+              "blocks": {
+                "grp_liens": {
+                  "type": "_header-megamenu-group",
+                  "settings": {
+                    "wrap_in_card": false,
+                    "color_scheme": "",
+                    "show_card_border": false,
+                    "layout_type": "flex",
+                    "width": 32,
+                    "layout_direction": "column",
+                    "layout_grid_columns": 1,
+                    "layout_gap": 14,
+                    "layout_wrap": "nowrap",
+                    "layout_justify": "flex-start",
+                    "layout_align_items": "flex-start",
+                    "use_global_container_padding": true,
+                    "padding_horizontal": 30,
+                    "padding_vertical": 30,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {
+                    "menu_notes": {
+                      "type": "menu",
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "alignment_desktop": "flex-start",
+                        "alignment_mobile": "flex-start",
+                        "title": "<h3>Par nombre de notes</h3>",
+                        "title_style": "h6",
+                        "menu": "megamenu-handpans",
+                        "menu_direction": "column",
+                        "underline_links": false,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      }
+                    },
+                    "accroche": {
+                      "type": "text",
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "text": "<p>Neuf notes pour commencer, douze pour ne plus s'arrêter. Toutes accordées dans la même gamme : la fausse note n'existe pas.</p>",
+                        "text_style": "paragraph",
+                        "paragraph_font_size": "normal",
+                        "font_weight": 400,
+                        "alignment": "left",
+                        "alignment_mobile": "left",
+                        "show_read_more": false,
+                        "read_more_length": 100,
+                        "read_more_text": "Voir plus",
+                        "read_less_text": "Voir moins",
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      }
+                    }
+                  },
+                  "block_order": [
+                    "menu_notes",
+                    "accroche"
+                  ]
+                },
+                "grp_cartes": {
+                  "type": "_header-megamenu-group",
+                  "settings": {
+                    "wrap_in_card": false,
+                    "color_scheme": "",
+                    "show_card_border": false,
+                    "layout_type": "grid",
+                    "width": 68,
+                    "layout_direction": "column",
+                    "layout_grid_columns": 3,
+                    "layout_gap": 14,
+                    "layout_wrap": "nowrap",
+                    "layout_justify": "flex-start",
+                    "layout_align_items": "flex-start",
+                    "use_global_container_padding": true,
+                    "padding_horizontal": 30,
+                    "padding_vertical": 30,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {
+                    "c_9": {
+                      "type": "image-card",
+                      "settings": {
+                        "image": "",
+                        "card_height": "very_small",
+                        "color_scheme": "scheme-3",
+                        "image_filter_opacity": 25,
+                        "image_filter_color": "#000000",
+                        "layout_justify": "flex-end",
+                        "layout_align_items": "flex-start",
+                        "padding_horizontal": 0,
+                        "padding_vertical": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      },
+                      "blocks": {
+                        "titre": {
+                          "type": "text",
+                          "settings": {
+                            "show_on_display": "desktop_and_mobile",
+                            "text": "<h1>9 notes</h1>",
+                            "text_style": "h4",
+                            "paragraph_font_size": "normal",
+                            "font_weight": 400,
+                            "alignment": "left",
+                            "alignment_mobile": "left",
+                            "show_read_more": false,
+                            "read_more_length": 100,
+                            "read_more_text": "Voir plus",
+                            "read_less_text": "Voir moins",
+                            "margin_top": 0,
+                            "margin_bottom": 0,
+                            "additional_class": ""
+                          }
+                        },
+                        "cta": {
+                          "type": "button",
+                          "settings": {
+                            "show_on_display": "desktop_and_mobile",
+                            "link": "/collections/handpans-9-notes",
+                            "open_in_new_tab": false,
+                            "label": "Pour débuter",
+                            "button_style": "primary",
+                            "button_shape": "small",
+                            "icon": "arrow_forward",
+                            "icon_custom": "",
+                            "icon_position": "end",
+                            "margin_top": 10,
+                            "margin_bottom": 0,
+                            "additional_class": ""
+                          }
+                        }
+                      },
+                      "block_order": [
+                        "titre",
+                        "cta"
+                      ]
+                    },
+                    "c_10": {
+                      "type": "image-card",
+                      "settings": {
+                        "image": "",
+                        "card_height": "very_small",
+                        "color_scheme": "scheme-3",
+                        "image_filter_opacity": 25,
+                        "image_filter_color": "#000000",
+                        "layout_justify": "flex-end",
+                        "layout_align_items": "flex-start",
+                        "padding_horizontal": 0,
+                        "padding_vertical": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      },
+                      "blocks": {
+                        "titre": {
+                          "type": "text",
+                          "settings": {
+                            "show_on_display": "desktop_and_mobile",
+                            "text": "<h1>10 notes</h1>",
+                            "text_style": "h4",
+                            "paragraph_font_size": "normal",
+                            "font_weight": 400,
+                            "alignment": "left",
+                            "alignment_mobile": "left",
+                            "show_read_more": false,
+                            "read_more_length": 100,
+                            "read_more_text": "Voir plus",
+                            "read_less_text": "Voir moins",
+                            "margin_top": 0,
+                            "margin_bottom": 0,
+                            "additional_class": ""
+                          }
+                        },
+                        "cta": {
+                          "type": "button",
+                          "settings": {
+                            "show_on_display": "desktop_and_mobile",
+                            "link": "/collections/handpans-10-notes",
+                            "open_in_new_tab": false,
+                            "label": "Une couleur en plus",
+                            "button_style": "primary",
+                            "button_shape": "small",
+                            "icon": "arrow_forward",
+                            "icon_custom": "",
+                            "icon_position": "end",
+                            "margin_top": 10,
+                            "margin_bottom": 0,
+                            "additional_class": ""
+                          }
+                        }
+                      },
+                      "block_order": [
+                        "titre",
+                        "cta"
+                      ]
+                    },
+                    "c_12": {
+                      "type": "image-card",
+                      "settings": {
+                        "image": "",
+                        "card_height": "very_small",
+                        "color_scheme": "scheme-3",
+                        "image_filter_opacity": 25,
+                        "image_filter_color": "#000000",
+                        "layout_justify": "flex-end",
+                        "layout_align_items": "flex-start",
+                        "padding_horizontal": 0,
+                        "padding_vertical": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      },
+                      "blocks": {
+                        "titre": {
+                          "type": "text",
+                          "settings": {
+                            "show_on_display": "desktop_and_mobile",
+                            "text": "<h1>12 notes</h1>",
+                            "text_style": "h4",
+                            "paragraph_font_size": "normal",
+                            "font_weight": 400,
+                            "alignment": "left",
+                            "alignment_mobile": "left",
+                            "show_read_more": false,
+                            "read_more_length": 100,
+                            "read_more_text": "Voir plus",
+                            "read_less_text": "Voir moins",
+                            "margin_top": 0,
+                            "margin_bottom": 0,
+                            "additional_class": ""
+                          }
+                        },
+                        "cta": {
+                          "type": "button",
+                          "settings": {
+                            "show_on_display": "desktop_and_mobile",
+                            "link": "/collections/handpans-12-notes",
+                            "open_in_new_tab": false,
+                            "label": "La palette complète",
+                            "button_style": "primary",
+                            "button_shape": "small",
+                            "icon": "arrow_forward",
+                            "icon_custom": "",
+                            "icon_position": "end",
+                            "margin_top": 10,
+                            "margin_bottom": 0,
+                            "additional_class": ""
+                          }
+                        }
+                      },
+                      "block_order": [
+                        "titre",
+                        "cta"
+                      ]
+                    }
+                  },
+                  "block_order": [
+                    "c_9",
+                    "c_10",
+                    "c_12"
+                  ]
+                }
+              },
+              "block_order": [
+                "grp_liens",
+                "grp_cartes"
+              ]
+            },
+            "megamenu_accessoires": {
+              "type": "_header-megamenu",
+              "settings": {
+                "title": "Accessoires",
+                "position_within_the_menu": "0",
+                "layout_type": "flex",
+                "layout_direction": "row",
+                "layout_grid_columns": 4,
+                "layout_gap": 20,
+                "layout_wrap": "nowrap",
+                "layout_justify": "flex-start",
+                "layout_align_items": "flex-start",
+                "additional_class": ""
+              },
+              "blocks": {
+                "grp_liens": {
+                  "type": "_header-megamenu-group",
+                  "settings": {
+                    "wrap_in_card": false,
+                    "color_scheme": "",
+                    "show_card_border": false,
+                    "layout_type": "flex",
+                    "width": 38,
+                    "layout_direction": "column",
+                    "layout_grid_columns": 1,
+                    "layout_gap": 14,
+                    "layout_wrap": "nowrap",
+                    "layout_justify": "flex-start",
+                    "layout_align_items": "flex-start",
+                    "use_global_container_padding": true,
+                    "padding_horizontal": 30,
+                    "padding_vertical": 30,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {
+                    "menu_acc": {
+                      "type": "menu",
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "alignment_desktop": "flex-start",
+                        "alignment_mobile": "flex-start",
+                        "title": "<h3>Tout pour votre instrument</h3>",
+                        "title_style": "h6",
+                        "menu": "megamenu-accessoires",
+                        "menu_direction": "column",
+                        "underline_links": false,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      }
+                    },
+                    "accroche": {
+                      "type": "text",
+                      "settings": {
+                        "show_on_display": "desktop_and_mobile",
+                        "text": "<p>Une housse rembourrée, des mailloches de rechange, l'huile qui protège l'acier. Ce qui fait durer l'instrument des années.</p>",
+                        "text_style": "paragraph",
+                        "paragraph_font_size": "normal",
+                        "font_weight": 400,
+                        "alignment": "left",
+                        "alignment_mobile": "left",
+                        "show_read_more": false,
+                        "read_more_length": 100,
+                        "read_more_text": "Voir plus",
+                        "read_less_text": "Voir moins",
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      }
+                    }
+                  },
+                  "block_order": [
+                    "menu_acc",
+                    "accroche"
+                  ]
+                },
+                "grp_cartes": {
+                  "type": "_header-megamenu-group",
+                  "settings": {
+                    "wrap_in_card": false,
+                    "color_scheme": "",
+                    "show_card_border": false,
+                    "layout_type": "grid",
+                    "width": 62,
+                    "layout_direction": "column",
+                    "layout_grid_columns": 2,
+                    "layout_gap": 14,
+                    "layout_wrap": "nowrap",
+                    "layout_justify": "flex-start",
+                    "layout_align_items": "flex-start",
+                    "use_global_container_padding": true,
+                    "padding_horizontal": 30,
+                    "padding_vertical": 30,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "additional_class": ""
+                  },
+                  "blocks": {
+                    "c_housses": {
+                      "type": "image-card",
+                      "settings": {
+                        "image": "",
+                        "card_height": "very_small",
+                        "color_scheme": "scheme-3",
+                        "image_filter_opacity": 25,
+                        "image_filter_color": "#000000",
+                        "layout_justify": "flex-end",
+                        "layout_align_items": "flex-start",
+                        "padding_horizontal": 0,
+                        "padding_vertical": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      },
+                      "blocks": {
+                        "titre": {
+                          "type": "text",
+                          "settings": {
+                            "show_on_display": "desktop_and_mobile",
+                            "text": "<h1>Housses et supports</h1>",
+                            "text_style": "h4",
+                            "paragraph_font_size": "normal",
+                            "font_weight": 400,
+                            "alignment": "left",
+                            "alignment_mobile": "left",
+                            "show_read_more": false,
+                            "read_more_length": 100,
+                            "read_more_text": "Voir plus",
+                            "read_less_text": "Voir moins",
+                            "margin_top": 0,
+                            "margin_bottom": 0,
+                            "additional_class": ""
+                          }
+                        },
+                        "cta": {
+                          "type": "button",
+                          "settings": {
+                            "show_on_display": "desktop_and_mobile",
+                            "link": "/collections/housses-et-supports",
+                            "open_in_new_tab": false,
+                            "label": "Transporter et poser",
+                            "button_style": "primary",
+                            "button_shape": "small",
+                            "icon": "arrow_forward",
+                            "icon_custom": "",
+                            "icon_position": "end",
+                            "margin_top": 10,
+                            "margin_bottom": 0,
+                            "additional_class": ""
+                          }
+                        }
+                      },
+                      "block_order": [
+                        "titre",
+                        "cta"
+                      ]
+                    },
+                    "c_entretien": {
+                      "type": "image-card",
+                      "settings": {
+                        "image": "",
+                        "card_height": "very_small",
+                        "color_scheme": "scheme-3",
+                        "image_filter_opacity": 25,
+                        "image_filter_color": "#000000",
+                        "layout_justify": "flex-end",
+                        "layout_align_items": "flex-start",
+                        "padding_horizontal": 0,
+                        "padding_vertical": 0,
+                        "margin_top": 0,
+                        "margin_bottom": 0,
+                        "additional_class": ""
+                      },
+                      "blocks": {
+                        "titre": {
+                          "type": "text",
+                          "settings": {
+                            "show_on_display": "desktop_and_mobile",
+                            "text": "<h1>Maillets et entretien</h1>",
+                            "text_style": "h4",
+                            "paragraph_font_size": "normal",
+                            "font_weight": 400,
+                            "alignment": "left",
+                            "alignment_mobile": "left",
+                            "show_read_more": false,
+                            "read_more_length": 100,
+                            "read_more_text": "Voir plus",
+                            "read_less_text": "Voir moins",
+                            "margin_top": 0,
+                            "margin_bottom": 0,
+                            "additional_class": ""
+                          }
+                        },
+                        "cta": {
+                          "type": "button",
+                          "settings": {
+                            "show_on_display": "desktop_and_mobile",
+                            "link": "/collections/maillets-et-entretien",
+                            "open_in_new_tab": false,
+                            "label": "Garder l'accord",
+                            "button_style": "primary",
+                            "button_shape": "small",
+                            "icon": "arrow_forward",
+                            "icon_custom": "",
+                            "icon_position": "end",
+                            "margin_top": 10,
+                            "margin_bottom": 0,
+                            "additional_class": ""
+                          }
+                        }
+                      },
+                      "block_order": [
+                        "titre",
+                        "cta"
+                      ]
+                    }
+                  },
+                  "block_order": [
+                    "c_housses",
+                    "c_entretien"
+                  ]
+                }
+              },
+              "block_order": [
+                "grp_liens",
+                "grp_cartes"
+              ]
+            }
+          },
+          "block_order": [
+            "megamenu_handpans",
+            "megamenu_accessoires"
+          ]
+        },
+        "header-notifications": {
+          "type": "_header-notifications",
+          "disabled": true,
+          "static": true,
+          "settings": {
+            "enable_notifications_bubble": true
+          },
+          "blocks": {}
+        },
+        "header-drawer-menu": {
+          "type": "_header-drawer-menu",
+          "static": true,
+          "settings": {
+            "color_scheme": "scheme-1",
+            "show_guide": true,
+            "tab1_label": "Collections",
+            "tab2_label": "Bien choisir"
+          },
+          "blocks": {
+            "header-drawer-menu-header": {
+              "type": "_header-drawer-menu-header",
+              "static": true,
+              "settings": {
+                "wrap_in_card": false,
+                "color_scheme": "",
+                "margin_top": 0,
+                "margin_bottom": 0
+              },
+              "blocks": {}
+            },
+            "header-drawer-menu-under-menu": {
+              "type": "_header-drawer-menu-under-menu",
+              "static": true,
+              "settings": {
+                "wrap_in_card": false,
+                "color_scheme": "",
+                "margin_top": 0,
+                "margin_bottom": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": []
+        }
+      },
+      "settings": {
+        "color_scheme": "scheme-1",
+        "header_layout": "logo_left",
+        "header_height": 75,
+        "enable_sticky_header": true,
+        "enable_transparent_header": true,
+        "transparent_header_color_scheme": "scheme-3",
+        "use_inverse_logo": false,
+        "logo_height": 61,
+        "logo_height_mobile": 48,
+        "header_menu_style": "megamenu",
+        "menu_font_weight": 400,
+        "uppercase_menu_items": false,
+        "menu": "main-menu",
+        "menu_2": "",
+        "menu_mobile": "",
+        "show_search": true,
+        "enable_predictive_search": true,
+        "show_country": false,
+        "show_country_icon": false,
+        "show_language": false,
+        "cart_icon": "local_mall",
+        "account_icon": "account_circle"
+      }
+    }
+  },
+  "order": [
+    "announcement_bar_r8QCCw",
+    "header"
+  ]
+}
