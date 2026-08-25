@@ -43,6 +43,13 @@ COLL = {
  'salon':'handpans-9-notes','chambre':'handpans-12-notes','cuisine':'housses-et-supports',
  'salle-de-bain':'tongue-drums','sale-de-bain':'tongue-drums',
  'vous-aimerez-aussi':'tous-les-handpans','espaces-de-vie':'tous-les-handpans',
+ 'tous-les-plafonniers':'tous-les-handpans','toutes-les-suspensions':'tongue-drums',
+ 'toutes-les-lampes-a-poser':'kalimbas','tous-les-lustres':'bols-chantants',
+ 'toutes-les-appliques-murales':'ocarinas','tous-les-lampadaires':'accessoires',
+ 'tous-les-ventilateurs-de-plafond':'housses-et-supports',
+ 'tous-les-luminaires-exterieurs':'maillets-et-entretien',
+ 'appliques-exterieures':'maillets-et-entretien','guirlandes-lumineuses':'maillets-et-entretien',
+ 'eclairage-solaire':'maillets-et-entretien','collections':'tous-les-handpans',
 }
 WA_RX = re.compile(r'https://wa\.me/\S*')
 MAILTO = 'mailto:contact.zensea@gmail.com'
