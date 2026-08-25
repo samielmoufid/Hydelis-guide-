@@ -102,14 +102,7 @@
         }}
       {% else %}
         {% assign default_alt = 'placeholder.placeholder_banner_alt' | t %}
-        <img
-          src="{{ 'placeholder-image.jpg' | asset_img_url: 'x1200' }}"
-          alt="{{ default_alt }}"
-          width="1000"
-          height="auto"
-          class="before-after-block__img"
-          loading="lazy"
-        >
+        {%- render 'zensea-illus', key: 'handpan', uid: block.id, name: 'Zensea', class: 'before-after__illu' -%}
       {% endif %}
     </div>
 

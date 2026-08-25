@@ -39,13 +39,12 @@
           height="50"
         >
       {% else %}
-        <img
-          src="{{ 'placeholder-image.jpg' | asset_img_url: 'x100' }}"
-          alt="{{ block.settings.title }}"
-          width="50"
-          height="50"
-          loading="lazy"
-        >
+        <span class="navigation__illu" style="display:block;width:50px;height:50px;border-radius:8px;overflow:hidden;flex-shrink:0">
+          {%- render 'zensea-illus',
+                key: block.settings.title,
+                uid: block.id,
+                name: block.settings.title -%}
+        </span>
       {% endif %}
     {% endif %}
 

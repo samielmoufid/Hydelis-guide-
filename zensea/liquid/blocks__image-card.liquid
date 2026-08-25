@@ -68,15 +68,11 @@
           sizes: sizes
       }}
     {% else %}
-      {% assign default_alt = 'placeholder.placeholder_banner_alt' | t %}
-      <img
-        src="{{ 'placeholder-banner.jpg'  | asset_img_url: 'x1200' }}"
-        alt="{{ default_alt }}"
-        width="1000"
-        height="auto"
-        class="placeholder-image"
-        loading="lazy"
-      >
+      {%- render 'zensea-illus',
+            key: block.settings.image_alt,
+            uid: block.id,
+            name: 'Zensea',
+            class: 'placeholder-image' -%}
     {% endif %}
   </div>
 

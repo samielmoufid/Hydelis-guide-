@@ -1,7 +1,11 @@
 {% doc %}
-  Affiche une vignette carrée à côté d'un lien de menu pointant vers une collection.
+  Affiche une vignette carrée à côté d'un lien de menu.
 
-  @param link - Le lien de menu (link.object doit être une collection).
+  Ordre de repli : image de collection → image du premier produit → illustration
+  codée Zensea. Il y a donc toujours une vignette, même tant qu'aucun visuel n'a
+  été déposé dans l'administration.
+
+  @param link - Le lien de menu (link.object peut être une collection).
   @param [size] - Taille de la vignette en px (défaut 46).
 
   @example
@@ -18,12 +22,18 @@
       assign thumb = coll.featured_image
     endif
   endif
+
+  assign illu_key = link.title | downcase
+  if coll != blank and coll.handle != blank
+    assign illu_key = coll.handle
+  endif
+
   assign thumb_size = size | default: 46
   assign thumb_size_2x = thumb_size | times: 2
 -%}
 
-{%- if thumb != '' -%}
-  <span class="vllc-menu-thumb" style="--vllc-thumb-size: {{ thumb_size }}px;">
+<span class="vllc-menu-thumb" style="--vllc-thumb-size: {{ thumb_size }}px;">
+  {%- if thumb != '' -%}
     <img
       src="{{ thumb | image_url: width: thumb_size_2x }}"
       alt=""
@@ -31,5 +41,7 @@
       height="{{ thumb_size }}"
       loading="lazy"
     >
-  </span>
-{%- endif -%}
+  {%- else -%}
+    {%- render 'zensea-illus', key: illu_key, uid: illu_key, name: link.title, class: 'vllc-menu-thumb__illu' -%}
+  {%- endif -%}
+</span>

@@ -47,11 +47,11 @@
     }} 
   {%- elsif block.settings.show_placeholder -%}
     {% if closest.article != blank %}
-      <img src="{{ 'placeholder-article.jpg' | asset_img_url: 'x1000' }}" alt="placeholder article" width="750" height="750" class="{{ image_class }}" loading="lazy">
+      {%- render 'zensea-illus', key: 'guide', uid: block.id, name: 'Zensea', class: image_class -%}
     {% elsif closest.collection != blank %}
-      <img src="{{ 'placeholder-collection.jpg' | asset_img_url: 'x1000' }}" alt="placeholder collection" width="750" height="750" class="{{ image_class }}" loading="lazy">
+      {%- render 'zensea-illus', key: closest.collection.handle, uid: block.id, name: closest.collection.title, class: image_class -%}
     {% else %}
-      <img src="{{ 'placeholder-image.jpg' | asset_img_url: 'x1000' }}" alt="placeholder image" width="750" height="750" class="{{ image_class }}" loading="lazy">
+      {%- render 'zensea-illus', key: 'handpan', uid: block.id, name: 'Zensea', class: image_class -%}
     {% endif %}
   {%- endif -%} 
 {% endcapture %}

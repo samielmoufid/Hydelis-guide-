@@ -181,14 +181,7 @@
 {% else %}
   <div {{ additional_attributes }} class="video-placeholder-wrapper" style="{{ video_style }}">
     {% assign default_alt = 'placeholder.placeholder_video_alt' | t %}
-    <img
-      src="{{ 'placeholder-banner.jpg' | asset_img_url: 'x1500' }}"
-      alt="{{ default_alt }}"
-      width="1000"
-      height="auto"
-      class="deferred-media__poster"
-      loading="lazy"
-    >
+    {%- render 'zensea-illus', key: 'handpan', uid: 'vidph', name: 'Zensea', class: 'video-placeholder__illu' -%}
     <span class="video-placeholder-wrapper__poster-icon">
       {% render 'icon', icon: 'play_circle' %}
     </span>
