@@ -282,7 +282,7 @@
             alt: section.settings.title | escape
         }}
       {%- else -%}
-        {{ 'lifestyle-1' | placeholder_svg_tag: 'hyd-install__placeholder-img' }}
+        {%- render 'velluce-illus', key: 'guide', uid: section.id, name: 'Zensea', class: 'hyd-install__placeholder-img' -%}
       {%- endif -%}
     </div>
 

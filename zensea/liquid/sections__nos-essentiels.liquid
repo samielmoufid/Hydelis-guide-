@@ -424,7 +424,7 @@
                           loading="lazy"
                         >
                       {%- else -%}
-                        {{ 'product-1' | placeholder_svg_tag: 'ne-placeholder-img' }}
+                        {%- render 'velluce-illus', key: 'handpan', uid: block.id, name: 'Zensea', class: 'ne-placeholder-img' -%}
                       {%- endif -%}
                     </div>
 

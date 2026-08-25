@@ -47,7 +47,7 @@
               {%- elsif img != blank -%}
                 {{ img | image_url: width: 1100 | image_tag: loading: 'lazy', widths: '400,550,700,900,1100', sizes: '(max-width:749px) 78vw, 440px', alt: block.settings.caption }}
               {%- else -%}
-                {{ 'lifestyle-1' | placeholder_svg_tag: 'imgcar__ph' }}
+                {%- render 'velluce-illus', key: 'handpan', uid: block.id, name: 'Zensea', class: 'imgcar__ph' -%}
               {%- endif -%}
             </div>
           </div>

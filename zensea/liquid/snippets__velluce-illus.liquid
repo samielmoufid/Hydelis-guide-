@@ -5,6 +5,8 @@
     key  — identifiant d'instrument / matière / usage (souvent le handle de collection)
     uid  — identifiant unique pour ne pas dupliquer les ids SVG
     name — libellé, utilisé pour l'accessibilité
+    [class] — classe CSS du conteneur d'accueil (défaut : vgr__illu)
+    [fit]   — preserveAspectRatio (défaut : xMidYMid slice)
 {%- endcomment -%}
 
 {%- liquid
@@ -49,7 +51,7 @@
   assign u = uid | default: 'x'
 -%}
 
-<svg class="vgr__illu" viewBox="0 0 400 420" role="img" aria-label="{{ name | escape }}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<svg class="{{ class | default: 'vgr__illu' }}" viewBox="0 0 400 420" role="img" aria-label="{{ name | default: 'Zensea' | escape }}" preserveAspectRatio="{{ fit | default: 'xMidYMid slice' }}" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient id="bg{{ u }}" cx="50%" cy="32%" r="80%">
       <stop offset="0" stop-color="#ffffff"/>

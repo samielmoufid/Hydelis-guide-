@@ -24,7 +24,7 @@
     {%- elsif section.settings.video != blank -%}{{ section.settings.video | video_tag: image_size: '1600x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'bbvideo__el' }}
     {%- elsif section.settings.video_url != blank -%}<video class="bbvideo__el" autoplay muted loop playsinline preload="auto" {% if section.settings.poster != blank %}poster="{{ section.settings.poster | image_url: width: 1600 }}"{% endif %}><source src="{{ section.settings.video_url }}" type="video/mp4"></video>
     {%- elsif section.settings.poster != blank -%}<img class="bbvideo__el" src="{{ section.settings.poster | image_url: width: 1600 }}" alt="{{ section.settings.title | escape }}" loading="lazy">
-    {%- else -%}<div class="bbvideo__el bbvideo__placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>{%- endif -%}
+    {%- else -%}<div class="bbvideo__el bbvideo__placeholder">{%- render 'velluce-illus', key: 'guide', uid: section.id, name: 'Zensea' -%}</div>{%- endif -%}
   </div>
   <div class="bbvideo__layer bbvideo__layer--mobile">
     {%- if section.settings.video != blank -%}{{ section.settings.video | video_tag: image_size: '1080x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'bbvideo__el' }}
@@ -33,7 +33,7 @@
     {%- elsif section.settings.video_desktop != blank -%}{{ section.settings.video_desktop | video_tag: image_size: '1080x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'bbvideo__el' }}
     {%- elsif section.settings.video_url_desktop != blank -%}<video class="bbvideo__el" autoplay muted loop playsinline preload="auto"><source src="{{ section.settings.video_url_desktop }}" type="video/mp4"></video>
     {%- elsif section.settings.poster_desktop != blank -%}<img class="bbvideo__el" src="{{ section.settings.poster_desktop | image_url: width: 1080 }}" alt="{{ section.settings.title | escape }}" loading="lazy">
-    {%- else -%}<div class="bbvideo__el bbvideo__placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>{%- endif -%}
+    {%- else -%}<div class="bbvideo__el bbvideo__placeholder">{%- render 'velluce-illus', key: 'guide', uid: section.id, name: 'Zensea' -%}</div>{%- endif -%}
   </div>
   <div class="bbvideo__overlay"></div>
 </div>
