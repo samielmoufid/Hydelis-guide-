@@ -1,1 +1,44 @@
-{"sections":{"espace":{"type":"espace-collections","settings":{"eyebrow":"Jouer à deux","title":"Deux instruments, une même gamme","intro":"Un handpan et un tongue drum accordés dans la même gamme s'accompagnent naturellement. C'est le moment où la musique cesse d'être un exercice solitaire — et l'un des meilleurs cadeaux à faire.","handles":"tongue-drums, tous-les-handpans, kalimbas, bols-chantants","columns":3,"gap":24,"radius":16,"max_width":1280,"pad_top":72,"pad_bot":72,"bg_color":"#FFFFFF","text_color":"#22332A","muted_color":"#5A6B60","accent_color":"#2E5E46"}},"velluce_dunes":{"type":"zensea-dunes","settings":{"height_desktop":300,"height_mobile":180}}},"order":["espace","velluce_dunes"]}
+{
+  "sections": {
+    "espace": {
+      "type": "espace-collections",
+      "settings": {
+        "eyebrow": "Jouer à deux",
+        "title": "Deux instruments, une même gamme",
+        "intro": "Un handpan et un tongue drum accordés dans la même gamme s'accompagnent naturellement. C'est le moment où la musique cesse d'être un exercice solitaire — et l'un des meilleurs cadeaux à faire.",
+        "handles": "tongue-drums, tous-les-handpans, kalimbas, bols-chantants",
+        "columns": 3,
+        "gap": 24,
+        "radius": 16,
+        "max_width": 1280,
+        "pad_top": 72,
+        "pad_bot": 72,
+        "bg_color": "#FFFFFF",
+        "text_color": "#22332A",
+        "muted_color": "#5A6B60",
+        "accent_color": "#2E5E46"
+      }
+    },
+    "velluce_dunes": {
+      "type": "zensea-dunes",
+      "settings": {
+        "height_desktop": 300,
+        "height_mobile": 180,
+        "rim": "#5B8F72",
+        "dune_1": "#437A5D",
+        "dune_2": "#3D7156",
+        "dune_3": "#376950",
+        "dune_4": "#33634B",
+        "dune_5": "#305F47",
+        "dune_6": "#2E5E46",
+        "ligne": "#5B8F72",
+        "ground": "#2E5E46",
+        "sky": "#2E5E46"
+      }
+    }
+  },
+  "order": [
+    "espace",
+    "velluce_dunes"
+  ]
+}

@@ -16,6 +16,7 @@
   style="
     --vdn-glow: {{ section.settings.glow }};
     --vdn-ground: {{ section.settings.ground }};
+    --vdn-sky: {{ section.settings.sky | default: '#2E5E46' }};
   "
 >
   <svg class="vdn__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 620" preserveAspectRatio="xMidYMax slice">
@@ -66,7 +67,9 @@
     width: 100%;
     height: {{ section.settings.height_desktop }}px;
     overflow: hidden;
-    background: transparent;
+    /* Le ciel etait transparent : on voyait le fond de page, donc une bande
+       claire entre la section du dessus et le footer. */
+    background: var(--vdn-sky);
     line-height: 0;
   }
   @media (max-width: 749px) {
@@ -184,6 +187,12 @@
     },
     {
       "type": "color",
+      "id": "sky",
+      "label": "Ciel",
+      "default": "#2E5E46"
+    },
+    {
+      "type": "color",
       "id": "sun",
       "label": "Soleil — cœur",
       "default": "#F8EDD7"
@@ -204,55 +213,55 @@
       "type": "color",
       "id": "rim",
       "label": "Liseré des crêtes",
-      "default": "#DFEAE4"
+      "default": "#5B8F72"
     },
     {
       "type": "color",
       "id": "dune_1",
       "label": "Dunes lointaines",
-      "default": "#D0DDD6"
+      "default": "#437A5D"
     },
     {
       "type": "color",
       "id": "dune_2",
       "label": "Dunes médianes",
-      "default": "#C5D5CD"
+      "default": "#3D7156"
     },
     {
       "type": "color",
       "id": "dune_3",
       "label": "Grand sommet",
-      "default": "#BCCEC5"
+      "default": "#376950"
     },
     {
       "type": "color",
       "id": "dune_4",
       "label": "Vague intermédiaire",
-      "default": "#B4C9BE"
+      "default": "#33634B"
     },
     {
       "type": "color",
       "id": "dune_5",
       "label": "Dunes avant-plan",
-      "default": "#ADC3B8"
+      "default": "#305F47"
     },
     {
       "type": "color",
       "id": "dune_6",
       "label": "Avant-plan proche",
-      "default": "#A6BFB2"
+      "default": "#2E5E46"
     },
     {
       "type": "color",
       "id": "ligne",
       "label": "Ligne d'horizon",
-      "default": "#92B0A1"
+      "default": "#5B8F72"
     },
     {
       "type": "color",
       "id": "ground",
       "label": "Sol (couleur du footer)",
-      "default": "#B4C9BE"
+      "default": "#2E5E46"
     }
   ],
   "presets": [

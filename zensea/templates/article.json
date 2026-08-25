@@ -443,7 +443,17 @@
       "type": "zensea-dunes",
       "settings": {
         "height_desktop": 300,
-        "height_mobile": 180
+        "height_mobile": 180,
+        "rim": "#5B8F72",
+        "dune_1": "#437A5D",
+        "dune_2": "#3D7156",
+        "dune_3": "#376950",
+        "dune_4": "#33634B",
+        "dune_5": "#305F47",
+        "dune_6": "#2E5E46",
+        "ligne": "#5B8F72",
+        "ground": "#2E5E46",
+        "sky": "#2E5E46"
       }
     }
   },

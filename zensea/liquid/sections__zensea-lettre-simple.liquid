@@ -93,9 +93,11 @@
     padding: 15px 18px;
     font-size: 15px;
     font-family: inherit;
-    color: var(--vls-ink);
+    /* Le champ reste sur fond blanc : son encre ne suit pas celle de la
+       section, sinon le texte saisi disparait quand le fond passe en vert. */
+    color: #22332A;
     background: #fff;
-    border: 1px solid rgba(0, 0, 0, .14);
+    border: 1px solid rgba(34, 51, 42, .16);
     border-radius: 999px;
     transition: border-color .25s ease, box-shadow .25s ease;
   }
@@ -128,7 +130,8 @@
     padding: 14px 20px;
     border-radius: 999px;
     background: #fff;
-    border: 1px solid rgba(0, 0, 0, .1);
+    color: #22332A;
+    border: 1px solid rgba(34, 51, 42, .12);
     font-size: 15px;
   }
 
@@ -189,31 +192,31 @@
       "type": "color",
       "id": "bg",
       "label": "Fond",
-      "default": "#F6F9F8"
+      "default": "#2E5E46"
     },
     {
       "type": "color",
       "id": "ink",
       "label": "Texte",
-      "default": "#292F2C"
+      "default": "#F6F9F8"
     },
     {
       "type": "color",
       "id": "accent",
       "label": "Accent",
-      "default": "#CBA03C"
+      "default": "#E8C98A"
     },
     {
       "type": "color",
       "id": "btn_bg",
       "label": "Fond du bouton",
-      "default": "#B4C9BE"
+      "default": "#F6F9F8"
     },
     {
       "type": "color",
       "id": "btn_ink",
       "label": "Texte du bouton",
-      "default": "#292F2C"
+      "default": "#22332A"
     },
     {
       "type": "header",

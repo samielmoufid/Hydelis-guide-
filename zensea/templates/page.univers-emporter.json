@@ -1,1 +1,44 @@
-{"sections":{"espace":{"type":"espace-collections","settings":{"eyebrow":"Emporter partout","title":"L'instrument qui suit, pas qui reste","intro":"Une housse rembourrée, un format compact, et l'instrument voyage sans risque. Le tongue drum tient dans un sac, la kalimba dans une poche, et le handpan passe en cabine avec la bonne housse.","handles":"housses-et-supports, tongue-drums, kalimbas, ocarinas","columns":3,"gap":24,"radius":16,"max_width":1280,"pad_top":72,"pad_bot":72,"bg_color":"#FFFFFF","text_color":"#22332A","muted_color":"#5A6B60","accent_color":"#2E5E46"}},"velluce_dunes":{"type":"zensea-dunes","settings":{"height_desktop":300,"height_mobile":180}}},"order":["espace","velluce_dunes"]}
+{
+  "sections": {
+    "espace": {
+      "type": "espace-collections",
+      "settings": {
+        "eyebrow": "Emporter partout",
+        "title": "L'instrument qui suit, pas qui reste",
+        "intro": "Une housse rembourrée, un format compact, et l'instrument voyage sans risque. Le tongue drum tient dans un sac, la kalimba dans une poche, et le handpan passe en cabine avec la bonne housse.",
+        "handles": "housses-et-supports, tongue-drums, kalimbas, ocarinas",
+        "columns": 3,
+        "gap": 24,
+        "radius": 16,
+        "max_width": 1280,
+        "pad_top": 72,
+        "pad_bot": 72,
+        "bg_color": "#FFFFFF",
+        "text_color": "#22332A",
+        "muted_color": "#5A6B60",
+        "accent_color": "#2E5E46"
+      }
+    },
+    "velluce_dunes": {
+      "type": "zensea-dunes",
+      "settings": {
+        "height_desktop": 300,
+        "height_mobile": 180,
+        "rim": "#5B8F72",
+        "dune_1": "#437A5D",
+        "dune_2": "#3D7156",
+        "dune_3": "#376950",
+        "dune_4": "#33634B",
+        "dune_5": "#305F47",
+        "dune_6": "#2E5E46",
+        "ligne": "#5B8F72",
+        "ground": "#2E5E46",
+        "sky": "#2E5E46"
+      }
+    }
+  },
+  "order": [
+    "espace",
+    "velluce_dunes"
+  ]
+}
