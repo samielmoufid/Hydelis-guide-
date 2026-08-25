@@ -1,0 +1,720 @@
+{
+  "sections": {
+    "custom_section_NyAmKB": {
+      "type": "custom-section",
+      "blocks": {
+        "group_Y8NX6K": {
+          "type": "group",
+          "name": "t:group",
+          "settings": {
+            "show_on_display": "desktop_and_mobile",
+            "wrap_in_card": false,
+            "card_link": "",
+            "color_scheme": "",
+            "show_card_border": false,
+            "layout_type": "flex",
+            "width_desktop": 100,
+            "layout_direction_desktop": "column",
+            "layout_grid_columns_desktop": 3,
+            "layout_gap_desktop": 10,
+            "layout_wrap_desktop": "nowrap",
+            "layout_justify_desktop": "center",
+            "layout_align_items_desktop": "center",
+            "same_as_desktop": false,
+            "width_mobile": 100,
+            "layout_direction_mobile": "column",
+            "layout_grid_columns_mobile": 1,
+            "layout_gap_mobile": 10,
+            "layout_wrap_mobile": "nowrap",
+            "layout_justify_mobile": "center",
+            "layout_align_items_mobile": "center",
+            "use_global_container_padding": true,
+            "padding_horizontal": 30,
+            "padding_vertical": 30,
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "additional_class": ""
+          },
+          "blocks": {
+            "text_M3HqKb": {
+              "type": "text",
+              "name": "t:title",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "text": "<h1>{{ closest.collection.title }}</h1>",
+                "text_style": "h2",
+                "paragraph_font_size": "normal",
+                "font_weight": 400,
+                "alignment": "center",
+                "alignment_mobile": "center",
+                "show_read_more": false,
+                "read_more_length": 50,
+                "read_more_text": "Voir plus",
+                "read_less_text": "Voir moins",
+                "truncate": false,
+                "truncate_length": 2,
+                "margin_top": 0,
+                "margin_bottom": 0,
+                "additional_class": ""
+              },
+              "blocks": {}
+            },
+            "text_GMnLLj": {
+              "type": "text",
+              "name": "t:text",
+              "settings": {
+                "show_on_display": "desktop_and_mobile",
+                "text": "{{ closest.collection.description }}",
+                "text_style": "paragraph",
+                "paragraph_font_size": "normal",
+                "font_weight": 400,
+                "alignment": "center",
+                "alignment_mobile": "center",
+                "show_read_more": false,
+                "read_more_length": 50,
+                "read_more_text": "Voir plus",
+                "read_less_text": "Voir moins",
+                "truncate": false,
+                "truncate_length": 2,
+                "margin_top": 0,
+                "margin_bottom": 7,
+                "additional_class": ""
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_M3HqKb",
+            "text_GMnLLj"
+          ]
+        }
+      },
+      "block_order": [
+        "group_Y8NX6K"
+      ],
+      "custom_css": [
+        "h1 {font-size: 14px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #B98A2E; text-align: center; margin: 0 0 10px;}",
+        "h2 {font-family: \"Playfair Display\", Georgia, serif; font-size: 44px; font-style: italic; font-weight: 700; color: #111; text-align: center; line-height: 1.15; margin: 0 0 18px;}",
+        "p {color: #555; font-size: 17px; line-height: 1.7; text-align: center; max-width: 660px; margin: 0 auto;}",
+        "@media (max-width: 749px) {h2 {font-size: 30px; } p {font-size: 15px; }}"
+      ],
+      "name": "Bannière de collection",
+      "settings": {
+        "show_on_display": "desktop_and_mobile",
+        "color_scheme": "",
+        "wrap_in_card": false,
+        "color_scheme_card": "scheme-64159189-da69-4892-af8e-f51decc177d3",
+        "section_width": "normal",
+        "layout_type": "flex",
+        "layout_flex_direction_desktop": "row",
+        "layout_grid_columns_desktop": 3,
+        "layout_gap_desktop": 20,
+        "layout_wrap_desktop": "nowrap",
+        "layout_flex_justify_desktop": "center",
+        "layout_flex_align_items_desktop": "center",
+        "same_as_desktop": false,
+        "layout_flex_direction_mobile": "column-reverse",
+        "layout_gap_mobile": 20,
+        "layout_wrap_mobile": "nowrap",
+        "layout_flex_justify_mobile": "center",
+        "layout_flex_align_items_mobile": "center",
+        "layout_grid_columns_mobile": 1,
+        "padding_top": 25,
+        "padding_bottom": 0,
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "anchor_id": "",
+        "additional_class": ""
+      }
+    },
+    "support_mini_4njFch": {
+      "type": "support-mini",
+      "name": "Aide WhatsApp collection",
+      "settings": {
+        "title": "Besoin d'aide pour choisir votre instrument ?",
+        "description": "Dites-nous ce que vous écoutez : on vous répond avec une gamme, un nombre de notes et un format précis.",
+        "btn_text": "Nous écrire par e-mail",
+        "btn_text_mobile": "Nous écrire par e-mail",
+        "whatsapp_link": "mailto:contact.zensea@gmail.com",
+        "show_icon": true,
+        "primary_color": "#2E5E46",
+        "bg_color": "#ECF1E8",
+        "border_color": "#2E5E46",
+        "title_color": "#22332A",
+        "desc_color": "#5A6B60",
+        "max_width": 1200,
+        "padding_top_desktop": 28,
+        "padding_bottom_desktop": 28,
+        "padding_sides_desktop": 16,
+        "inner_padding_y_desktop": 28,
+        "inner_padding_x_desktop": 36,
+        "title_size_desktop": 22,
+        "desc_size_desktop": 14,
+        "button_size_desktop": 15,
+        "icon_size_desktop": 56,
+        "padding_top_mobile": 18,
+        "padding_bottom_mobile": 18,
+        "padding_sides_mobile": 12,
+        "inner_padding_y_mobile": 20,
+        "inner_padding_x_mobile": 20,
+        "title_size_mobile": 21,
+        "desc_size_mobile": 14,
+        "button_size_mobile": 15,
+        "icon_size_mobile": 52,
+        "border_radius_mobile": 22,
+        "border_width": 2,
+        "border_radius": 16
+      }
+    },
+    "vgr_1": {
+      "type": "velluce-grille",
+      "blocks": {
+        "c_1": {
+          "type": "carte",
+          "settings": {
+            "collection": "tous-les-handpans",
+            "title": "Tous les handpans",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_2": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-9-notes",
+            "title": "Handpans 9 notes",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_3": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-12-notes",
+            "title": "Handpans 12 notes",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_4": {
+          "type": "carte",
+          "settings": {
+            "collection": "tongue-drums",
+            "title": "Tongue drums",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_5": {
+          "type": "carte",
+          "settings": {
+            "collection": "kalimbas",
+            "title": "Kalimbas",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_6": {
+          "type": "carte",
+          "settings": {
+            "collection": "ocarinas",
+            "title": "Ocarinas",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_7": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-10-notes",
+            "title": "Handpans 10 notes",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_8": {
+          "type": "carte",
+          "settings": {
+            "collection": "bols-chantants",
+            "title": "Bols chantants",
+            "image": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "c_1",
+        "c_2",
+        "c_7",
+        "c_3",
+        "c_4",
+        "c_5",
+        "c_8",
+        "c_6"
+      ],
+      "name": "Carrousel — par matière",
+      "settings": {
+        "eyebrow": "LA GAMME AU COMPLET",
+        "title": "Voir tous nos",
+        "title_accent": "bols chantants",
+        "intro": "Laiton martelé à la main, maillet et coussin fournis avec chaque bol.",
+        "align": "left",
+        "show_count": true,
+        "mode": "carrousel",
+        "per_view": 4.5,
+        "per_view_m": 1.6,
+        "show_dots": true,
+        "show_arrows": true,
+        "dot_color": "#2E5E46",
+        "cta_label": "Tout voir",
+        "cta_link": "/collections/tous-les-handpans",
+        "cols": 4,
+        "cols_m": 2,
+        "gap": 20,
+        "gap_m": 14,
+        "visuel_mode": "illu",
+        "card_height": 300,
+        "card_height_m": 230,
+        "frame_color": "#ffffff",
+        "gold": "#B98A2E",
+        "frame_pad": 10,
+        "frame_pad_m": 8,
+        "radius_out": 22,
+        "radius_out_m": 18,
+        "radius_in": 14,
+        "radius_in_m": 12,
+        "edge_soft": 0,
+        "tilt": true,
+        "tilt_strength": 8,
+        "glow": true,
+        "accent": "#2E5E46",
+        "ink": "#1F3D2F",
+        "muted": "#5A6B60",
+        "rule_color": "#ECF1E8",
+        "bg": "#ffffff",
+        "title_size": 40,
+        "title_size_m": 26,
+        "plate_size": 17,
+        "plate_size_m": 14,
+        "max_width": 1280,
+        "head_gap": 48,
+        "head_gap_m": 32,
+        "pad_top": 88,
+        "pad_bottom": 76,
+        "pad_top_m": 56,
+        "pad_bottom_m": 48,
+        "reveal": true
+      }
+    },
+    "vgr_style": {
+      "type": "velluce-grille",
+      "blocks": {
+        "c_1": {
+          "type": "carte",
+          "settings": {
+            "collection": "tous-les-handpans",
+            "title": "Tous les handpans",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_2": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-9-notes",
+            "title": "Handpans 9 notes",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_3": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-10-notes",
+            "title": "Handpans 10 notes",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_4": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-12-notes",
+            "title": "Handpans 12 notes",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_5": {
+          "type": "carte",
+          "settings": {
+            "collection": "tongue-drums",
+            "title": "Tongue drums",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_6": {
+          "type": "carte",
+          "settings": {
+            "collection": "bols-chantants",
+            "title": "Bols chantants",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_7": {
+          "type": "carte",
+          "settings": {
+            "collection": "kalimbas",
+            "title": "Kalimbas",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_8": {
+          "type": "carte",
+          "settings": {
+            "collection": "ocarinas",
+            "title": "Ocarinas",
+            "image": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "c_1",
+        "c_2",
+        "c_3",
+        "c_4",
+        "c_5",
+        "c_7",
+        "c_6",
+        "c_8"
+      ],
+      "name": "Carrousel — par style",
+      "settings": {
+        "align": "left",
+        "show_count": true,
+        "mode": "carrousel",
+        "per_view": 4.5,
+        "per_view_m": 1.6,
+        "show_dots": true,
+        "show_arrows": true,
+        "dot_color": "#2E5E46",
+        "cta_label": "Tout voir",
+        "cta_link": "/collections/tous-les-handpans",
+        "cols": 4,
+        "cols_m": 2,
+        "gap": 20,
+        "gap_m": 14,
+        "visuel_mode": "illu",
+        "card_height": 300,
+        "card_height_m": 230,
+        "frame_color": "#ffffff",
+        "gold": "#B98A2E",
+        "frame_pad": 10,
+        "frame_pad_m": 8,
+        "radius_out": 22,
+        "radius_out_m": 18,
+        "radius_in": 14,
+        "radius_in_m": 12,
+        "edge_soft": 0,
+        "tilt": true,
+        "tilt_strength": 8,
+        "glow": true,
+        "accent": "#2E5E46",
+        "ink": "#1F3D2F",
+        "muted": "#5A6B60",
+        "rule_color": "#ECF1E8",
+        "bg": "#FBF9F4",
+        "title_size": 40,
+        "title_size_m": 26,
+        "plate_size": 17,
+        "plate_size_m": 14,
+        "max_width": 1280,
+        "head_gap": 48,
+        "head_gap_m": 32,
+        "pad_top": 76,
+        "pad_bottom": 76,
+        "pad_top_m": 56,
+        "pad_bottom_m": 48,
+        "reveal": true,
+        "eyebrow": "PAR FAMILLE",
+        "title": "Trouvez votre",
+        "title_accent": "instrument",
+        "intro": "Handpan, tongue drum, kalimba, bol chantant : quatre façons d'entrer dans la musique."
+      }
+    },
+    "vgr_couleur": {
+      "type": "velluce-grille",
+      "blocks": {
+        "c_1": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-9-notes",
+            "title": "9 notes",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_2": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-10-notes",
+            "title": "10 notes",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_3": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-12-notes",
+            "title": "12 notes",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_4": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-440-hz",
+            "title": "Accordés en 440 Hz",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_5": {
+          "type": "carte",
+          "settings": {
+            "collection": "tous-les-handpans",
+            "title": "Tous les handpans",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_6": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-9-notes",
+            "title": "9 notes",
+            "image": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "c_1",
+        "c_2",
+        "c_3",
+        "c_4",
+        "c_5",
+        "c_6"
+      ],
+      "name": "Carrousel — par couleur",
+      "settings": {
+        "align": "left",
+        "show_count": true,
+        "mode": "carrousel",
+        "per_view": 5,
+        "per_view_m": 1.6,
+        "show_dots": true,
+        "show_arrows": true,
+        "dot_color": "#2E5E46",
+        "cta_label": "Tout voir",
+        "cta_link": "/collections/tous-les-handpans",
+        "cols": 5,
+        "cols_m": 2,
+        "gap": 20,
+        "gap_m": 14,
+        "visuel_mode": "illu",
+        "card_height": 260,
+        "card_height_m": 230,
+        "frame_color": "#ffffff",
+        "gold": "#B98A2E",
+        "frame_pad": 10,
+        "frame_pad_m": 8,
+        "radius_out": 22,
+        "radius_out_m": 18,
+        "radius_in": 14,
+        "radius_in_m": 12,
+        "edge_soft": 0,
+        "tilt": true,
+        "tilt_strength": 8,
+        "glow": true,
+        "accent": "#2E5E46",
+        "ink": "#1F3D2F",
+        "muted": "#5A6B60",
+        "rule_color": "#ECF1E8",
+        "bg": "#ffffff",
+        "title_size": 40,
+        "title_size_m": 26,
+        "plate_size": 17,
+        "plate_size_m": 14,
+        "max_width": 1280,
+        "head_gap": 48,
+        "head_gap_m": 32,
+        "pad_top": 76,
+        "pad_bottom": 76,
+        "pad_top_m": 56,
+        "pad_bottom_m": 48,
+        "reveal": true,
+        "eyebrow": "PAR FORMAT",
+        "title": "Quel format",
+        "title_accent": "choisir ?",
+        "intro": "Douze à quinze centimètres pour une note claire, vingt à vingt-cinq pour un son grave qui remplit la pièce."
+      }
+    },
+    "vgr_2": {
+      "type": "velluce-grille",
+      "blocks": {
+        "c_1": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-9-notes",
+            "title": "Débuter",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_2": {
+          "type": "carte",
+          "settings": {
+            "collection": "handpans-12-notes",
+            "title": "Progresser",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_3": {
+          "type": "carte",
+          "settings": {
+            "collection": "housses-et-supports",
+            "title": "Emporter partout",
+            "image": "",
+            "link": ""
+          }
+        },
+        "c_4": {
+          "type": "carte",
+          "settings": {
+            "collection": "tongue-drums",
+            "title": "Jouer à deux",
+            "image": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "c_1",
+        "c_2",
+        "c_3",
+        "c_4"
+      ],
+      "name": "Carrousel — par pièce",
+      "settings": {
+        "eyebrow": "PAR USAGE",
+        "title": "Pour quel",
+        "title_accent": "usage ?",
+        "intro": "Sophrologie, yoga, méditation, ou simplement refermer sa journée.",
+        "align": "left",
+        "show_count": true,
+        "mode": "carrousel",
+        "per_view": 4,
+        "per_view_m": 1.6,
+        "show_dots": true,
+        "show_arrows": true,
+        "dot_color": "#2E5E46",
+        "cta_label": "Tout voir",
+        "cta_link": "/collections/tous-les-handpans",
+        "cols": 4,
+        "cols_m": 2,
+        "gap": 20,
+        "gap_m": 14,
+        "card_height": 300,
+        "card_height_m": 230,
+        "frame_color": "#ffffff",
+        "gold": "#B98A2E",
+        "frame_pad": 10,
+        "frame_pad_m": 8,
+        "radius_out": 22,
+        "radius_out_m": 18,
+        "radius_in": 14,
+        "radius_in_m": 12,
+        "edge_soft": 0,
+        "tilt": true,
+        "tilt_strength": 8,
+        "glow": true,
+        "accent": "#2E5E46",
+        "ink": "#1F3D2F",
+        "muted": "#5A6B60",
+        "rule_color": "#ECF1E8",
+        "bg": "#ffffff",
+        "title_size": 40,
+        "title_size_m": 26,
+        "plate_size": 17,
+        "plate_size_m": 14,
+        "max_width": 1280,
+        "head_gap": 48,
+        "head_gap_m": 32,
+        "pad_top": 84,
+        "pad_bottom": 88,
+        "pad_top_m": 56,
+        "pad_bottom_m": 56,
+        "reveal": true
+      }
+    },
+    "vvt_famille": {
+      "type": "velluce-voir-tout",
+      "name": "Voir toute la famille",
+      "settings": {
+        "eyebrow": "LA FAMILLE AU COMPLET",
+        "cta": "Découvrir la collection",
+        "show_count": true,
+        "show_visuel": true,
+        "ratio": "4 / 3",
+        "ratio_m": "16 / 9",
+        "fit": "cover",
+        "media_w": 420,
+        "radius": 6,
+        "media_bg": "#ffffff",
+        "bg": "#ffffff",
+        "ink": "#1F3D2F",
+        "accent": "une note qui reste",
+        "filet": true,
+        "title_size": 44,
+        "title_size_m": 30,
+        "cta_gap": 34,
+        "cta_gap_m": 22,
+        "max_width": 1280,
+        "pad_top": 64,
+        "pad_bottom": 56,
+        "pad_top_m": 36,
+        "pad_bottom_m": 32,
+        "collection": "bols-chantants",
+        "nom": "bols-chantants",
+        "prefixe": "Voir tous nos",
+        "image": "",
+        "intro": "On frotte le bord, le son monte, et il tient bien plus longtemps qu'on ne l'imagine. C'est l'outil de ceux qui ont besoin de marquer un début et une fin."
+      }
+    },
+    "velluce_dunes": {
+      "type": "velluce-dunes",
+      "settings": {
+        "height_desktop": 300,
+        "height_mobile": 180
+      }
+    }
+  },
+  "order": [
+    "custom_section_NyAmKB",
+    "vvt_famille",
+    "vgr_couleur",
+    "vgr_1",
+    "vgr_style",
+    "vgr_2",
+    "support_mini_4njFch",
+    "velluce_dunes"
+  ]
+}
