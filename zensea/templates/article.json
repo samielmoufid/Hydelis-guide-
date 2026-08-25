@@ -440,7 +440,7 @@
       }
     },
     "velluce_dunes": {
-      "type": "velluce-dunes",
+      "type": "zensea-dunes",
       "settings": {
         "height_desktop": 300,
         "height_mobile": 180

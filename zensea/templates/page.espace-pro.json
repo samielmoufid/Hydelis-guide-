@@ -1,7 +1,7 @@
 {
   "sections": {
     "hero": {
-      "type": "velluce-hero-3d",
+      "type": "zensea-hero-3d",
       "settings": {
         "eyebrow": "Espace professionnel",
         "heading": "Vos ateliers s'équipent aussi en nombre.",
@@ -20,7 +20,7 @@
       }
     },
     "pro": {
-      "type": "velluce-espace-pro",
+      "type": "zensea-espace-pro",
       "blocks": {
         "a1": {
           "type": "avantage",
@@ -141,7 +141,7 @@
       }
     },
     "velluce_dunes": {
-      "type": "velluce-dunes",
+      "type": "zensea-dunes",
       "settings": {
         "height_desktop": 300,
         "height_mobile": 180

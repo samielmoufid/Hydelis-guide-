@@ -5,7 +5,7 @@
   @param {string} swatch_value - Le libelle a convertir (ex: "Rose Perle").
 
   @example
-  {%- capture hex -%}{%- render 'velluce-color-hex', swatch_value: val -%}{%- endcapture -%}
+  {%- capture hex -%}{%- render 'zensea-color-hex', swatch_value: val -%}{%- endcapture -%}
 {%- enddoc -%}
 {%- liquid
   assign v = swatch_value | downcase | strip

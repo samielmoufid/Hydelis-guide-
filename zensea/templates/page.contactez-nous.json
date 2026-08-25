@@ -1,7 +1,7 @@
 {
   "sections": {
     "contact3d": {
-      "type": "contact-3d-velluce",
+      "type": "contact-3d-zensea",
       "blocks": {
         "b1": {
           "type": "help",
@@ -79,7 +79,7 @@
       }
     },
     "velluce_dunes": {
-      "type": "velluce-dunes",
+      "type": "zensea-dunes",
       "settings": {
         "height_desktop": 300,
         "height_mobile": 180

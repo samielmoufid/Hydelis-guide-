@@ -196,7 +196,7 @@
               },
               "blocks": {
                 "text_ExEbDY": {
-                  "type": "velluce-split-title",
+                  "type": "zensea-split-title",
                   "name": "Titre Zensea 2 lignes",
                   "settings": {
                     "heading_level": "h2",
@@ -329,7 +329,7 @@
       }
     },
     "velluce_dunes": {
-      "type": "velluce-dunes",
+      "type": "zensea-dunes",
       "settings": {
         "height_desktop": 300,
         "height_mobile": 180

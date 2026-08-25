@@ -292,7 +292,7 @@
           "blocks": {}
         },
         "velluce_3d_mini": {
-          "type": "velluce-3d-mini",
+          "type": "zensea-3d-mini",
           "settings": {},
           "blocks": {}
         },
@@ -791,7 +791,7 @@
       }
     },
     "featured_products": {
-      "type": "velluce-vous-aimerez",
+      "type": "zensea-vous-aimerez",
       "settings": {
         "collection": "",
         "max_products": 12,
@@ -1181,7 +1181,7 @@
       }
     },
     "bas_footer_kpatWN": {
-      "type": "velluce-dunes",
+      "type": "zensea-dunes",
       "settings": {
         "height_desktop": 300,
         "height_mobile": 180

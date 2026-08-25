@@ -64,7 +64,7 @@
                 {%- if p.featured_image -%}
                   {{ p.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', class: 'vya__img', alt: p.title }}
                 {%- else -%}
-                  {%- render 'velluce-illus', key: 'handpan', uid: block.id, name: 'Zensea', class: 'vya__img' -%}
+                  {%- render 'zensea-illus', key: 'handpan', uid: block.id, name: 'Zensea', class: 'vya__img' -%}
                 {%- endif -%}
                 {%- if p.images[1] != blank and s.hover_second_image -%}
                   {{ p.images[1] | image_url: width: 800 | image_tag: loading: 'lazy', class: 'vya__img vya__img--alt', alt: p.title }}

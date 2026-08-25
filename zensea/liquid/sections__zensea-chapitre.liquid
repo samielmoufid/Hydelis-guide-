@@ -59,7 +59,7 @@
                    alt: s.image_alt,
                    class: 'vch__img' }}
             {%- else -%}
-              {%- render 'velluce-illus', key: s.card_label, uid: section.id, name: s.card_label, class: 'vch__img vch__img--ph' -%}
+              {%- render 'zensea-illus', key: s.card_label, uid: section.id, name: s.card_label, class: 'vch__img vch__img--ph' -%}
             {%- endif -%}
             {%- if s.glow -%}<span class="vch__glow" data-vch-glow aria-hidden="true"></span>{%- endif -%}
             {%- if s.plate_place == 'in' -%}<span class="vch__veil" aria-hidden="true"></span>{%- endif -%}

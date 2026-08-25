@@ -167,7 +167,7 @@
       }
     },
     "vgr_1": {
-      "type": "velluce-grille",
+      "type": "zensea-grille",
       "blocks": {
         "c_1": {
           "type": "carte",
@@ -257,7 +257,7 @@
       }
     },
     "vgr_style": {
-      "type": "velluce-grille",
+      "type": "zensea-grille",
       "blocks": {
         "c_1": {
           "type": "carte",
@@ -377,7 +377,7 @@
       }
     },
     "vgr_couleur": {
-      "type": "velluce-grille",
+      "type": "zensea-grille",
       "blocks": {
         "c_1": {
           "type": "carte",
@@ -477,7 +477,7 @@
       }
     },
     "vgr_2": {
-      "type": "velluce-grille",
+      "type": "zensea-grille",
       "blocks": {
         "c_1": {
           "type": "carte",
@@ -556,7 +556,7 @@
       }
     },
     "vvt_famille": {
-      "type": "velluce-voir-tout",
+      "type": "zensea-voir-tout",
       "name": "Voir toute la famille",
       "settings": {
         "eyebrow": "LA FAMILLE AU COMPLET",
@@ -590,7 +590,7 @@
       }
     },
     "velluce_dunes": {
-      "type": "velluce-dunes",
+      "type": "zensea-dunes",
       "settings": {
         "height_desktop": 300,
         "height_mobile": 180

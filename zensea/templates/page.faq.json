@@ -756,7 +756,7 @@
       }
     },
     "velluce_hero_3d": {
-      "type": "velluce-hero-3d",
+      "type": "zensea-hero-3d",
       "settings": {
         "eyebrow": "F.A.Q Zensea",
         "heading": "48 vraies réponses, sans détour.",
@@ -769,7 +769,7 @@
       }
     },
     "velluce_dunes": {
-      "type": "velluce-dunes",
+      "type": "zensea-dunes",
       "settings": {
         "height_desktop": 300,
         "height_mobile": 180

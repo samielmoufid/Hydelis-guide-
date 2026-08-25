@@ -70,7 +70,7 @@
           <div class="accordion-animation">
             <details class="header__mobile-menu-accordion">
               <summary class="header__mobile-menu-link header__mobile-menu-link--parent">
-                {% render 'velluce-menu-thumb', link: link, size: 44 %}
+                {% render 'zensea-menu-thumb', link: link, size: 44 %}
                 <span class="header__mobile-menu-link-text">{{ link.title }}</span>
                 {% render 'icon', icon: 'keyboard_arrow_down' %}
               </summary>
@@ -113,7 +113,7 @@
         {% else %}
           <!-- Lien simple sans sous-menu -->
           <a href="{{ link.url }}" class="header__mobile-menu-link">
-            {% render 'velluce-menu-thumb', link: link, size: 44 %}
+            {% render 'zensea-menu-thumb', link: link, size: 44 %}
             <span class="header__mobile-menu-link-text">{{ link.title }}</span>
           </a>
         {% endif %}
@@ -131,7 +131,7 @@
     {%- if block.settings.show_guide -%}
       <div class="vdm-guide" data-vdm-pane="guide" hidden>
         <a class="vdm-hero" href="/collections/guide-debutant-par-ou-commencer">
-          <span class="vdm-hero__art">{% render 'velluce-illus-guide', key: 'type', uid: 'zg0', name: 'Par o\u00f9 commencer ?' %}</span>
+          <span class="vdm-hero__art">{% render 'zensea-illus-guide', key: 'type', uid: 'zg0', name: 'Par o\u00f9 commencer ?' %}</span>
           <span class="vdm-hero__body">
             <span class="vdm-hero__t">Par o&ugrave; commencer ?</span>
             <span class="vdm-hero__s">Handpan, tongue drum, kalimba&hellip; l'instrument qui vous ressemble, sans savoir lire une note.</span>
@@ -142,32 +142,32 @@
         <p class="vdm-guide__label">Choisir son instrument</p>
         <div class="vdm-rows">
           <a class="vdm-row" href="/pages/guide">
-            <span class="vdm-row__thumb">{% render 'velluce-illus-guide', key: 'type', uid: 'zr1', name: 'Quel instrument choisir' %}</span>
+            <span class="vdm-row__thumb">{% render 'zensea-illus-guide', key: 'type', uid: 'zr1', name: 'Quel instrument choisir' %}</span>
             <span class="vdm-row__body"><span class="vdm-row__t">Quel instrument choisir</span><span class="vdm-row__s">Le son &middot; Le geste &middot; Le budget</span></span>
             <span class="vdm-row__chev">&#8250;</span>
           </a>
           <a class="vdm-row" href="/collections/handpans-9-notes">
-            <span class="vdm-row__thumb">{% render 'velluce-illus-guide', key: 'notes', uid: 'zr2', name: '9, 10 ou 12 notes' %}</span>
+            <span class="vdm-row__thumb">{% render 'zensea-illus-guide', key: 'notes', uid: 'zr2', name: '9, 10 ou 12 notes' %}</span>
             <span class="vdm-row__body"><span class="vdm-row__t">9, 10 ou 12 notes ?</span><span class="vdm-row__s">Ce que change chaque format</span></span>
             <span class="vdm-row__chev">&#8250;</span>
           </a>
           <a class="vdm-row" href="/pages/guide">
-            <span class="vdm-row__thumb">{% render 'velluce-illus-guide', key: 'gamme', uid: 'zr3', name: 'Quelle gamme' %}</span>
+            <span class="vdm-row__thumb">{% render 'zensea-illus-guide', key: 'gamme', uid: 'zr3', name: 'Quelle gamme' %}</span>
             <span class="vdm-row__body"><span class="vdm-row__t">Quelle gamme</span><span class="vdm-row__s">D Kurd &middot; C&nbsp;Major &middot; Amara &middot; Hijaz</span></span>
             <span class="vdm-row__chev">&#8250;</span>
           </a>
           <a class="vdm-row" href="/collections/handpans-440-hz">
-            <span class="vdm-row__thumb">{% render 'velluce-illus-guide', key: 'accordage', uid: 'zr4', name: 'Accordage 440 Hz' %}</span>
+            <span class="vdm-row__thumb">{% render 'zensea-illus-guide', key: 'accordage', uid: 'zr4', name: 'Accordage 440 Hz' %}</span>
             <span class="vdm-row__body"><span class="vdm-row__t">L'accordage 440&nbsp;Hz</span><span class="vdm-row__s">Pourquoi on le v&eacute;rifie avant l'envoi</span></span>
             <span class="vdm-row__chev">&#8250;</span>
           </a>
           <a class="vdm-row" href="/pages/guide">
-            <span class="vdm-row__thumb">{% render 'velluce-illus-guide', key: 'jouer', uid: 'zr5', name: 'Premiers gestes' %}</span>
+            <span class="vdm-row__thumb">{% render 'zensea-illus-guide', key: 'jouer', uid: 'zr5', name: 'Premiers gestes' %}</span>
             <span class="vdm-row__body"><span class="vdm-row__t">Les premiers gestes</span><span class="vdm-row__s">Poser les mains &middot; Trouver le rythme</span></span>
             <span class="vdm-row__chev">&#8250;</span>
           </a>
           <a class="vdm-row" href="/pages/faq">
-            <span class="vdm-row__thumb">{% render 'velluce-illus-guide', key: 'entretien', uid: 'zr6', name: 'Entretien' %}</span>
+            <span class="vdm-row__thumb">{% render 'zensea-illus-guide', key: 'entretien', uid: 'zr6', name: 'Entretien' %}</span>
             <span class="vdm-row__body"><span class="vdm-row__t">Entretenir son instrument</span><span class="vdm-row__s">Huile &middot; Chiffon &middot; Ce qu'il faut &eacute;viter</span></span>
             <span class="vdm-row__chev">&#8250;</span>
           </a>
@@ -176,17 +176,17 @@
         <p class="vdm-guide__label">Commande &amp; livraison</p>
         <div class="vdm-rows vdm-rows--last">
           <a class="vdm-row" href="/pages/livraison">
-            <span class="vdm-row__thumb">{% render 'velluce-illus-guide', key: 'livraison', uid: 'zr7', name: 'Livraison' %}</span>
+            <span class="vdm-row__thumb">{% render 'zensea-illus-guide', key: 'livraison', uid: 'zr7', name: 'Livraison' %}</span>
             <span class="vdm-row__body"><span class="vdm-row__t">Livraison et d&eacute;lais</span><span class="vdm-row__s">Offerte d&egrave;s 30&nbsp;&euro; &middot; 8 &agrave; 15 jours ouvr&eacute;s</span></span>
             <span class="vdm-row__chev">&#8250;</span>
           </a>
           <a class="vdm-row" href="/pages/faq">
-            <span class="vdm-row__thumb">{% render 'velluce-illus-guide', key: 'faq', uid: 'zr8', name: 'F.A.Q' %}</span>
+            <span class="vdm-row__thumb">{% render 'zensea-illus-guide', key: 'faq', uid: 'zr8', name: 'F.A.Q' %}</span>
             <span class="vdm-row__body"><span class="vdm-row__t">F.A.Q &mdash; 48 r&eacute;ponses</span><span class="vdm-row__s">Livraison, retours, garantie 24 mois&hellip;</span></span>
             <span class="vdm-row__chev">&#8250;</span>
           </a>
           <a class="vdm-row" href="mailto:contact.zensea@gmail.com">
-            <span class="vdm-row__thumb">{% render 'velluce-illus-guide', key: 'conseil', uid: 'zr9', name: 'Nous \u00e9crire' %}</span>
+            <span class="vdm-row__thumb">{% render 'zensea-illus-guide', key: 'conseil', uid: 'zr9', name: 'Nous \u00e9crire' %}</span>
             <span class="vdm-row__body"><span class="vdm-row__t">Un conseil ? &Eacute;crivez-nous</span><span class="vdm-row__s">R&eacute;ponse en fran&ccedil;ais sous 24&nbsp;h ouvr&eacute;es</span></span>
             <span class="vdm-row__chev">&#8250;</span>
           </a>

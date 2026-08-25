@@ -17,7 +17,7 @@
   >
     {% form 'product', product, class: 'product-form__form' %}
       {% content_for 'blocks' %}
-      {% render 'velluce-packs', product: product %}
+      {% render 'zensea-packs', product: product %}
 
       {% comment %} Bouton natif masqué : le CTA des packs le remplace (le composant reste dans le DOM pour le JS du thème). {% endcomment %}
       <div class="velluce-native-atc" style="display: none !important;">

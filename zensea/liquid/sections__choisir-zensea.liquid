@@ -21,7 +21,7 @@
             {% if block.settings.image != blank %}
               {{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', alt: block.settings.title }}
             {% else %}
-              {%- render 'velluce-illus', key: block.settings.title, uid: block.id, name: block.settings.title -%}
+              {%- render 'zensea-illus', key: block.settings.title, uid: block.id, name: block.settings.title -%}
             {% endif %}
           </div>
 

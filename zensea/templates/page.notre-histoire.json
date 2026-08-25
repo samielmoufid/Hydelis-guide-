@@ -407,14 +407,14 @@
       }
     },
     "bas_footer": {
-      "type": "velluce-dunes",
+      "type": "zensea-dunes",
       "settings": {
         "height_desktop": 300,
         "height_mobile": 180
       }
     },
     "velluce_hero_3d": {
-      "type": "velluce-hero-3d",
+      "type": "zensea-hero-3d",
       "settings": {
         "eyebrow": "Notre histoire",
         "heading": "Du premier son entendu à vos mains.",

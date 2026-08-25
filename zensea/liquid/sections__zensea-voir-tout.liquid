@@ -62,7 +62,7 @@
         {%- else -%}
           {%- assign ik = nom | downcase -%}
           {%- if col != blank -%}{%- assign ik = col.handle -%}{%- endif -%}
-          {%- render 'velluce-illus', key: ik, uid: section.id, name: nom -%}
+          {%- render 'zensea-illus', key: ik, uid: section.id, name: nom -%}
         {%- endif -%}
       </a>
     {%- endif -%}

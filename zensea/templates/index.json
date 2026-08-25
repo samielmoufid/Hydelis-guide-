@@ -26,7 +26,7 @@
       }
     },
     "grille": {
-      "type": "velluce-grille",
+      "type": "zensea-grille",
       "blocks": {
         "c_1": {
           "type": "carte",
@@ -665,7 +665,7 @@
       }
     },
     "choisir_zensea": {
-      "type": "choisir-velluce",
+      "type": "choisir-zensea",
       "blocks": {
         "bloc_ETKdHR": {
           "type": "bloc",
@@ -717,7 +717,7 @@
       }
     },
     "comparatif": {
-      "type": "velluce-comparatif",
+      "type": "zensea-comparatif",
       "blocks": {
         "ligne_1": {
           "type": "ligne",
@@ -779,7 +779,7 @@
       }
     },
     "manifeste": {
-      "type": "velluce-manifeste",
+      "type": "zensea-manifeste",
       "blocks": {
         "fact_1": {
           "type": "fact",
@@ -980,7 +980,7 @@
       }
     },
     "chapitre_handpans": {
-      "type": "velluce-chapitre",
+      "type": "zensea-chapitre",
       "name": "Chapitre 01 — Handpans",
       "settings": {
         "index": "01",
@@ -1035,7 +1035,7 @@
       }
     },
     "chapitre_tongue": {
-      "type": "velluce-chapitre",
+      "type": "zensea-chapitre",
       "name": "Chapitre 02 — Tongue drums",
       "settings": {
         "index": "02",
@@ -1090,7 +1090,7 @@
       }
     },
     "chapitre_bols": {
-      "type": "velluce-chapitre",
+      "type": "zensea-chapitre",
       "name": "Chapitre 03 — Bols chantants",
       "settings": {
         "index": "03",
@@ -1891,7 +1891,7 @@
       }
     },
     "lettre": {
-      "type": "velluce-lettre-simple",
+      "type": "zensea-lettre-simple",
       "settings": {
         "eyebrow": "La lettre Zensea",
         "title": "Deux e-mails par mois. Pas un de plus.",
@@ -1909,7 +1909,7 @@
       }
     },
     "bas_footer": {
-      "type": "velluce-dunes",
+      "type": "zensea-dunes",
       "settings": {
         "height_desktop": 300,
         "height_mobile": 180
