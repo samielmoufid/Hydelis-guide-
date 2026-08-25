@@ -1,0 +1,951 @@
+{% comment %}
+Section: Velluce collections
+Version: images desktop et mobile separees + styles scopes par section.id
+{% endcomment %}
+
+<section class="velluce-collections" id="velluce-collections-{{ section.id }}">
+  <div class="velluce-collections__inner">
+
+    {% if section.settings.title != blank or section.settings.eyebrow != blank %}
+      <div class="velluce-collections__header">
+        <div class="velluce-collections__header-text">
+          {% if section.settings.eyebrow != blank %}
+            <p class="velluce-collections__eyebrow">{{ section.settings.eyebrow }}</p>
+          {% endif %}
+          {% if section.settings.title != blank %}
+            <h2 class="velluce-collections__title">{{ section.settings.title }}</h2>
+          {% endif %}
+          {% if section.settings.subtitle != blank %}
+            <p class="velluce-collections__subtitle">{{ section.settings.subtitle }}</p>
+          {% endif %}
+        </div>
+        {% if section.settings.cta_label != blank %}
+          <a class="velluce-collections__toplink" href="{{ section.settings.cta_url | default: '/collections/all' }}">
+            {{ section.settings.cta_label }}<span aria-hidden="true">&#8594;</span>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="velluce-collections__track-wrapper">
+      <div class="velluce-collections__track" id="velluce-track-{{ section.id }}">
+        {% for block in section.blocks %}
+          {% if block.type == 'collection' %}
+            {%- liquid
+              comment
+                Priorité au lien choisi dans l'éditeur ; sinon déduction par mot-clé.
+              endcomment
+              assign _u = block.settings.collection_url
+              assign t = block.settings.title | downcase
+              if _u == blank
+                if t contains 'maillet' or t contains 'mailloche' or t contains 'entretien'
+                  assign _u = '/collections/maillets-et-entretien'
+                elsif t contains 'housse' or t contains 'support' or t contains 'transport'
+                  assign _u = '/collections/housses-et-supports'
+                elsif t contains 'accessoire'
+                  assign _u = '/collections/accessoires'
+                elsif t contains 'tongue' or t contains 'langue'
+                  assign _u = '/collections/tongue-drums'
+                elsif t contains 'kalimba' or t contains 'pouce'
+                  assign _u = '/collections/kalimbas'
+                elsif t contains 'bol' or t contains 'chantant'
+                  assign _u = '/collections/bols-chantants'
+                elsif t contains 'ocarina' or t contains 'flute' or t contains 'flûte'
+                  assign _u = '/collections/ocarinas'
+                elsif t contains '12' or t contains 'douze'
+                  assign _u = '/collections/handpans-12-notes'
+                elsif t contains '10' or t contains 'dix'
+                  assign _u = '/collections/handpans-10-notes'
+                elsif t contains '9' or t contains 'neuf'
+                  assign _u = '/collections/handpans-9-notes'
+                elsif t contains '440'
+                  assign _u = '/collections/handpans-440-hz'
+                elsif t contains 'debutant' or t contains 'débutant' or t contains 'commencer'
+                  assign _u = '/collections/guide-debutant-par-ou-commencer'
+                elsif t contains 'handpan' or t contains 'meilleur' or t contains 'best'
+                  assign _u = '/collections/tous-les-handpans'
+                endif
+              endif
+              assign _u = _u | default: '/collections/tous-les-handpans'
+              assign _handle = _u | split: '/collections/' | last | split: '?' | first
+              assign _coll = collections[_handle]
+              assign _img = block.settings.image
+              if _img == blank and _coll != blank
+                assign _img = _coll.image
+              endif
+              assign _img_m = block.settings.image_mobile
+              if _img_m == blank
+                assign _img_m = _img
+              endif
+            -%}
+            <a
+              class="velluce-card"
+              href="{{ _u }}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="velluce-card__image-wrap">
+                {% assign image_alt = block.settings.image_alt | default: block.settings.title %}
+
+                {% if _img != blank %}
+                  <img
+                    class="velluce-card__image velluce-card__image--desktop"
+                    src="{{ _img | image_url: width: 1200 }}"
+                    alt="{{ image_alt | escape }}"
+                    loading="lazy"
+                  >
+                {% endif %}
+
+                {% if _img_m != blank %}
+                  <img
+                    class="velluce-card__image velluce-card__image--mobile"
+                    src="{{ _img_m | image_url: width: 900 }}"
+                    alt="{{ image_alt | escape }}"
+                    loading="lazy"
+                  >
+                {% elsif _img != blank %}
+                  <img
+                    class="velluce-card__image velluce-card__image--mobile"
+                    src="{{ _img | image_url: width: 900 }}"
+                    alt="{{ image_alt | escape }}"
+                    loading="lazy"
+                  >
+                {% endif %}
+
+                {% if _img == blank and _img_m == blank %}
+                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+
+                <span class="velluce-card__veil" aria-hidden="true"></span>
+
+                <span class="velluce-card__index" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+
+                {% if block.settings.title != blank %}
+                  <span class="velluce-card__overlay">
+                    <span class="velluce-card__name">{{ block.settings.title }}</span>
+                    <span class="velluce-card__go">
+                      {{ section.settings.card_link_label | default: 'Découvrir' }}
+                      <i aria-hidden="true">&#8594;</i>
+                    </span>
+                  </span>
+                {% endif %}
+              </div>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if section.settings.enable_arrows %}
+      <div class="velluce-collections__arrows" id="velluce-arrows-{{ section.id }}">
+        <button class="velluce-arrow velluce-arrow--prev" type="button" aria-label="Precedent">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+
+        <button class="velluce-arrow velluce-arrow--next" type="button" aria-label="Suivant">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M9 6L15 12L9 18" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </div>
+    {% endif %}
+
+    {% if section.settings.enable_dots %}
+      <div class="velluce-collections__dots" id="velluce-dots-{{ section.id }}"></div>
+    {% endif %}
+
+    {%- liquid
+      assign _t = section.settings.title | downcase
+      assign _url = ''
+      assign _label = ''
+      if _t contains 'salon'
+        assign _url = '/collections/tous-les-handpans'
+        assign _label = "Découvrir l'espace Salon"
+      elsif _t contains 'cuisine'
+        assign _url = '/collections/housses-et-supports'
+        assign _label = "Découvrir l'espace Cuisine"
+      elsif _t contains 'chambre'
+        assign _url = '/collections/handpans-12-notes'
+        assign _label = "Découvrir l'espace Chambre"
+      elsif _t contains 'bain'
+        assign _url = '/collections/tongue-drums'
+        assign _label = "Découvrir l'espace Salle de bain"
+      endif
+    -%}
+    {%- if _url != blank -%}
+      <div class="velluce-collections__cta">
+        <a href="{{ _url }}" class="velluce-collections__cta-btn">{{ _label }}</a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% assign bb_count = 0 %}{% for block in section.blocks %}{% if block.type == 'collection' %}{% assign bb_count = bb_count | plus: 1 %}{% endif %}{% endfor %}{% assign bb_cols = section.settings.cards_desktop %}{% if bb_count > 0 and bb_count < bb_cols %}{% assign bb_cols = bb_count %}{% endif %}{% if bb_cols < 1 %}{% assign bb_cols = 1 %}{% endif %}
+<style>
+  #velluce-collections-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.section_padding_vertical }}px;
+    padding-bottom: {{ section.settings.section_padding_vertical }}px;
+    overflow: hidden;
+  }
+
+  #velluce-collections-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__inner {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__header {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(196, 153, 52, 0.16);
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__eyebrow {
+    margin: 0 0 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    color: #C49934;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__title {
+    margin: 0;
+    color: {{ section.settings.text_color }};
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: {{ section.settings.title_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    text-align: left;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__subtitle {
+    margin: 12px 0 0;
+    max-width: 540px;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: #586F64;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__toplink {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding-bottom: 4px;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    border-bottom: 1px solid rgba(196, 153, 52, 0.45);
+    transition: gap 0.3s ease, border-color 0.3s ease;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__toplink:hover {
+    gap: 14px;
+    border-color: #C49934;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__track-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__track {
+    display: flex;
+    gap: {{ section.settings.card_gap }}px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  {% if section.settings.enable_carousel == false %}
+    #velluce-collections-{{ section.id }} .velluce-collections__track {
+      flex-wrap: wrap;
+      overflow-x: visible;
+    }
+  {% endif %}
+
+  #velluce-collections-{{ section.id }} .velluce-card {
+    flex: 0 0 calc((100% - ({{ bb_cols | minus: 1 }} * {{ section.settings.card_gap }}px)) / {{ bb_cols }});
+    width: calc((100% - ({{ bb_cols | minus: 1 }} * {{ section.settings.card_gap }}px)) / {{ bb_cols }});
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    scroll-snap-align: start;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__image-wrap {
+    position: relative;
+    width: 100%;
+    height: {{ section.settings.image_height_desktop }}px;
+    overflow: hidden;
+    border-radius: {{ section.settings.border_radius }}px;
+    background: #E8F0EC;
+    box-shadow: 0 14px 34px rgba(73, 57, 19, 0.10);
+    transition: box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card:hover .velluce-card__image-wrap {
+    box-shadow: 0 28px 60px rgba(73, 57, 19, 0.20);
+    transform: translateY(-4px);
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__image {
+    transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card:hover .velluce-card__image {
+    transform: scale(1.055);
+  }
+
+  /* Voile dégradé pour poser le texte sur l'image */
+  #velluce-collections-{{ section.id }} .velluce-card__veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(32, 25, 8, 0.18) 0%,
+      rgba(32, 25, 8, 0) 34%,
+      rgba(32, 25, 8, 0.06) 56%,
+      rgba(27, 21, 7, 0.62) 100%
+    );
+    transition: opacity 0.5s ease;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card:hover .velluce-card__veil {
+    opacity: 0.88;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__index {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.78);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__overlay {
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 20px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__name {
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: #fff;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.42);
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__go {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s ease;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__go i {
+    font-style: normal;
+    transition: transform 0.3s ease;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card:hover .velluce-card__go {
+    opacity: 1;
+    transform: translateY(0);
+    background: rgba(255, 255, 255, 0.26);
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card:hover .velluce-card__go i {
+    transform: translateX(4px);
+  }
+
+  @media (hover: none) {
+    #velluce-collections-{{ section.id }} .velluce-card__go {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__image,
+  #velluce-collections-{{ section.id }} .velluce-card__image-wrap svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__image {
+    display: block;
+    transition: transform 0.45s ease, opacity 0.35s ease;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__image--mobile {
+    display: none;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__image-wrap svg {
+    display: block;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card:hover .velluce-card__image {
+    transform: scale(1.035);
+    opacity: 0.94;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-card__title {
+    display: none;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__arrows {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-start;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-arrow {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,0.15);
+    background: #ffffff;
+    color: {{ section.settings.text_color }};
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-arrow:hover {
+    border-color: {{ section.settings.text_color }};
+    background: {{ section.settings.text_color }};
+    color: #ffffff;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-arrow svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-arrow path {
+    stroke: currentColor;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-collections__dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.22);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+
+  #velluce-collections-{{ section.id }} .velluce-dot.is-active {
+    background: {{ section.settings.text_color }};
+    transform: scale(1.3);
+  }
+
+  @media (max-width: 768px) {
+    #velluce-collections-{{ section.id }} .velluce-collections__inner {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-collections__title {
+      font-size: {{ section.settings.title_size_mobile }}px;
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-collections__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-collections__subtitle {
+      font-size: 14.5px;
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-card__name {
+      font-size: 21px;
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-card__overlay {
+      left: 16px;
+      right: 16px;
+      bottom: 15px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-card__go {
+      padding: 8px 14px;
+      font-size: 11.5px;
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-card__index {
+      top: 14px;
+      left: 16px;
+      font-size: 12px;
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-card {
+      flex: 0 0 calc((100% - ({{ section.settings.cards_mobile | minus: 1 }} * {{ section.settings.card_gap }}px)) / {{ section.settings.cards_mobile }});
+      width: calc((100% - ({{ section.settings.cards_mobile | minus: 1 }} * {{ section.settings.card_gap }}px)) / {{ section.settings.cards_mobile }});
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-card__image-wrap {
+      height: auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-card__image--desktop {
+      display: none;
+    }
+
+    #velluce-collections-{{ section.id }} .velluce-card__image--mobile {
+      display: block;
+    }
+  }
+
+  {% if bb_count == 1 %}
+  @media (min-width: 769px) {
+    #velluce-collections-{{ section.id }} .velluce-collections__track { justify-content: center; overflow-x: visible; }
+    #velluce-collections-{{ section.id }} .velluce-card { flex: 0 0 auto; width: 100%; max-width: {{ section.settings.single_card_max_width | default: 760 }}px; }
+    #velluce-collections-{{ section.id }} .velluce-card__image-wrap { height: {{ section.settings.image_height_desktop | plus: 140 }}px; }
+    #velluce-collections-{{ section.id }} .velluce-card__title { text-align: center; font-size: 18px; margin-top: 18px; }
+    #velluce-collections-{{ section.id }} .velluce-collections__arrows,
+    #velluce-collections-{{ section.id }} .velluce-collections__dots { display: none; }
+  }
+  {% endif %}
+  #velluce-collections-{{ section.id }} .velluce-collections__cta { text-align: center; margin-top: 34px; }
+  #velluce-collections-{{ section.id }} .velluce-collections__cta-btn {
+    display: inline-block; padding: 16px 44px; border-radius: 6px;
+    background: #ffffff; color: #181C1A; text-decoration: none;
+    font-size: 15px; font-weight: 600; letter-spacing: 0.02em;
+    border: 1px solid #181C1A; transition: background 0.25s ease, color 0.25s ease;
+  }
+  #velluce-collections-{{ section.id }} .velluce-collections__cta-btn:hover { background: #181C1A; color: #ffffff; }
+</style>
+
+<script>
+(function() {
+  var sectionId = '{{ section.id }}';
+  var track = document.getElementById('velluce-track-' + sectionId);
+
+  if (!track) {
+    return;
+  }
+
+  var cards = Array.prototype.slice.call(track.querySelectorAll('.velluce-card'));
+  var totalCards = cards.length;
+  var dotsContainer = document.getElementById('velluce-dots-' + sectionId);
+  var arrowsContainer = document.getElementById('velluce-arrows-' + sectionId);
+
+  function getGap() {
+    var style = window.getComputedStyle(track);
+    return parseFloat(style.gap) || {{ section.settings.card_gap }};
+  }
+
+  function getStep() {
+    if (!cards[0]) {
+      return 300;
+    }
+
+    return cards[0].offsetWidth + getGap();
+  }
+
+  function setActiveDot(index) {
+    if (!dotsContainer) {
+      return;
+    }
+
+    var dots = dotsContainer.querySelectorAll('.velluce-dot');
+
+    dots.forEach(function(dot, i) {
+      dot.classList.toggle('is-active', i === index);
+    });
+  }
+
+  if (dotsContainer && totalCards > 0) {
+    dotsContainer.innerHTML = '';
+
+    cards.forEach(function(card, index) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'velluce-dot';
+      dot.setAttribute('aria-label', 'Aller a la carte ' + (index + 1));
+
+      if (index === 0) {
+        dot.classList.add('is-active');
+      }
+
+      dot.addEventListener('click', function() {
+        track.scrollTo({
+          left: index * getStep(),
+          behavior: 'smooth'
+        });
+      });
+
+      dotsContainer.appendChild(dot);
+    });
+
+    track.addEventListener('scroll', function() {
+      var activeIndex = Math.round(track.scrollLeft / getStep());
+      activeIndex = Math.max(0, Math.min(activeIndex, totalCards - 1));
+      setActiveDot(activeIndex);
+    }, { passive: true });
+  }
+
+  if (arrowsContainer) {
+    var prevBtn = arrowsContainer.querySelector('.velluce-arrow--prev');
+    var nextBtn = arrowsContainer.querySelector('.velluce-arrow--next');
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function() {
+        track.scrollBy({
+          left: -getStep(),
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function() {
+        track.scrollBy({
+          left: getStep(),
+          behavior: 'smooth'
+        });
+      });
+    }
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Zensea collections",
+  "tag": "section",
+  "class": "velluce-collections-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de la section",
+      "default": "Nos instruments par style"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Sous-titre"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Lien en haut à droite (texte)"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Lien en haut à droite (URL)"
+    },
+    {
+      "type": "text",
+      "id": "card_link_label",
+      "label": "Texte du bouton sur les cartes",
+      "default": "Découvrir"
+    },
+    {
+      "type": "header",
+      "content": "Typographie"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Taille du titre desktop",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Taille du titre mobile",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "default": 22,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur de fond",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur du texte",
+      "default": "#181C1A"
+    },
+    {
+      "type": "header",
+      "content": "Mise en page"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Largeur maximale",
+      "min": 900,
+      "max": 1600,
+      "step": 20,
+      "default": 1280,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_vertical",
+      "label": "Espacement vertical",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Espace entre les cartes",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Arrondi des images",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "label": "Hauteur images desktop",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "default": 340,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Hauteur images mobile",
+      "min": 160,
+      "max": 500,
+      "step": 10,
+      "default": 300,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "single_card_max_width",
+      "label": "Largeur max si 1 seule carte (desktop)",
+      "min": 400,
+      "max": 1200,
+      "step": 20,
+      "default": 760,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "cards_desktop",
+      "label": "Cartes visibles desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "cards_mobile",
+      "label": "Cartes visibles mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Carrousel"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "Activer le carrousel",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_arrows",
+      "label": "Afficher les fleches",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_dots",
+      "label": "Afficher les points",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image desktop"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image mobile"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Texte alternatif"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre de la collection",
+          "default": "Tongue drum design"
+        },
+        {
+          "type": "url",
+          "id": "collection_url",
+          "label": "Lien vers la collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zensea collections",
+      "blocks": [
+        {
+          "type": "collection",
+          "settings": {
+            "title": "Handpan Blanc Moderne"
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "title": "Tongue drum Noire Design"
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "title": "Bol chantant industriel noir"
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "title": "Tongue drum béton loft"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,276 @@
+{% comment %}
+  Section : Espace — grille des collections d'un espace
+  Alimentée par une liste de handles de collections (reglage "handles").
+  Image = image de la collection, sinon 1re image produit. Toutes les collections sont affichees (meme vides).
+{% endcomment %}
+
+{%- liquid
+  assign sid = section.id
+  assign st = section.settings
+  assign raw = st.handles | strip_newlines | replace: ' ', ''
+  assign handles = raw | split: ','
+-%}
+
+<section class="espace-coll" id="espace-coll-{{ sid }}">
+  <div class="espace-coll__inner">
+    {%- if st.eyebrow != blank -%}
+      <p class="espace-coll__eyebrow">{{ st.eyebrow }}</p>
+    {%- endif -%}
+    {%- if st.title != blank -%}
+      <h1 class="espace-coll__title">{{ st.title }}</h1>
+    {%- endif -%}
+    {%- if st.intro != blank -%}
+      <p class="espace-coll__intro">{{ st.intro }}</p>
+    {%- endif -%}
+
+    <div class="espace-coll__grid">
+      {%- for h in handles -%}
+        {%- assign coll = collections[h] -%}
+        {%- if coll != blank -%}
+          {%- assign img = coll.image | default: coll.products.first.featured_image -%}
+          <a class="espace-coll__card" href="{{ coll.url }}">
+            <div class="espace-coll__imgwrap{% if img == blank %} espace-coll__imgwrap--empty{% endif %}">
+              {%- if img != blank -%}
+                <img class="espace-coll__img" src="{{ img | image_url: width: 900 }}" alt="{{ coll.title | escape }}" loading="lazy">
+              {%- endif -%}
+            </div>
+            <p class="espace-coll__name">{{ coll.title }}</p>
+            <span class="espace-coll__link">Découvrir<span class="espace-coll__arrow" aria-hidden="true">&nbsp;&rarr;</span></span>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- style -%}
+  #espace-coll-{{ sid }} {
+    background: {{ st.bg_color }};
+    padding-top: {{ st.pad_top }}px;
+    padding-bottom: {{ st.pad_bot }}px;
+  }
+  #espace-coll-{{ sid }} .espace-coll__inner {
+    max-width: {{ st.max_width }}px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box;
+  }
+  #espace-coll-{{ sid }} .espace-coll__eyebrow {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    color: {{ st.accent_color }};
+    margin: 0 0 12px;
+  }
+  #espace-coll-{{ sid }} .espace-coll__title {
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1.15;
+    color: {{ st.text_color }};
+    margin: 0 0 14px;
+  }
+  #espace-coll-{{ sid }} .espace-coll__intro {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 44px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: {{ st.muted_color }};
+  }
+  #espace-coll-{{ sid }} .espace-coll__grid {
+    display: grid;
+    grid-template-columns: repeat({{ st.columns }}, 1fr);
+    gap: {{ st.gap }}px;
+  }
+  #espace-coll-{{ sid }} .espace-coll__card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  #espace-coll-{{ sid }} .espace-coll__imgwrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: {{ st.radius }}px;
+    background: #E8F0EC;
+  }
+  #espace-coll-{{ sid }} .espace-coll__imgwrap--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #EEF4F1;
+    border: 1px dashed #CAD8D1;
+  }
+  #espace-coll-{{ sid }} .espace-coll__img,
+  #espace-coll-{{ sid }} .espace-coll__imgwrap svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .55s ease;
+  }
+  #espace-coll-{{ sid }} .espace-coll__card:hover .espace-coll__img {
+    transform: scale(1.04);
+  }
+  #espace-coll-{{ sid }} .espace-coll__name {
+    margin: 16px 0 2px;
+    font-size: 18px;
+    font-weight: 600;
+    color: {{ st.text_color }};
+  }
+  #espace-coll-{{ sid }} .espace-coll__link {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 15px;
+    color: {{ st.accent_color }};
+  }
+  #espace-coll-{{ sid }} .espace-coll__arrow {
+    display: inline-block;
+    transition: transform .3s ease;
+  }
+  #espace-coll-{{ sid }} .espace-coll__card:hover .espace-coll__arrow {
+    transform: translateX(5px);
+  }
+  @media (max-width: 990px) {
+    #espace-coll-{{ sid }} .espace-coll__grid { grid-template-columns: repeat(2, 1fr); }
+    #espace-coll-{{ sid }} .espace-coll__title { font-size: 34px; }
+  }
+  @media (max-width: 560px) {
+    #espace-coll-{{ sid }} .espace-coll__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    #espace-coll-{{ sid }} .espace-coll__name { font-size: 15px; }
+    #espace-coll-{{ sid }} .espace-coll__title { font-size: 28px; }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Espace collections",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "Notre sélection"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Espace"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Texte d'introduction"
+    },
+    {
+      "type": "textarea",
+      "id": "handles",
+      "label": "Handles des collections (séparés par une virgule)"
+    },
+    {
+      "type": "header",
+      "content": "Mise en page"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Colonnes (ordinateur)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espacement",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Arrondi des images",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Largeur maximale",
+      "min": 900,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Marge haute",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "pad_bot",
+      "label": "Marge basse",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Fond",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Texte",
+      "default": "#181C1A"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Texte secondaire",
+      "default": "#505A55"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#D3AF5B"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Espace collections"
+    }
+  ]
+}
+{% endschema %}

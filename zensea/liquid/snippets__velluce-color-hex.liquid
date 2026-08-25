@@ -1,0 +1,90 @@
+{%- doc -%}
+  Velluce - Convertit un libelle de couleur (FR) en code hexadecimal.
+  Renvoie une chaine vide si le libelle n'est pas reconnu comme une couleur.
+
+  @param {string} swatch_value - Le libelle a convertir (ex: "Rose Perle").
+
+  @example
+  {%- capture hex -%}{%- render 'velluce-color-hex', swatch_value: val -%}{%- endcapture -%}
+{%- enddoc -%}
+{%- liquid
+  assign v = swatch_value | downcase | strip
+  assign c = ''
+
+  # --- 1. Nuances composees (prioritaires sur les couleurs de base) ---
+  if v contains 'gris fonc' or v contains 'anthracite' or v contains 'gris ardoise'
+    assign c = '#5E6964'
+  elsif v contains 'gris clair' or v contains 'gris perle' or v contains 'gris blanc' or v contains 'gris-blanc'
+    assign c = '#cfd3d6'
+  elsif v contains 'gris nuage' or v contains 'nuage gris' or v contains 'gris souris'
+    assign c = '#b7bcc0'
+  elsif v contains 'gris bleu' or v contains 'gris-bleu' or v contains 'bleu gris' or v contains 'bleu-gris'
+    assign c = '#8fa3b5'
+  elsif v contains 'bleu marine' or v contains 'bleu nuit' or v contains 'marine' or v contains 'midnight'
+    assign c = '#22314f'
+  elsif v contains 'bleu canard' or v contains 'canard'
+    assign c = '#2b7a86'
+  elsif v contains 'bleu ciel' or v contains 'ciel' or v contains 'bleu pastel' or v contains 'bleu clair' or v contains 'bleu poudr'
+    assign c = '#a9d0ef'
+  elsif v contains 'ocean' or v contains 'océan' or v contains 'lagon' or v contains 'turquoise'
+    assign c = '#3b7ea1'
+  elsif v contains 'kaki' or v contains 'khaki' or v contains 'olive'
+    assign c = '#586F64'
+  elsif v contains 'sauge' or v contains 'menthe' or v contains 'pistache' or v contains 'amande' or v contains 'eucalyptus'
+    assign c = '#a7d3c9'
+  elsif v contains 'rose perle' or v contains 'rose poudr' or v contains 'rose sabl' or v contains 'rose tendre' or v contains 'vieux rose' or v contains 'rose pale' or v contains 'rose pâle' or v contains 'rose pastel'
+    assign c = '#f2c6cf'
+  elsif v contains 'moutarde'
+    assign c = '#CF9A30'
+  elsif v contains 'miel' or v contains 'ocre'
+    assign c = '#E0B154'
+  elsif v contains 'blanc cass' or v contains 'blanc coton' or v contains 'ecru' or v contains 'écru' or v contains 'ivoire' or v contains 'vanille' or v contains 'creme' or v contains 'crème' or v contains 'coquille'
+    assign c = '#EDF3F0'
+  elsif v contains 'greige'
+    assign c = '#BCCFC5'
+  elsif v contains 'taupe'
+    assign c = '#98B4A6'
+  elsif v contains 'caramel' or v contains 'cognac' or v contains 'camel'
+    assign c = '#C19633'
+  elsif v contains 'chocolat' or v contains 'cafe' or v contains 'café' or v contains 'marron' or v contains 'brun' or v contains 'noisette' or v contains 'moka' or v contains 'cacao'
+    assign c = '#967528'
+  elsif v contains 'terracotta' or v contains 'terracota' or v contains 'corail' or v contains 'brique' or v contains 'saumon'
+    assign c = '#CDA445'
+  elsif v contains 'bordeaux' or v contains 'rouge' or v contains 'cerise' or v contains 'framboise'
+    assign c = '#a32c2c'
+  elsif v contains 'orange' or v contains 'abricot' or v contains 'peche' or v contains 'pêche'
+    assign c = '#E0AA3F'
+  elsif v contains 'violet' or v contains 'lavande' or v contains 'lilas' or v contains 'mauve' or v contains 'parme' or v contains 'prune' or v contains 'lie de vin'
+    assign c = '#9b8ec9'
+  elsif v contains 'gold' or v contains 'dore' or v contains 'doré' or v contains 'dorée' or v contains 'dorés'
+    assign c = '#D8A94A'
+  elsif v contains 'argent' or v contains 'silver' or v contains 'chrome'
+    assign c = '#c0c4c8'
+  elsif v contains 'naturel' or v contains 'bois' or v contains 'lin ' or v contains 'sable' or v contains 'nude' or v contains 'chanvre'
+    assign c = '#B4C9BE'
+  elsif v contains 'pastel'
+    assign c = '#dfe6ef'
+  elsif v contains 'perle' or v contains 'nacre'
+    assign c = '#DFEAE4'
+
+  # --- 2. Couleurs de base ---
+  elsif v contains 'blanc' or v contains 'white'
+    assign c = '#EDF3F0'
+  elsif v contains 'noir' or v contains 'black' or v contains 'intense'
+    assign c = '#151716'
+  elsif v contains 'gris' or v contains 'grey' or v contains 'gray'
+    assign c = '#9aa0a6'
+  elsif v contains 'bleu' or v contains 'blue'
+    assign c = '#6aa0d8'
+  elsif v contains 'vert' or v contains 'green'
+    assign c = '#79b473'
+  elsif v contains 'rose' or v contains 'pink'
+    assign c = '#f0aebc'
+  elsif v contains 'jaune' or v contains 'yellow'
+    assign c = '#E2B04B'
+  elsif v contains 'beige'
+    assign c = '#CAD9D2'
+  endif
+
+  echo c
+-%}

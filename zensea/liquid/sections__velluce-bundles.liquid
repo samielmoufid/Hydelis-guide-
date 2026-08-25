@@ -1,0 +1,220 @@
+{% comment %}
+  Velluce — Offres groupées (Solo / Duo / Famille), sans application.
+  Trois packs alignés (même sur mobile), titre centré + surtitre doré,
+  copywriting adapté à la famille de produit, prix calculés sur la
+  variante, ajout au panier en un clic. Les remises réelles sont servies
+  par les réductions automatiques Shopify (−10 % dès 2, −15 % dès 3).
+{% endcomment %}
+
+{%- assign vbnd_variant = product.selected_or_first_available_variant -%}
+{%- assign vbnd_solo = vbnd_variant.price -%}
+{%- assign vbnd_duo = vbnd_variant.price | times: 2 | times: 90 | divided_by: 100 -%}
+{%- assign vbnd_fam = vbnd_variant.price | times: 3 | times: 85 | divided_by: 100 -%}
+
+{%- assign vbnd_hay = product.type | append: ' ' | append: product.title | downcase -%}
+{%- if vbnd_hay contains 'housse' or vbnd_hay contains 'support' or vbnd_hay contains 'maillet' or vbnd_hay contains 'mailloche' -%}
+  {%- assign vbnd_titre = "Ce qui protège l'instrument coûte moins cher que l'instrument" -%}
+  {%- assign vbnd_d1 = "L'essentiel, pour commencer." -%}
+  {%- assign vbnd_d2 = "Un jeu de rechange, toujours utile." -%}
+  {%- assign vbnd_d3 = "De quoi tenir des années." -%}
+{%- elsif vbnd_hay contains 'kalimba' -%}
+  {%- assign vbnd_titre = "Un kalimba se prête. C'est même tout son intérêt." -%}
+  {%- assign vbnd_d1 = "Pour découvrir, seul." -%}
+  {%- assign vbnd_d2 = "Un pour vous, un à offrir." -%}
+  {%- assign vbnd_d3 = "De quoi jouer à plusieurs." -%}
+{%- elsif vbnd_hay contains 'ocarina' -%}
+  {%- assign vbnd_titre = "Le seul instrument qui tient dans une poche" -%}
+  {%- assign vbnd_d1 = "Une tonalité pour commencer." -%}
+  {%- assign vbnd_d2 = "Deux tonalités, deux ambiances." -%}
+  {%- assign vbnd_d3 = "La collection complète." -%}
+{%- elsif vbnd_hay contains 'bol' or vbnd_hay contains 'chantant' -%}
+  {%- assign vbnd_titre = "Un bol résonne. Trois bols dialoguent." -%}
+  {%- assign vbnd_d1 = "Pour poser une fin de journée." -%}
+  {%- assign vbnd_d2 = "Deux fréquences qui se répondent." -%}
+  {%- assign vbnd_d3 = "Un vrai set de méditation." -%}
+{%- elsif vbnd_hay contains 'tongue' -%}
+  {%- assign vbnd_titre = "Un tongue drum ne se joue jamais longtemps tout seul" -%}
+  {%- assign vbnd_d1 = "Pour s'y mettre ce soir." -%}
+  {%- assign vbnd_d2 = "À deux, autour d'une table." -%}
+  {%- assign vbnd_d3 = "Pour un cercle entier." -%}
+{%- elsif vbnd_hay contains 'handpan' -%}
+  {%- assign vbnd_titre = "On commence seul. On finit rarement seul." -%}
+  {%- assign vbnd_d1 = "L'instrument, prêt à jouer." -%}
+  {%- assign vbnd_d2 = "Deux gammes qui se répondent." -%}
+  {%- assign vbnd_d3 = "De quoi ouvrir un cercle." -%}
+{%- else -%}
+  {%- assign vbnd_titre = "Des ensembles pensés pour jouer, pas pour décorer" -%}
+  {%- assign vbnd_d1 = "Pour commencer simplement." -%}
+  {%- assign vbnd_d2 = "Pour jouer à deux." -%}
+  {%- assign vbnd_d3 = "L'ensemble complet." -%}
+{%- endif -%}
+
+<section class="vbnd" id="vbnd-{{ section.id }}">
+  <div class="vbnd-inner">
+    <p class="vbnd-kicker">{{ section.settings.kicker }}</p>
+    <h2 class="vbnd-title">{{ vbnd_titre }}</h2>
+    <p class="vbnd-sub">{{ vbnd_sub }}</p>
+    {% if section.settings.badge_livraison != blank %}
+      <p class="vbnd-ship">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/></svg>
+        {{ section.settings.badge_livraison }}
+      </p>
+    {% endif %}
+
+    <div class="vbnd-grid">
+      <div class="vbnd-card" data-vbnd-qty="1">
+        <p class="vbnd-name">Solo</p>
+        <p class="vbnd-count">1 instrument</p>
+        <p class="vbnd-desc">{{ vbnd_d1 }}</p>
+        <p class="vbnd-price">{{ vbnd_solo | money }}</p>
+        <span class="vbnd-save vbnd-save-empty" aria-hidden="true"></span>
+        <button type="button" class="vbnd-cta" data-vbnd-add="1">Choisir ce pack<span class="vbnd-arrow">→</span></button>
+      </div>
+      <div class="vbnd-card vbnd-pop" data-vbnd-qty="2">
+        <span class="vbnd-pop-badge">Le plus populaire</span>
+        <p class="vbnd-name">Duo</p>
+        <p class="vbnd-count">2 instruments</p>
+        <p class="vbnd-desc">{{ vbnd_d2 }}</p>
+        <p class="vbnd-price">{{ vbnd_duo | money }}</p>
+        <span class="vbnd-save">Économisez 10&nbsp;%</span>
+        <button type="button" class="vbnd-cta" data-vbnd-add="2">Choisir ce pack<span class="vbnd-arrow">→</span></button>
+      </div>
+      <div class="vbnd-card" data-vbnd-qty="3">
+        <p class="vbnd-name">Famille</p>
+        <p class="vbnd-count">3 instruments</p>
+        <p class="vbnd-desc">{{ vbnd_d3 }}</p>
+        <p class="vbnd-price">{{ vbnd_fam | money }}</p>
+        <span class="vbnd-save">Économisez 15&nbsp;%</span>
+        <button type="button" class="vbnd-cta" data-vbnd-add="3">Choisir ce pack<span class="vbnd-arrow">→</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #vbnd-{{ section.id }} { background: {{ section.settings.fond }}; padding: 58px 14px; }
+  #vbnd-{{ section.id }} .vbnd-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+
+  #vbnd-{{ section.id }} .vbnd-kicker { margin: 0 0 12px; color: #99B5A7; font-size: 12.5px;
+    font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; }
+  #vbnd-{{ section.id }} .vbnd-title { margin: 0 auto 12px; max-width: 24ch;
+    font-size: clamp(26px, 5.2vw, 42px); line-height: 1.14; font-weight: 700;
+    letter-spacing: -0.01em; color: #141615; }
+  #vbnd-{{ section.id }} .vbnd-sub { margin: 0 auto 14px; max-width: 58ch;
+    font-size: clamp(13.5px, 3.4vw, 16.5px); line-height: 1.55; color: #626F68; }
+  #vbnd-{{ section.id }} .vbnd-ship { display: inline-flex; align-items: center; gap: 8px;
+    margin: 0 0 28px; padding: 9px 18px; border-radius: 999px;
+    background: #E4EDE8; color: #597165; font-size: 12.5px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; }
+  #vbnd-{{ section.id }} .vbnd-ship svg { width: 16px; height: 16px; color: #99B5A7; }
+
+  #vbnd-{{ section.id }} .vbnd-grid { display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 14px; align-items: stretch; }
+  #vbnd-{{ section.id }} .vbnd-card { position: relative; display: flex; flex-direction: column;
+    align-items: center; padding: 26px 16px 18px; border-radius: 18px;
+    background: #fffdf9; border: 1px solid #D6E4DD; text-align: center; }
+  #vbnd-{{ section.id }} .vbnd-pop { border: 1.5px solid #B4C9BE;
+    box-shadow: 0 14px 36px rgba(166, 129, 44, 0.13); }
+  #vbnd-{{ section.id }} .vbnd-pop-badge { position: absolute; top: -12px; left: 50%;
+    transform: translateX(-50%); background: #B4C9BE; color: #ffffff; white-space: nowrap;
+    font-size: 10px; font-weight: 750; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 5px 13px; border-radius: 999px; }
+  #vbnd-{{ section.id }} .vbnd-name { margin: 0 0 2px; font-size: clamp(19px, 4.2vw, 27px);
+    font-weight: 700; color: #141615; }
+  #vbnd-{{ section.id }} .vbnd-count { margin: 0 0 10px; color: #8CAB9C; font-size: 11px;
+    font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+  #vbnd-{{ section.id }} .vbnd-desc { margin: 0 0 14px; font-size: 13.5px; line-height: 1.45;
+    color: #626F68; min-height: 40px; }
+  #vbnd-{{ section.id }} .vbnd-price { margin: auto 0 6px; font-size: clamp(17px, 4.4vw, 27px);
+    font-weight: 750; color: #141615; }
+  #vbnd-{{ section.id }} .vbnd-save { display: inline-block; margin-bottom: 14px; white-space: nowrap;
+    background: #E4EDE8; color: #597165; font-size: 11px; font-weight: 750;
+    letter-spacing: 0.07em; text-transform: uppercase; padding: 4px 10px; border-radius: 7px;
+    min-height: 21px; }
+  #vbnd-{{ section.id }} .vbnd-save-empty { background: transparent; }
+  #vbnd-{{ section.id }} .vbnd-cta { display: inline-flex; align-items: center;
+    justify-content: center; gap: 9px; width: 100%; cursor: pointer;
+    background: #141615; color: #fff; border: 0; border-radius: 12px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+    padding: 14px 8px; transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s; }
+  #vbnd-{{ section.id }} .vbnd-cta:hover { transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.22); }
+  #vbnd-{{ section.id }} .vbnd-cta[disabled] { opacity: 0.6; cursor: wait; }
+  #vbnd-{{ section.id }} .vbnd-arrow { font-size: 15px; }
+
+  @media (max-width: 749px) {
+    #vbnd-{{ section.id }} { padding: 40px 10px; }
+    #vbnd-{{ section.id }} .vbnd-grid { gap: 8px; }
+    #vbnd-{{ section.id }} .vbnd-card { padding: 20px 8px 12px; border-radius: 15px; }
+    #vbnd-{{ section.id }} .vbnd-desc { display: none; }
+    #vbnd-{{ section.id }} .vbnd-count { font-size: 9px; letter-spacing: 0.1em; margin-bottom: 8px; }
+    #vbnd-{{ section.id }} .vbnd-save { font-size: 8.5px; padding: 3px 7px; margin-bottom: 10px; }
+    #vbnd-{{ section.id }} .vbnd-pop-badge { font-size: 8px; padding: 4px 9px; top: -10px; }
+    #vbnd-{{ section.id }} .vbnd-cta { font-size: 9.5px; letter-spacing: 0.05em; padding: 11px 4px;
+      border-radius: 10px; gap: 5px; }
+    #vbnd-{{ section.id }} .vbnd-arrow { display: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('vbnd-{{ section.id }}')
+    if (!root) return
+    var defaultVariant = {{ vbnd_variant.id | json }}
+    function currentVariant() {
+      var p = new URLSearchParams(window.location.search).get('variant')
+      return p ? parseInt(p, 10) : defaultVariant
+    }
+    root.querySelectorAll('[data-vbnd-add]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var qty = parseInt(btn.getAttribute('data-vbnd-add'), 10)
+        btn.disabled = true
+        var label = btn.firstChild.textContent
+        btn.firstChild.textContent = 'Ajout en cours…'
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ id: currentVariant(), quantity: qty }] })
+        }).then(function (r) {
+          if (!r.ok) throw new Error()
+          window.location.href = '/cart'
+        }).catch(function () {
+          btn.disabled = false
+          btn.firstChild.textContent = label
+        })
+      })
+    })
+  })()
+</script>
+
+{% schema %}
+{
+  "name": "Zensea Packs",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "fond",
+      "label": "Couleur de fond",
+      "default": "#faf7f1"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Surtitre doré",
+      "default": "Offres groupées"
+    },
+    {
+      "type": "text",
+      "id": "badge_livraison",
+      "label": "Badge livraison",
+      "default": "Livraison offerte sur les packs"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zensea Packs"
+    }
+  ]
+}
+{% endschema %}

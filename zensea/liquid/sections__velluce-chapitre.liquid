@@ -1,0 +1,793 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+-%}
+
+<div class="vch" id="vch-{{ sid }}"{% if s.reveal %} data-vch-reveal{% endif %}>
+  <div class="vch__wrap vch__wrap--{{ s.media_position }}">
+
+    <div class="vch__col vch__col--txt">
+
+      <div class="vch__top" data-vch-el>
+        {%- if s.index != blank -%}<span class="vch__num">{{ s.index }}</span>{%- endif -%}
+        <span class="vch__hair"></span>
+        {%- if s.eyebrow != blank -%}<span class="vch__eyebrow">{{ s.eyebrow }}</span>{%- endif -%}
+      </div>
+
+      {%- if s.title != blank -%}
+        <h2 class="vch__title" data-vch-el>
+          {{ s.title }}{% if s.title_accent != blank %} <em>{{ s.title_accent }}</em>{% endif %}
+        </h2>
+      {%- endif -%}
+
+      {%- if s.text != blank -%}
+        <div class="vch__text" data-vch-el>{{ s.text }}</div>
+      {%- endif -%}
+
+      {%- if s.spec_1 != blank or s.spec_2 != blank or s.spec_3 != blank -%}
+        <ul class="vch__specs" data-vch-el>
+          {%- if s.spec_1 != blank -%}<li>{{ s.spec_1 }}</li>{%- endif -%}
+          {%- if s.spec_2 != blank -%}<li>{{ s.spec_2 }}</li>{%- endif -%}
+          {%- if s.spec_3 != blank -%}<li>{{ s.spec_3 }}</li>{%- endif -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="vch__styles" data-vch-el>
+          {%- if s.styles_label != blank -%}<span class="vch__styles-k">{{ s.styles_label }}</span>{%- endif -%}
+          <div class="vch__styles-row">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'style' -%}
+                <a class="vch__style" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+    </div>
+
+    <div class="vch__col vch__col--media" data-vch-el>
+      <a class="vch__card{% if s.tilt %} is-tilt{% endif %}" href="{{ s.card_link }}" data-vch-card>
+        <div class="vch__card-inner" data-vch-inner>
+          <div class="vch__media">
+            {%- if s.image != blank -%}
+              {{ s.image | image_url: width: 1400 | image_tag:
+                   loading: 'lazy',
+                   sizes: '(min-width: 990px) 50vw, 92vw',
+                   widths: '400,600,800,1000,1200,1400',
+                   alt: s.image_alt,
+                   class: 'vch__img' }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'vch__img vch__img--ph' }}
+            {%- endif -%}
+            {%- if s.glow -%}<span class="vch__glow" data-vch-glow aria-hidden="true"></span>{%- endif -%}
+            {%- if s.plate_place == 'in' -%}<span class="vch__veil" aria-hidden="true"></span>{%- endif -%}
+            <span class="vch__edge" aria-hidden="true"></span>
+          </div>
+          <div class="vch__plate vch__plate--{{ s.plate_place }}">
+            <span class="vch__plate-t">{{ s.card_label }}</span>
+            <span class="vch__plate-c">
+              {{ s.card_cta }}
+              <svg viewBox="0 0 26 8" fill="none" aria-hidden="true"><path d="M0 4h24M21 1l3.2 3L21 7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  #vch-{{ sid }}{
+    --acc:{{ s.accent }}; --ink:{{ s.ink }}; --muted:{{ s.muted }};
+    --rule:{{ s.rule_color }}; --bg:{{ s.bg }};
+    --snow:{{ s.frame_color }}; --gold:{{ s.gold }};
+    background:var(--bg); padding:{{ s.pad_top }}px 24px {{ s.pad_bottom }}px;
+  }
+  #vch-{{ sid }} .vch__wrap{
+    max-width:{{ s.max_width }}px; margin:0 auto;
+    display:grid; grid-template-columns:{{ s.text_ratio }}fr {{ 100 | minus: s.text_ratio }}fr;
+    gap:{{ s.gap }}px; align-items:center;
+  }
+  #vch-{{ sid }} .vch__wrap--left .vch__col--media{ order:1; }
+  #vch-{{ sid }} .vch__wrap--left .vch__col--txt{ order:2; }
+
+  /* --- entête de chapitre --- */
+  #vch-{{ sid }} .vch__top{ display:flex; align-items:center; gap:14px; margin:0 0 22px; }
+  #vch-{{ sid }} .vch__num{
+    font-size:12px; font-weight:700; letter-spacing:.14em; color:var(--acc); flex:none;
+  }
+  #vch-{{ sid }} .vch__hair{ width:38px; height:1px; background:var(--acc); flex:none; }
+  #vch-{{ sid }} .vch__eyebrow{
+    font-size:10.5px; font-weight:700; letter-spacing:.26em; text-transform:uppercase; color:var(--muted);
+  }
+
+  /* --- titre --- */
+  #vch-{{ sid }} .vch__title{
+    margin:0 0 20px; max-width:13ch; color:var(--ink); font-weight:400;
+    font-size:clamp(29px,4.2vw,{{ s.title_size }}px); line-height:1.07; letter-spacing:-.025em;
+  }
+  #vch-{{ sid }} .vch__title em{ font-style:italic; color:var(--acc); }
+
+  /* --- texte --- */
+  #vch-{{ sid }} .vch__text p{
+    margin:0 0 15px; font-size:{{ s.text_size }}px; line-height:1.72; color:var(--muted);
+  }
+  #vch-{{ sid }} .vch__text p:first-child{ color:var(--ink); font-size:{{ s.text_size | plus: 2 }}px; line-height:1.62; }
+  #vch-{{ sid }} .vch__text p:last-child{ margin-bottom:0; }
+
+  /* --- repères --- */
+  #vch-{{ sid }} .vch__specs{
+    display:flex; flex-wrap:wrap; gap:0 18px; margin:26px 0 0; padding:16px 0 0;
+    list-style:none; border-top:1px solid var(--rule);
+  }
+  #vch-{{ sid }} .vch__specs li{
+    position:relative; padding-left:16px;
+    font-size:12.5px; letter-spacing:.02em; color:var(--muted); white-space:nowrap;
+  }
+  #vch-{{ sid }} .vch__specs li::before{
+    content:""; position:absolute; left:0; top:.55em;
+    width:5px; height:5px; border-radius:50%; background:var(--acc);
+  }
+
+  /* --- styles --- */
+  #vch-{{ sid }} .vch__styles{ margin:28px 0 0; }
+  #vch-{{ sid }} .vch__styles-k{
+    display:block; margin-bottom:11px;
+    font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted);
+  }
+  #vch-{{ sid }} .vch__styles-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  #vch-{{ sid }} .vch__style{
+    display:inline-block; padding:8px 16px; border:1px solid var(--rule); border-radius:99px;
+    font-size:12.5px; letter-spacing:.01em; color:var(--ink); text-decoration:none; background:transparent;
+    transition:border-color .3s ease, background .3s ease, color .3s ease;
+  }
+  #vch-{{ sid }} .vch__style:hover{ border-color:var(--acc); background:var(--acc); color:#fff; }
+
+  /* --- carte visuelle --- */
+  #vch-{{ sid }} .vch__card{ display:block; text-decoration:none; color:inherit; perspective:1100px; }
+  #vch-{{ sid }} .vch__card-inner{
+    position:relative; border-radius:{{ s.card_radius }}px; overflow:hidden;
+    background:var(--snow); padding:{{ s.frame_pad }}px;
+    transform-style:preserve-3d; will-change:transform;
+    transition:transform .7s cubic-bezier(.2,.7,.2,1), box-shadow .7s cubic-bezier(.2,.7,.2,1);
+    box-shadow:0 26px 64px -36px rgba(73,57,19,.30);
+  }
+  #vch-{{ sid }} .vch__card.is-tilt:hover .vch__card-inner{ box-shadow:0 40px 84px -36px rgba(73,57,19,.36); }
+  #vch-{{ sid }} .vch__media{
+    position:relative; overflow:hidden; border-radius:{{ s.radius_in }}px;
+  }
+  #vch-{{ sid }} .vch__img{
+    display:block; width:100%; height:{{ s.card_height }}px; object-fit:cover;
+    transition:transform 1.4s cubic-bezier(.2,.7,.2,1);
+  }
+  #vch-{{ sid }} .vch__img--ph{ background:#EAF1EE; }
+  #vch-{{ sid }} .vch__card:hover .vch__img{ transform:scale(1.05); }
+  #vch-{{ sid }} .vch__veil{
+    position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(to top, var(--snow) 0%, rgba(255,255,255,0) 46%);
+    opacity:.94;
+  }
+  #vch-{{ sid }} .vch__edge{
+    position:absolute; inset:0; pointer-events:none;
+    border-radius:{{ s.radius_in }}px;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.55), inset 0 0 40px 12px var(--snow);
+    opacity:{{ s.edge_soft }};
+  }
+  #vch-{{ sid }} .vch__glow{
+    position:absolute; inset:0; pointer-events:none; opacity:0;
+    transition:opacity .5s ease;
+    background:radial-gradient(260px circle at var(--gx,50%) var(--gy,50%), rgba(251,244,229,.34), rgba(251,244,229,0) 62%);
+    mix-blend-mode:screen;
+  }
+  #vch-{{ sid }} .vch__card:hover .vch__glow{ opacity:1; }
+
+  /* --- cartouche --- */
+  #vch-{{ sid }} .vch__plate{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:16px; z-index:3;
+  }
+  #vch-{{ sid }} .vch__plate--in{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:{{ s.frame_pad | plus: 22 }}px {{ s.frame_pad | plus: 22 }}px {{ s.frame_pad | plus: 20 }}px;
+    transform:translateZ(38px);
+  }
+  #vch-{{ sid }} .vch__plate--out{
+    position:relative; padding:20px 12px 6px; transform:translateZ(26px);
+  }
+  #vch-{{ sid }} .vch__plate-t{
+    color:var(--gold); font-size:{{ s.plate_size }}px; line-height:1.1; letter-spacing:-.015em;
+  }
+  #vch-{{ sid }} .vch__plate-c{
+    display:inline-flex; align-items:center; gap:10px; flex:none; padding-bottom:5px;
+    color:var(--gold); font-size:10.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+    border-bottom:1px solid currentColor;
+  }
+  #vch-{{ sid }} .vch__plate-c svg{ width:22px; height:7px; transition:transform .4s cubic-bezier(.2,.7,.2,1); }
+  #vch-{{ sid }} .vch__card:hover .vch__plate-c svg{ transform:translateX(5px); }
+
+  /* --- apparition --- */
+  #vch-{{ sid }}[data-vch-reveal] [data-vch-el]{
+    opacity:0; transform:translateY(24px);
+    transition:opacity .95s cubic-bezier(.2,.7,.2,1), transform .95s cubic-bezier(.2,.7,.2,1);
+  }
+  #vch-{{ sid }}[data-vch-reveal].is-in [data-vch-el]{ opacity:1; transform:none; }
+  #vch-{{ sid }}[data-vch-reveal].is-in .vch__title{ transition-delay:.07s; }
+  #vch-{{ sid }}[data-vch-reveal].is-in .vch__text{ transition-delay:.12s; }
+  #vch-{{ sid }}[data-vch-reveal].is-in .vch__specs{ transition-delay:.17s; }
+  #vch-{{ sid }}[data-vch-reveal].is-in .vch__styles{ transition-delay:.22s; }
+  #vch-{{ sid }}[data-vch-reveal].is-in .vch__col--media{ transition-delay:.10s; }
+  @media (prefers-reduced-motion:reduce){
+    #vch-{{ sid }}[data-vch-reveal] [data-vch-el]{ opacity:1; transform:none; transition:none; }
+    #vch-{{ sid }} .vch__img, #vch-{{ sid }} .vch__card-inner{ transition:none; }
+  }
+
+  /* --- tablette --- */
+  @media (max-width:989px){
+    #vch-{{ sid }} .vch__wrap{ grid-template-columns:1fr; gap:34px; }
+    #vch-{{ sid }} .vch__wrap--left .vch__col--media,
+    #vch-{{ sid }} .vch__wrap--right .vch__col--media{ order:2; }
+    #vch-{{ sid }} .vch__wrap--left .vch__col--txt,
+    #vch-{{ sid }} .vch__wrap--right .vch__col--txt{ order:1; }
+    #vch-{{ sid }} .vch__title{ max-width:none; }
+  }
+
+  /* --- mobile --- */
+  @media (max-width:749px){
+    #vch-{{ sid }}{ padding:{{ s.pad_top_m }}px 18px {{ s.pad_bottom_m }}px; }
+    #vch-{{ sid }} .vch__wrap{ gap:28px; }
+    #vch-{{ sid }} .vch__top{ margin-bottom:15px; gap:11px; }
+    #vch-{{ sid }} .vch__hair{ width:26px; }
+    #vch-{{ sid }} .vch__eyebrow{ font-size:9.5px; letter-spacing:.22em; }
+    #vch-{{ sid }} .vch__title{ font-size:{{ s.title_size_m }}px; margin-bottom:16px; }
+    #vch-{{ sid }} .vch__text p{ font-size:{{ s.text_size_m }}px; line-height:1.68; }
+    #vch-{{ sid }} .vch__text p:first-child{ font-size:{{ s.text_size_m | plus: 1 }}px; }
+    #vch-{{ sid }} .vch__specs{ gap:9px 0; margin-top:22px; padding-top:14px; flex-direction:column; }
+    #vch-{{ sid }} .vch__specs li{ font-size:12px; white-space:normal; }
+    #vch-{{ sid }} .vch__styles{ margin-top:22px; }
+    #vch-{{ sid }} .vch__styles-row{ gap:7px; }
+    #vch-{{ sid }} .vch__style{ padding:7px 13px; font-size:11.5px; }
+    #vch-{{ sid }} .vch__img{ height:{{ s.card_height_m }}px; }
+    #vch-{{ sid }} .vch__card-inner{ border-radius:{{ s.card_radius_m }}px; padding:{{ s.frame_pad_m }}px; }
+    #vch-{{ sid }} .vch__media, #vch-{{ sid }} .vch__edge{ border-radius:{{ s.radius_in_m }}px; }
+    #vch-{{ sid }} .vch__plate--in{ padding:{{ s.frame_pad_m | plus: 16 }}px; transform:none; }
+    #vch-{{ sid }} .vch__plate--out{ padding:16px 8px 4px; transform:none; }
+    #vch-{{ sid }} .vch__plate-t{ font-size:{{ s.plate_size_m }}px; }
+    #vch-{{ sid }} .vch__plate-c{ font-size:9.5px; letter-spacing:.14em; gap:7px; }
+  }
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('vch-{{ sid }}');
+  if (!root) return;
+
+  if (root.hasAttribute('data-vch-reveal')){
+    if ('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      io.observe(root);
+    } else { root.classList.add('is-in'); }
+  }
+
+  var card = root.querySelector('[data-vch-card]');
+  if (!card || !card.classList.contains('is-tilt')) return;
+  var inner = card.querySelector('[data-vch-inner]');
+  var glow  = card.querySelector('[data-vch-glow]');
+  if (!inner) return;
+  if (window.matchMedia('(hover: none)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var MAX = {{ s.tilt_strength }};
+  var frame;
+  card.addEventListener('pointermove', function(ev){
+    if (frame) return;
+    frame = requestAnimationFrame(function(){
+      frame = null;
+      var r = card.getBoundingClientRect();
+      var px = (ev.clientX - r.left) / r.width;
+      var py = (ev.clientY - r.top) / r.height;
+      inner.style.transition = 'transform .18s linear, box-shadow .7s cubic-bezier(.2,.7,.2,1)';
+      inner.style.transform =
+        'rotateY(' + ((px - 0.5) * MAX).toFixed(2) + 'deg) rotateX(' + ((0.5 - py) * MAX).toFixed(2) + 'deg) scale(1.012)';
+      if (glow){
+        glow.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+        glow.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+      }
+    });
+  }, { passive: true });
+
+  card.addEventListener('pointerleave', function(){
+    inner.style.transition = 'transform .7s cubic-bezier(.2,.7,.2,1), box-shadow .7s cubic-bezier(.2,.7,.2,1)';
+    inner.style.transform = '';
+  }, { passive: true });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Zensea — Chapitre",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "index",
+      "label": "Numéro de chapitre",
+      "default": "01"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "APPLIQUES MURALES"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Quand le plafond n'a plus rien"
+    },
+    {
+      "type": "text",
+      "id": "title_accent",
+      "label": "Fin du titre (italique, couleur accent)",
+      "default": "à dire"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>L'ocarina n'éclaire pas la pièce : elle éclaire l'endroit où vous êtes.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Repères techniques"
+    },
+    {
+      "type": "text",
+      "id": "spec_1",
+      "label": "Repère 1",
+      "default": "1,60 m du sol"
+    },
+    {
+      "type": "text",
+      "id": "spec_2",
+      "label": "Repère 2",
+      "default": "Par deux autour d'un miroir"
+    },
+    {
+      "type": "text",
+      "id": "spec_3",
+      "label": "Repère 3",
+      "default": "Gabarit de perçage fourni"
+    },
+    {
+      "type": "header",
+      "content": "Visuel"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Texte alternatif"
+    },
+    {
+      "type": "text",
+      "id": "card_label",
+      "label": "Nom affiché sur le visuel",
+      "default": "Ocarinas"
+    },
+    {
+      "type": "text",
+      "id": "card_cta",
+      "label": "Texte du lien",
+      "default": "Découvrir"
+    },
+    {
+      "type": "url",
+      "id": "card_link",
+      "label": "Lien de la collection"
+    },
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Position du visuel",
+      "options": [
+        {
+          "value": "left",
+          "label": "À gauche"
+        },
+        {
+          "value": "right",
+          "label": "À droite"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "min": 320,
+      "max": 820,
+      "step": 10,
+      "unit": "px",
+      "label": "Hauteur (bureau)",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "card_height_m",
+      "min": 240,
+      "max": 640,
+      "step": 10,
+      "unit": "px",
+      "label": "Hauteur (mobile)",
+      "default": 440
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Arrondi du cadre (bureau)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "card_radius_m",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Arrondi du cadre (mobile)",
+      "default": 26
+    },
+    {
+      "type": "header",
+      "content": "Cadre neige et doré"
+    },
+    {
+      "type": "color",
+      "id": "frame_color",
+      "label": "Couleur du cadre (neige)",
+      "default": "#EDF3F0"
+    },
+    {
+      "type": "color",
+      "id": "gold",
+      "label": "Couleur des écritures (doré)",
+      "default": "#CBA03C"
+    },
+    {
+      "type": "range",
+      "id": "frame_pad",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Épaisseur du cadre (bureau)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "frame_pad_m",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Épaisseur du cadre (mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "radius_in",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Arrondi de l'image (bureau)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "radius_in_m",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Arrondi de l'image (mobile)",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "edge_soft",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Fondu de l'image dans le cadre",
+      "default": 0.7
+    },
+    {
+      "type": "select",
+      "id": "plate_place",
+      "label": "Position du nom",
+      "options": [
+        {
+          "value": "out",
+          "label": "Sous l'image, dans le cadre"
+        },
+        {
+          "value": "in",
+          "label": "Sur l'image"
+        }
+      ],
+      "default": "out"
+    },
+    {
+      "type": "checkbox",
+      "id": "tilt",
+      "label": "Relief 3D au survol",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "tilt_strength",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "unit": "°",
+      "label": "Intensité du relief",
+      "default": 7
+    },
+    {
+      "type": "checkbox",
+      "id": "glow",
+      "label": "Halo lumineux suivant le curseur",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Navigation par style"
+    },
+    {
+      "type": "text",
+      "id": "styles_label",
+      "label": "Intitulé",
+      "default": "PAR STYLE"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent",
+      "default": "#B4C9BE"
+    },
+    {
+      "type": "color",
+      "id": "ink",
+      "label": "Texte principal",
+      "default": "#0D1712"
+    },
+    {
+      "type": "color",
+      "id": "muted",
+      "label": "Texte secondaire",
+      "default": "#576F63"
+    },
+    {
+      "type": "color",
+      "id": "rule_color",
+      "label": "Filets",
+      "default": "#DDE9E3"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Typographie et mise en page"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 28,
+      "max": 84,
+      "step": 1,
+      "unit": "px",
+      "label": "Titre (bureau)",
+      "default": 54
+    },
+    {
+      "type": "range",
+      "id": "title_size_m",
+      "min": 20,
+      "max": 46,
+      "step": 1,
+      "unit": "px",
+      "label": "Titre (mobile)",
+      "default": 31
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Texte (bureau)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_size_m",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Texte (mobile)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "plate_size",
+      "min": 18,
+      "max": 52,
+      "step": 1,
+      "unit": "px",
+      "label": "Nom sur le visuel (bureau)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "plate_size_m",
+      "min": 15,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Nom sur le visuel (mobile)",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 900,
+      "max": 1500,
+      "step": 20,
+      "unit": "px",
+      "label": "Largeur maximale",
+      "default": 1240
+    },
+    {
+      "type": "range",
+      "id": "text_ratio",
+      "min": 35,
+      "max": 65,
+      "step": 1,
+      "unit": "%",
+      "label": "Part de la colonne texte",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 24,
+      "max": 130,
+      "step": 2,
+      "unit": "px",
+      "label": "Espace entre colonnes",
+      "default": 76
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "min": 0,
+      "max": 180,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge haute (bureau)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "min": 0,
+      "max": 180,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge basse (bureau)",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "pad_top_m",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge haute (mobile)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom_m",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge basse (mobile)",
+      "default": 60
+    },
+    {
+      "type": "checkbox",
+      "id": "reveal",
+      "label": "Apparition au défilement",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "style",
+      "name": "Style",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Intitulé",
+          "default": "Design"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Lien"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Zensea — Chapitre",
+      "blocks": [
+        {
+          "type": "style",
+          "settings": {
+            "label": "Design"
+          }
+        },
+        {
+          "type": "style",
+          "settings": {
+            "label": "Moderne"
+          }
+        },
+        {
+          "type": "style",
+          "settings": {
+            "label": "Métal"
+          }
+        },
+        {
+          "type": "style",
+          "settings": {
+            "label": "Verre"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

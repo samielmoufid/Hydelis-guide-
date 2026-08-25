@@ -1,0 +1,140 @@
+{% comment %}
+  Section: Séparateur géométrique – wave-separator.liquid
+  Décorative uniquement. SVG inline responsive. Aucun texte.
+{% endcomment %}
+
+{%- assign blue_color = section.settings.blue_color -%}
+{%- assign height_desktop = section.settings.height_desktop -%}
+{%- assign height_mobile = section.settings.height_mobile -%}
+
+<div class="wave-separator" aria-hidden="true">
+
+  <!-- SVG Desktop -->
+  <svg
+    class="wave-separator__svg wave-separator__svg--desktop"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 1440 {{ height_desktop }}"
+    preserveAspectRatio="none"
+    width="100%"
+    height="{{ height_desktop }}"
+  >
+    <polygon
+      fill="{{ blue_color }}"
+      points="
+        0,{{ height_desktop }}
+        0,{{ height_desktop | times: 0.72 | round }}
+        200,{{ height_desktop | times: 0.88 | round }}
+        400,{{ height_desktop | times: 0.88 | round }}
+        560,{{ height_desktop | times: 0.55 | round }}
+        680,{{ height_desktop | times: 0.68 | round }}
+        800,{{ height_desktop | times: 0.68 | round }}
+        1080,{{ height_desktop | times: 0.22 | round }}
+        1440,{{ height_desktop | times: 0.58 | round }}
+        1440,{{ height_desktop }}
+      "
+    />
+  </svg>
+
+  <!-- SVG Mobile -->
+  <svg
+    class="wave-separator__svg wave-separator__svg--mobile"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 390 {{ height_mobile }}"
+    preserveAspectRatio="none"
+    width="100%"
+    height="{{ height_mobile }}"
+  >
+    <polygon
+      fill="{{ blue_color }}"
+      points="
+        0,{{ height_mobile }}
+        0,{{ height_mobile | times: 0.62 | round }}
+        80,{{ height_mobile | times: 0.80 | round }}
+        160,{{ height_mobile | times: 0.80 | round }}
+        220,{{ height_mobile | times: 0.50 | round }}
+        270,{{ height_mobile | times: 0.65 | round }}
+        310,{{ height_mobile | times: 0.65 | round }}
+        350,{{ height_mobile | times: 0.22 | round }}
+        390,{{ height_mobile | times: 0.48 | round }}
+        390,{{ height_mobile }}
+      "
+    />
+  </svg>
+
+</div>
+
+<style>
+  .wave-separator {
+    display: block;
+    width: 100%;
+    line-height: 0;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .wave-separator__svg {
+    display: block;
+    width: 100%;
+  }
+
+  .wave-separator__svg--desktop {
+    display: block;
+  }
+
+  .wave-separator__svg--mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .wave-separator__svg--desktop {
+      display: none;
+    }
+
+    .wave-separator__svg--mobile {
+      display: block;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Séparateur géométrique",
+  "tag": "section",
+  "class": "wave-separator-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Couleur de la forme",
+      "default": "#0B239F"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "label": "Hauteur desktop (px)",
+      "min": 100,
+      "max": 300,
+      "step": 10,
+      "default": 160,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Hauteur mobile (px)",
+      "min": 150,
+      "max": 400,
+      "step": 10,
+      "default": 240,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Séparateur géométrique"
+    }
+  ]
+}
+{% endschema %}

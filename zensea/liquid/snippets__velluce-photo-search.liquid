@@ -1,0 +1,499 @@
+{% comment %}
+  Velluce — Recherche par photo.
+
+  Un bouton appareil photo se glisse dans la barre de recherche. Le
+  visiteur prend une photo ou en choisit une : l'image est analysée
+  DANS SON NAVIGATEUR (aucun envoi, aucun serveur, aucun abonnement),
+  puis la boutique est interrogée avec ce qui a été reconnu.
+
+  Ce que l'analyse sait faire :
+    • détourer le sujet du fond et mesurer ses proportions
+      → en déduire la famille (handpan, tongue drum, kalimba…)
+    • lire la couleur dominante du sujet
+      → noir, blanc, doré, bois, chrome, verre, coloré
+  Le visiteur voit ce qui a été reconnu et peut corriger d'un doigt
+  avant de lancer la recherche.
+
+  Inclus une fois depuis layout/theme.liquid.
+{% endcomment %}
+
+<div class="vps" id="vps" hidden aria-hidden="true">
+  <div class="vps__backdrop" data-vps-close></div>
+
+  <div class="vps__panel" role="dialog" aria-modal="true" aria-labelledby="vps-title">
+    <header class="vps__head">
+      <p class="vps__eyebrow">{{ settings.vps_eyebrow | default: 'Recherche par photo' }}</p>
+      <h2 class="vps__title" id="vps-title">Montrez-nous l'instrument</h2>
+      <button type="button" class="vps__x" data-vps-close aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="vps__body">
+
+      {%- comment -%} ————— 1. Dépôt de la photo ————— {%- endcomment -%}
+      <div class="vps__drop" data-vps-drop>
+        <input type="file" accept="image/*" class="vps__file" data-vps-file aria-label="Choisir une photo">
+        <span class="vps__drop-ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h1.7l1.2-1.9A1 1 0 0 1 9.2 3.6h5.6a1 1 0 0 1 .8.5L16.8 6h1.7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/>
+            <circle cx="12" cy="12.6" r="3.6"/>
+          </svg>
+        </span>
+        <p class="vps__drop-t">Prenez une photo ou déposez une image</p>
+        <p class="vps__drop-s">Un instrument vu ailleurs, une capture d'écran, une photo prise en concert.</p>
+        <span class="vps__drop-btn">Choisir une photo</span>
+        <p class="vps__privacy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/></svg>
+          Votre photo reste sur votre téléphone. Elle n'est ni envoyée, ni conservée.
+        </p>
+      </div>
+
+      {%- comment -%} ————— 2. Résultat de l'analyse ————— {%- endcomment -%}
+      <div class="vps__result" data-vps-result hidden>
+        <div class="vps__preview">
+          <img alt="" data-vps-preview>
+          <button type="button" class="vps__again" data-vps-again>Changer de photo</button>
+        </div>
+
+        <div class="vps__read">
+          <p class="vps__read-t">Ce qu'on reconnaît <span data-vps-conf class="vps__conf"></span></p>
+
+          <div class="vps__chipset">
+            <span class="vps__lbl">Type</span>
+            <div class="vps__chips" data-vps-types></div>
+          </div>
+
+          <div class="vps__chipset">
+            <span class="vps__lbl">Couleur</span>
+            <div class="vps__chips" data-vps-colors></div>
+          </div>
+
+          <button type="button" class="vps__go" data-vps-go>
+            <span>Voir les instruments qui ressemblent</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      {%- comment -%} ————— 3. Produits trouvés ————— {%- endcomment -%}
+      <div class="vps__found" data-vps-found hidden>
+        <p class="vps__found-t" data-vps-found-t></p>
+        <div class="vps__grid" data-vps-grid></div>
+        <a class="vps__all" data-vps-all href="/search">Voir tous les résultats</a>
+      </div>
+
+      <p class="vps__empty" data-vps-empty hidden>
+        Rien d'assez proche dans le catalogue. Essayez une autre photo, ou
+        <a href="/pages/contact">envoyez-la-nous</a> : on vous dit en direct ce qui s'en rapproche.
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .vps { position: fixed; inset: 0; z-index: 9998; display: flex; align-items: flex-end; justify-content: center; }
+  .vps[hidden] { display: none; }
+  .vps__backdrop { position: absolute; inset: 0; background: rgba(11, 21, 16, .55); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+  .vps__panel {
+    position: relative; width: min(720px, 100%); max-height: 92vh; display: flex; flex-direction: column;
+    background: #fff; border-radius: 26px 26px 0 0; overflow: hidden;
+    box-shadow: 0 -20px 60px rgba(66, 52, 18, .3);
+    animation: vpsUp .38s cubic-bezier(.2,.8,.2,1);
+    font-family: var(--font-body-family, "Jost", system-ui, sans-serif);
+  }
+  @keyframes vpsUp { from { transform: translateY(30px); opacity: .6 } to { transform: none; opacity: 1 } }
+  @media (min-width: 760px) {
+    .vps { align-items: center; }
+    .vps__panel { border-radius: 24px; }
+  }
+
+  .vps__head { position: relative; padding: 24px 26px 14px; border-bottom: 1px solid #E2ECE7; }
+  .vps__eyebrow { margin: 0 0 6px; font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #CBA03C; font-weight: 600; }
+  .vps__title { margin: 0; font-family: var(--font-heading--family, Georgia, serif); font-weight: 400; font-size: 25px; line-height: 1.15; color: #0D1712; }
+  .vps__x { position: absolute; top: 18px; right: 18px; width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 50%; background: #EBF3EF; color: #586F64; cursor: pointer; }
+  .vps__x svg { width: 17px; height: 17px; }
+
+  .vps__body { padding: 20px 26px 26px; overflow-y: auto; }
+
+  /* Dépôt */
+  .vps__drop { position: relative; border: 1.5px dashed #BDD0C6; border-radius: 20px; background: #fdfbf7; padding: 30px 22px; text-align: center; transition: border-color .25s, background .25s; }
+  .vps__drop.is-over { border-color: #CBA03C; background: #EFF5F2; }
+  .vps__file { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .vps__drop-ic { display: inline-grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: #E0EBE6; color: #CBA03C; margin-bottom: 14px; }
+  .vps__drop-ic svg { width: 26px; height: 26px; }
+  .vps__drop-t { margin: 0 0 6px; font-size: 16.5px; font-weight: 600; color: #0D1712; }
+  .vps__drop-s { margin: 0 auto 18px; max-width: 42ch; font-size: 14px; line-height: 1.6; color: #586F64; }
+  .vps__drop-btn { display: inline-block; padding: 13px 26px; border-radius: 999px; background: #B4C9BE; color: #292F2C; font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .vps__privacy { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 16px 0 0; font-size: 12px; color: #749182; }
+  .vps__privacy svg { width: 14px; height: 14px; flex: none; }
+
+  /* Analyse */
+  .vps__result { display: grid; grid-template-columns: 168px 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 620px) { .vps__result { grid-template-columns: 1fr; } }
+  .vps__preview img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 16px; background: #EBF3EF; border: 1px solid #D2E3DA; }
+  .vps__again { display: block; width: 100%; margin-top: 9px; padding: 9px; border: 1px solid #CDDBD4; border-radius: 999px; background: #fff; color: #586F64; font-size: 12px; font-family: inherit; cursor: pointer; }
+  .vps__again:hover { background: #faf6ef; }
+
+  .vps__read-t { margin: 0 0 14px; font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #749182; }
+  .vps__conf { font-weight: 500; letter-spacing: 0; text-transform: none; color: #CBA03C; }
+  .vps__chipset { margin-bottom: 14px; }
+  .vps__lbl { display: block; margin-bottom: 7px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #8AAB9A; }
+  .vps__chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .vps__chip { padding: 9px 15px; border-radius: 999px; border: 1px solid #CDDBD4; background: #fff; color: #305844; font-size: 13.5px; font-family: inherit; cursor: pointer; transition: background .2s, border-color .2s, color .2s; }
+  .vps__chip:hover { border-color: #B4C9BE; }
+  .vps__chip[aria-pressed="true"] { background: #292F2C; border-color: #292F2C; color: #fff; }
+  .vps__chip i { font-style: normal; display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 7px; vertical-align: -1px; border: 1px solid rgba(0,0,0,.16); }
+
+  .vps__go { display: inline-flex; align-items: center; gap: 10px; margin-top: 6px; padding: 15px 26px; border: 0; border-radius: 999px; background: #B4C9BE; color: #292F2C; font-size: 12.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; font-family: inherit; cursor: pointer; transition: transform .2s, filter .2s; }
+  .vps__go svg { width: 17px; height: 17px; }
+  .vps__go:hover { transform: translateY(-1px); filter: brightness(.97); }
+  .vps__go[disabled] { opacity: .55; cursor: wait; }
+
+  /* Résultats */
+  .vps__found { margin-top: 22px; padding-top: 20px; border-top: 1px solid #E2ECE7; }
+  .vps__found-t { margin: 0 0 14px; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: #749182; font-weight: 600; }
+  .vps__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 14px; }
+  .vps__card { text-decoration: none; color: inherit; }
+  .vps__card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 13px; background: #EBF3EF; }
+  .vps__card b { display: block; margin: 8px 0 3px; font-size: 13.5px; font-weight: 500; line-height: 1.35; color: #0D1712; }
+  .vps__card span { font-size: 13px; color: #586F64; }
+  .vps__all { display: inline-block; margin-top: 18px; font-size: 13px; font-weight: 600; color: #0D1712; }
+  .vps__empty { margin: 20px 0 0; font-size: 14.5px; line-height: 1.6; color: #586F64; }
+  .vps__empty a { color: #CBA03C; }
+
+  /* Bouton injecté dans la barre de recherche */
+  .vps-trigger {
+    display: inline-grid; place-items: center; width: 34px; height: 34px; flex: none;
+    border: 0; border-radius: 50%; background: transparent; color: #586F64; cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .vps-trigger:hover { background: #E5EFEA; color: #CBA03C; }
+  .vps-trigger svg { width: 20px; height: 20px; }
+</style>
+
+<script>
+  (function () {
+    'use strict';
+
+    var modal = document.getElementById('vps');
+    if (!modal) return;
+
+    var $ = function (sel) { return modal.querySelector(sel); };
+    var fileInput = $('[data-vps-file]');
+    var drop = $('[data-vps-drop]');
+    var result = $('[data-vps-result]');
+    var preview = $('[data-vps-preview]');
+    var typesBox = $('[data-vps-types]');
+    var colorsBox = $('[data-vps-colors]');
+    var confEl = $('[data-vps-conf]');
+    var found = $('[data-vps-found]');
+    var foundT = $('[data-vps-found-t]');
+    var grid = $('[data-vps-grid]');
+    var allLink = $('[data-vps-all]');
+    var emptyEl = $('[data-vps-empty]');
+    var goBtn = $('[data-vps-go]');
+
+    /* ————— Vocabulaire de la boutique ————— */
+    var TYPES = [
+      { key: 'handpan',     label: 'Handpan' },
+      { key: 'tongue',      label: 'Tongue drum' },
+      { key: 'kalimba',     label: 'Kalimba' },
+      { key: 'bol',         label: 'Bol chantant' },
+      { key: 'ocarina',     label: 'Ocarina' },
+      { key: 'accessoire',  label: 'Accessoire' }
+    ];
+    var COLORS = [
+      { key: 'noir',   label: 'Acier noir',   swatch: '#1A1E1C' },
+      { key: 'blanc',  label: 'Acier clair',  swatch: '#EEF4F1' },
+      { key: 'doré',   label: 'Laiton',       swatch: '#B98A2E' },
+      { key: 'bois',   label: 'Bois',         swatch: '#A97F3E' },
+      { key: 'chromé', label: 'Acier brossé', swatch: '#A8BCAE' },
+      { key: 'verre',  label: 'Terre cuite',  swatch: '#9DB8A9' }
+    ];
+
+    var picked = { type: null, color: null };
+
+    /* ————— Ouverture / fermeture ————— */
+    function open() {
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+    }
+    function close() {
+      modal.hidden = true;
+      modal.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+    }
+    modal.querySelectorAll('[data-vps-close]').forEach(function (el) {
+      el.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hidden) close();
+    });
+
+    /* ————— Le bouton appareil photo se glisse dans la barre de recherche ————— */
+    var CAM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h1.7l1.2-1.9A1 1 0 0 1 9.2 3.6h5.6a1 1 0 0 1 .8.5L16.8 6h1.7A2.5 2.5 0 0 1 21 8.5v9A2.5 2.5 0 0 1 18.5 20h-13A2.5 2.5 0 0 1 3 17.5z"/>' +
+      '<circle cx="12" cy="12.6" r="3.4"/></svg>';
+
+    function inject() {
+      var fields = document.querySelectorAll(
+        'input[name="q"], input[type="search"], input[data-ref="search-input"]'
+      );
+      fields.forEach(function (input) {
+        if (input.closest('#vps')) return;
+        var host = input.parentElement;
+        if (!host || host.querySelector('.vps-trigger')) return;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'vps-trigger';
+        btn.setAttribute('aria-label', 'Rechercher par photo');
+        btn.title = 'Rechercher par photo';
+        btn.innerHTML = CAM;
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          open();
+        });
+        var cs = window.getComputedStyle(host);
+        if (cs.display.indexOf('flex') === -1 && cs.display.indexOf('grid') === -1) {
+          host.style.display = 'flex';
+          host.style.alignItems = 'center';
+        }
+        host.appendChild(btn);
+      });
+    }
+    inject();
+    /* Les barres de recherche s'ouvrent souvent après coup (tiroir, overlay). */
+    if (window.MutationObserver) {
+      var mo = new MutationObserver(function () { inject(); });
+      mo.observe(document.body, { childList: true, subtree: true });
+    }
+
+    /* ————— Lecture de la photo ————— */
+    fileInput.addEventListener('change', function () {
+      if (fileInput.files && fileInput.files[0]) handleFile(fileInput.files[0]);
+    });
+    ['dragenter', 'dragover'].forEach(function (ev) {
+      drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('is-over'); });
+    });
+    ['dragleave', 'drop'].forEach(function (ev) {
+      drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('is-over'); });
+    });
+    drop.addEventListener('drop', function (e) {
+      var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (f) handleFile(f);
+    });
+    $('[data-vps-again]').addEventListener('click', function () {
+      result.hidden = true;
+      found.hidden = true;
+      emptyEl.hidden = true;
+      drop.hidden = false;
+      fileInput.value = '';
+    });
+
+    function handleFile(file) {
+      if (!file.type || file.type.indexOf('image') !== 0) return;
+      var reader = new FileReader();
+      reader.onload = function (ev) {
+        var img = new Image();
+        img.onload = function () {
+          preview.src = ev.target.result;
+          var read = analyse(img);
+          drop.hidden = true;
+          found.hidden = true;
+          emptyEl.hidden = true;
+          result.hidden = false;
+          render(read);
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* ————— Analyse : sujet, proportions, couleur ————— */
+    function analyse(img) {
+      var N = 96;
+      var c = document.createElement('canvas');
+      c.width = N; c.height = N;
+      var ctx = c.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0, N, N);
+      var data;
+      try { data = ctx.getImageData(0, 0, N, N).data; }
+      catch (err) { return { type: null, color: null, conf: 0 }; }
+
+      function at(x, y) {
+        var i = (y * N + x) * 4;
+        return [data[i], data[i + 1], data[i + 2]];
+      }
+      /* Le fond est estimé sur les quatre coins. */
+      var corners = [at(1, 1), at(N - 2, 1), at(1, N - 2), at(N - 2, N - 2)];
+      var bg = [0, 0, 0];
+      corners.forEach(function (p) { bg[0] += p[0] / 4; bg[1] += p[1] / 4; bg[2] += p[2] / 4; });
+
+      var minX = N, minY = N, maxX = 0, maxY = 0, subject = [];
+      for (var y = 0; y < N; y++) {
+        for (var x = 0; x < N; x++) {
+          var p = at(x, y);
+          var d = Math.abs(p[0] - bg[0]) + Math.abs(p[1] - bg[1]) + Math.abs(p[2] - bg[2]);
+          if (d > 58) {
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+            subject.push(p);
+          }
+        }
+      }
+      var coverage = subject.length / (N * N);
+      /* Sujet introuvable (photo d'ambiance, fond chargé) : on n'invente pas. */
+      if (subject.length < 90 || coverage > 0.92) {
+        return { type: null, color: dominant(subject), conf: coverage > 0.92 ? 0.3 : 0 };
+      }
+
+      var w = Math.max(1, maxX - minX), h = Math.max(1, maxY - minY);
+      var ratio = h / w;
+      var top = minY / N;
+
+      var type;
+      if (ratio > 1.35) {
+        /* Nettement plus haut que large : une planche tenue à la main. */
+        type = 'kalimba';
+      } else if (ratio < 0.42) {
+        /* Très aplati : une coupole vue de dessus, posée à plat. */
+        type = 'handpan';
+      } else if (ratio < 0.62) {
+        /* Aplati mais plus épais : soit la coupole, soit le fût du tongue drum. */
+        type = top < 0.3 ? 'handpan' : 'tongue';
+      } else if (ratio < 0.95) {
+        /* Presque aussi haut que large : un bol, ou un petit corps ovale. */
+        type = 'bol';
+      } else {
+        type = 'ocarina';
+      }
+
+      /* Confiance : un sujet net et bien détouré inspire plus qu'une photo chargée. */
+      var conf = Math.max(0.35, Math.min(0.95, 1 - Math.abs(coverage - 0.32)));
+      return { type: type, color: dominant(subject), conf: conf, ratio: ratio };
+    }
+
+    function dominant(px) {
+      if (!px || !px.length) return null;
+      var dark = 0, light = 0, gold = 0, wood = 0, grey = 0, cool = 0, n = px.length;
+      for (var i = 0; i < n; i++) {
+        var r = px[i][0] / 255, g = px[i][1] / 255, b = px[i][2] / 255;
+        var mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+        var l = (mx + mn) / 2, s = mx === mn ? 0 : (l > .5 ? (mx - mn) / (2 - mx - mn) : (mx - mn) / (mx + mn));
+        var hh = 0;
+        if (mx !== mn) {
+          if (mx === r) hh = ((g - b) / (mx - mn) + (g < b ? 6 : 0));
+          else if (mx === g) hh = (b - r) / (mx - mn) + 2;
+          else hh = (r - g) / (mx - mn) + 4;
+          hh *= 60;
+        }
+        if (l < 0.2) dark++;
+        else if (l > 0.8 && s < 0.14) light++;
+        else if (s < 0.12) { if (l > 0.55) cool++; else grey++; }
+        else if (hh >= 35 && hh <= 58 && s > 0.22 && l > 0.32) gold++;
+        else if (hh >= 15 && hh < 38 && s >= 0.18 && l <= 0.62) wood++;
+      }
+      var pairs = [['noir', dark], ['blanc', light], ['doré', gold], ['bois', wood], ['chromé', grey + cool * 0.6], ['verre', cool]];
+      pairs.sort(function (a, b) { return b[1] - a[1]; });
+      return pairs[0][1] / n > 0.16 ? pairs[0][0] : null;
+    }
+
+    /* ————— Affichage de ce qui a été reconnu ————— */
+    function render(read) {
+      picked.type = read.type;
+      picked.color = read.color;
+      confEl.textContent = read.type
+        ? (read.conf > 0.7 ? '· nous sommes plutôt sûrs' : '· corrigez si besoin')
+        : '· dites-nous ce que c’est';
+
+      typesBox.innerHTML = '';
+      TYPES.forEach(function (t) {
+        typesBox.appendChild(chip(t.label, t.key === picked.type, null, function (btn) {
+          picked.type = picked.type === t.key ? null : t.key;
+          refresh(typesBox, TYPES, picked.type);
+        }));
+      });
+      colorsBox.innerHTML = '';
+      COLORS.forEach(function (c) {
+        colorsBox.appendChild(chip(c.label, c.key === picked.color, c.swatch, function () {
+          picked.color = picked.color === c.key ? null : c.key;
+          refresh(colorsBox, COLORS, picked.color);
+        }));
+      });
+    }
+    function chip(label, on, swatch, fn) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'vps__chip';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.innerHTML = (swatch ? '<i style="background:' + swatch + '"></i>' : '') + label;
+      b.addEventListener('click', function () { fn(b); });
+      return b;
+    }
+    function refresh(box, list, active) {
+      Array.prototype.forEach.call(box.children, function (btn, i) {
+        btn.setAttribute('aria-pressed', list[i].key === active ? 'true' : 'false');
+      });
+    }
+
+    /* ————— Interrogation de la boutique ————— */
+    goBtn.addEventListener('click', function () {
+      var terms = [];
+      if (picked.type) terms.push(picked.type);
+      if (picked.color) terms.push(picked.color);
+      if (!terms.length) { window.location.href = '/search'; return; }
+
+      goBtn.disabled = true;
+      search(terms.join(' ')).then(function (items) {
+        if (!items.length && terms.length > 1) return search(terms[0]);
+        return items;
+      }).then(function (items) {
+        goBtn.disabled = false;
+        show(items, terms.join(' '));
+      }).catch(function () {
+        goBtn.disabled = false;
+        window.location.href = '/search?q=' + encodeURIComponent(terms.join(' '));
+      });
+    });
+
+    function search(q) {
+      var url = '/search/suggest.json?q=' + encodeURIComponent(q) +
+        '&resources[type]=product&resources[limit]=12&resources[options][unavailable_products]=last';
+      return fetch(url, { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          return (j && j.resources && j.resources.results && j.resources.results.products) || [];
+        });
+    }
+
+    function show(items, q) {
+      allLink.href = '/search?q=' + encodeURIComponent(q);
+      if (!items.length) {
+        found.hidden = true;
+        emptyEl.hidden = false;
+        return;
+      }
+      emptyEl.hidden = true;
+      foundT.textContent = items.length + (items.length > 1 ? ' instruments approchants' : ' instrument approchant');
+      grid.innerHTML = '';
+      items.forEach(function (p) {
+        var a = document.createElement('a');
+        a.className = 'vps__card';
+        a.href = p.url;
+        var img = p.featured_image && p.featured_image.url ? p.featured_image.url : (p.image || '');
+        a.innerHTML =
+          (img ? '<img src="' + img + '" alt="" loading="lazy">' : '<img alt="">') +
+          '<b>' + (p.title || '') + '</b>' +
+          '<span>' + (p.price ? p.price : '') + '</span>';
+        grid.appendChild(a);
+      });
+      found.hidden = false;
+      found.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  })();
+</script>

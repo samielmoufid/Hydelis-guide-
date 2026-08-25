@@ -1,0 +1,618 @@
+<section id="velluce-why-{{ section.id }}" class="velluce-why" data-vllc-why>
+  <div class="velluce-why-inner">
+
+    <div class="velluce-why-head">
+      {% if section.settings.eyebrow != blank %}
+        <p class="velluce-why-eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      {% if section.settings.title != blank %}
+        <h2 class="velluce-why-title">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.intro != blank %}
+        <p class="velluce-why-intro">{{ section.settings.intro }}</p>
+      {% endif %}
+    </div>
+
+    <div class="velluce-why-grid" data-vllc-track>
+      {% for block in section.blocks %}
+        <div class="velluce-why-block" {{ block.shopify_attributes }}>
+          <div class="velluce-why-img">
+            <span class="velluce-why-num" aria-hidden="true">{{ forloop.index }}</span>
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', alt: block.settings.title }}
+            {% else %}
+              {{ 'image' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+
+          {% if block.settings.title != blank %}
+            <h3 class="velluce-why-block-title">{{ block.settings.title }}</h3>
+          {% endif %}
+
+          {% if block.settings.text != blank %}
+            <p class="velluce-why-block-text">{{ block.settings.text }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.show_nav and section.blocks.size > 1 %}
+      <div class="velluce-why-nav" data-vllc-nav>
+        <button type="button" class="velluce-why-arrow" data-vllc-prev aria-label="Précédent">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <div class="velluce-why-dots" data-vllc-dots>
+          {% for block in section.blocks %}
+            <button type="button" class="velluce-why-dot{% if forloop.first %} is-active{% endif %}" data-vllc-dot="{{ forloop.index0 }}" aria-label="Aller au bloc {{ forloop.index }}"></button>
+          {% endfor %}
+        </div>
+
+        <button type="button" class="velluce-why-arrow" data-vllc-next aria-label="Suivant">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+<style>
+  #velluce-why-{{ section.id }} {
+    background: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding-top: {{ section.settings.padding_desktop }}px;
+    padding-bottom: {{ section.settings.padding_desktop }}px;
+    overflow: hidden;
+  }
+
+  #velluce-why-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-head {
+    max-width: 760px;
+    margin: 0 auto 56px;
+    text-align: center;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-eyebrow {
+    margin: 0 0 16px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.6px;
+    text-transform: uppercase;
+    color: #C49934;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-title {
+    margin: 0;
+    color: {{ section.settings.text_color }};
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: {{ section.settings.title_desktop }}px;
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-intro {
+    margin: 16px auto 0;
+    max-width: 540px;
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: #586F64;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: {{ section.settings.gap }}px;
+    align-items: start;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-block {
+    position: relative;
+    text-align: center;
+    padding: 0 12px;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-block + .velluce-why-block::before {
+    content: "";
+    position: absolute;
+    left: calc(-{{ section.settings.gap }}px / 2);
+    top: 18%;
+    bottom: 18%;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(196,153,52,0) 0%, rgba(196,153,52,0.22) 50%, rgba(196,153,52,0) 100%);
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-img {
+    position: relative;
+    width: {{ section.settings.image_desktop }}px;
+    height: {{ section.settings.image_desktop }}px;
+    border-radius: 50%;
+    overflow: visible;
+    margin: 0 auto 28px;
+    background: #EDEFEE;
+    box-shadow: 0 0 0 1px rgba(196, 153, 52, 0.14), 0 18px 40px rgba(73, 57, 19, 0.14);
+    transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.55s ease;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-img::after {
+    content: "";
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    border: 1px solid rgba(196, 153, 52, 0.16);
+    pointer-events: none;
+    transition: inset 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.55s ease;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-block:hover .velluce-why-img {
+    transform: translateY(-6px);
+    box-shadow: 0 0 0 1px rgba(196, 153, 52, 0.2), 0 30px 60px rgba(73, 57, 19, 0.2);
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-block:hover .velluce-why-img::after {
+    inset: -18px;
+    border-color: rgba(196, 153, 52, 0.3);
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-num {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 6px 16px rgba(73, 57, 19, 0.14);
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: 15px;
+    color: #C49934;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-img img,
+  #velluce-why-{{ section.id }} .velluce-why-img svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-block-title {
+    margin: 0 0 12px;
+    color: {{ section.settings.text_color }};
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.22;
+    letter-spacing: -0.015em;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-block-text {
+    max-width: 300px;
+    margin: 0 auto;
+    color: #586F64;
+    font-size: 15px;
+    line-height: 1.72;
+  }
+
+  /* --- Navigation du slider (mobile uniquement) --- */
+  #velluce-why-{{ section.id }} .velluce-why-nav {
+    display: none;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-dot {
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: {{ section.settings.nav_color }};
+    cursor: pointer;
+    transition: width .25s ease, background .25s ease;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-dot.is-active {
+    width: 26px;
+    background: {{ section.settings.nav_active_color }};
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-arrow {
+    -webkit-appearance: none;
+    appearance: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 1px solid {{ section.settings.nav_color }};
+    border-radius: 50%;
+    background: #ffffff;
+    color: {{ section.settings.nav_active_color }};
+    cursor: pointer;
+    transition: opacity .2s ease, background .2s ease;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-arrow svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  #velluce-why-{{ section.id }} .velluce-why-arrow[disabled] {
+    opacity: .3;
+    cursor: default;
+  }
+
+  @media (max-width: 749px) {
+    #velluce-why-{{ section.id }} {
+      padding-top: {{ section.settings.padding_mobile }}px;
+      padding-bottom: {{ section.settings.padding_mobile }}px;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-inner {
+      padding: 0 24px;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-title {
+      font-size: clamp(18px, 5.7vw, {{ section.settings.title_mobile }}px);
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-head {
+      margin-bottom: 34px;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-intro {
+      font-size: 14.5px;
+      margin-top: 12px;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-block + .velluce-why-block::before {
+      display: none;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-num {
+      width: 32px;
+      height: 32px;
+      font-size: 13px;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-block-title {
+      font-size: 19px;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-grid {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      gap: 18px;
+      padding-bottom: 10px;
+      scrollbar-width: none;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-block {
+      min-width: 100%;
+      scroll-snap-align: start;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-img {
+      width: {{ section.settings.image_mobile }}px;
+      height: {{ section.settings.image_mobile }}px;
+      margin-bottom: 28px;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-block-title {
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-block-text {
+      max-width: 100%;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    #velluce-why-{{ section.id }} .velluce-why-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 26px;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('velluce-why-{{ section.id }}');
+    if (!root || root.dataset.vllcInit === '1') return;
+    root.dataset.vllcInit = '1';
+
+    var track = root.querySelector('[data-vllc-track]');
+    var nav = root.querySelector('[data-vllc-nav]');
+    if (!track || !nav) return;
+
+    var slides = Array.prototype.slice.call(track.querySelectorAll('.velluce-why-block'));
+    var dots = Array.prototype.slice.call(nav.querySelectorAll('[data-vllc-dot]'));
+    var prev = nav.querySelector('[data-vllc-prev]');
+    var next = nav.querySelector('[data-vllc-next]');
+    var current = 0;
+    var animating = false;
+
+    function offsetOf(i) {
+      if (!slides.length) return 0;
+      return slides[i].offsetLeft - slides[0].offsetLeft;
+    }
+
+    function currentIndex() {
+      var best = 0;
+      var bestDist = Infinity;
+      for (var i = 0; i < slides.length; i++) {
+        var dist = Math.abs(offsetOf(i) - track.scrollLeft);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      }
+      return best;
+    }
+
+    var animTimer = null;
+    function tweenTo(target) {
+      animating = true;
+      track.scrollLeft = target;
+      if (animTimer) window.clearTimeout(animTimer);
+      animTimer = window.setTimeout(function () { animating = false; }, 600);
+    }
+
+    function render() {
+      for (var i = 0; i < dots.length; i++) {
+        if (i === current) {
+          dots[i].classList.add('is-active');
+        } else {
+          dots[i].classList.remove('is-active');
+        }
+      }
+      if (prev) prev.disabled = current <= 0;
+      if (next) next.disabled = current >= slides.length - 1;
+    }
+
+    function goTo(i) {
+      if (i < 0) i = 0;
+      if (i > slides.length - 1) i = slides.length - 1;
+      current = i;
+      tweenTo(offsetOf(i));
+      render();
+    }
+
+    for (var d = 0; d < dots.length; d++) {
+      (function (idx) {
+        dots[idx].addEventListener('click', function () { goTo(idx); });
+      })(d);
+    }
+
+    if (prev) prev.addEventListener('click', function () { goTo(current - 1); });
+    if (next) next.addEventListener('click', function () { goTo(current + 1); });
+
+    var ticking = null;
+    track.addEventListener('scroll', function () {
+      if (animating) return;
+      if (ticking) window.clearTimeout(ticking);
+      ticking = window.setTimeout(function () {
+        var i = currentIndex();
+        if (i !== current) { current = i; render(); }
+      }, 80);
+    }, { passive: true });
+
+    render();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Choisir Zensea",
+  "tag": "section",
+  "class": "velluce-why-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "La méthode Zensea"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Phrase d'introduction"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre principal",
+      "default": "Pourquoi choisir Zensea"
+    },
+    {
+      "type": "range",
+      "id": "title_desktop",
+      "label": "Taille titre desktop",
+      "min": 28,
+      "max": 72,
+      "step": 2,
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "title_mobile",
+      "label": "Taille titre mobile",
+      "min": 28,
+      "max": 64,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "image_desktop",
+      "label": "Taille image desktop",
+      "min": 140,
+      "max": 320,
+      "step": 10,
+      "default": 240
+    },
+    {
+      "type": "range",
+      "id": "image_mobile",
+      "label": "Taille image mobile",
+      "min": 180,
+      "max": 360,
+      "step": 10,
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "padding_desktop",
+      "label": "Padding desktop",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_mobile",
+      "label": "Padding mobile",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espace desktop",
+      "min": 16,
+      "max": 80,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur texte",
+      "default": "#181C1A"
+    },
+    {
+      "type": "header",
+      "content": "Navigation du slider (mobile)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_nav",
+      "label": "Afficher les fleches et les pointilles",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "nav_color",
+      "label": "Couleur pointilles inactifs / bordure fleches",
+      "default": "#B4C9BE"
+    },
+    {
+      "type": "color",
+      "id": "nav_active_color",
+      "label": "Couleur pointille actif / fleches",
+      "default": "#292F2C"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bloc",
+      "name": "Bloc",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image ronde"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre bloc",
+          "default": "Titre"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texte bloc",
+          "default": "Description."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Choisir Zensea",
+      "blocks": [
+        {
+          "type": "bloc",
+          "settings": {
+            "title": "Design premium",
+            "text": "Des lignes modernes pour un intérieur élégant."
+          }
+        },
+        {
+          "type": "bloc",
+          "settings": {
+            "title": "Qualité et fiabilité",
+            "text": "Métal laqué, verre et matériaux durables au quotidien."
+          }
+        },
+        {
+          "type": "bloc",
+          "settings": {
+            "title": "Commande sereine",
+            "text": "Livraison suivie et paiement sécurisé."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,196 @@
+{%- comment -%}
+  Zensea — illustrations codées (SVG) des cartes « Bien choisir ».
+  Fond clair, rendu volumétrique : halo doré, spéculaire, ombre au sol.
+  Paramètres : key (type|notes|gamme|accordage|jouer|entretien|livraison|conseil|faq), uid, name
+{%- endcomment -%}
+{%- assign u = uid | default: 'g' -%}
+{%- assign k = key | downcase -%}
+<svg class="vig" viewBox="0 0 400 300" role="img" aria-label="{{ name | default: key | escape }}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="vigbg{{ u }}" cx="50%" cy="28%" r="82%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.6" stop-color="#F7FAF8"/>
+      <stop offset="1" stop-color="#E4EDE8"/>
+    </radialGradient>
+    <radialGradient id="vigh{{ u }}" cx="50%" cy="8%" r="86%">
+      <stop offset="0" stop-color="#E8C98A" stop-opacity=".46"/>
+      <stop offset="0.55" stop-color="#CFE0D6" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#CFE0D6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vigf{{ u }}" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#3F5B4C" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#3F5B4C" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vigs{{ u }}" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".75"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vigac{{ u }}" cx="34%" cy="24%" r="86%">
+      <stop offset="0" stop-color="#F2F7F4"/>
+      <stop offset="0.28" stop-color="#C4D6CC"/>
+      <stop offset="0.64" stop-color="#7F9C8C"/>
+      <stop offset="1" stop-color="#3B5A49"/>
+    </radialGradient>
+    <radialGradient id="vigdo{{ u }}" cx="38%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".9"/>
+      <stop offset="0.45" stop-color="#B9CEC3"/>
+      <stop offset="1" stop-color="#54725F"/>
+    </radialGradient>
+    <linearGradient id="vigg{{ u }}" x1="0" y1="0" x2="1" y2="0.6">
+      <stop offset="0" stop-color="#8A6A20"/>
+      <stop offset="0.24" stop-color="#E8C98A"/>
+      <stop offset="0.5" stop-color="#B98A2E"/>
+      <stop offset="0.76" stop-color="#F3E2C0"/>
+      <stop offset="1" stop-color="#9B7929"/>
+    </linearGradient>
+    <linearGradient id="vigb{{ u }}" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#C9A46A"/>
+      <stop offset="0.45" stop-color="#A97F3E"/>
+      <stop offset="1" stop-color="#6E5423"/>
+    </linearGradient>
+    <linearGradient id="vigt{{ u }}" x1="0" y1="0" x2="0.25" y2="1">
+      <stop offset="0" stop-color="#4C7A5F"/>
+      <stop offset="0.55" stop-color="#2E5E46"/>
+      <stop offset="1" stop-color="#1F3D2F"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="400" height="300" fill="url(#vigbg{{ u }})"/>
+  <ellipse cx="200" cy="140" rx="180" ry="132" fill="url(#vigh{{ u }})"/>
+
+  {%- case k -%}
+
+  {%- comment -%} --- Quel instrument choisir : le trio Zensea --- {%- endcomment -%}
+  {%- when 'type' -%}
+    <ellipse cx="200" cy="248" rx="150" ry="18" fill="url(#vigf{{ u }})"/>
+    <path d="M60 176a76 50 0 0 0 152 0v14a76 50 0 0 1-152 0z" fill="#1F3D2F"/>
+    <ellipse cx="136" cy="176" rx="76" ry="50" fill="url(#vigac{{ u }})"/>
+    <ellipse cx="136" cy="171" rx="20" ry="14" fill="url(#vigdo{{ u }})"/>
+    <g fill="#3F5B4C" fill-opacity=".45">
+      <ellipse cx="184" cy="188" rx="12" ry="7"/><ellipse cx="136" cy="210" rx="13" ry="7"/>
+      <ellipse cx="88" cy="188" rx="12" ry="7"/><ellipse cx="88" cy="160" rx="11" ry="6"/>
+      <ellipse cx="184" cy="160" rx="11" ry="6"/>
+    </g>
+    <path d="M224 236V152a20 20 0 0 1 20-20h44a20 20 0 0 1 20 20v84z" fill="url(#vigb{{ u }})"/>
+    <ellipse cx="266" cy="204" rx="19" ry="19" fill="#2B4436" opacity=".75"/>
+    <rect x="234" y="164" width="64" height="7" rx="3.5" fill="#6E5419"/>
+    <g stroke="url(#vigg{{ u }})" stroke-width="5" stroke-linecap="round">
+      <path d="M266 168v-26"/><path d="M252 168v-21"/><path d="M280 168v-21"/>
+    </g>
+    <path d="M318 178a30 30 0 0 0 60 0z" fill="url(#vigg{{ u }})"/>
+    <ellipse cx="348" cy="178" rx="30" ry="10" fill="#8A6A20"/>
+    <ellipse cx="348" cy="178" rx="24" ry="7" fill="#22332A" opacity=".5"/>
+    <ellipse cx="108" cy="146" rx="42" ry="17" fill="url(#vigs{{ u }})" transform="rotate(-16 108 146)"/>
+
+  {%- comment -%} --- 9, 10 ou 12 notes --- {%- endcomment -%}
+  {%- when 'notes' -%}
+    <ellipse cx="200" cy="250" rx="132" ry="17" fill="url(#vigf{{ u }})"/>
+    <path d="M92 176a108 62 0 0 0 216 0v16a108 62 0 0 1-216 0z" fill="#1F3D2F"/>
+    <ellipse cx="200" cy="176" rx="108" ry="62" fill="url(#vigac{{ u }})"/>
+    <ellipse cx="200" cy="176" rx="108" ry="62" fill="none" stroke="#ffffff" stroke-opacity=".4" stroke-width="1.3"/>
+    <ellipse cx="200" cy="170" rx="27" ry="18" fill="url(#vigdo{{ u }})"/>
+    <g fill="#E8C98A" fill-opacity=".85">
+      <ellipse cx="272" cy="192" rx="15" ry="9"/><ellipse cx="236" cy="214" rx="16" ry="9"/>
+      <ellipse cx="164" cy="214" rx="16" ry="9"/><ellipse cx="128" cy="192" rx="15" ry="9"/>
+      <ellipse cx="128" cy="160" rx="14" ry="8"/><ellipse cx="164" cy="138" rx="15" ry="8"/>
+      <ellipse cx="236" cy="138" rx="15" ry="8"/><ellipse cx="272" cy="160" rx="14" ry="8"/>
+    </g>
+    <ellipse cx="152" cy="146" rx="40" ry="16" fill="url(#vigs{{ u }})" transform="rotate(-16 152 146)"/>
+
+  {%- comment -%} --- Quelle gamme --- {%- endcomment -%}
+  {%- when 'gamme' -%}
+    <ellipse cx="200" cy="254" rx="128" ry="15" fill="url(#vigf{{ u }})"/>
+    <g stroke="#A8BCAE" stroke-width="2.4">
+      <path d="M84 132h232"/><path d="M84 156h232"/><path d="M84 180h232"/><path d="M84 204h232"/><path d="M84 228h232"/>
+    </g>
+    <g fill="url(#vigg{{ u }})">
+      <ellipse cx="122" cy="216" rx="14" ry="10" transform="rotate(-18 122 216)"/>
+      <ellipse cx="176" cy="192" rx="14" ry="10" transform="rotate(-18 176 192)"/>
+      <ellipse cx="230" cy="168" rx="14" ry="10" transform="rotate(-18 230 168)"/>
+      <ellipse cx="284" cy="144" rx="14" ry="10" transform="rotate(-18 284 144)"/>
+    </g>
+    <g stroke="#B98A2E" stroke-width="4.2" stroke-linecap="round">
+      <path d="M134 212v-58"/><path d="M188 188v-58"/><path d="M242 164v-58"/><path d="M296 140v-58"/>
+    </g>
+    <path d="M134 154q34 -14 54 -24" stroke="#B98A2E" stroke-width="3" fill="none" opacity=".55"/>
+
+  {%- comment -%} --- L'accordage 440 Hz --- {%- endcomment -%}
+  {%- when 'accordage' -%}
+    <ellipse cx="200" cy="256" rx="118" ry="15" fill="url(#vigf{{ u }})"/>
+    <path d="M186 246V150h28v96z" fill="url(#vigg{{ u }})"/>
+    <path d="M158 62v92a42 42 0 0 0 84 0V62h-24v90a18 18 0 0 1-36 0V62z" fill="url(#vigg{{ u }})"/>
+    <path d="M158 62v92a42 42 0 0 0 84 0V62" fill="none" stroke="#6E5419" stroke-opacity=".4" stroke-width="1.4"/>
+    <g stroke="#2E5E46" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55">
+      <path d="M266 92q22 34 0 68"/><path d="M292 74q36 52 0 104"/>
+      <path d="M134 92q-22 34 0 68"/><path d="M108 74q-36 52 0 104"/>
+    </g>
+    <ellipse cx="176" cy="96" rx="12" ry="30" fill="url(#vigs{{ u }})"/>
+
+  {%- comment -%} --- Premiers gestes --- {%- endcomment -%}
+  {%- when 'jouer' -%}
+    <ellipse cx="200" cy="256" rx="140" ry="16" fill="url(#vigf{{ u }})"/>
+    <path d="M84 196a116 58 0 0 0 232 0v16a116 58 0 0 1-232 0z" fill="#1F3D2F"/>
+    <ellipse cx="200" cy="196" rx="116" ry="58" fill="url(#vigac{{ u }})"/>
+    <ellipse cx="200" cy="190" rx="26" ry="16" fill="url(#vigdo{{ u }})"/>
+    <path d="M120 172q-14 -34 4 -46 14 -8 20 8l10 26q10 -14 22 -4 12 10 2 24l-18 24q-14 18 -34 8 -18 -10 -6 -40z" fill="#E8C98A" opacity=".92"/>
+    <path d="M280 172q14 -34 -4 -46 -14 -8 -20 8l-10 26q-10 -14 -22 -4 -12 10 -2 24l18 24q14 18 34 8 18 -10 6 -40z" fill="#E8C98A" opacity=".8"/>
+    <ellipse cx="150" cy="164" rx="34" ry="14" fill="url(#vigs{{ u }})" transform="rotate(-16 150 164)"/>
+
+  {%- comment -%} --- Entretien --- {%- endcomment -%}
+  {%- when 'entretien' -%}
+    <ellipse cx="200" cy="252" rx="126" ry="16" fill="url(#vigf{{ u }})"/>
+    <path d="M96 240q54 -34 104 -34t104 34q-14 20 -104 20T96 240z" fill="url(#vigt{{ u }})"/>
+    <path d="M96 240q54 -34 104 -34t104 34" fill="none" stroke="#8FB3A0" stroke-opacity=".45" stroke-width="1.6"/>
+    <rect x="176" y="112" width="48" height="94" rx="12" fill="url(#vigg{{ u }})"/>
+    <rect x="190" y="82" width="20" height="32" rx="6" fill="#6E5419"/>
+    <rect x="184" y="70" width="32" height="16" rx="6" fill="url(#vigg{{ u }})"/>
+    <rect x="184" y="142" width="32" height="34" rx="5" fill="#22332A" opacity=".35"/>
+    <ellipse cx="188" cy="132" rx="9" ry="26" fill="url(#vigs{{ u }})"/>
+    <g stroke="#2E5E46" stroke-width="3" fill="none" stroke-linecap="round" opacity=".45">
+      <path d="M282 128q18 10 18 26"/><path d="M300 112q28 16 28 42"/>
+    </g>
+
+  {%- comment -%} --- Livraison --- {%- endcomment -%}
+  {%- when 'livraison' -%}
+    <ellipse cx="200" cy="254" rx="130" ry="16" fill="url(#vigf{{ u }})"/>
+    <path d="M104 244V132l96-42 96 42v112z" fill="url(#vigb{{ u }})"/>
+    <path d="M104 132l96 42 96-42" fill="none" stroke="#6E5419" stroke-opacity=".5" stroke-width="2"/>
+    <path d="M200 174v70" stroke="#6E5419" stroke-opacity=".4" stroke-width="2"/>
+    <path d="M104 132l96-42 96 42-96 42z" fill="#C9A46A" opacity=".55"/>
+    <rect x="170" y="90" width="60" height="118" rx="4" fill="url(#vigg{{ u }})" opacity=".72"/>
+    <path d="M170 148h60" stroke="#22332A" stroke-opacity=".25" stroke-width="3"/>
+    <ellipse cx="140" cy="176" rx="22" ry="42" fill="url(#vigs{{ u }})" opacity=".5"/>
+
+  {%- comment -%} --- Un conseil --- {%- endcomment -%}
+  {%- when 'conseil' -%}
+    <ellipse cx="200" cy="254" rx="120" ry="15" fill="url(#vigf{{ u }})"/>
+    <path d="M92 92a22 22 0 0 1 22-22h172a22 22 0 0 1 22 22v88a22 22 0 0 1-22 22h-96l-46 34v-34h-30a22 22 0 0 1-22-22z" fill="url(#vigt{{ u }})"/>
+    <g stroke="#E8C98A" stroke-width="6" stroke-linecap="round" opacity=".85">
+      <path d="M130 118h140"/><path d="M130 144h108"/><path d="M130 170h74"/>
+    </g>
+    <ellipse cx="132" cy="112" rx="30" ry="34" fill="url(#vigs{{ u }})" opacity=".3"/>
+
+  {%- comment -%} --- F.A.Q --- {%- endcomment -%}
+  {%- when 'faq' -%}
+    <ellipse cx="200" cy="252" rx="112" ry="15" fill="url(#vigf{{ u }})"/>
+    <ellipse cx="200" cy="150" rx="94" ry="94" fill="url(#vigt{{ u }})"/>
+    <ellipse cx="200" cy="150" rx="94" ry="94" fill="none" stroke="#E8C98A" stroke-opacity=".4" stroke-width="2"/>
+    <path d="M172 118q0 -30 30 -30t30 28q0 20 -22 28 -12 5 -12 20v6" fill="none" stroke="#E8C98A" stroke-width="15" stroke-linecap="round"/>
+    <circle cx="198" cy="204" r="10" fill="#E8C98A"/>
+    <ellipse cx="164" cy="106" rx="34" ry="30" fill="url(#vigs{{ u }})" opacity=".26"/>
+
+  {%- comment -%} --- défaut : handpan --- {%- endcomment -%}
+  {%- else -%}
+    <ellipse cx="200" cy="250" rx="132" ry="17" fill="url(#vigf{{ u }})"/>
+    <path d="M92 176a108 62 0 0 0 216 0v16a108 62 0 0 1-216 0z" fill="#1F3D2F"/>
+    <ellipse cx="200" cy="176" rx="108" ry="62" fill="url(#vigac{{ u }})"/>
+    <ellipse cx="200" cy="170" rx="27" ry="18" fill="url(#vigdo{{ u }})"/>
+    <g fill="#3F5B4C" fill-opacity=".45">
+      <ellipse cx="272" cy="192" rx="15" ry="9"/><ellipse cx="236" cy="214" rx="16" ry="9"/>
+      <ellipse cx="164" cy="214" rx="16" ry="9"/><ellipse cx="128" cy="192" rx="15" ry="9"/>
+      <ellipse cx="128" cy="160" rx="14" ry="8"/><ellipse cx="164" cy="138" rx="15" ry="8"/>
+      <ellipse cx="236" cy="138" rx="15" ry="8"/><ellipse cx="272" cy="160" rx="14" ry="8"/>
+    </g>
+    <ellipse cx="152" cy="146" rx="40" ry="16" fill="url(#vigs{{ u }})" transform="rotate(-16 152 146)"/>
+  {%- endcase -%}
+</svg>

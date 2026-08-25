@@ -1,0 +1,668 @@
+{% comment %}
+  Velluce — Espace pro (B2B).
+  Arguments, fonctionnement, chiffres, formulaire d'ouverture de compte
+  et réponses courtes. Même DA que le reste du site : beige, laiton,
+  cartes claires. Le héro 3D est la section « Velluce Héro 3D » placée
+  juste au-dessus.
+{% endcomment %}
+
+<section
+  class="vpr"
+  id="vpr-{{ section.id }}"
+  style="
+    --vpr-bg: {{ section.settings.bg }};
+    --vpr-sand: {{ section.settings.sand }};
+    --vpr-ink: {{ section.settings.ink }};
+    --vpr-accent: {{ section.settings.accent }};
+  "
+>
+  <div class="vpr__grain" aria-hidden="true"></div>
+
+  {%- comment -%} ————— Ce que le compte pro change ————— {%- endcomment -%}
+  <div class="vpr__band">
+    <p class="vpr__eyebrow">{{ section.settings.avantages_eyebrow }}</p>
+    <h2 class="vpr__h2">{{ section.settings.avantages_titre }}</h2>
+    <p class="vpr__sub">{{ section.settings.avantages_sub }}</p>
+
+    <div class="vpr__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'avantage' -%}
+          <article class="vpr__card" {{ block.shopify_attributes }}>
+            <span class="vpr__ic" aria-hidden="true">
+              {%- case block.settings.icone -%}
+                {%- when 'remise' -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M19 5L5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>
+                {%- when 'devis' -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.5h8l4.5 4.5v14.5H6z"/><path d="M14 2.5V7h4.5M9 12.5h6M9 16.5h4"/></svg>
+                {%- when 'stock' -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5L12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5l9 4.5 9-4.5M12 12v9"/></svg>
+                {%- when 'contact' -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+                {%- when 'paiement' -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2.5"/><path d="M2.5 10h19M6 14.5h4"/></svg>
+                {%- else -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.4 6.2 6.6.4-5.1 4.2 1.7 6.4L12 16.7 6.4 20.2l1.7-6.4L3 9.6l6.6-.4z"/></svg>
+              {%- endcase -%}
+            </span>
+            <h3>{{ block.settings.titre }}</h3>
+            <p>{{ block.settings.texte }}</p>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} ————— Chiffres ————— {%- endcomment -%}
+  {%- if section.settings.chiffre_1 != blank -%}
+    <div class="vpr__stats">
+      <div><strong>{{ section.settings.chiffre_1 }}</strong><span>{{ section.settings.chiffre_1_txt }}</span></div>
+      <div><strong>{{ section.settings.chiffre_2 }}</strong><span>{{ section.settings.chiffre_2_txt }}</span></div>
+      <div><strong>{{ section.settings.chiffre_3 }}</strong><span>{{ section.settings.chiffre_3_txt }}</span></div>
+      <div><strong>{{ section.settings.chiffre_4 }}</strong><span>{{ section.settings.chiffre_4_txt }}</span></div>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ————— Comment ça se passe ————— {%- endcomment -%}
+  <div class="vpr__steps-wrap">
+    <h2 class="vpr__h2 vpr__h2--left">{{ section.settings.etapes_titre }}</h2>
+    <ol class="vpr__steps">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'etape' -%}
+          <li {{ block.shopify_attributes }}>
+            <span class="vpr__num">{{ forloop.index }}</span>
+            <div>
+              <h3>{{ block.settings.titre }}</h3>
+              <p>{{ block.settings.texte }}</p>
+            </div>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ol>
+  </div>
+
+  {%- comment -%} ————— Formulaire ————— {%- endcomment -%}
+  <div class="vpr__form-wrap" id="compte-pro">
+    <div class="vpr__form-card">
+      <p class="vpr__eyebrow">{{ section.settings.form_eyebrow }}</p>
+      <h2 class="vpr__h2 vpr__h2--left">{{ section.settings.form_titre }}</h2>
+      <p class="vpr__sub vpr__sub--left">{{ section.settings.form_texte }}</p>
+
+      {%- form 'contact', class: 'vpr__form' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="vpr__ok">{{ section.settings.form_ok }}</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="vpr__err">{{ section.settings.form_err }}</p>
+        {%- endif -%}
+
+        <input type="hidden" name="contact[Demande]" value="Ouverture de compte professionnel">
+
+        <div class="vpr__row">
+          <label class="vpr__field">
+            <span>Société</span>
+            <input type="text" name="contact[Societe]" placeholder="Nom de votre société" required>
+          </label>
+          <label class="vpr__field">
+            <span>SIRET</span>
+            <input type="text" name="contact[SIRET]" placeholder="14 chiffres" required>
+          </label>
+        </div>
+
+        <div class="vpr__row">
+          <label class="vpr__field">
+            <span>Votre nom</span>
+            <input type="text" name="contact[name]" placeholder="Prénom et nom" required>
+          </label>
+          <label class="vpr__field">
+            <span>E-mail professionnel</span>
+            <input type="email" name="contact[email]" placeholder="vous@societe.fr" required>
+          </label>
+        </div>
+
+        <div class="vpr__row">
+          <label class="vpr__field">
+            <span>Votre activité</span>
+            <select name="contact[Activite]">
+              {%- assign metiers = section.settings.metiers | split: ',' -%}
+              {%- for m in metiers -%}<option value="{{ m | strip }}">{{ m | strip }}</option>{%- endfor -%}
+            </select>
+          </label>
+          <label class="vpr__field">
+            <span>Volume annuel estimé</span>
+            <select name="contact[Volume]">
+              {%- assign vols = section.settings.volumes | split: ',' -%}
+              {%- for v in vols -%}<option value="{{ v | strip }}">{{ v | strip }}</option>{%- endfor -%}
+            </select>
+          </label>
+        </div>
+
+        <label class="vpr__field vpr__field--full">
+          <span>Votre projet</span>
+          <textarea name="contact[body]" rows="5" placeholder="{{ section.settings.form_exemple }}"></textarea>
+        </label>
+
+        <button type="submit" class="vpr__submit">
+          <span>{{ section.settings.form_btn }}</span>
+          <i aria-hidden="true">&rarr;</i>
+        </button>
+        <p class="vpr__note">{{ section.settings.form_note }}</p>
+      {%- endform -%}
+    </div>
+
+    <aside class="vpr__aside">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'repere' -%}
+          <div class="vpr__aside-card" {{ block.shopify_attributes }}>
+            <p class="vpr__aside-k">{{ block.settings.titre }}</p>
+            <p class="vpr__aside-v">{{ block.settings.texte }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if section.settings.tel != blank -%}
+        <a class="vpr__aside-link" href="tel:{{ section.settings.tel | remove: ' ' }}">
+          {{ section.settings.tel_label }} <i aria-hidden="true">&rarr;</i>
+        </a>
+      {%- endif -%}
+    </aside>
+  </div>
+</section>
+
+{% stylesheet %}
+  .vpr {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--vpr-bg) 0%, var(--vpr-sand) 100%);
+    color: var(--vpr-ink);
+    padding: 8px 20px 92px;
+    font-family: var(--font-body-family, "Jost", system-ui, sans-serif);
+  }
+  .vpr__grain {
+    position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background-image: radial-gradient(rgba(196,153,52,.055) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+
+  .vpr__eyebrow {
+    margin: 0 0 14px;
+    font-size: 11px; letter-spacing: .26em; text-transform: uppercase;
+    color: var(--vpr-accent); font-weight: 600;
+  }
+  .vpr__h2 {
+    margin: 0 0 12px;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-weight: 400;
+    font-size: clamp(26px, 3.2vw, 40px);
+    line-height: 1.16; letter-spacing: -.015em;
+    text-wrap: balance;
+  }
+  .vpr__sub {
+    margin: 0 auto 38px; max-width: 62ch;
+    font-size: 16px; line-height: 1.7; color: var(--vpr-ink); opacity: .62;
+    text-wrap: pretty;
+  }
+  .vpr__sub--left { margin-left: 0; margin-right: 0; }
+  .vpr__h2--left { text-align: left; }
+
+  /* — Avantages — */
+  .vpr__band { position: relative; max-width: 1200px; margin: 0 auto; text-align: center; padding-top: 26px; }
+  .vpr__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; text-align: left; }
+  .vpr__card {
+    padding: 26px 24px 24px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.76);
+    border: 1px solid rgba(196,153,52,.15);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .vpr__card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(196,153,52,.14); }
+  .vpr__ic {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 46px; height: 46px; border-radius: 14px; margin-bottom: 16px;
+    color: var(--vpr-accent);
+    background: rgba(180,201,190,.26);
+    border: 1px solid rgba(196,153,52,.16);
+  }
+  .vpr__ic svg { width: 22px; height: 22px; }
+  .vpr__card h3 { margin: 0 0 8px; font-size: 17px; font-weight: 600; letter-spacing: -.01em; }
+  .vpr__card p { margin: 0; font-size: 14.5px; line-height: 1.65; opacity: .66; }
+
+  /* — Chiffres — */
+  .vpr__stats {
+    position: relative; max-width: 1200px; margin: 64px auto 0;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    padding: 30px 24px; border-radius: 22px;
+    background: linear-gradient(150deg, #B4C9BE 0%, #A2BBAE 100%);
+    color: #fff;
+  }
+  .vpr__stats div { text-align: center; }
+  .vpr__stats strong {
+    display: block;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-weight: 400; font-size: clamp(26px, 3vw, 38px); line-height: 1.1;
+  }
+  .vpr__stats span { display: block; margin-top: 6px; font-size: 12.5px; letter-spacing: .06em; opacity: .86; }
+
+  /* — Étapes — */
+  .vpr__steps-wrap { position: relative; max-width: 1200px; margin: 72px auto 0; }
+  .vpr__steps { list-style: none; margin: 26px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .vpr__steps li { display: flex; gap: 16px; align-items: flex-start; }
+  .vpr__num {
+    flex: none; width: 38px; height: 38px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-heading-family, Georgia, serif); font-size: 16px;
+    color: var(--vpr-accent);
+    background: #fff; border: 1px solid rgba(196,153,52,.24);
+  }
+  .vpr__steps h3 { margin: 6px 0 6px; font-size: 17px; font-weight: 600; }
+  .vpr__steps p { margin: 0; font-size: 14.5px; line-height: 1.65; opacity: .66; }
+
+  /* — Formulaire — */
+  .vpr__form-wrap {
+    position: relative; max-width: 1200px; margin: 76px auto 0;
+    display: grid; grid-template-columns: 1.5fr .85fr; gap: 22px; align-items: start;
+  }
+  .vpr__form-card {
+    padding: 38px 38px 32px; border-radius: 26px;
+    background: linear-gradient(160deg, rgba(255,255,255,.96) 0%, rgba(252,248,242,.93) 100%);
+    border: 1px solid rgba(196,153,52,.16);
+    box-shadow: 0 30px 64px rgba(196,153,52,.15);
+  }
+  .vpr__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .vpr__field { display: block; }
+  .vpr__field span {
+    display: block; margin-bottom: 8px;
+    font-size: 11.5px; text-transform: uppercase; letter-spacing: .12em;
+    font-weight: 600; color: #739182;
+  }
+  .vpr__field input, .vpr__field select, .vpr__field textarea {
+    width: 100%; box-sizing: border-box; padding: 14px 16px;
+    border-radius: 12px; border: 1px solid rgba(196,153,52,.2);
+    background: #fff; color: var(--vpr-ink); font-size: 15px; font-family: inherit;
+    transition: border-color .25s ease, box-shadow .25s ease;
+  }
+  .vpr__field textarea { resize: vertical; min-height: 118px; }
+  .vpr__field input:focus, .vpr__field select:focus, .vpr__field textarea:focus {
+    outline: none; border-color: var(--vpr-accent);
+    box-shadow: 0 0 0 4px rgba(180,201,190,.35);
+  }
+  .vpr__field--full { margin-bottom: 20px; }
+  .vpr__submit {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 34px; border: 0; border-radius: 999px;
+    background: #B4C9BE; color: #292F2C;
+    font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    font-family: inherit; cursor: pointer;
+    transition: transform .22s ease, filter .22s ease;
+  }
+  .vpr__submit i { font-style: normal; transition: transform .3s ease; }
+  .vpr__submit:hover { transform: translateY(-2px); filter: brightness(.97); }
+  .vpr__submit:hover i { transform: translateX(5px); }
+  .vpr__note { margin: 16px 0 0; font-size: 12.5px; line-height: 1.6; color: #739182; }
+  .vpr__ok, .vpr__err { padding: 14px 18px; border-radius: 12px; font-size: 14.5px; margin: 0 0 18px; }
+  .vpr__ok { background: #eef7ef; border: 1px solid #cfe6d3; color: #2f6b3c; }
+  .vpr__err { background: #fdf1ee; border: 1px solid #D6E5DE; color: #A7822C; }
+
+  /* — Aside — */
+  .vpr__aside { display: flex; flex-direction: column; gap: 12px; }
+  .vpr__aside-card {
+    padding: 22px 24px; border-radius: 20px;
+    background: rgba(255,255,255,.74);
+    border: 1px solid rgba(196,153,52,.14);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  }
+  .vpr__aside-k {
+    margin: 0 0 8px; font-size: 11px; text-transform: uppercase;
+    letter-spacing: .14em; font-weight: 600; color: var(--vpr-accent);
+  }
+  .vpr__aside-v { margin: 0; font-size: 14.5px; line-height: 1.65; opacity: .78; }
+  .vpr__aside-link {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 4px;
+    padding: 16px 22px; border-radius: 14px;
+    border: 1px dashed rgba(196,153,52,.34);
+    color: var(--vpr-ink); text-decoration: none; font-size: 14px; font-weight: 600;
+    transition: background .25s ease, transform .25s ease;
+  }
+  .vpr__aside-link i { font-style: normal; transition: transform .3s ease; }
+  .vpr__aside-link:hover { background: rgba(255,255,255,.7); transform: translateY(-2px); }
+  .vpr__aside-link:hover i { transform: translateX(5px); }
+
+  @media (max-width: 1000px) {
+    .vpr__grid { grid-template-columns: repeat(2, 1fr); }
+    .vpr__steps { grid-template-columns: 1fr; gap: 22px; }
+    .vpr__form-wrap { grid-template-columns: 1fr; }
+    .vpr__form-card { padding: 28px 22px 24px; border-radius: 22px; }
+  }
+  @media (max-width: 620px) {
+    .vpr { padding-bottom: 64px; }
+    .vpr__grid { grid-template-columns: 1fr; }
+    .vpr__stats { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; padding: 26px 18px; }
+    .vpr__row { grid-template-columns: 1fr; gap: 14px; }
+    .vpr__steps-wrap, .vpr__form-wrap { margin-top: 54px; }
+    .vpr__stats { margin-top: 48px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vpr__card { transition: none !important; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Zensea Espace pro",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Avantages"
+    },
+    {
+      "type": "text",
+      "id": "avantages_eyebrow",
+      "label": "Sur-titre",
+      "default": "Compte professionnel"
+    },
+    {
+      "type": "text",
+      "id": "avantages_titre",
+      "label": "Titre",
+      "default": "Vos chantiers méritent mieux qu'un panier classique."
+    },
+    {
+      "type": "textarea",
+      "id": "avantages_sub",
+      "label": "Sous-titre",
+      "default": "Architectes, décorateurs, hôteliers, restaurateurs, électriciens : un compte dédié, des tarifs adaptés au volume, et quelqu'un qui connaît vos contraintes de chantier."
+    },
+    {
+      "type": "header",
+      "content": "Chiffres"
+    },
+    {
+      "type": "text",
+      "id": "chiffre_1",
+      "label": "Chiffre 1",
+      "default": "-15 %"
+    },
+    {
+      "type": "text",
+      "id": "chiffre_1_txt",
+      "label": "Légende 1",
+      "default": "dès le premier euro"
+    },
+    {
+      "type": "text",
+      "id": "chiffre_2",
+      "label": "Chiffre 2",
+      "default": "48 h"
+    },
+    {
+      "type": "text",
+      "id": "chiffre_2_txt",
+      "label": "Légende 2",
+      "default": "pour un devis chiffré"
+    },
+    {
+      "type": "text",
+      "id": "chiffre_3",
+      "label": "Chiffre 3",
+      "default": "600+"
+    },
+    {
+      "type": "text",
+      "id": "chiffre_3_txt",
+      "label": "Légende 3",
+      "default": "références disponibles"
+    },
+    {
+      "type": "text",
+      "id": "chiffre_4",
+      "label": "Chiffre 4",
+      "default": "24 mois"
+    },
+    {
+      "type": "text",
+      "id": "chiffre_4_txt",
+      "label": "Légende 4",
+      "default": "de garantie incluse"
+    },
+    {
+      "type": "header",
+      "content": "Étapes"
+    },
+    {
+      "type": "text",
+      "id": "etapes_titre",
+      "label": "Titre",
+      "default": "Comment ça se passe"
+    },
+    {
+      "type": "header",
+      "content": "Formulaire"
+    },
+    {
+      "type": "text",
+      "id": "form_eyebrow",
+      "label": "Sur-titre",
+      "default": "Ouvrir un compte"
+    },
+    {
+      "type": "text",
+      "id": "form_titre",
+      "label": "Titre",
+      "default": "Dites-nous qui vous êtes."
+    },
+    {
+      "type": "textarea",
+      "id": "form_texte",
+      "label": "Texte",
+      "default": "On vérifie votre SIRET, on active votre compte et on vous envoie votre grille tarifaire. Sans engagement, sans abonnement."
+    },
+    {
+      "type": "text",
+      "id": "metiers",
+      "label": "Activités (virgules)",
+      "default": "Architecte d'intérieur, Décorateur, Hôtellerie, Restauration, Électricien, Promoteur / constructeur, Commerce, Autre"
+    },
+    {
+      "type": "text",
+      "id": "volumes",
+      "label": "Volumes (virgules)",
+      "default": "Moins de 5 000 €, 5 000 à 20 000 €, 20 000 à 50 000 €, Plus de 50 000 €, Je ne sais pas encore"
+    },
+    {
+      "type": "textarea",
+      "id": "form_exemple",
+      "label": "Exemple de message",
+      "default": "Un restaurant de 90 couverts à équiper en octobre : 12 tongue drums au-dessus des tables, 6 ocarinas en salle…"
+    },
+    {
+      "type": "text",
+      "id": "form_btn",
+      "label": "Bouton",
+      "default": "Demander mon compte pro"
+    },
+    {
+      "type": "textarea",
+      "id": "form_note",
+      "label": "Note",
+      "default": "Vos informations servent uniquement à ouvrir votre compte. Aucune revente, aucune inscription automatique."
+    },
+    {
+      "type": "textarea",
+      "id": "form_ok",
+      "label": "Message de succès",
+      "default": "Demande reçue. Nous revenons vers vous sous 48 h ouvrées avec votre grille tarifaire."
+    },
+    {
+      "type": "textarea",
+      "id": "form_err",
+      "label": "Message d'erreur",
+      "default": "Un champ semble incomplet. Vérifiez votre e-mail et votre SIRET, puis renvoyez."
+    },
+    {
+      "type": "text",
+      "id": "tel_label",
+      "label": "Libellé téléphone",
+      "default": "Parler à quelqu'un maintenant"
+    },
+    {
+      "type": "text",
+      "id": "tel",
+      "label": "Téléphone",
+      "default": "+33 7 56 88 21 12"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Fond haut",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "sand",
+      "label": "Fond bas",
+      "default": "#E8F0EC"
+    },
+    {
+      "type": "color",
+      "id": "ink",
+      "label": "Texte",
+      "default": "#292F2C"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent",
+      "default": "#C49934"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "avantage",
+      "name": "Avantage",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icone",
+          "label": "Icône",
+          "default": "remise",
+          "options": [
+            {
+              "value": "remise",
+              "label": "Remise"
+            },
+            {
+              "value": "devis",
+              "label": "Devis"
+            },
+            {
+              "value": "stock",
+              "label": "Stock"
+            },
+            {
+              "value": "contact",
+              "label": "Interlocuteur"
+            },
+            {
+              "value": "paiement",
+              "label": "Paiement"
+            },
+            {
+              "value": "etoile",
+              "label": "Étoile"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "titre",
+          "label": "Titre",
+          "default": "Votre avantage"
+        },
+        {
+          "type": "textarea",
+          "id": "texte",
+          "label": "Texte",
+          "default": "Décrivez-le en une phrase."
+        }
+      ]
+    },
+    {
+      "type": "etape",
+      "name": "Étape",
+      "settings": [
+        {
+          "type": "text",
+          "id": "titre",
+          "label": "Titre",
+          "default": "Votre étape"
+        },
+        {
+          "type": "textarea",
+          "id": "texte",
+          "label": "Texte",
+          "default": "Décrivez-la en une phrase."
+        }
+      ]
+    },
+    {
+      "type": "repere",
+      "name": "Repère (colonne)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "titre",
+          "label": "Titre",
+          "default": "Votre repère"
+        },
+        {
+          "type": "textarea",
+          "id": "texte",
+          "label": "Texte",
+          "default": "Une information utile."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zensea Espace pro",
+      "blocks": [
+        {
+          "type": "avantage"
+        },
+        {
+          "type": "avantage"
+        },
+        {
+          "type": "avantage"
+        },
+        {
+          "type": "avantage"
+        },
+        {
+          "type": "etape"
+        },
+        {
+          "type": "etape"
+        },
+        {
+          "type": "etape"
+        },
+        {
+          "type": "repere"
+        },
+        {
+          "type": "repere"
+        },
+        {
+          "type": "repere"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

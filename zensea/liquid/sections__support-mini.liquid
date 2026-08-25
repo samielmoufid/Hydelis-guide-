@@ -1,0 +1,551 @@
+
+{% comment %} collection-help-whatsapp.liquid {% endcomment %}
+
+{%- liquid
+  assign s = section.settings
+  assign section_id = section.id
+  assign button_url = s.whatsapp_link | default: '#'
+  assign mobile_btn_text = s.btn_text_mobile | default: s.btn_text
+-%}
+
+<style>
+  #shopify-section-{{ section_id }} .hyd-whatsapp-help-wrapper {
+    width: 100%;
+    max-width: {{ s.max_width }}px;
+    margin: 0 auto;
+    padding: {{ s.padding_top_mobile }}px {{ s.padding_sides_mobile }}px {{ s.padding_bottom_mobile }}px;
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section_id }} .hyd-whatsapp-help-banner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: {{ s.bg_color }};
+    border: {{ s.border_width }}px solid {{ s.border_color }};
+    border-radius: {{ s.border_radius }}px;
+    padding: {{ s.inner_padding_y_desktop }}px {{ s.inner_padding_x_desktop }}px;
+    box-sizing: border-box;
+  }
+
+  #shopify-section-{{ section_id }} .hyd-whatsapp-help-icon {
+    flex: 0 0 auto;
+    width: {{ s.icon_size_desktop }}px;
+    height: {{ s.icon_size_desktop }}px;
+    border-radius: 999px;
+    background: {{ s.primary_color }}1F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section_id }} .hyd-whatsapp-help-icon svg {
+    width: calc({{ s.icon_size_desktop }}px * 0.48);
+    height: calc({{ s.icon_size_desktop }}px * 0.48);
+    color: {{ s.primary_color }};
+    display: block;
+  }
+
+  #shopify-section-{{ section_id }} .hyd-whatsapp-help-content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section_id }} .hyd-whatsapp-help-title {
+    margin: 0 0 6px 0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: {{ s.title_size_desktop }}px;
+    line-height: 1.18;
+    font-weight: 700;
+    color: {{ s.title_color }};
+    letter-spacing: -0.02em;
+  }
+
+  #shopify-section-{{ section_id }} .hyd-whatsapp-help-desc {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: {{ s.desc_size_desktop }}px;
+    line-height: 1.45;
+    font-weight: 400;
+    color: {{ s.desc_color }};
+  }
+
+  #shopify-section-{{ section_id }} .hyd-whatsapp-help-btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 28px;
+    border-radius: 999px;
+    background: {{ s.primary_color }};
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: {{ s.button_size_desktop }}px;
+    line-height: 1;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px {{ s.primary_color }}3B;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  }
+
+  #shopify-section-{{ section_id }} .hyd-whatsapp-help-btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.96);
+    box-shadow: 0 12px 24px {{ s.primary_color }}4A;
+  }
+
+  @media screen and (min-width: 768px) {
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-wrapper {
+      padding: {{ s.padding_top_desktop }}px {{ s.padding_sides_desktop }}px {{ s.padding_bottom_desktop }}px;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-btn .desktop-text {
+      display: inline;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-btn .mobile-text {
+      display: none;
+    }
+  }
+
+  /* MOBILE PROPRE ET FULL LISIBLE */
+  @media screen and (max-width: 767px) {
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-wrapper {
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-banner {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas:
+        "icon content"
+        "button button";
+      align-items: start;
+      column-gap: 14px;
+      row-gap: 14px;
+      padding: {{ s.inner_padding_y_mobile }}px {{ s.inner_padding_x_mobile }}px;
+      border-radius: {{ s.border_radius_mobile }}px;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-icon {
+      grid-area: icon;
+      width: {{ s.icon_size_mobile }}px;
+      height: {{ s.icon_size_mobile }}px;
+      margin-top: 2px;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-icon svg {
+      width: calc({{ s.icon_size_mobile }}px * 0.48);
+      height: calc({{ s.icon_size_mobile }}px * 0.48);
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-content {
+      grid-area: content;
+      min-width: 0;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-title {
+      font-size: {{ s.title_size_mobile }}px;
+      line-height: 1.13;
+      margin: 0 0 7px 0;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+      display: block;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-desc {
+      font-size: {{ s.desc_size_mobile }}px;
+      line-height: 1.35;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+      display: block;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-btn {
+      grid-area: button;
+      width: 100%;
+      min-height: 48px;
+      padding: 0 18px;
+      font-size: {{ s.button_size_mobile }}px;
+      box-shadow: 0 7px 16px {{ s.primary_color }}38;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-btn .desktop-text {
+      display: none;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-btn .mobile-text {
+      display: inline;
+    }
+  }
+
+  @media screen and (max-width: 380px) {
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-banner {
+      column-gap: 11px;
+      row-gap: 12px;
+      padding: 17px 16px;
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-title {
+      font-size: calc({{ s.title_size_mobile }}px - 1px);
+    }
+
+    #shopify-section-{{ section_id }} .hyd-whatsapp-help-desc {
+      font-size: calc({{ s.desc_size_mobile }}px - 1px);
+    }
+  }
+</style>
+
+<div class="hyd-whatsapp-help-wrapper">
+  <div class="hyd-whatsapp-help-banner">
+    {%- if s.show_icon -%}
+      <div class="hyd-whatsapp-help-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4.75 5.25C4.75 4.83579 5.08579 4.5 5.5 4.5H18.5C18.9142 4.5 19.25 4.83579 19.25 5.25V14.25C19.25 14.6642 18.9142 15 18.5 15H9.05L4.75 18.7V5.25Z" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    {%- endif -%}
+
+    <div class="hyd-whatsapp-help-content">
+      <p class="hyd-whatsapp-help-title">{{ s.title | escape }}</p>
+      <p class="hyd-whatsapp-help-desc">{{ s.description | escape }}</p>
+    </div>
+
+    <a
+      href="{{ button_url }}"
+      class="hyd-whatsapp-help-btn"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="{{ s.btn_text | escape }}"
+    >
+      <span class="desktop-text">{{ s.btn_text | escape }}</span>
+      <span class="mobile-text">{{ mobile_btn_text | escape }}</span>
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Aide WhatsApp collection",
+  "tag": "section",
+  "class": "section-hyd-whatsapp-help",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Besoin d'aide pour choisir le bon instrument ?"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Notre équipe vous aide à comparer les modèles et à trouver celui qui sublimera le mieux votre intérieur."
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Texte du bouton desktop",
+      "default": "Nous écrire sur WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "btn_text_mobile",
+      "label": "Texte du bouton mobile",
+      "default": "Nous écrire sur WhatsApp"
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_link",
+      "label": "Lien WhatsApp"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Afficher l'icône",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Couleur principale",
+      "default": "#51BFC3"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Fond de la bannière",
+      "default": "#F8F9FA"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Bordure",
+      "default": "#51BFC3"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#1C201E"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Couleur description",
+      "default": "#6B7280"
+    },
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Largeur maximale",
+      "min": 800,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Marge haut section desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Marge bas section desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_sides_desktop",
+      "label": "Marge côtés desktop",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "inner_padding_y_desktop",
+      "label": "Padding intérieur vertical desktop",
+      "min": 12,
+      "max": 70,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "inner_padding_x_desktop",
+      "label": "Padding intérieur horizontal desktop",
+      "min": 20,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Taille titre desktop",
+      "min": 16,
+      "max": 42,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "desc_size_desktop",
+      "label": "Taille description desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_size_desktop",
+      "label": "Taille texte bouton desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "icon_size_desktop",
+      "label": "Taille icône desktop",
+      "min": 40,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Marge haut section mobile",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Marge bas section mobile",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "padding_sides_mobile",
+      "label": "Marge côtés mobile",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "inner_padding_y_mobile",
+      "label": "Padding intérieur vertical mobile",
+      "min": 10,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "inner_padding_x_mobile",
+      "label": "Padding intérieur horizontal mobile",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Taille titre mobile",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 21
+    },
+    {
+      "type": "range",
+      "id": "desc_size_mobile",
+      "label": "Taille description mobile",
+      "min": 11,
+      "max": 17,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_size_mobile",
+      "label": "Taille texte bouton mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "icon_size_mobile",
+      "label": "Taille icône mobile",
+      "min": 34,
+      "max": 62,
+      "step": 2,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "border_radius_mobile",
+      "label": "Rayon coins mobile",
+      "min": 10,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "header",
+      "content": "Bordure"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Épaisseur bordure",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Rayon coins desktop",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Aide WhatsApp collection"
+    }
+  ]
+}
+{% endschema %}
+

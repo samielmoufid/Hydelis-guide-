@@ -1,0 +1,666 @@
+{% comment %}
+  Section : velluce-whatsapp-support-steps.liquid
+  Velluce – Support client whatsapp premium
+{% endcomment %}
+
+{%- assign primary_color = section.settings.primary_color -%}
+{%- assign bg_color = section.settings.bg_color -%}
+{%- assign title_size_desktop = section.settings.title_size_desktop -%}
+{%- assign title_size_mobile = section.settings.title_size_mobile -%}
+{%- assign padding_top = section.settings.padding_top -%}
+{%- assign padding_bottom = section.settings.padding_bottom -%}
+{%- assign padding_top_mobile = section.settings.padding_top_mobile -%}
+{%- assign padding_bottom_mobile = section.settings.padding_bottom_mobile -%}
+{%- assign max_width = section.settings.max_width -%}
+{%- assign bg_opacity = section.settings.bg_image_opacity | divided_by: 100.0 -%}
+
+<style>
+  #velluce-support-{{ section.id }} {
+    position: relative;
+    background-color: {{ bg_color }};
+    padding: {{ padding_top }}px 24px {{ padding_bottom }}px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  #velluce-support-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #velluce-support-{{ section.id }} .hws-bg-image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: {{ bg_opacity }};
+    filter: blur(4px);
+    transform: scale(1.05);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  #velluce-support-{{ section.id }} .hws-inner {
+    position: relative;
+    z-index: 1;
+    max-width: {{ max_width }}px;
+    margin: 0 auto;
+  }
+
+  #velluce-support-{{ section.id }} .hws-label {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    color: {{ primary_color }};
+    text-transform: uppercase;
+    margin: 0 0 14px;
+  }
+
+  #velluce-support-{{ section.id }} .hws-title {
+    text-align: center;
+    font-size: {{ title_size_desktop }}px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 500;
+    color: #161817;
+    line-height: 1.15;
+    margin: 0 0 18px;
+  }
+
+  #velluce-support-{{ section.id }} .hws-divider {
+    width: 58px;
+    height: 2px;
+    background: {{ primary_color }};
+    border-radius: 999px;
+    margin: 0 auto 54px;
+  }
+
+  #velluce-support-{{ section.id }} .hws-cards-wrapper {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 42px;
+  }
+
+  #velluce-support-{{ section.id }} .hws-card-col {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  #velluce-support-{{ section.id }} .hws-card {
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+    padding: 42px 28px 34px;
+    width: 100%;
+    min-height: 280px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  #velluce-support-{{ section.id }} .hws-card-number {
+    position: absolute;
+    top: -17px;
+    left: 22px;
+    background: {{ primary_color }};
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    padding: 7px 15px;
+    border-radius: 999px;
+    box-shadow: 0 8px 18px rgba(77, 191, 195, 0.25);
+  }
+
+  #velluce-support-{{ section.id }} .hws-icon-wrap {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: rgba(77, 191, 195, 0.11);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  #velluce-support-{{ section.id }} .hws-icon-wrap svg {
+    width: 40px;
+    height: 40px;
+    stroke: {{ primary_color }};
+    fill: none;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #velluce-support-{{ section.id }} .hws-card-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: #161817;
+    margin: 0 0 12px;
+    line-height: 1.2;
+  }
+
+  #velluce-support-{{ section.id }} .hws-card-line {
+    width: 38px;
+    height: 2px;
+    background: {{ primary_color }};
+    border-radius: 999px;
+    margin: 0 auto 15px;
+  }
+
+  #velluce-support-{{ section.id }} .hws-card-text {
+    font-size: 15px;
+    color: #606C66;
+    line-height: 1.55;
+    margin: 0;
+    max-width: 260px;
+  }
+
+  #velluce-support-{{ section.id }} .hws-connector {
+    flex: 0 0 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+  }
+
+  #velluce-support-{{ section.id }} .hws-connector-line {
+    width: 100%;
+    border-top: 2px dashed {{ primary_color }};
+    opacity: 0.55;
+  }
+
+  #velluce-support-{{ section.id }} .hws-cta {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1.5px solid {{ primary_color }};
+    border-radius: 24px;
+    padding: 28px 36px;
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    backdrop-filter: blur(4px);
+  }
+
+  #velluce-support-{{ section.id }} .hws-cta-icon {
+    flex-shrink: 0;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: rgba(77, 191, 195, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #velluce-support-{{ section.id }} .hws-cta-icon svg {
+    width: 36px;
+    height: 36px;
+    fill: {{ primary_color }};
+  }
+
+  #velluce-support-{{ section.id }} .hws-cta-text {
+    flex: 1;
+  }
+
+  #velluce-support-{{ section.id }} .hws-cta-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: #161817;
+    margin: 0 0 5px;
+    line-height: 1.25;
+  }
+
+  #velluce-support-{{ section.id }} .hws-cta-desc {
+    font-size: 15px;
+    color: #606C66;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  #velluce-support-{{ section.id }} .hws-cta-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: {{ primary_color }};
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 15px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  #velluce-support-{{ section.id }} .hws-cta-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: #ffffff;
+    flex-shrink: 0;
+  }
+
+  /* MOBILE : 3 BLOCS VISIBLES CÔTE À CÔTE */
+  @media (max-width: 768px) {
+    #velluce-support-{{ section.id }} {
+      padding: {{ padding_top_mobile }}px 12px {{ padding_bottom_mobile }}px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      margin-bottom: 10px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-title {
+      font-size: {{ title_size_mobile }}px;
+      line-height: 1.12;
+      margin-bottom: 12px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-divider {
+      width: 42px;
+      margin-bottom: 24px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-cards-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 22px;
+      overflow: visible;
+    }
+
+    #velluce-support-{{ section.id }} .hws-card-col {
+      width: 100%;
+      min-width: 0;
+      display: block;
+    }
+
+    #velluce-support-{{ section.id }} .hws-connector {
+      display: none;
+    }
+
+    #velluce-support-{{ section.id }} .hws-card {
+      min-height: 168px;
+      height: 100%;
+      border-radius: 16px;
+      padding: 22px 7px 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    #velluce-support-{{ section.id }} .hws-card-number {
+      top: -12px;
+      left: 8px;
+      font-size: 9px;
+      padding: 4px 8px;
+      letter-spacing: 0.08em;
+    }
+
+    #velluce-support-{{ section.id }} .hws-icon-wrap {
+      width: 42px;
+      height: 42px;
+      margin-bottom: 12px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-icon-wrap svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.8;
+    }
+
+    #velluce-support-{{ section.id }} .hws-card-title {
+      font-size: 13px;
+      line-height: 1.15;
+      margin-bottom: 7px;
+      min-height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #velluce-support-{{ section.id }} .hws-card-line {
+      width: 24px;
+      height: 2px;
+      margin-bottom: 7px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-card-text {
+      font-size: 10.5px;
+      line-height: 1.25;
+      max-width: 100%;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    #velluce-support-{{ section.id }} .hws-cta {
+      flex-direction: column;
+      text-align: center;
+      padding: 22px 16px;
+      gap: 14px;
+      border-radius: 20px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-cta-icon {
+      width: 58px;
+      height: 58px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-cta-icon svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-cta-title {
+      font-size: 20px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-cta-desc {
+      font-size: 13px;
+    }
+
+    #velluce-support-{{ section.id }} .hws-cta-btn {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 14px;
+    }
+  }
+</style>
+
+<section id="velluce-support-{{ section.id }}">
+
+  {%- if section.settings.bg_image != blank -%}
+    <div class="hws-bg-image" style="background-image: url('{{ section.settings.bg_image | image_url: width: 1600 }}');"></div>
+  {%- endif -%}
+
+  <div class="hws-inner">
+    <p class="hws-label">{{ section.settings.label_text }}</p>
+    <h2 class="hws-title">{{ section.settings.title }}</h2>
+    <div class="hws-divider"></div>
+
+    <div class="hws-cards-wrapper">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'step_card' -%}
+          {%- assign card_index = forloop.index -%}
+
+          {%- unless forloop.first -%}
+            <div class="hws-connector">
+              <div class="hws-connector-line"></div>
+            </div>
+          {%- endunless -%}
+
+          <div class="hws-card-col" {{ block.shopify_attributes }}>
+            <div class="hws-card">
+              <span class="hws-card-number">0{{ card_index }}</span>
+
+              <div class="hws-icon-wrap">
+                {%- if card_index == 1 -%}
+                  <svg viewBox="0 0 24 24">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                {%- elsif card_index == 2 -%}
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  </svg>
+                {%- elsif card_index == 3 -%}
+                  <svg viewBox="0 0 24 24">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                    <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    <polyline points="9 11 12 14 16 9"/>
+                  </svg>
+                {%- endif -%}
+              </div>
+
+              <h3 class="hws-card-title">{{ block.settings.card_title }}</h3>
+              <div class="hws-card-line"></div>
+              <p class="hws-card-text">{{ block.settings.card_text }}</p>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="hws-cta">
+      <div class="hws-cta-icon">
+        <svg viewBox="0 0 32 32">
+          <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.668 4.61 1.832 6.5L4 29l7.75-1.813A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3z"/>
+        </svg>
+      </div>
+
+      <div class="hws-cta-text">
+        <p class="hws-cta-title">{{ section.settings.cta_title }}</p>
+        <p class="hws-cta-desc">{{ section.settings.cta_desc }}</p>
+      </div>
+
+      <a href="{{ section.settings.whatsapp_link }}" target="_blank" rel="noopener" class="hws-cta-btn">
+        {{ section.settings.whatsapp_btn_text }}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Étapes support",
+  "tag": "section",
+  "class": "velluce-whatsapp-support",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Textes principaux"
+    },
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Label supérieur",
+      "default": "AVANT • PENDANT • APRÈS"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre principal",
+      "default": "On vous aide à chaque étape"
+    },
+    {
+      "type": "header",
+      "content": "Bandeau whatsapp"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "Titre du bandeau",
+      "default": "Besoin d'un accompagnement humain ?"
+    },
+    {
+      "type": "text",
+      "id": "cta_desc",
+      "label": "Description du bandeau",
+      "default": "Notre équipe est là pour vous, rapidement et avec bienveillance."
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_link",
+      "label": "Lien whatsapp"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_btn_text",
+      "label": "Texte du bouton whatsapp",
+      "default": "Nous écrire sur whatsapp"
+    },
+    {
+      "type": "header",
+      "content": "Arrière-plan"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Image de fond optionnelle"
+    },
+    {
+      "type": "range",
+      "id": "bg_image_opacity",
+      "label": "Opacité de l'image de fond",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 10,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Couleur principale",
+      "default": "#4DBFC3"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur de fond",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "header",
+      "content": "Typographie"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Taille du titre desktop",
+      "min": 28,
+      "max": 72,
+      "step": 2,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Taille du titre mobile",
+      "min": 20,
+      "max": 42,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Espacement"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding haut desktop",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bas desktop",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding haut mobile",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bas mobile",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Largeur maximale",
+      "min": 800,
+      "max": 1400,
+      "step": 40,
+      "default": 1200,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step_card",
+      "name": "Étape",
+      "settings": [
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "Titre de la carte",
+          "default": "Avant l'achat"
+        },
+        {
+          "type": "textarea",
+          "id": "card_text",
+          "label": "Texte de la carte",
+          "default": "Nos experts lumière vous conseillent pour bien choisir."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Support whatsapp Steps",
+      "blocks": [
+        {
+          "type": "step_card",
+          "settings": {
+            "card_title": "Avant l'achat",
+            "card_text": "Nos experts lumière vous conseillent pour bien choisir."
+          }
+        },
+        {
+          "type": "step_card",
+          "settings": {
+            "card_title": "Pendant la commande",
+            "card_text": "Nous vous tenons informé à chaque étape."
+          }
+        },
+        {
+          "type": "step_card",
+          "settings": {
+            "card_title": "Après la livraison",
+            "card_text": "Nous restons à vos côtés, jusqu'à la pose de votre luminaire."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

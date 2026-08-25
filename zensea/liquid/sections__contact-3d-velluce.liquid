@@ -1,0 +1,1090 @@
+{% comment %}
+  Contact Velluce — page contact sur mesure, DA beige, profondeur 3D.
+  Aucune dépendance externe. Animations désactivées si prefers-reduced-motion.
+{% endcomment %}
+
+{%- liquid
+  assign wa_digits = section.settings.whatsapp | remove: ' ' | remove: '+' | remove: '.' | remove: '-'
+  assign mail = section.settings.email
+-%}
+
+<section
+  class="v3d"
+  id="v3d-{{ section.id }}"
+  style="
+    --v3d-bg: {{ section.settings.bg }};
+    --v3d-sand: {{ section.settings.sand }};
+    --v3d-ink: {{ section.settings.ink }};
+    --v3d-accent: {{ section.settings.accent }};
+    --v3d-glow: {{ section.settings.glow }};
+  "
+>
+  <div class="v3d__grain" aria-hidden="true"></div>
+
+  <!-- ══════════ HERO ══════════ -->
+  <header class="v3d__hero">
+    <div class="v3d__hero-copy">
+      <p class="v3d__eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1 class="v3d__h1">{{ section.settings.heading }}</h1>
+      <p class="v3d__lead">{{ section.settings.subheading }}</p>
+
+      <div class="v3d__pulse">
+        <span class="v3d__dot" aria-hidden="true"></span>
+        {{ section.settings.status_text }}
+      </div>
+    </div>
+
+    <div class="v3d__stage" aria-hidden="true">
+      <div class="v3d__orbit">
+        <div class="v3d__halo"></div>
+        <model-viewer
+          class="v3d__mv"
+          src="{{ section.settings.model_url }}"
+          alt=""
+          auto-rotate
+          auto-rotate-delay="0"
+          rotation-per-second="16deg"
+          camera-orbit="18deg 80deg 0.46m"
+          camera-target="0m -0.045m 0m"
+          field-of-view="28deg"
+          disable-zoom
+          disable-pan
+          disable-tap
+          interaction-prompt="none"
+          exposure="1.15"
+          shadow-intensity="0"
+          loading="lazy"
+          reveal="auto"
+        ></model-viewer>
+        <div class="v3d__ring v3d__ring--1"></div>
+        <div class="v3d__ring v3d__ring--2"></div>
+        <div class="v3d__ring v3d__ring--3"></div>
+        <div class="v3d__floor"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════ CANAUX ══════════ -->
+  <div class="v3d__channels">
+    <a
+      class="v3d__card v3d__card--wa"
+      href="https://wa.me/{{ wa_digits }}"
+      target="_blank"
+      rel="noopener"
+      data-tilt
+    >
+      <div class="v3d__card-in">
+        <span class="v3d__badge">{{ section.settings.wa_badge }}</span>
+        <span class="v3d__ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.8-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.7-1.7-.9-2.3-.2-.5-.4-.5-.6-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 1.6 2.7 4.1 3.7 2.1.9 2.5.7 3 .7.5 0 1.6-.6 1.8-1.3.2-.6.2-1.2.2-1.3-.1-.2-.2-.2-.4-.4zM12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 4.9L2 22l5.2-1.3c1.4.8 3 1.2 4.8 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>
+        </span>
+        <strong>{{ section.settings.wa_title }}</strong>
+        <em>{{ section.settings.wa_text }}</em>
+        <span class="v3d__cta">{{ section.settings.wa_cta }} <i aria-hidden="true">&rarr;</i></span>
+      </div>
+    </a>
+
+    <a class="v3d__card v3d__card--mail" href="mailto:{{ mail }}" data-tilt>
+      <div class="v3d__card-in">
+        <span class="v3d__badge">{{ section.settings.mail_badge }}</span>
+        <span class="v3d__ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6.5l9 6.5 9-6.5"/></svg>
+        </span>
+        <strong>{{ mail }}</strong>
+        <em>{{ section.settings.mail_text }}</em>
+        <span class="v3d__cta">{{ section.settings.mail_cta }} <i aria-hidden="true">&rarr;</i></span>
+      </div>
+    </a>
+  </div>
+
+  <!-- ══════════ CE QU'ON FAIT POUR VOUS ══════════ -->
+  <div class="v3d__help">
+    <h2 class="v3d__h2">{{ section.settings.help_heading }}</h2>
+    <p class="v3d__h2sub">{{ section.settings.help_sub }}</p>
+    <div class="v3d__help-grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'help' -%}
+          <div class="v3d__help-card" {{ block.shopify_attributes }}>
+            <span class="v3d__num">{{ forloop.index }}</span>
+            <strong>{{ block.settings.title }}</strong>
+            <p>{{ block.settings.text }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <!-- ══════════ FORMULAIRE ══════════ -->
+  <div class="v3d__form-wrap" id="v3d-form">
+    <div class="v3d__form-card" data-tilt-soft>
+      <div class="v3d__form-head">
+        <p class="v3d__eyebrow v3d__eyebrow--dark">{{ section.settings.form_eyebrow }}</p>
+        <h2>{{ section.settings.form_heading }}</h2>
+        <p>{{ section.settings.form_text }}</p>
+      </div>
+
+      {%- form 'contact', class: 'v3d__form' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="v3d__ok">{{ section.settings.form_success }}</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="v3d__err">{{ section.settings.form_error }}</p>
+        {%- endif -%}
+
+        <div class="v3d__row">
+          <label class="v3d__field">
+            <span>{{ section.settings.l_name }}</span>
+            <input type="text" name="contact[name]" placeholder="{{ section.settings.p_name }}" required>
+          </label>
+          <label class="v3d__field">
+            <span>{{ section.settings.l_email }}</span>
+            <input type="email" name="contact[email]" placeholder="{{ section.settings.p_email }}" required>
+          </label>
+        </div>
+
+        <div class="v3d__row">
+          <label class="v3d__field">
+            <span>{{ section.settings.l_subject }}</span>
+            <select name="contact[Sujet]">
+              {%- assign subs = section.settings.subjects | split: ',' -%}
+              {%- for s in subs -%}
+                <option value="{{ s | strip }}">{{ s | strip }}</option>
+              {%- endfor -%}
+            </select>
+          </label>
+          <label class="v3d__field">
+            <span>{{ section.settings.l_order }}</span>
+            <input type="text" name="contact[Commande]" placeholder="{{ section.settings.p_order }}">
+          </label>
+        </div>
+
+        <label class="v3d__field v3d__field--full">
+          <span>{{ section.settings.l_msg }}</span>
+          <textarea name="contact[body]" rows="6" placeholder="{{ section.settings.p_msg }}" required></textarea>
+        </label>
+
+        <button type="submit" class="v3d__submit">
+          <span>{{ section.settings.form_btn }}</span>
+          <i aria-hidden="true">&rarr;</i>
+        </button>
+
+        <p class="v3d__note">{{ section.settings.form_note }}</p>
+      {%- endform -%}
+    </div>
+
+    <aside class="v3d__side">
+      <div class="v3d__side-card">
+        <p class="v3d__side-k">{{ section.settings.hours_title }}</p>
+        <p class="v3d__side-v">{{ section.settings.hours_value }}</p>
+      </div>
+      <div class="v3d__side-card">
+        <p class="v3d__side-k">{{ section.settings.delay_title }}</p>
+        <p class="v3d__side-v">{{ section.settings.delay_value }}</p>
+      </div>
+      <div class="v3d__side-card v3d__side-card--accent">
+        <p class="v3d__side-k">{{ section.settings.tip_title }}</p>
+        <p class="v3d__side-v">{{ section.settings.tip_value }}</p>
+      </div>
+      <a class="v3d__side-link" href="{{ section.settings.faq_link }}">
+        {{ section.settings.faq_label }} <i aria-hidden="true">&rarr;</i>
+      </a>
+    </aside>
+  </div>
+</section>
+
+<style>
+  #v3d-{{ section.id }} .v3d__hero-copy { animation-delay: .05s; }
+</style>
+
+{% stylesheet %}
+  .v3d {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 80% at 78% 8%, var(--v3d-glow) 0%, rgba(255,255,255,0) 58%),
+      linear-gradient(180deg, var(--v3d-bg) 0%, var(--v3d-sand) 100%);
+    color: var(--v3d-ink);
+    padding: 0 20px 96px;
+    font-family: var(--font-body-family, "Jost", system-ui, sans-serif);
+  }
+
+  .v3d__grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .5;
+    background-image: radial-gradient(rgba(196,153,52,.055) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+
+  .v3d__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 2.6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--v3d-accent);
+    margin: 0 0 18px;
+  }
+
+  /* ── HERO ── */
+  .v3d__hero {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 84px 0 26px;
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .v3d__h1 {
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-weight: 400;
+    font-size: clamp(34px, 4.4vw, 60px);
+    line-height: 1.08;
+    letter-spacing: -1px;
+    margin: 0 0 20px;
+  }
+
+  .v3d__lead {
+    font-size: 17px;
+    line-height: 1.75;
+    color: #4D6258;
+    max-width: 520px;
+    margin: 0 0 26px;
+  }
+
+  .v3d__pulse {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(196,153,52,.18);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    font-size: 13.5px;
+    color: #305844;
+    box-shadow: 0 10px 26px rgba(196,153,52,.10);
+  }
+
+  .v3d__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #6cc07a;
+    box-shadow: 0 0 0 0 rgba(108,192,122,.55);
+    animation: v3dPulse 2.4s ease-out infinite;
+  }
+
+  @keyframes v3dPulse {
+    0% { box-shadow: 0 0 0 0 rgba(108,192,122,.5); }
+    70% { box-shadow: 0 0 0 12px rgba(108,192,122,0); }
+    100% { box-shadow: 0 0 0 0 rgba(108,192,122,0); }
+  }
+
+  /* ── SCÈNE 3D : ampoule suspendue ── */
+  .v3d__stage {
+    position: relative;
+    height: 430px;
+    perspective: 1000px;
+  }
+
+  .v3d__orbit {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(12deg) rotateY(-14deg);
+    animation: v3dFloat 7s ease-in-out infinite;
+  }
+
+  @keyframes v3dFloat {
+    0%, 100% { transform: rotateX(12deg) rotateY(-14deg) translateY(0); }
+    50% { transform: rotateX(10deg) rotateY(-10deg) translateY(-14px); }
+  }
+
+  .v3d__halo {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: 420px;
+    height: 420px;
+    margin: -210px 0 0 -210px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(242,219,173,.55) 0%, rgba(242,219,173,.16) 42%, rgba(242,219,173,0) 70%);
+    filter: blur(2px);
+  }
+
+  .v3d__mv {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: 330px;
+    height: 400px;
+    margin: -200px 0 0 -165px;
+    --poster-color: transparent;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .v3d__ring {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    border-radius: 50%;
+    border: 1px solid rgba(196,153,52,.2);
+    transform-style: preserve-3d;
+  }
+
+  .v3d__ring--1 { width: 300px; height: 300px; margin: -150px 0 0 -150px; transform: rotateX(74deg); }
+  .v3d__ring--2 { width: 400px; height: 400px; margin: -200px 0 0 -200px; transform: rotateX(74deg) translateZ(-38px); border-color: rgba(196,153,52,.13); }
+  .v3d__ring--3 { width: 210px; height: 210px; margin: -105px 0 0 -105px; transform: rotateX(74deg) translateZ(30px); border-color: rgba(196,153,52,.26); }
+
+  .v3d__floor {
+    position: absolute;
+    left: 50%;
+    top: 78%;
+    width: 320px;
+    height: 60px;
+    margin-left: -160px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(196,153,52,.22) 0%, rgba(196,153,52,0) 72%);
+    filter: blur(6px);
+  }
+
+  /* ── CANAUX ── */
+  .v3d__channels {
+    position: relative;
+    max-width: 1200px;
+    margin: 22px auto 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    perspective: 1200px;
+  }
+
+  .v3d__card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 24px;
+    transform-style: preserve-3d;
+    transition: transform .5s cubic-bezier(.2,.8,.2,1);
+    will-change: transform;
+  }
+
+  .v3d__card-in {
+    position: relative;
+    height: 100%;
+    padding: 30px 30px 26px;
+    border-radius: 24px;
+    background: linear-gradient(150deg, rgba(255,255,255,.94) 0%, rgba(252,247,240,.9) 100%);
+    border: 1px solid rgba(196,153,52,.16);
+    box-shadow: 0 18px 40px rgba(196,153,52,.13), inset 0 1px 0 rgba(255,255,255,.9);
+    transition: box-shadow .4s ease, border-color .4s ease;
+    transform: translateZ(0);
+  }
+
+  .v3d__card:hover .v3d__card-in {
+    box-shadow: 0 34px 70px rgba(196,153,52,.24), inset 0 1px 0 rgba(255,255,255,.95);
+    border-color: rgba(196,153,52,.34);
+  }
+
+  .v3d__badge {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--v3d-sand);
+    border: 1px solid rgba(196,153,52,.18);
+    font-size: 10.5px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--v3d-accent);
+  }
+
+  .v3d__ic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    color: #fff;
+    background: linear-gradient(145deg, #294B3A 0%, #292F2C 100%);
+    box-shadow: 0 14px 26px rgba(41,47,44,.28), inset 0 1px 0 rgba(255,255,255,.22);
+    transform: translateZ(28px);
+  }
+
+  .v3d__card--wa .v3d__ic { background: linear-gradient(145deg, #4fbe6a 0%, #25a244 100%); box-shadow: 0 14px 26px rgba(37,162,68,.3), inset 0 1px 0 rgba(255,255,255,.3); }
+
+  .v3d__card strong {
+    display: block;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-weight: 400;
+    font-size: 25px;
+    letter-spacing: -.3px;
+    margin-bottom: 8px;
+    transform: translateZ(18px);
+  }
+
+  .v3d__card em {
+    display: block;
+    font-style: normal;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #586F64;
+    margin-bottom: 18px;
+    transform: translateZ(10px);
+  }
+
+  .v3d__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: .3px;
+    color: var(--v3d-ink);
+    transform: translateZ(14px);
+  }
+
+  .v3d__cta i { transition: transform .3s ease; font-style: normal; }
+  .v3d__card:hover .v3d__cta i { transform: translateX(6px); }
+
+  /* ── AIDE ── */
+  .v3d__help { max-width: 1200px; margin: 76px auto 0; text-align: center; position: relative; }
+
+  .v3d__h2 {
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-weight: 400;
+    font-size: clamp(26px, 2.8vw, 36px);
+    line-height: 1.2;
+    margin: 0 0 12px;
+  }
+
+  .v3d__h2sub { font-size: 15.5px; line-height: 1.7; color: #586F64; margin: 0 auto 34px; max-width: 600px; }
+
+  .v3d__help-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: left; }
+
+  .v3d__help-card {
+    position: relative;
+    padding: 26px 24px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.7);
+    border: 1px solid rgba(196,153,52,.14);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+
+  .v3d__help-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(196,153,52,.14); }
+
+  .v3d__num {
+    display: block;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-size: 13px;
+    letter-spacing: 1.4px;
+    color: #B4C9BE;
+    margin-bottom: 14px;
+  }
+
+  .v3d__help-card strong { display: block; font-size: 17px; margin-bottom: 8px; letter-spacing: -.2px; }
+  .v3d__help-card p { font-size: 14.5px; line-height: 1.68; color: #586F64; margin: 0; }
+
+  /* ── FORMULAIRE ── */
+  .v3d__form-wrap {
+    max-width: 1200px;
+    margin: 76px auto 0;
+    display: grid;
+    grid-template-columns: 1.55fr .85fr;
+    gap: 22px;
+    align-items: start;
+    perspective: 1400px;
+  }
+
+  .v3d__form-card {
+    padding: 40px 40px 34px;
+    border-radius: 28px;
+    background: linear-gradient(160deg, rgba(255,255,255,.96) 0%, rgba(252,248,242,.92) 100%);
+    border: 1px solid rgba(196,153,52,.16);
+    box-shadow: 0 30px 64px rgba(196,153,52,.16), inset 0 1px 0 rgba(255,255,255,.95);
+    transform-style: preserve-3d;
+    transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .v3d__form-head { margin-bottom: 26px; }
+  .v3d__eyebrow--dark { color: var(--v3d-accent); }
+  .v3d__form-head h2 {
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-weight: 400;
+    font-size: clamp(24px, 2.4vw, 32px);
+    line-height: 1.22;
+    margin: 0 0 10px;
+  }
+  .v3d__form-head p { font-size: 15px; line-height: 1.7; color: #586F64; margin: 0; }
+
+  .v3d__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  .v3d__field { display: block; }
+  .v3d__field span {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    font-weight: 600;
+    color: #739182;
+    margin-bottom: 8px;
+  }
+
+  .v3d__field input,
+  .v3d__field select,
+  .v3d__field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(196,153,52,.2);
+    background: #fff;
+    color: var(--v3d-ink);
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+  }
+
+  .v3d__field textarea { resize: vertical; min-height: 130px; }
+
+  .v3d__field input:focus,
+  .v3d__field select:focus,
+  .v3d__field textarea:focus {
+    outline: none;
+    border-color: var(--v3d-accent);
+    box-shadow: 0 0 0 4px rgba(180,201,190,.35);
+    transform: translateY(-1px);
+  }
+
+  .v3d__field--full { margin-bottom: 20px; }
+
+  .v3d__submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 17px 38px;
+    border: 0;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #254435 0%, #292F2C 100%);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .3px;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 16px 30px rgba(41,47,44,.26), inset 0 1px 0 rgba(255,255,255,.2);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+
+  .v3d__submit i { font-style: normal; transition: transform .3s ease; }
+  .v3d__submit:hover { transform: translateY(-2px); box-shadow: 0 22px 40px rgba(41,47,44,.3), inset 0 1px 0 rgba(255,255,255,.24); }
+  .v3d__submit:hover i { transform: translateX(5px); }
+  .v3d__submit:active { transform: translateY(1px); box-shadow: 0 8px 18px rgba(41,47,44,.26); }
+
+  .v3d__note { font-size: 12.5px; line-height: 1.6; color: #739182; margin: 16px 0 0; }
+
+  .v3d__ok, .v3d__err {
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 14.5px;
+    margin: 0 0 18px;
+  }
+  .v3d__ok { background: #eef7ef; border: 1px solid #cfe6d3; color: #2f6b3c; }
+  .v3d__err { background: #fdf1ee; border: 1px solid #D6E5DE; color: #A7822C; }
+
+  /* ── ASIDE ── */
+  .v3d__side { display: flex; flex-direction: column; gap: 12px; }
+
+  .v3d__side-card {
+    padding: 22px 24px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(196,153,52,.14);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 12px 28px rgba(196,153,52,.09);
+  }
+
+  .v3d__side-card--accent {
+    background: linear-gradient(150deg, #B4C9BE 0%, #9EB9AC 100%);
+    border-color: rgba(196,153,52,.3);
+  }
+  .v3d__side-card--accent .v3d__side-k { color: rgba(41,47,44,.62); }
+  .v3d__side-card--accent .v3d__side-v { color: #292F2C; }
+
+  .v3d__side-k {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    font-weight: 600;
+    color: var(--v3d-accent);
+    margin: 0 0 8px;
+  }
+
+  .v3d__side-v { font-size: 15px; line-height: 1.65; color: #305844; margin: 0; }
+
+  .v3d__side-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 16px 22px;
+    border-radius: 14px;
+    border: 1px dashed rgba(196,153,52,.34);
+    color: var(--v3d-ink);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background .25s ease, transform .25s ease;
+  }
+  .v3d__side-link i { font-style: normal; transition: transform .3s ease; }
+  .v3d__side-link:hover { background: rgba(255,255,255,.7); transform: translateY(-2px); }
+  .v3d__side-link:hover i { transform: translateX(5px); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1000px) {
+    .v3d__hero { grid-template-columns: 1fr; padding-top: 62px; }
+    .v3d__stage { height: 330px; order: -1; }
+    .v3d__channels, .v3d__help-grid, .v3d__form-wrap { grid-template-columns: 1fr; }
+    .v3d__form-card { padding: 30px 22px 26px; border-radius: 22px; }
+  }
+
+  @media (max-width: 620px) {
+    .v3d { padding-bottom: 64px; }
+    .v3d__row { grid-template-columns: 1fr; gap: 14px; }
+    .v3d__stage { height: 270px; }
+    .v3d__halo { width: 300px; height: 300px; margin: -150px 0 0 -150px; }
+    .v3d__mv { width: 230px; height: 280px; margin: -140px 0 0 -115px; }
+    .v3d__ring--1 { width: 220px; height: 220px; margin: -110px 0 0 -110px; }
+    .v3d__ring--2 { width: 290px; height: 290px; margin: -145px 0 0 -145px; }
+    .v3d__ring--3 { width: 150px; height: 150px; margin: -75px 0 0 -75px; }
+    .v3d__card-in { padding: 24px 22px 22px; }
+    .v3d__help { margin-top: 56px; }
+    .v3d__form-wrap { margin-top: 56px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .v3d__orbit, .v3d__dot { animation: none !important; }
+    .v3d__card, .v3d__form-card, .v3d__help-card { transition: none !important; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var stage = document.querySelector('.v3d__stage');
+    if (!stage) return;
+    function loadViewer() {
+      if (!window.customElements || customElements.get('model-viewer')) return;
+      if (document.querySelector('script[data-v3d-lib]')) return;
+      var s = document.createElement('script');
+      s.type = 'module';
+      s.setAttribute('data-v3d-lib', '');
+      s.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js';
+      document.head.appendChild(s);
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries.some(function (e) { return e.isIntersecting; })) { loadViewer(); io.disconnect(); }
+      }, { rootMargin: '600px' });
+      io.observe(stage);
+    } else {
+      loadViewer();
+    }
+  })();
+
+  (function () {
+    var canHover = window.matchMedia('(hover: hover)').matches;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!canHover || reduce) return;
+
+    function bind(el, max) {
+      var frame = null;
+      el.addEventListener('pointermove', function (e) {
+        if (frame) return;
+        frame = requestAnimationFrame(function () {
+          frame = null;
+          var r = el.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width - 0.5;
+          var py = (e.clientY - r.top) / r.height - 0.5;
+          el.style.transform =
+            'rotateY(' + (px * max).toFixed(2) + 'deg) rotateX(' + (-py * max).toFixed(2) + 'deg) translateZ(0)';
+        });
+      });
+      el.addEventListener('pointerleave', function () {
+        el.style.transform = '';
+      });
+    }
+
+    document.querySelectorAll('[data-tilt]').forEach(function (el) { bind(el, 9); });
+    document.querySelectorAll('[data-tilt-soft]').forEach(function (el) { bind(el, 3); });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Contact 3D Zensea",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Coordonnées"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "E-mail affiché",
+      "default": "contact.zensea@gmail.com"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp",
+      "label": "Numéro WhatsApp (format international)",
+      "default": "+33 7 56 88 21 12"
+    },
+    {
+      "type": "header",
+      "content": "En-tête"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "Service client Zensea"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Parlons de votre pièce."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Accroche",
+      "default": "Une hauteur dont vous n'êtes pas sûr, un diamètre à valider, une photo de votre salon à nous montrer : écrivez-nous. Vous aurez une réponse d'une personne qui connaît nos instruments — pas un message automatique."
+    },
+    {
+      "type": "text",
+      "id": "status_text",
+      "label": "Badge de disponibilité",
+      "default": "Nous répondons aujourd'hui · 7j/7, 9h – 18h"
+    },
+    {
+      "type": "header",
+      "content": "Carte WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "wa_badge",
+      "label": "Badge",
+      "default": "Le plus rapide"
+    },
+    {
+      "type": "text",
+      "id": "wa_title",
+      "label": "Titre",
+      "default": "Écrivez-nous sur WhatsApp"
+    },
+    {
+      "type": "textarea",
+      "id": "wa_text",
+      "label": "Texte",
+      "default": "Envoyez une photo de votre pièce, la largeur de votre table ou la hauteur de votre plafond : on vous dit quoi prendre, et à quelle hauteur le poser."
+    },
+    {
+      "type": "text",
+      "id": "wa_cta",
+      "label": "Lien",
+      "default": "Ouvrir la conversation"
+    },
+    {
+      "type": "header",
+      "content": "Carte e-mail"
+    },
+    {
+      "type": "text",
+      "id": "mail_badge",
+      "label": "Badge",
+      "default": "Sous 24 h"
+    },
+    {
+      "type": "textarea",
+      "id": "mail_text",
+      "label": "Texte",
+      "default": "Pour les commandes, les retours, les pièces détachées et tout ce qui demande une pièce jointe ou un numéro de commande."
+    },
+    {
+      "type": "text",
+      "id": "mail_cta",
+      "label": "Lien",
+      "default": "Écrire un e-mail"
+    },
+    {
+      "type": "header",
+      "content": "Bloc « on peut vous aider »"
+    },
+    {
+      "type": "text",
+      "id": "help_heading",
+      "label": "Titre",
+      "default": "Ce pour quoi on nous écrit vraiment"
+    },
+    {
+      "type": "textarea",
+      "id": "help_sub",
+      "label": "Sous-titre",
+      "default": "Vous n'avez pas besoin d'une raison officielle. Voici les trois demandes qui reviennent le plus — les vôtres sont les bienvenues aussi."
+    },
+    {
+      "type": "header",
+      "content": "Formulaire"
+    },
+    {
+      "type": "text",
+      "id": "form_eyebrow",
+      "label": "Sur-titre",
+      "default": "Formulaire"
+    },
+    {
+      "type": "text",
+      "id": "form_heading",
+      "label": "Titre",
+      "default": "Dites-nous tout, on s'occupe du reste."
+    },
+    {
+      "type": "textarea",
+      "id": "form_text",
+      "label": "Texte",
+      "default": "Plus vous nous donnez de détails (dimensions de la pièce, hauteur de plafond, style souhaité), plus notre réponse sera précise."
+    },
+    {
+      "type": "text",
+      "id": "l_name",
+      "label": "Label nom",
+      "default": "Votre nom"
+    },
+    {
+      "type": "text",
+      "id": "p_name",
+      "label": "Exemple nom",
+      "default": "Camille Durand"
+    },
+    {
+      "type": "text",
+      "id": "l_email",
+      "label": "Label e-mail",
+      "default": "Votre e-mail"
+    },
+    {
+      "type": "text",
+      "id": "p_email",
+      "label": "Exemple e-mail",
+      "default": "camille@exemple.fr"
+    },
+    {
+      "type": "text",
+      "id": "l_subject",
+      "label": "Label sujet",
+      "default": "Votre demande"
+    },
+    {
+      "type": "text",
+      "id": "subjects",
+      "label": "Sujets (séparés par des virgules)",
+      "default": "Conseil pour choisir un instrument, Question sur une commande, Livraison ou suivi, Retour ou remboursement, Garantie ou pièce détachée, Aide à l'installation, Autre"
+    },
+    {
+      "type": "text",
+      "id": "l_order",
+      "label": "Label commande",
+      "default": "N° de commande (facultatif)"
+    },
+    {
+      "type": "text",
+      "id": "p_order",
+      "label": "Exemple commande",
+      "default": "#1042"
+    },
+    {
+      "type": "text",
+      "id": "l_msg",
+      "label": "Label message",
+      "default": "Votre message"
+    },
+    {
+      "type": "textarea",
+      "id": "p_msg",
+      "label": "Exemple message",
+      "default": "Bonjour, je cherche une tongue drum pour une table de 140 cm, plafond à 2,60 m, murs beiges et bois clair…"
+    },
+    {
+      "type": "text",
+      "id": "form_btn",
+      "label": "Bouton",
+      "default": "Envoyer mon message"
+    },
+    {
+      "type": "textarea",
+      "id": "form_note",
+      "label": "Note sous le bouton",
+      "default": "Vos informations servent uniquement à vous répondre. Aucune revente, aucune inscription automatique à quoi que ce soit."
+    },
+    {
+      "type": "textarea",
+      "id": "form_success",
+      "label": "Message de succès",
+      "default": "Message reçu, merci. Nous vous répondons sous 24 h — souvent bien avant."
+    },
+    {
+      "type": "textarea",
+      "id": "form_error",
+      "label": "Message d'erreur",
+      "default": "Un champ semble incomplet. Vérifiez votre e-mail et votre message, puis renvoyez."
+    },
+    {
+      "type": "header",
+      "content": "Colonne latérale"
+    },
+    {
+      "type": "text",
+      "id": "hours_title",
+      "label": "Titre 1",
+      "default": "Nos horaires"
+    },
+    {
+      "type": "textarea",
+      "id": "hours_value",
+      "label": "Valeur 1",
+      "default": "7j/7, de 9h à 18h. Les messages du soir sont traités le lendemain matin, dans l'ordre d'arrivée."
+    },
+    {
+      "type": "text",
+      "id": "delay_title",
+      "label": "Titre 2",
+      "default": "Délai de réponse"
+    },
+    {
+      "type": "textarea",
+      "id": "delay_value",
+      "label": "Valeur 2",
+      "default": "Moins de 2 h sur WhatsApp en journée. Moins de 24 h par e-mail et via ce formulaire."
+    },
+    {
+      "type": "text",
+      "id": "tip_title",
+      "label": "Titre 3",
+      "default": "Le conseil qui fait gagner du temps"
+    },
+    {
+      "type": "textarea",
+      "id": "tip_value",
+      "label": "Valeur 3",
+      "default": "Donnez-nous trois chiffres : largeur de la table ou de la pièce, hauteur du plafond, et la couleur dominante de vos murs. Avec ça, on vous répond du premier coup."
+    },
+    {
+      "type": "text",
+      "id": "faq_label",
+      "label": "Lien FAQ",
+      "default": "Voir d'abord la FAQ · 48 réponses"
+    },
+    {
+      "type": "text",
+      "id": "faq_link",
+      "label": "URL FAQ",
+      "default": "/pages/faq"
+    },
+    {
+      "type": "header",
+      "content": "Visuel 3D"
+    },
+    {
+      "type": "text",
+      "id": "model_url",
+      "label": "URL du modèle 3D (.glb)",
+      "default": ""
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Fond haut",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "sand",
+      "label": "Fond bas",
+      "default": "#E8F0EC"
+    },
+    {
+      "type": "color",
+      "id": "ink",
+      "label": "Texte",
+      "default": "#292F2C"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent",
+      "default": "#C49934"
+    },
+    {
+      "type": "color",
+      "id": "glow",
+      "label": "Halo lumineux",
+      "default": "#F8ECD5"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "help",
+      "name": "Motif de contact",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Un conseil avant d'acheter"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Texte",
+          "default": "Envoyez une photo, on vous dit ce qui fonctionne."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact 3D Zensea",
+      "blocks": [
+        {
+          "type": "help"
+        },
+        {
+          "type": "help"
+        },
+        {
+          "type": "help"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

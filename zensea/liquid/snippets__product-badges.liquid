@@ -1,0 +1,66 @@
+{%- doc -%}
+  Affiche les badges sur l'image du produit (carte + page produit).
+  @param {object} product - Le produit
+{%- enddoc -%}
+
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign on_sale = false
+  if v.compare_at_price > v.price
+    assign on_sale = true
+  endif
+  if settings.show_trailing_zeros
+    assign save_amount = v.compare_at_price | minus: v.price | money
+  else
+    assign save_amount = v.compare_at_price | minus: v.price | money_without_trailing_zeros
+  endif
+-%}
+
+<div class="product-badges product-badges--bottom-left">
+  {%- if product.available == false and settings.show_sold_out_badge_on_cards -%}
+    <div class="badge color-{{ settings.badge_color_scheme_sold_out }}">
+      {{ 'products.sold_out' | t }}
+    </div>
+  {%- endif -%}
+
+  {%- if on_sale -%}
+    <div class="badge badge--save-image">Économiser {{ save_amount }}</div>
+  {%- endif -%}
+
+  {%- if product.metafields.custom.badge -%}
+    <div class="badge color-{{ settings.badge_color_scheme_custom }}">
+      {{ product.metafields.custom.badge }}
+    </div>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .product-badges {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-xs);
+    z-index: 2;
+    max-width: calc(100% - 16px);
+    pointer-events: none;
+  }
+
+  .product-badges--bottom-left {
+    bottom: var(--padding-sm);
+    left: var(--padding-sm);
+    justify-content: flex-start;
+  }
+
+  .badge--save-image {
+    background-color: #B4C9BE;
+    color: #181C1A;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    padding: 5px 9px;
+    border: none;
+    border-radius: var(--badge-border-radius);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+  }
+{% endstylesheet %}

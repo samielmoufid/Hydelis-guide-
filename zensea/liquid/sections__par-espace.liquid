@@ -1,0 +1,926 @@
+{%- comment -%}
+  Section : Espaces de vie — mosaïque de collections éditoriale
+{%- endcomment -%}
+
+{%- liquid
+  assign sid = section.id
+  assign st = section.settings
+  assign overlay_alpha = st.overlay_opacity | divided_by: 100.0
+  assign nblocks = section.blocks.size
+
+  case st.title_font
+    when 'serif'
+      assign title_font_stack = "Georgia, 'Times New Roman', serif"
+    when 'body'
+      assign title_font_stack = 'var(--font-body-family, inherit)'
+    else
+      assign title_font_stack = 'var(--font-heading-family, inherit)'
+  endcase
+
+  case st.ratio_desktop
+    when 'square'
+      assign ratio_d = '1 / 1'
+    when 'portrait'
+      assign ratio_d = '3 / 4'
+    when 'landscape'
+      assign ratio_d = '4 / 3'
+    else
+      assign ratio_d = '16 / 9'
+  endcase
+-%}
+
+<div id="EspacesVie-{{ sid }}" class="ev-section{% if st.anim_scroll %} ev-anim{% endif %}">
+  {%- if st.title != blank or st.subtitle != blank -%}
+    <div class="ev-header">
+      {%- if st.title != blank -%}<h2 class="ev-title">{{ st.title }}</h2>{%- endif -%}
+      {%- if st.subtitle != blank -%}<p class="ev-subtitle">{{ st.subtitle }}</p>{%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="ev-grid{% if st.mobile_layout == 'carousel' %} ev-grid--carousel{% endif %}" data-ev-track>
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign col = block.settings.collection
+        assign url = block.settings.custom_url | default: col.url | default: '#'
+        if col.handle contains 'espace-'
+          assign url = '/pages/' | append: col.handle
+        endif
+        assign heading = block.settings.title | default: col.title
+        assign img = block.settings.image | default: col.featured_image
+        assign img_m = block.settings.image_mobile
+
+        if st.layout_desktop == 'custom'
+          case block.settings.size
+            when 'third'
+              assign span = 2
+            when 'half'
+              assign span = 3
+            when 'twothirds'
+              assign span = 4
+            else
+              assign span = 6
+          endcase
+        else
+          assign rest = nblocks | minus: 2
+          if nblocks == 1
+            assign span = 6
+          elsif forloop.index == 1
+            assign span = 2
+          elsif forloop.index == 2
+            assign span = 4
+          else
+            assign idx = forloop.index | minus: 2
+            assign rem = rest | modulo: 3
+            if rem == 0
+              assign span = 2
+            elsif rem == 1
+              if idx == rest
+                assign span = 6
+              else
+                assign span = 2
+              endif
+            else
+              assign last_two = rest | minus: 1
+              if idx >= last_two
+                assign span = 3
+              else
+                assign span = 2
+              endif
+            endif
+          endif
+        endif
+      -%}
+      <a href="{{ url }}" class="ev-card ev-card--{{ block.settings.text_pos }}" style="--span: {{ span }};" {{ block.shopify_attributes }}>
+        <div class="ev-card__media">
+          {%- if img != blank -%}
+            <picture>
+              {%- if img_m != blank -%}
+                <source media="(max-width: 749px)" srcset="{{ img_m | image_url: width: 500 }} 500w, {{ img_m | image_url: width: 750 }} 750w, {{ img_m | image_url: width: 1000 }} 1000w">
+              {%- endif -%}
+              {{ img | image_url: width: 1800 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1000, 1400, 1800', sizes: '(max-width: 749px) 85vw, 50vw', alt: heading }}
+            </picture>
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'ev-placeholder' }}
+          {%- endif -%}
+          <span class="ev-card__overlay"></span>
+        </div>
+        <div class="ev-card__content">
+          {%- if heading != blank -%}<span class="ev-card__title">{{ heading }}</span>{%- endif -%}
+          {%- if block.settings.link_text != blank -%}
+            <span class="ev-card__link">{{ block.settings.link_text }}{% if st.show_arrow %}<span class="ev-arrow" aria-hidden="true">&nbsp;&rarr;</span>{% endif %}</span>
+          {%- endif -%}
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+
+  {%- if st.mobile_layout == 'carousel' and st.show_dots and section.blocks.size > 1 -%}
+    <div class="ev-dots" data-ev-dots aria-hidden="true">
+      {%- for block in section.blocks -%}<span class="ev-dot{% if forloop.first %} is-active{% endif %}"></span>{%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- if st.button_text != blank -%}
+    <div class="ev-btn-wrap{% unless st.button_desktop %} ev-btn-wrap--mobile-only{% endunless %}">
+      <a href="{{ st.button_url | default: routes.collections_url }}" class="ev-btn">{{ st.button_text }}</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{%- style -%}
+  #EspacesVie-{{ sid }} {
+    background: {{ st.bg_color }};
+    padding-top: {{ st.pad_top_m }}px;
+    padding-bottom: {{ st.pad_bot_m }}px;
+    {% unless st.full_width %}max-width: 1600px; margin: 0 auto; padding-left: 20px; padding-right: 20px;{% endunless %}
+  }
+  #EspacesVie-{{ sid }} .ev-header { text-align: center; margin-bottom: 32px; }
+  #EspacesVie-{{ sid }} .ev-title {
+    font-family: {{ title_font_stack }};
+    font-size: {{ st.title_size_m }}px;
+    font-weight: {{ st.title_weight }};
+    {% if st.title_italic %}font-style: italic;{% endif %}
+    letter-spacing: {{ st.title_spacing }}px;
+    color: {{ st.title_color }};
+    margin: 0 0 10px;
+  }
+  #EspacesVie-{{ sid }} .ev-subtitle {
+    font-size: {{ st.subtitle_size_m }}px;
+    color: {{ st.subtitle_color }};
+    margin: 0;
+  }
+
+  /* ---- Cartes ---- */
+  #EspacesVie-{{ sid }} .ev-card {
+    position: relative; display: block; overflow: hidden; text-decoration: none;
+    border-radius: {{ st.radius }}px;
+  }
+  #EspacesVie-{{ sid }} .ev-card__media { position: absolute; inset: 0; }
+  #EspacesVie-{{ sid }} .ev-card__media picture { display: block; width: 100%; height: 100%; }
+  #EspacesVie-{{ sid }} .ev-card__media img,
+  #EspacesVie-{{ sid }} .ev-placeholder {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    {% if st.hover_zoom %}transition: transform .6s cubic-bezier(.25,.46,.45,.94);{% endif %}
+  }
+  {% if st.hover_zoom %}
+  @media (hover: hover) {
+    #EspacesVie-{{ sid }} .ev-card:hover img { transform: scale({{ st.zoom_scale | divided_by: 100.0 }}); }
+    #EspacesVie-{{ sid }} .ev-card:hover .ev-arrow { transform: translateX(5px); }
+  }
+  {% endif %}
+  #EspacesVie-{{ sid }} .ev-card__overlay {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to top, {{ st.overlay_color | color_modify: 'alpha', overlay_alpha }} 0%, transparent 45%);
+  }
+  #EspacesVie-{{ sid }} .ev-card__content {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 22px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  #EspacesVie-{{ sid }} .ev-card--bottom-center .ev-card__content { align-items: center; text-align: center; }
+  #EspacesVie-{{ sid }} .ev-card--center .ev-card__content { top: 0; justify-content: center; align-items: center; text-align: center; }
+  #EspacesVie-{{ sid }} .ev-card__title {
+    font-size: {{ st.card_title_size_m }}px;
+    font-weight: {{ st.card_title_weight }};
+    color: {{ st.card_title_color }};
+    {% if st.card_title_uppercase %}text-transform: uppercase; letter-spacing: 1px;{% endif %}
+  }
+  #EspacesVie-{{ sid }} .ev-card__link {
+    font-family: Georgia, serif;
+    font-size: {{ st.link_size_m }}px;
+    {% if st.link_italic %}font-style: italic;{% endif %}
+    color: {{ st.link_color }};
+  }
+  #EspacesVie-{{ sid }} .ev-arrow { display: inline-block; transition: transform .3s ease; }
+
+  /* ---- Mobile : empilé ou carrousel ---- */
+  #EspacesVie-{{ sid }} .ev-grid { display: flex; flex-direction: column; gap: {{ st.gap }}px; }
+  #EspacesVie-{{ sid }} .ev-grid .ev-card { height: {{ st.card_height_m }}px; }
+  #EspacesVie-{{ sid }} .ev-grid--carousel {
+    flex-direction: row; overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  #EspacesVie-{{ sid }} .ev-grid--carousel::-webkit-scrollbar { display: none; }
+  #EspacesVie-{{ sid }} .ev-grid--carousel .ev-card {
+    flex: 0 0 {{ st.card_width_m }}%; scroll-snap-align: start;
+  }
+  #EspacesVie-{{ sid }} .ev-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+  #EspacesVie-{{ sid }} .ev-dot { width: 7px; height: 7px; border-radius: 50%; background: #CDD3D0; transition: background .3s; }
+  #EspacesVie-{{ sid }} .ev-dot.is-active { background: #181C1A; }
+
+  /* ---- Bouton ---- */
+  #EspacesVie-{{ sid }} .ev-btn-wrap { text-align: center; margin-top: 28px; }
+  #EspacesVie-{{ sid }} .ev-btn {
+    display: inline-block; padding: 14px 36px; text-decoration: none;
+    font-size: {{ st.btn_text_size }}px;
+    color: {{ st.btn_text_color }};
+    background: {{ st.btn_bg_color }};
+    border: 1px solid {{ st.btn_border_color }};
+    border-radius: {{ st.btn_radius }}px;
+    transition: background .3s, color .3s;
+  }
+  #EspacesVie-{{ sid }} .ev-btn:hover { background: {{ st.btn_text_color }}; color: {{ st.btn_bg_color }}; }
+
+  /* ---- Animation d'apparition ---- */
+  #EspacesVie-{{ sid }}.ev-anim .ev-card { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  #EspacesVie-{{ sid }}.ev-anim .ev-card.is-visible { opacity: 1; transform: none; }
+
+  /* ---- Desktop ---- */
+  @media (min-width: 750px) {
+    #EspacesVie-{{ sid }} {
+      padding-top: {{ st.pad_top }}px;
+      padding-bottom: {{ st.pad_bot }}px;
+    }
+    #EspacesVie-{{ sid }} .ev-title { font-size: {{ st.title_size }}px; }
+    #EspacesVie-{{ sid }} .ev-subtitle { font-size: {{ st.subtitle_size }}px; }
+    #EspacesVie-{{ sid }} .ev-card__title { font-size: {{ st.card_title_size }}px; }
+    #EspacesVie-{{ sid }} .ev-card__link { font-size: {{ st.link_size }}px; }
+    #EspacesVie-{{ sid }} .ev-grid,
+    #EspacesVie-{{ sid }} .ev-grid--carousel {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: {{ st.gap }}px; overflow: visible;
+    }
+    #EspacesVie-{{ sid }} .ev-grid .ev-card { grid-column: span var(--span); flex: none; }
+    {% if st.height_mode == 'fixed' %}
+    #EspacesVie-{{ sid }} .ev-grid .ev-card { height: {{ st.card_height }}px; }
+    {% else %}
+    #EspacesVie-{{ sid }} .ev-grid .ev-card { height: auto; aspect-ratio: {{ ratio_d }}; }
+    {% endif %}
+    #EspacesVie-{{ sid }} .ev-dots { display: none; }
+    {% unless st.button_desktop %}#EspacesVie-{{ sid }} .ev-btn-wrap--mobile-only { display: none; }{% endunless %}
+  }
+{%- endstyle -%}
+
+<script>
+  (function () {
+    var root = document.getElementById('EspacesVie-{{ sid }}');
+    if (!root) return;
+
+    {% if st.anim_scroll %}
+    var cards = root.querySelectorAll('.ev-card');
+    var isMobileCarousel = {% if st.mobile_layout == 'carousel' %}window.matchMedia('(max-width: 749px)').matches{% else %}false{% endif %};
+    if (isMobileCarousel) {
+      cards.forEach(function (c) { c.classList.add('is-visible'); });
+    } else if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e, i) {
+          if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15 });
+      cards.forEach(function (c, i) { c.style.transitionDelay = (i * 80) + 'ms'; io.observe(c); });
+    } else {
+      cards.forEach(function (c) { c.classList.add('is-visible'); });
+    }
+    {% endif %}
+
+    var track = root.querySelector('[data-ev-track]');
+    var dotsWrap = root.querySelector('[data-ev-dots]');
+    if (track && dotsWrap) {
+      var dots = dotsWrap.querySelectorAll('.ev-dot');
+      track.addEventListener('scroll', function () {
+        var i = Math.round(track.scrollLeft / (track.scrollWidth / dots.length));
+        dots.forEach(function (d, j) { d.classList.toggle('is-active', j === Math.min(i, dots.length - 1)); });
+      }, { passive: true });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Espaces de vie",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Espaces de vie"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Le son comme signature des pièces de la maison"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "Découvrir tous les espaces"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_desktop",
+      "label": "Afficher le bouton aussi sur ordinateur",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Titre — typographie"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Police du titre",
+      "default": "serif",
+      "options": [
+        {
+          "value": "heading",
+          "label": "Police des titres du thème"
+        },
+        {
+          "value": "body",
+          "label": "Police du texte du thème"
+        },
+        {
+          "value": "serif",
+          "label": "Serif élégante (Georgia)"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille titre — ordinateur",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "title_size_m",
+      "label": "Taille titre — mobile",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Graisse",
+      "default": "400",
+      "options": [
+        {
+          "value": "300",
+          "label": "Fine"
+        },
+        {
+          "value": "400",
+          "label": "Normale"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "700",
+          "label": "Grasse"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "title_italic",
+      "label": "Italique",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "label": "Espacement des lettres",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#181C1A"
+    },
+    {
+      "type": "header",
+      "content": "Sous-titre — typographie"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Taille — ordinateur",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_m",
+      "label": "Taille — mobile",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Couleur",
+      "default": "#505A55"
+    },
+    {
+      "type": "header",
+      "content": "Noms de collections — typographie"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "label": "Taille — ordinateur",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_title_size_m",
+      "label": "Taille — mobile",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "checkbox",
+      "id": "card_title_uppercase",
+      "label": "Majuscules",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "card_title_weight",
+      "label": "Graisse",
+      "default": "700",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normale"
+        },
+        {
+          "value": "600",
+          "label": "Semi-grasse"
+        },
+        {
+          "value": "700",
+          "label": "Grasse"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Couleur",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Lien « Découvrir » — typographie"
+    },
+    {
+      "type": "range",
+      "id": "link_size",
+      "label": "Taille — ordinateur",
+      "min": 10,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "link_size_m",
+      "label": "Taille — mobile",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "checkbox",
+      "id": "link_italic",
+      "label": "Italique",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Afficher la flèche →",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Couleur",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Grille & images"
+    },
+    {
+      "type": "select",
+      "id": "layout_desktop",
+      "label": "Disposition ordinateur",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Mosaïque automatique (lignes toujours pleines)"
+        },
+        {
+          "value": "custom",
+          "label": "Personnalisée (taille réglée sur chaque bloc)"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espacement entre images",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Hauteur des images (ordinateur)",
+      "default": "fixed",
+      "options": [
+        {
+          "value": "fixed",
+          "label": "Hauteur fixe (mosaïque parfaite)"
+        },
+        {
+          "value": "ratio",
+          "label": "Ratio d'image"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "label": "Hauteur fixe — ordinateur",
+      "min": 300,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "default": 540
+    },
+    {
+      "type": "select",
+      "id": "ratio_desktop",
+      "label": "Ratio (si mode ratio)",
+      "default": "landscape",
+      "options": [
+        {
+          "value": "square",
+          "label": "Carré"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "landscape",
+          "label": "Paysage"
+        },
+        {
+          "value": "wide",
+          "label": "Large 16:9"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Coins arrondis",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Voile sombre (lisibilité du texte)"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Opacité",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 45
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Couleur",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Effets"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_zoom",
+      "label": "Zoom au survol",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "zoom_scale",
+      "label": "Intensité du zoom",
+      "min": 100,
+      "max": 115,
+      "step": 1,
+      "default": 105
+    },
+    {
+      "type": "checkbox",
+      "id": "anim_scroll",
+      "label": "Apparition au défilement",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Disposition mobile",
+      "default": "carousel",
+      "options": [
+        {
+          "value": "carousel",
+          "label": "Carrousel glissable"
+        },
+        {
+          "value": "stack",
+          "label": "Empilé"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_width_m",
+      "label": "Largeur des cartes (carrousel)",
+      "min": 60,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 85
+    },
+    {
+      "type": "range",
+      "id": "card_height_m",
+      "label": "Hauteur des cartes — mobile",
+      "min": 260,
+      "max": 700,
+      "step": 20,
+      "unit": "px",
+      "default": 460
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Points de pagination",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Bouton — style"
+    },
+    {
+      "type": "range",
+      "id": "btn_text_size",
+      "label": "Taille du texte",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Couleur du texte",
+      "default": "#181C1A"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Couleur de fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_border_color",
+      "label": "Couleur de bordure",
+      "default": "#181C1A"
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "label": "Coins arrondis",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur de fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Pleine largeur",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Marge haute — ordinateur",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pad_bot",
+      "label": "Marge basse — ordinateur",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "pad_top_m",
+      "label": "Marge haute — mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pad_bot_m",
+      "label": "Marge basse — mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "espace",
+      "name": "Espace / Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image mobile (optionnel)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre (sinon nom de la collection)"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Texte du lien",
+          "default": "Découvrir nos instruments"
+        },
+        {
+          "type": "url",
+          "id": "custom_url",
+          "label": "Lien personnalisé (sinon la collection)"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Taille dans la grille (si disposition personnalisée)",
+          "default": "half",
+          "options": [
+            {
+              "value": "third",
+              "label": "1/3"
+            },
+            {
+              "value": "half",
+              "label": "1/2"
+            },
+            {
+              "value": "twothirds",
+              "label": "2/3"
+            },
+            {
+              "value": "full",
+              "label": "Pleine largeur"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_pos",
+          "label": "Position du texte",
+          "default": "bottom-left",
+          "options": [
+            {
+              "value": "bottom-left",
+              "label": "Bas gauche"
+            },
+            {
+              "value": "bottom-center",
+              "label": "Bas centre"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Espaces de vie",
+      "blocks": [
+        {
+          "type": "espace"
+        },
+        {
+          "type": "espace"
+        },
+        {
+          "type": "espace"
+        },
+        {
+          "type": "espace"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

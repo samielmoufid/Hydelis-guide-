@@ -1,0 +1,35 @@
+{% doc %}
+  Affiche une vignette carrée à côté d'un lien de menu pointant vers une collection.
+
+  @param link - Le lien de menu (link.object doit être une collection).
+  @param [size] - Taille de la vignette en px (défaut 46).
+
+  @example
+  {% render 'velluce-menu-thumb', link: link %}
+{% enddoc %}
+
+{%- liquid
+  assign thumb = ''
+  assign coll = link.object
+  if coll != blank
+    if coll.image != blank
+      assign thumb = coll.image
+    elsif coll.featured_image != blank
+      assign thumb = coll.featured_image
+    endif
+  endif
+  assign thumb_size = size | default: 46
+  assign thumb_size_2x = thumb_size | times: 2
+-%}
+
+{%- if thumb != '' -%}
+  <span class="vllc-menu-thumb" style="--vllc-thumb-size: {{ thumb_size }}px;">
+    <img
+      src="{{ thumb | image_url: width: thumb_size_2x }}"
+      alt=""
+      width="{{ thumb_size }}"
+      height="{{ thumb_size }}"
+      loading="lazy"
+    >
+  </span>
+{%- endif -%}

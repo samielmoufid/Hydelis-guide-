@@ -1,0 +1,970 @@
+[
+ {
+  "src": "blocks/accordions.liquid",
+  "asset": "assets/zl-000.txt"
+ },
+ {
+  "src": "blocks/badges.liquid",
+  "asset": "assets/zl-001.txt"
+ },
+ {
+  "src": "blocks/before-after.liquid",
+  "asset": "assets/zl-002.txt"
+ },
+ {
+  "src": "blocks/button.liquid",
+  "asset": "assets/zl-003.txt"
+ },
+ {
+  "src": "blocks/collection-featured.liquid",
+  "asset": "assets/zl-004.txt"
+ },
+ {
+  "src": "blocks/collections-featured.liquid",
+  "asset": "assets/zl-005.txt"
+ },
+ {
+  "src": "blocks/contact-form.liquid",
+  "asset": "assets/zl-006.txt"
+ },
+ {
+  "src": "blocks/copyright.liquid",
+  "asset": "assets/zl-007.txt"
+ },
+ {
+  "src": "blocks/countdown.liquid",
+  "asset": "assets/zl-008.txt"
+ },
+ {
+  "src": "blocks/cross-sell.liquid",
+  "asset": "assets/zl-009.txt"
+ },
+ {
+  "src": "blocks/custom-code.liquid",
+  "asset": "assets/zl-010.txt"
+ },
+ {
+  "src": "blocks/delivery-estimation.liquid",
+  "asset": "assets/zl-011.txt"
+ },
+ {
+  "src": "blocks/filters-and-sort.liquid",
+  "asset": "assets/zl-012.txt"
+ },
+ {
+  "src": "blocks/group.liquid",
+  "asset": "assets/zl-013.txt"
+ },
+ {
+  "src": "blocks/icon-with-text.liquid",
+  "asset": "assets/zl-014.txt"
+ },
+ {
+  "src": "blocks/icon.liquid",
+  "asset": "assets/zl-015.txt"
+ },
+ {
+  "src": "blocks/image-card.liquid",
+  "asset": "assets/zl-016.txt"
+ },
+ {
+  "src": "blocks/image.liquid",
+  "asset": "assets/zl-017.txt"
+ },
+ {
+  "src": "blocks/information-slider.liquid",
+  "asset": "assets/zl-018.txt"
+ },
+ {
+  "src": "blocks/logo.liquid",
+  "asset": "assets/zl-019.txt"
+ },
+ {
+  "src": "blocks/marquee.liquid",
+  "asset": "assets/zl-020.txt"
+ },
+ {
+  "src": "blocks/menu.liquid",
+  "asset": "assets/zl-021.txt"
+ },
+ {
+  "src": "blocks/newsletter-signup.liquid",
+  "asset": "assets/zl-022.txt"
+ },
+ {
+  "src": "blocks/payment-methods.liquid",
+  "asset": "assets/zl-023.txt"
+ },
+ {
+  "src": "blocks/popup.liquid",
+  "asset": "assets/zl-024.txt"
+ },
+ {
+  "src": "blocks/powered-by-fullstack.liquid",
+  "asset": "assets/zl-025.txt"
+ },
+ {
+  "src": "blocks/product-card.liquid",
+  "asset": "assets/zl-026.txt"
+ },
+ {
+  "src": "blocks/product-inventory.liquid",
+  "asset": "assets/zl-027.txt"
+ },
+ {
+  "src": "blocks/product-mini-card.liquid",
+  "asset": "assets/zl-028.txt"
+ },
+ {
+  "src": "blocks/product-price.liquid",
+  "asset": "assets/zl-029.txt"
+ },
+ {
+  "src": "blocks/rating-stars.liquid",
+  "asset": "assets/zl-030.txt"
+ },
+ {
+  "src": "blocks/review.liquid",
+  "asset": "assets/zl-031.txt"
+ },
+ {
+  "src": "blocks/reviews-badge.liquid",
+  "asset": "assets/zl-032.txt"
+ },
+ {
+  "src": "blocks/separator.liquid",
+  "asset": "assets/zl-033.txt"
+ },
+ {
+  "src": "blocks/slider.liquid",
+  "asset": "assets/zl-034.txt"
+ },
+ {
+  "src": "blocks/social-icons.liquid",
+  "asset": "assets/zl-035.txt"
+ },
+ {
+  "src": "blocks/stories.liquid",
+  "asset": "assets/zl-036.txt"
+ },
+ {
+  "src": "blocks/tabs.liquid",
+  "asset": "assets/zl-037.txt"
+ },
+ {
+  "src": "blocks/text.liquid",
+  "asset": "assets/zl-038.txt"
+ },
+ {
+  "src": "blocks/this-pack-contains.liquid",
+  "asset": "assets/zl-039.txt"
+ },
+ {
+  "src": "blocks/velluce-3d-mini.liquid",
+  "asset": "assets/zl-040.txt"
+ },
+ {
+  "src": "blocks/velluce-split-title.liquid",
+  "asset": "assets/zl-041.txt"
+ },
+ {
+  "src": "blocks/video.liquid",
+  "asset": "assets/zl-042.txt"
+ },
+ {
+  "src": "blocks/_accelerated-checkout.liquid",
+  "asset": "assets/zl-043.txt"
+ },
+ {
+  "src": "blocks/_accordion.liquid",
+  "asset": "assets/zl-044.txt"
+ },
+ {
+  "src": "blocks/_add-to-wishlist-button.liquid",
+  "asset": "assets/zl-045.txt"
+ },
+ {
+  "src": "blocks/_announcement.liquid",
+  "asset": "assets/zl-046.txt"
+ },
+ {
+  "src": "blocks/_article-card.liquid",
+  "asset": "assets/zl-047.txt"
+ },
+ {
+  "src": "blocks/_article-date.liquid",
+  "asset": "assets/zl-048.txt"
+ },
+ {
+  "src": "blocks/_article-group.liquid",
+  "asset": "assets/zl-049.txt"
+ },
+ {
+  "src": "blocks/_badge.liquid",
+  "asset": "assets/zl-050.txt"
+ },
+ {
+  "src": "blocks/_cart-accelerated-checkout.liquid",
+  "asset": "assets/zl-051.txt"
+ },
+ {
+  "src": "blocks/_cart-drawer-empty-blocks.liquid",
+  "asset": "assets/zl-052.txt"
+ },
+ {
+  "src": "blocks/_cart-drawer-footer-blocks.liquid",
+  "asset": "assets/zl-053.txt"
+ },
+ {
+  "src": "blocks/_cart-footer-blocks.liquid",
+  "asset": "assets/zl-054.txt"
+ },
+ {
+  "src": "blocks/_cart-footer-resume-blocks.liquid",
+  "asset": "assets/zl-055.txt"
+ },
+ {
+  "src": "blocks/_cart-header-blocks.liquid",
+  "asset": "assets/zl-056.txt"
+ },
+ {
+  "src": "blocks/_cart-note.liquid",
+  "asset": "assets/zl-057.txt"
+ },
+ {
+  "src": "blocks/_cart-progress-bar.liquid",
+  "asset": "assets/zl-058.txt"
+ },
+ {
+  "src": "blocks/_collection-card.liquid",
+  "asset": "assets/zl-059.txt"
+ },
+ {
+  "src": "blocks/_comparison-table-data.liquid",
+  "asset": "assets/zl-060.txt"
+ },
+ {
+  "src": "blocks/_comparison-table-row.liquid",
+  "asset": "assets/zl-061.txt"
+ },
+ {
+  "src": "blocks/_custom_product_field.liquid",
+  "asset": "assets/zl-062.txt"
+ },
+ {
+  "src": "blocks/_discount-code.liquid",
+  "asset": "assets/zl-063.txt"
+ },
+ {
+  "src": "blocks/_fake-variant-link.liquid",
+  "asset": "assets/zl-064.txt"
+ },
+ {
+  "src": "blocks/_fake-variant-picker.liquid",
+  "asset": "assets/zl-065.txt"
+ },
+ {
+  "src": "blocks/_footer-bottom-bar.liquid",
+  "asset": "assets/zl-066.txt"
+ },
+ {
+  "src": "blocks/_footer-policy-list.liquid",
+  "asset": "assets/zl-067.txt"
+ },
+ {
+  "src": "blocks/_header-advanced-megamenus.liquid",
+  "asset": "assets/zl-068.txt"
+ },
+ {
+  "src": "blocks/_header-drawer-menu-header.liquid",
+  "asset": "assets/zl-069.txt"
+ },
+ {
+  "src": "blocks/_header-drawer-menu-under-menu.liquid",
+  "asset": "assets/zl-070.txt"
+ },
+ {
+  "src": "blocks/_header-drawer-menu.liquid",
+  "asset": "assets/zl-071.txt"
+ },
+ {
+  "src": "blocks/_header-megamenu-group.liquid",
+  "asset": "assets/zl-072.txt"
+ },
+ {
+  "src": "blocks/_header-megamenu.liquid",
+  "asset": "assets/zl-073.txt"
+ },
+ {
+  "src": "blocks/_header-notification.liquid",
+  "asset": "assets/zl-074.txt"
+ },
+ {
+  "src": "blocks/_header-notifications.liquid",
+  "asset": "assets/zl-075.txt"
+ },
+ {
+  "src": "blocks/_image-banner.liquid",
+  "asset": "assets/zl-076.txt"
+ },
+ {
+  "src": "blocks/_marquee-image.liquid",
+  "asset": "assets/zl-077.txt"
+ },
+ {
+  "src": "blocks/_navigation-link.liquid",
+  "asset": "assets/zl-078.txt"
+ },
+ {
+  "src": "blocks/_password-form.liquid",
+  "asset": "assets/zl-079.txt"
+ },
+ {
+  "src": "blocks/_product-add-to-cart-button.liquid",
+  "asset": "assets/zl-080.txt"
+ },
+ {
+  "src": "blocks/_product-card-group.liquid",
+  "asset": "assets/zl-081.txt"
+ },
+ {
+  "src": "blocks/_product-card-media-gallery.liquid",
+  "asset": "assets/zl-082.txt"
+ },
+ {
+  "src": "blocks/_product-card-quick-add.liquid",
+  "asset": "assets/zl-083.txt"
+ },
+ {
+  "src": "blocks/_product-card-swatches.liquid",
+  "asset": "assets/zl-084.txt"
+ },
+ {
+  "src": "blocks/_product-card.liquid",
+  "asset": "assets/zl-085.txt"
+ },
+ {
+  "src": "blocks/_product-form.liquid",
+  "asset": "assets/zl-086.txt"
+ },
+ {
+  "src": "blocks/_product-media-gallery.liquid",
+  "asset": "assets/zl-087.txt"
+ },
+ {
+  "src": "blocks/_product-quantity-selector.liquid",
+  "asset": "assets/zl-088.txt"
+ },
+ {
+  "src": "blocks/_product-variant-picker.liquid",
+  "asset": "assets/zl-089.txt"
+ },
+ {
+  "src": "blocks/_product-variant-popup.liquid",
+  "asset": "assets/zl-090.txt"
+ },
+ {
+  "src": "blocks/_quantity-breaks-item.liquid",
+  "asset": "assets/zl-091.txt"
+ },
+ {
+  "src": "blocks/_quantity-breaks.liquid",
+  "asset": "assets/zl-092.txt"
+ },
+ {
+  "src": "blocks/_review-slide.liquid",
+  "asset": "assets/zl-093.txt"
+ },
+ {
+  "src": "blocks/_slide.liquid",
+  "asset": "assets/zl-094.txt"
+ },
+ {
+  "src": "blocks/_social-icon.liquid",
+  "asset": "assets/zl-095.txt"
+ },
+ {
+  "src": "blocks/_story.liquid",
+  "asset": "assets/zl-096.txt"
+ },
+ {
+  "src": "blocks/_subscription.liquid",
+  "asset": "assets/zl-097.txt"
+ },
+ {
+  "src": "blocks/_tab.liquid",
+  "asset": "assets/zl-098.txt"
+ },
+ {
+  "src": "blocks/_toggle-cross-sell.liquid",
+  "asset": "assets/zl-099.txt"
+ },
+ {
+  "src": "layout/password.liquid",
+  "asset": "assets/zl-100.txt"
+ },
+ {
+  "src": "layout/theme.liquid",
+  "asset": "assets/zl-101.txt"
+ },
+ {
+  "src": "sections/announcement-bar.liquid",
+  "asset": "assets/zl-102.txt"
+ },
+ {
+  "src": "sections/assurance.liquid",
+  "asset": "assets/zl-103.txt"
+ },
+ {
+  "src": "sections/av-apres-premium.liquid",
+  "asset": "assets/zl-104.txt"
+ },
+ {
+  "src": "sections/banniere-hero.liquid",
+  "asset": "assets/zl-105.txt"
+ },
+ {
+  "src": "sections/bas-footer.liquid",
+  "asset": "assets/zl-106.txt"
+ },
+ {
+  "src": "sections/blog-featured.liquid",
+  "asset": "assets/zl-107.txt"
+ },
+ {
+  "src": "sections/breadcrumbs.liquid",
+  "asset": "assets/zl-108.txt"
+ },
+ {
+  "src": "sections/carrousel-images.liquid",
+  "asset": "assets/zl-109.txt"
+ },
+ {
+  "src": "sections/cart-drawer.liquid",
+  "asset": "assets/zl-110.txt"
+ },
+ {
+  "src": "sections/cart.liquid",
+  "asset": "assets/zl-111.txt"
+ },
+ {
+  "src": "sections/choisir-velluce.liquid",
+  "asset": "assets/zl-112.txt"
+ },
+ {
+  "src": "sections/collection-featured.liquid",
+  "asset": "assets/zl-113.txt"
+ },
+ {
+  "src": "sections/collections-featured.liquid",
+  "asset": "assets/zl-114.txt"
+ },
+ {
+  "src": "sections/collections-premium.liquid",
+  "asset": "assets/zl-115.txt"
+ },
+ {
+  "src": "sections/comparison-table.liquid",
+  "asset": "assets/zl-116.txt"
+ },
+ {
+  "src": "sections/contact-3d-velluce.liquid",
+  "asset": "assets/zl-117.txt"
+ },
+ {
+  "src": "sections/contact-velluce.liquid",
+  "asset": "assets/zl-118.txt"
+ },
+ {
+  "src": "sections/custom-code.liquid",
+  "asset": "assets/zl-119.txt"
+ },
+ {
+  "src": "sections/custom-section.liquid",
+  "asset": "assets/zl-120.txt"
+ },
+ {
+  "src": "sections/demo-design-system.liquid",
+  "asset": "assets/zl-121.txt"
+ },
+ {
+  "src": "sections/description-collection.liquid",
+  "asset": "assets/zl-122.txt"
+ },
+ {
+  "src": "sections/espace-collections.liquid",
+  "asset": "assets/zl-123.txt"
+ },
+ {
+  "src": "sections/faq-premium.liquid",
+  "asset": "assets/zl-124.txt"
+ },
+ {
+  "src": "sections/footer.liquid",
+  "asset": "assets/zl-125.txt"
+ },
+ {
+  "src": "sections/header.liquid",
+  "asset": "assets/zl-126.txt"
+ },
+ {
+  "src": "sections/hero-vorha.liquid",
+  "asset": "assets/zl-127.txt"
+ },
+ {
+  "src": "sections/image-banner.liquid",
+  "asset": "assets/zl-128.txt"
+ },
+ {
+  "src": "sections/image-text-premium.liquid",
+  "asset": "assets/zl-129.txt"
+ },
+ {
+  "src": "sections/image-texte-premium.liquid",
+  "asset": "assets/zl-130.txt"
+ },
+ {
+  "src": "sections/main-account.liquid",
+  "asset": "assets/zl-131.txt"
+ },
+ {
+  "src": "sections/main-activate-account.liquid",
+  "asset": "assets/zl-132.txt"
+ },
+ {
+  "src": "sections/main-addresses.liquid",
+  "asset": "assets/zl-133.txt"
+ },
+ {
+  "src": "sections/main-article.liquid",
+  "asset": "assets/zl-134.txt"
+ },
+ {
+  "src": "sections/main-blog.liquid",
+  "asset": "assets/zl-135.txt"
+ },
+ {
+  "src": "sections/main-collection.liquid",
+  "asset": "assets/zl-136.txt"
+ },
+ {
+  "src": "sections/main-collections.liquid",
+  "asset": "assets/zl-137.txt"
+ },
+ {
+  "src": "sections/main-login.liquid",
+  "asset": "assets/zl-138.txt"
+ },
+ {
+  "src": "sections/main-order.liquid",
+  "asset": "assets/zl-139.txt"
+ },
+ {
+  "src": "sections/main-page.liquid",
+  "asset": "assets/zl-140.txt"
+ },
+ {
+  "src": "sections/main-product.liquid",
+  "asset": "assets/zl-141.txt"
+ },
+ {
+  "src": "sections/main-register.liquid",
+  "asset": "assets/zl-142.txt"
+ },
+ {
+  "src": "sections/main-reset-password.liquid",
+  "asset": "assets/zl-143.txt"
+ },
+ {
+  "src": "sections/main-search.liquid",
+  "asset": "assets/zl-144.txt"
+ },
+ {
+  "src": "sections/marquee.liquid",
+  "asset": "assets/zl-145.txt"
+ },
+ {
+  "src": "sections/navigation.liquid",
+  "asset": "assets/zl-146.txt"
+ },
+ {
+  "src": "sections/newsletter-premium.liquid",
+  "asset": "assets/zl-147.txt"
+ },
+ {
+  "src": "sections/newsletter-velluce.liquid",
+  "asset": "assets/zl-148.txt"
+ },
+ {
+  "src": "sections/nos-essentiels.liquid",
+  "asset": "assets/zl-149.txt"
+ },
+ {
+  "src": "sections/par-espace.liquid",
+  "asset": "assets/zl-150.txt"
+ },
+ {
+  "src": "sections/password.liquid",
+  "asset": "assets/zl-151.txt"
+ },
+ {
+  "src": "sections/predictive-search.liquid",
+  "asset": "assets/zl-152.txt"
+ },
+ {
+  "src": "sections/product-featured.liquid",
+  "asset": "assets/zl-153.txt"
+ },
+ {
+  "src": "sections/product-recommendations.liquid",
+  "asset": "assets/zl-154.txt"
+ },
+ {
+  "src": "sections/reviews.liquid",
+  "asset": "assets/zl-155.txt"
+ },
+ {
+  "src": "sections/support-mini.liquid",
+  "asset": "assets/zl-156.txt"
+ },
+ {
+  "src": "sections/support-steps.liquid",
+  "asset": "assets/zl-157.txt"
+ },
+ {
+  "src": "sections/title-premium.liquid",
+  "asset": "assets/zl-158.txt"
+ },
+ {
+  "src": "sections/tout-est-dans-le-carton.liquid",
+  "asset": "assets/zl-159.txt"
+ },
+ {
+  "src": "sections/txtprem.liquid",
+  "asset": "assets/zl-160.txt"
+ },
+ {
+  "src": "sections/velluce-3d.liquid",
+  "asset": "assets/zl-161.txt"
+ },
+ {
+  "src": "sections/velluce-bundles.liquid",
+  "asset": "assets/zl-162.txt"
+ },
+ {
+  "src": "sections/velluce-chapitre.liquid",
+  "asset": "assets/zl-163.txt"
+ },
+ {
+  "src": "sections/velluce-comparatif.liquid",
+  "asset": "assets/zl-164.txt"
+ },
+ {
+  "src": "sections/velluce-dunes.liquid",
+  "asset": "assets/zl-165.txt"
+ },
+ {
+  "src": "sections/velluce-espace-pro.liquid",
+  "asset": "assets/zl-166.txt"
+ },
+ {
+  "src": "sections/velluce-grille.liquid",
+  "asset": "assets/zl-167.txt"
+ },
+ {
+  "src": "sections/velluce-hero-3d.liquid",
+  "asset": "assets/zl-168.txt"
+ },
+ {
+  "src": "sections/velluce-lettre-simple.liquid",
+  "asset": "assets/zl-169.txt"
+ },
+ {
+  "src": "sections/velluce-manifeste.liquid",
+  "asset": "assets/zl-170.txt"
+ },
+ {
+  "src": "sections/velluce-scroll-3d.liquid",
+  "asset": "assets/zl-171.txt"
+ },
+ {
+  "src": "sections/velluce-voir-tout.liquid",
+  "asset": "assets/zl-172.txt"
+ },
+ {
+  "src": "sections/velluce-vous-aimerez.liquid",
+  "asset": "assets/zl-173.txt"
+ },
+ {
+  "src": "sections/video-carr.liquid",
+  "asset": "assets/zl-174.txt"
+ },
+ {
+  "src": "sections/video-promo.liquid",
+  "asset": "assets/zl-175.txt"
+ },
+ {
+  "src": "sections/wishlist-drawer.liquid",
+  "asset": "assets/zl-176.txt"
+ },
+ {
+  "src": "snippets/accordion.liquid",
+  "asset": "assets/zl-177.txt"
+ },
+ {
+  "src": "snippets/add-to-wishlist-button.liquid",
+  "asset": "assets/zl-178.txt"
+ },
+ {
+  "src": "snippets/article-card.liquid",
+  "asset": "assets/zl-179.txt"
+ },
+ {
+  "src": "snippets/button.liquid",
+  "asset": "assets/zl-180.txt"
+ },
+ {
+  "src": "snippets/cart-icon.liquid",
+  "asset": "assets/zl-181.txt"
+ },
+ {
+  "src": "snippets/checkbox.liquid",
+  "asset": "assets/zl-182.txt"
+ },
+ {
+  "src": "snippets/collection-card.liquid",
+  "asset": "assets/zl-183.txt"
+ },
+ {
+  "src": "snippets/color-schemes.liquid",
+  "asset": "assets/zl-184.txt"
+ },
+ {
+  "src": "snippets/css-variables.liquid",
+  "asset": "assets/zl-185.txt"
+ },
+ {
+  "src": "snippets/dropdown-localization.liquid",
+  "asset": "assets/zl-186.txt"
+ },
+ {
+  "src": "snippets/filter-boolean.liquid",
+  "asset": "assets/zl-187.txt"
+ },
+ {
+  "src": "snippets/filter-list.liquid",
+  "asset": "assets/zl-188.txt"
+ },
+ {
+  "src": "snippets/filter-price-range.liquid",
+  "asset": "assets/zl-189.txt"
+ },
+ {
+  "src": "snippets/filters-inline.liquid",
+  "asset": "assets/zl-190.txt"
+ },
+ {
+  "src": "snippets/filters-modal.liquid",
+  "asset": "assets/zl-191.txt"
+ },
+ {
+  "src": "snippets/filters-sidebar.liquid",
+  "asset": "assets/zl-192.txt"
+ },
+ {
+  "src": "snippets/fonts.liquid",
+  "asset": "assets/zl-193.txt"
+ },
+ {
+  "src": "snippets/header-actions.liquid",
+  "asset": "assets/zl-194.txt"
+ },
+ {
+  "src": "snippets/header-menu-desktop.liquid",
+  "asset": "assets/zl-195.txt"
+ },
+ {
+  "src": "snippets/icon.liquid",
+  "asset": "assets/zl-196.txt"
+ },
+ {
+  "src": "snippets/image.liquid",
+  "asset": "assets/zl-197.txt"
+ },
+ {
+  "src": "snippets/loading-spinner.liquid",
+  "asset": "assets/zl-198.txt"
+ },
+ {
+  "src": "snippets/localization-form.liquid",
+  "asset": "assets/zl-199.txt"
+ },
+ {
+  "src": "snippets/material-icons-body.liquid",
+  "asset": "assets/zl-200.txt"
+ },
+ {
+  "src": "snippets/material-icons-header.liquid",
+  "asset": "assets/zl-201.txt"
+ },
+ {
+  "src": "snippets/meta-tags.liquid",
+  "asset": "assets/zl-202.txt"
+ },
+ {
+  "src": "snippets/organization-schema.liquid",
+  "asset": "assets/zl-203.txt"
+ },
+ {
+  "src": "snippets/pagination.liquid",
+  "asset": "assets/zl-204.txt"
+ },
+ {
+  "src": "snippets/price.liquid",
+  "asset": "assets/zl-205.txt"
+ },
+ {
+  "src": "snippets/product-badges.liquid",
+  "asset": "assets/zl-206.txt"
+ },
+ {
+  "src": "snippets/product-card.liquid",
+  "asset": "assets/zl-207.txt"
+ },
+ {
+  "src": "snippets/product-media.liquid",
+  "asset": "assets/zl-208.txt"
+ },
+ {
+  "src": "snippets/product-option-value-button.liquid",
+  "asset": "assets/zl-209.txt"
+ },
+ {
+  "src": "snippets/product-section-content.liquid",
+  "asset": "assets/zl-210.txt"
+ },
+ {
+  "src": "snippets/product-swatches.liquid",
+  "asset": "assets/zl-211.txt"
+ },
+ {
+  "src": "snippets/quantity-selector.liquid",
+  "asset": "assets/zl-212.txt"
+ },
+ {
+  "src": "snippets/radio.liquid",
+  "asset": "assets/zl-213.txt"
+ },
+ {
+  "src": "snippets/rating-stars.liquid",
+  "asset": "assets/zl-214.txt"
+ },
+ {
+  "src": "snippets/review.liquid",
+  "asset": "assets/zl-215.txt"
+ },
+ {
+  "src": "snippets/scripts.liquid",
+  "asset": "assets/zl-216.txt"
+ },
+ {
+  "src": "snippets/search-popup.liquid",
+  "asset": "assets/zl-217.txt"
+ },
+ {
+  "src": "snippets/section-properties.liquid",
+  "asset": "assets/zl-218.txt"
+ },
+ {
+  "src": "snippets/section-spacing-collapsing.liquid",
+  "asset": "assets/zl-219.txt"
+ },
+ {
+  "src": "snippets/select.liquid",
+  "asset": "assets/zl-220.txt"
+ },
+ {
+  "src": "snippets/separator.liquid",
+  "asset": "assets/zl-221.txt"
+ },
+ {
+  "src": "snippets/slider.liquid",
+  "asset": "assets/zl-222.txt"
+ },
+ {
+  "src": "snippets/sort-inline.liquid",
+  "asset": "assets/zl-223.txt"
+ },
+ {
+  "src": "snippets/sort-select.liquid",
+  "asset": "assets/zl-224.txt"
+ },
+ {
+  "src": "snippets/swatch.liquid",
+  "asset": "assets/zl-225.txt"
+ },
+ {
+  "src": "snippets/swatches.liquid",
+  "asset": "assets/zl-226.txt"
+ },
+ {
+  "src": "snippets/textarea.liquid",
+  "asset": "assets/zl-227.txt"
+ },
+ {
+  "src": "snippets/textfield.liquid",
+  "asset": "assets/zl-228.txt"
+ },
+ {
+  "src": "snippets/toast-notification.liquid",
+  "asset": "assets/zl-229.txt"
+ },
+ {
+  "src": "snippets/velluce-3d-mini.liquid",
+  "asset": "assets/zl-230.txt"
+ },
+ {
+  "src": "snippets/velluce-color-hex.liquid",
+  "asset": "assets/zl-231.txt"
+ },
+ {
+  "src": "snippets/velluce-illus-guide.liquid",
+  "asset": "assets/zl-232.txt"
+ },
+ {
+  "src": "snippets/velluce-illus.liquid",
+  "asset": "assets/zl-233.txt"
+ },
+ {
+  "src": "snippets/velluce-menu-thumb.liquid",
+  "asset": "assets/zl-234.txt"
+ },
+ {
+  "src": "snippets/velluce-motion.liquid",
+  "asset": "assets/zl-235.txt"
+ },
+ {
+  "src": "snippets/velluce-packs.liquid",
+  "asset": "assets/zl-236.txt"
+ },
+ {
+  "src": "snippets/velluce-photo-search.liquid",
+  "asset": "assets/zl-237.txt"
+ },
+ {
+  "src": "snippets/velluce-product-accordions.liquid",
+  "asset": "assets/zl-238.txt"
+ },
+ {
+  "src": "snippets/velluce-radius-fix.liquid",
+  "asset": "assets/zl-239.txt"
+ },
+ {
+  "src": "snippets/video.liquid",
+  "asset": "assets/zl-240.txt"
+ },
+ {
+  "src": "snippets/wishlist-icon.liquid",
+  "asset": "assets/zl-241.txt"
+ }
+]

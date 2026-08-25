@@ -1,0 +1,249 @@
+{% comment %}
+  Velluce — La lettre (version simple).
+  Une ligne de titre, un champ, un bouton. Rien d'autre.
+  Remplace le grand bloc newsletter en bas de la page d'accueil.
+{% endcomment %}
+
+<section
+  class="vls"
+  id="vls-{{ section.id }}"
+  style="
+    --vls-bg: {{ section.settings.bg }};
+    --vls-ink: {{ section.settings.ink }};
+    --vls-accent: {{ section.settings.accent }};
+    --vls-btn: {{ section.settings.btn_bg }};
+    --vls-btn-ink: {{ section.settings.btn_ink }};
+    --vls-pad: {{ section.settings.pad }}px;
+    --vls-pad-m: {{ section.settings.pad_m }}px;
+  "
+>
+  <div class="vls__in">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="vls__eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h2 class="vls__title">{{ section.settings.title }}</h2>
+
+    {%- form 'customer', class: 'vls__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      {%- if form.posted_successfully? -%}
+        <p class="vls__ok">{{ section.settings.success }}</p>
+      {%- else -%}
+        <label class="vls__sr" for="vls-mail-{{ section.id }}">{{ section.settings.placeholder }}</label>
+        <input
+          id="vls-mail-{{ section.id }}"
+          class="vls__input"
+          type="email"
+          name="contact[email]"
+          placeholder="{{ section.settings.placeholder }}"
+          autocomplete="email"
+          required
+        >
+        <button type="submit" class="vls__btn">{{ section.settings.button }}</button>
+      {%- endif -%}
+    {%- endform -%}
+
+    {%- if section.settings.legal != blank -%}
+      <p class="vls__legal">{{ section.settings.legal }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .vls {
+    background: var(--vls-bg);
+    color: var(--vls-ink);
+    padding: var(--vls-pad) 20px;
+    font-family: var(--font-body-family, "Jost", system-ui, sans-serif);
+  }
+  .vls__in { max-width: 680px; margin: 0 auto; text-align: center; }
+
+  .vls__eyebrow {
+    margin: 0 0 10px;
+    font-size: 11px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--vls-accent);
+    font-weight: 600;
+  }
+  .vls__title {
+    margin: 0 0 22px;
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-weight: 400;
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.2;
+    letter-spacing: -.01em;
+    text-wrap: balance;
+  }
+
+  .vls__form {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    justify-content: center;
+    margin: 0;
+  }
+  .vls__sr {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  .vls__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 380px;
+    padding: 15px 18px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--vls-ink);
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .14);
+    border-radius: 999px;
+    transition: border-color .25s ease, box-shadow .25s ease;
+  }
+  .vls__input:focus {
+    outline: none;
+    border-color: var(--vls-accent);
+    box-shadow: 0 0 0 3px rgba(180, 201, 190, .38);
+  }
+  .vls__btn {
+    flex: 0 0 auto;
+    padding: 15px 28px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--vls-btn-ink);
+    background: var(--vls-btn);
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform .2s ease, filter .2s ease;
+  }
+  .vls__btn:hover { transform: translateY(-1px); filter: brightness(.96); }
+  .vls__btn:active { transform: translateY(0); }
+
+  .vls__legal { margin: 14px 0 0; font-size: 12.5px; color: var(--vls-ink); opacity: .55; }
+  .vls__ok {
+    margin: 0 auto;
+    padding: 14px 20px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .1);
+    font-size: 15px;
+  }
+
+  @media (max-width: 620px) {
+    .vls { padding: var(--vls-pad-m) 18px; }
+    .vls__form { flex-direction: column; align-items: stretch; }
+    .vls__input { max-width: none; text-align: center; }
+    .vls__title { margin-bottom: 18px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Zensea Lettre simple",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "La lettre Zensea"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Deux e-mails par mois. Pas un de plus."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Champ e-mail",
+      "default": "Votre adresse e-mail"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Bouton",
+      "default": "Je m'inscris"
+    },
+    {
+      "type": "text",
+      "id": "legal",
+      "label": "Mention sous le champ",
+      "default": "Désinscription en un clic, à tout moment."
+    },
+    {
+      "type": "text",
+      "id": "success",
+      "label": "Message de confirmation",
+      "default": "C'est noté. Votre première lettre arrive bientôt."
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Fond",
+      "default": "#faf8f5"
+    },
+    {
+      "type": "color",
+      "id": "ink",
+      "label": "Texte",
+      "default": "#292F2C"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent",
+      "default": "#CBA03C"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Fond du bouton",
+      "default": "#B4C9BE"
+    },
+    {
+      "type": "color",
+      "id": "btn_ink",
+      "label": "Texte du bouton",
+      "default": "#292F2C"
+    },
+    {
+      "type": "header",
+      "content": "Espacements"
+    },
+    {
+      "type": "range",
+      "id": "pad",
+      "label": "Hauteur",
+      "min": 24,
+      "max": 140,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "pad_m",
+      "label": "Hauteur — mobile",
+      "min": 20,
+      "max": 100,
+      "step": 4,
+      "default": 40,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zensea Lettre simple"
+    }
+  ]
+}
+{% endschema %}

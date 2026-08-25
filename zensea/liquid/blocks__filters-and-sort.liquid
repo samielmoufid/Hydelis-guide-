@@ -1,0 +1,1244 @@
+{% doc %}
+  Velluce — Barre de filtres et de tri des collections.
+  Combine :
+   - des pastilles de catégories basées sur les tags produits (URL native /collections/tous-les-handpans/tag)
+   - les filtres natifs Shopify (prix, disponibilité, options...) rendus proprement
+   - un tri élégant
+{% enddoc %}
+
+{%- liquid
+  assign bb_show_filters = block.settings.show_filters
+  assign bb_show_sorting = block.settings.show_sorting
+  assign bb_show_tags = block.settings.show_tag_pills
+
+  assign c_beige = block.settings.color_beige | default: '#B4C9BE'
+  assign c_accent = block.settings.color_accent | default: '#90AFA0'
+  assign c_ink = block.settings.color_ink | default: '#292F2C'
+  assign c_soft = block.settings.color_soft | default: '#FAF8F5'
+
+  assign bb_max_tags = block.settings.max_tags | default: 10
+
+  comment
+    ---------- 1. Query string des filtres actifs (pour conserver l'etat) ----------
+  endcomment
+  assign bb_qs = ''
+  for f in collection.filters
+    if f.type == 'price_range'
+      if f.min_value.value != blank
+        assign bb_qs = bb_qs | append: f.min_value.param_name | append: '=' | append: f.min_value.value | append: '&'
+      endif
+      if f.max_value.value != blank
+        assign bb_qs = bb_qs | append: f.max_value.param_name | append: '=' | append: f.max_value.value | append: '&'
+      endif
+    else
+      for v in f.active_values
+        assign v_enc = v.value | url_encode
+        assign bb_qs = bb_qs | append: v.param_name | append: '=' | append: v_enc | append: '&'
+      endfor
+    endif
+  endfor
+
+  assign bb_sort = collection.sort_by | default: ''
+  assign bb_qs_sort = bb_qs
+  if bb_sort != blank
+    assign bb_qs_sort = bb_qs_sort | append: 'sort_by=' | append: bb_sort | append: '&'
+  endif
+
+  comment
+    ---------- 2. Pastilles de categories (tags) ----------
+  endcomment
+  assign bb_hidden = block.settings.hidden_tags | default: '' | downcase | split: ','
+  assign bb_prefixes = block.settings.hidden_tag_prefixes | default: '' | downcase | split: ','
+  assign coll_handle = collection.handle | default: ''
+
+  assign bb_tags = ''
+  assign bb_handles = ''
+  if bb_show_tags
+    for t in collection.all_tags
+      assign t_low = t | downcase | strip
+      assign t_handle = t | handle
+      assign skip = false
+
+      for h in bb_hidden
+        assign h_clean = h | strip
+        if h_clean != blank and h_clean == t_low
+          assign skip = true
+        endif
+      endfor
+
+      unless skip
+        for p in bb_prefixes
+          assign p_clean = p | strip
+          if p_clean != blank
+            assign head = t_low | slice: 0, p_clean.size
+            if head == p_clean
+              assign skip = true
+            endif
+          endif
+        endfor
+      endunless
+
+      comment
+        Un tag redondant avec le nom de la collection n'apporte aucun filtre utile.
+      endcomment
+      unless skip
+        if coll_handle contains t_handle
+          assign skip = true
+        endif
+        if t_handle contains coll_handle
+          assign skip = true
+        endif
+      endunless
+
+      comment
+        Doublon singulier / pluriel : on ne garde qu'une seule version.
+      endcomment
+      unless skip
+        assign seen_list = bb_handles | append: '§'
+        assign probe = '§' | append: t_handle | append: 's§'
+        if seen_list contains probe
+          assign skip = true
+        endif
+        assign last_char = t_handle | slice: -1
+        if last_char == 's'
+          assign cut = t_handle.size | minus: 1
+          assign t_single = t_handle | slice: 0, cut
+          assign probe2 = '§' | append: t_single | append: '§'
+          if seen_list contains probe2
+            assign skip = true
+          endif
+        endif
+      endunless
+
+      unless skip
+        assign bb_tags = bb_tags | append: t | append: '§'
+        assign bb_handles = bb_handles | append: '§' | append: t_handle
+      endunless
+    endfor
+  endif
+  assign bb_tags = bb_tags | split: '§'
+
+  comment
+    ---------- 2 bis. On ne garde que les tags REELLEMENT filtrants ----------
+    Un tag porte par un seul produit, ou au contraire par toute la collection,
+    ne sert a rien : on le retire. Les comptages sont faits sur la collection
+    non filtree pour que la liste de pastilles reste identique avant / apres clic.
+  endcomment
+  assign bb_min_count = block.settings.min_tag_count | default: 2
+  assign src_coll = collections[coll_handle]
+  assign scan_cap = 60
+  assign src_total = src_coll.all_products_count | default: 0
+  if src_total == 0
+    assign src_total = collection.all_products_count | default: 0
+  endif
+  assign scan_total = src_total | at_most: scan_cap
+
+  if bb_show_tags and bb_tags.size > 0 and scan_total > 1
+    assign bb_kept = ''
+    assign bb_kept_n = 0
+    for t in bb_tags
+      if bb_kept_n >= bb_max_tags
+        break
+      endif
+      assign tc = 0
+      for p in src_coll.products limit: scan_cap
+        if p.tags contains t
+          assign tc = tc | plus: 1
+        endif
+      endfor
+      if tc >= bb_min_count and tc < scan_total
+        assign bb_kept = bb_kept | append: t | append: '§'
+        assign bb_kept_n = bb_kept_n | plus: 1
+      endif
+    endfor
+    assign bb_tags = bb_kept | split: '§'
+  endif
+
+  comment
+    Une seule pastille utile = ce n'est pas un filtre : on masque toute la rangee.
+  endcomment
+  if bb_tags.size < 2
+    assign bb_show_tags = false
+  endif
+
+  assign bb_active_count = 0
+  for f in collection.filters
+    if f.type == 'price_range'
+      if f.min_value.value != blank
+        assign bb_active_count = bb_active_count | plus: 1
+      endif
+      if f.max_value.value != blank
+        assign bb_active_count = bb_active_count | plus: 1
+      endif
+    else
+      assign bb_active_count = bb_active_count | plus: f.active_values.size
+    endif
+  endfor
+  assign bb_has_state = false
+  if bb_active_count > 0 or current_tags.size > 0
+    assign bb_has_state = true
+  endif
+
+  assign bb_total = collection.products_count
+-%}
+
+{%- if bb_show_filters or bb_show_sorting -%}
+  <div
+    class="bbf{% if block.settings.sticky %} bbf--sticky{% endif %}{% if block.settings.additional_class != blank %} {{ block.settings.additional_class }}{% endif %}"
+    id="bbf-{{ block.id }}"
+    style="
+      --bbf-beige: {{ c_beige }};
+      --bbf-accent: {{ c_accent }};
+      --bbf-ink: {{ c_ink }};
+      --bbf-soft: {{ c_soft }};
+      --bbf-line: rgb(from {{ c_beige }} r g b / 55%);
+    "
+  >
+    {%- comment -%} ---------- Pastilles de categories ---------- {%- endcomment -%}
+    {%- if bb_show_tags and bb_tags.size > 0 -%}
+      <div class="bbf__pills-wrap">
+        <div class="bbf__pills" role="list">
+          {%- assign all_url = collection.url -%}
+          {%- if bb_qs_sort != blank -%}
+            {%- assign all_url = all_url | append: '?' | append: bb_qs_sort -%}
+          {%- endif -%}
+          <a
+            class="bbf__pill{% if current_tags.size == 0 %} is-active{% endif %}"
+            href="{{ all_url }}"
+            role="listitem"
+          >
+            {{ block.settings.all_label | default: 'Tout voir' }}
+          </a>
+
+          {%- for t in bb_tags limit: bb_max_tags -%}
+            {%- liquid
+              assign t_handle = t | handle
+              assign is_on = false
+              for ct in current_tags
+                assign ct_h = ct | handle
+                if ct_h == t_handle
+                  assign is_on = true
+                endif
+              endfor
+
+              if is_on
+                assign p_url = collection.url
+              else
+                assign p_url = collection.url | append: '/' | append: t_handle
+              endif
+              if bb_qs_sort != blank
+                assign p_url = p_url | append: '?' | append: bb_qs_sort
+              endif
+              assign t_label = t | capitalize
+            -%}
+            <a
+              class="bbf__pill{% if is_on %} is-active{% endif %}"
+              href="{{ p_url }}"
+              role="listitem"
+              {% if is_on %}aria-current="true"{% endif %}
+            >
+              {{ t_label }}
+              {%- if is_on -%}
+                <svg class="bbf__pill-x" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+              {%- endif -%}
+            </a>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%} ---------- Barre d'outils ---------- {%- endcomment -%}
+    <div class="bbf__bar">
+      <div class="bbf__left">
+        <span class="bbf__count">
+          {%- if bb_total == 1 -%}
+            1 produit
+          {%- else -%}
+            {{ bb_total }} produits
+          {%- endif -%}
+        </span>
+
+        {%- if bb_show_filters -%}
+          {%- for f in collection.filters -%}
+            {%- liquid
+              assign usable = 0
+              if f.type == 'price_range'
+                assign usable = 2
+              else
+                for v in f.values
+                  if v.count > 0 or v.active
+                    assign usable = usable | plus: 1
+                  endif
+                endfor
+              endif
+              comment
+                La boutique ne suit pas les stocks : le filtre « Disponibilité » n'a aucun sens.
+              endcomment
+              if block.settings.hide_availability and f.param_name contains 'availability'
+                assign usable = 0
+              endif
+            -%}
+            {%- if usable > 1 -%}
+              <details class="bbf__drop" data-bbf-drop>
+                <summary class="bbf__trigger">
+                  <span>{{ f.label }}</span>
+                  {%- if f.type == 'price_range' -%}
+                    {%- if f.min_value.value != blank or f.max_value.value != blank -%}
+                      <span class="bbf__badge">1</span>
+                    {%- endif -%}
+                  {%- elsif f.active_values.size > 0 -%}
+                    <span class="bbf__badge">{{ f.active_values.size }}</span>
+                  {%- endif -%}
+                  <svg class="bbf__chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5L6 6.5l5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+                </summary>
+
+                <div class="bbf__panel">
+                  {%- case f.type -%}
+                    {%- when 'price_range' -%}
+                      {%- liquid
+                        assign pmax = f.range_max | divided_by: 100
+                        assign step = pmax | divided_by: 4
+                        assign t1 = step | divided_by: 10 | ceil | times: 10
+                        assign t2 = step | times: 2 | divided_by: 10 | ceil | times: 10
+                        assign t3 = step | times: 3 | divided_by: 10 | ceil | times: 10
+                        assign cur_min = ''
+                        assign cur_max = ''
+                        if f.min_value.value != blank
+                          assign cur_min = f.min_value.value | divided_by: 100
+                        endif
+                        if f.max_value.value != blank
+                          assign cur_max = f.max_value.value | divided_by: 100
+                        endif
+                      -%}
+                      {%- if t1 > 0 and t1 < t2 and t2 < t3 and t3 < pmax -%}
+                        <div class="bbf__presets">
+                          {%- assign m1 = t1 | times: 100 | money_without_trailing_zeros -%}
+                          {%- assign m2 = t2 | times: 100 | money_without_trailing_zeros -%}
+                          {%- assign m3 = t3 | times: 100 | money_without_trailing_zeros -%}
+                          <a class="bbf__preset{% if cur_max == t1 and cur_min == blank %} is-active{% endif %}" href="{{ request.path }}?{{ f.max_value.param_name }}={{ t1 }}{% if bb_sort != blank %}&sort_by={{ bb_sort }}{% endif %}">Moins de {{ m1 }}</a>
+                          <a class="bbf__preset{% if cur_min == t1 and cur_max == t2 %} is-active{% endif %}" href="{{ request.path }}?{{ f.min_value.param_name }}={{ t1 }}&{{ f.max_value.param_name }}={{ t2 }}{% if bb_sort != blank %}&sort_by={{ bb_sort }}{% endif %}">{{ m1 }} – {{ m2 }}</a>
+                          <a class="bbf__preset{% if cur_min == t2 and cur_max == t3 %} is-active{% endif %}" href="{{ request.path }}?{{ f.min_value.param_name }}={{ t2 }}&{{ f.max_value.param_name }}={{ t3 }}{% if bb_sort != blank %}&sort_by={{ bb_sort }}{% endif %}">{{ m2 }} – {{ m3 }}</a>
+                          <a class="bbf__preset{% if cur_min == t3 and cur_max == blank %} is-active{% endif %}" href="{{ request.path }}?{{ f.min_value.param_name }}={{ t3 }}{% if bb_sort != blank %}&sort_by={{ bb_sort }}{% endif %}">Plus de {{ m3 }}</a>
+                        </div>
+                      {%- endif -%}
+
+                      <form class="bbf__price-form" method="get" action="{{ request.path }}">
+                        {%- if bb_sort != blank -%}
+                          <input type="hidden" name="sort_by" value="{{ bb_sort }}">
+                        {%- endif -%}
+                        <label class="bbf__price-field">
+                          <span>De</span>
+                          <input type="number" inputmode="numeric" min="0" max="{{ pmax }}" name="{{ f.min_value.param_name }}" value="{{ cur_min }}" placeholder="0">
+                          <em>{{ cart.currency.symbol }}</em>
+                        </label>
+                        <label class="bbf__price-field">
+                          <span>à</span>
+                          <input type="number" inputmode="numeric" min="0" max="{{ pmax }}" name="{{ f.max_value.param_name }}" value="{{ cur_max }}" placeholder="{{ pmax }}">
+                          <em>{{ cart.currency.symbol }}</em>
+                        </label>
+                        <button type="submit" class="bbf__apply">OK</button>
+                      </form>
+
+                      {%- if cur_min != blank or cur_max != blank -%}
+                        <a class="bbf__reset" href="{{ f.url_to_remove }}">Réinitialiser le prix</a>
+                      {%- endif -%}
+
+                    {%- when 'boolean' -%}
+                      <div class="bbf__options">
+                        <a class="bbf__option{% if f.true_value.active %} is-active{% endif %}" href="{% if f.true_value.active %}{{ f.true_value.url_to_remove }}{% else %}{{ f.true_value.url_to_add }}{% endif %}">
+                          <span class="bbf__tick" aria-hidden="true"></span>
+                          <span class="bbf__option-label">{{ f.true_value.label }}</span>
+                        </a>
+                      </div>
+
+                    {%- else -%}
+                      <div class="bbf__options">
+                        {%- for v in f.values -%}
+                          {%- if v.count > 0 or v.active -%}
+                            <a
+                              class="bbf__option{% if v.active %} is-active{% endif %}"
+                              href="{% if v.active %}{{ v.url_to_remove }}{% else %}{{ v.url_to_add }}{% endif %}"
+                            >
+                              {%- if v.swatch -%}
+                                <span class="bbf__swatch" style="--bbf-sw: {{ v.swatch.color }}{% if v.swatch.image %}; --bbf-sw-img: url({{ v.swatch.image | image_url: width: 40 }}){% endif %}"></span>
+                              {%- else -%}
+                                <span class="bbf__tick" aria-hidden="true"></span>
+                              {%- endif -%}
+                              <span class="bbf__option-label">{{ v.label }}</span>
+                              <span class="bbf__option-count">{{ v.count }}</span>
+                            </a>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                      {%- if f.active_values.size > 0 -%}
+                        <a class="bbf__reset" href="{{ f.url_to_remove }}">Tout décocher</a>
+                      {%- endif -%}
+                  {%- endcase -%}
+                </div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      {%- if bb_show_sorting and collection.sort_options.size > 0 -%}
+        {%- liquid
+          comment
+            Tri : on ne garde que les options utiles pour un client
+            (alphabetique A-Z / Z-A et date croissante sont masquees par defaut).
+          endcomment
+          assign bb_hidden_sorts = block.settings.hidden_sorts | default: '' | downcase | replace: ' ', ''
+          assign bb_hidden_sorts = ',' | append: bb_hidden_sorts | append: ','
+
+          assign cur_sort = collection.sort_by | default: collection.default_sort_by
+
+          comment
+            « Notre sélection » (manual) fait doublon avec « Le plus pertinent »
+            quand les deux existent : on masque le premier, sauf s'il est actif.
+          endcomment
+          assign bb_has_relevant = false
+          for o in collection.sort_options
+            if o.value == 'most-relevant'
+              assign bb_has_relevant = true
+            endif
+          endfor
+          if bb_has_relevant and cur_sort != 'manual'
+            assign bb_hidden_sorts = bb_hidden_sorts | append: 'manual,'
+          endif
+
+          assign cur_sort_label = ''
+          assign bb_sort_n = 0
+          for o in collection.sort_options
+            assign o_probe = ',' | append: o.value | append: ','
+            assign o_hidden_now = true
+            unless bb_hidden_sorts contains o_probe
+              assign o_hidden_now = false
+              assign bb_sort_n = bb_sort_n | plus: 1
+            endunless
+            if o.value == cur_sort and o_hidden_now == false
+              case o.value
+                when 'manual'
+                  assign cur_sort_label = 'Notre sélection'
+                when 'best-selling'
+                  assign cur_sort_label = 'Les plus vendus'
+                when 'price-ascending'
+                  assign cur_sort_label = 'Prix croissant'
+                when 'price-descending'
+                  assign cur_sort_label = 'Prix décroissant'
+                when 'created-descending'
+                  assign cur_sort_label = 'Nouveautés'
+                else
+                  assign cur_sort_label = o.name
+              endcase
+            endif
+          endfor
+        -%}
+        {%- if bb_sort_n > 1 -%}
+          <details class="bbf__drop bbf__drop--right" data-bbf-drop>
+            <summary class="bbf__trigger bbf__trigger--sort">
+              <svg class="bbf__sort-ico" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 4h10M3.5 7h7M5.5 10h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <span class="bbf__sort-text">{%- if cur_sort_label != blank -%}<i>Trier&nbsp;:</i> {{ cur_sort_label }}{%- else -%}Trier{%- endif -%}</span>
+              <svg class="bbf__chev" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5L6 6.5l5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            </summary>
+            <div class="bbf__panel bbf__panel--sort">
+              <div class="bbf__options">
+                {%- for o in collection.sort_options -%}
+                  {%- liquid
+                    assign o_probe = ',' | append: o.value | append: ','
+                    assign o_hidden = false
+                    if bb_hidden_sorts contains o_probe
+                      assign o_hidden = true
+                    endif
+                    case o.value
+                      when 'manual'
+                        assign o_label = 'Notre sélection'
+                      when 'best-selling'
+                        assign o_label = 'Les plus vendus'
+                      when 'price-ascending'
+                        assign o_label = 'Prix croissant'
+                      when 'price-descending'
+                        assign o_label = 'Prix décroissant'
+                      when 'created-descending'
+                        assign o_label = 'Nouveautés'
+                      else
+                        assign o_label = o.name
+                    endcase
+                  -%}
+                  {%- unless o_hidden -%}
+                    <a
+                      class="bbf__option{% if o.value == cur_sort %} is-active{% endif %}"
+                      href="{{ request.path }}?{{ bb_qs }}sort_by={{ o.value }}"
+                    >
+                      <span class="bbf__tick bbf__tick--round" aria-hidden="true"></span>
+                      <span class="bbf__option-label">{{ o_label }}</span>
+                    </a>
+                  {%- endunless -%}
+                {%- endfor -%}
+              </div>
+            </div>
+          </details>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ---------- Filtres actifs ---------- {%- endcomment -%}
+    {%- if bb_has_state -%}
+      <div class="bbf__active">
+        <span class="bbf__active-label">Filtres actifs</span>
+
+        {%- for ct in current_tags -%}
+          {%- liquid
+            assign ct_h = ct | handle
+            assign rest = ''
+            for o in current_tags
+              assign o_h = o | handle
+              unless o_h == ct_h
+                assign rest = rest | append: o_h | append: '+'
+              endunless
+            endfor
+            assign rest = rest | remove_last: '+'
+            if rest == blank
+              assign rm_url = collection.url
+            else
+              assign rm_url = collection.url | append: '/' | append: rest
+            endif
+            if bb_qs_sort != blank
+              assign rm_url = rm_url | append: '?' | append: bb_qs_sort
+            endif
+          -%}
+          <a class="bbf__chip" href="{{ rm_url }}">
+            {{ ct | capitalize }}
+            <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+          </a>
+        {%- endfor -%}
+
+        {%- for f in collection.filters -%}
+          {%- if f.type == 'price_range' -%}
+            {%- if f.min_value.value != blank or f.max_value.value != blank -%}
+              <a class="bbf__chip" href="{{ f.url_to_remove }}">
+                {%- if f.min_value.value != blank and f.max_value.value != blank -%}
+                  {{ f.min_value.value | money_without_trailing_zeros }} – {{ f.max_value.value | money_without_trailing_zeros }}
+                {%- elsif f.max_value.value != blank -%}
+                  Moins de {{ f.max_value.value | money_without_trailing_zeros }}
+                {%- else -%}
+                  Plus de {{ f.min_value.value | money_without_trailing_zeros }}
+                {%- endif -%}
+                <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+              </a>
+            {%- endif -%}
+          {%- else -%}
+            {%- for v in f.active_values -%}
+              <a class="bbf__chip" href="{{ v.url_to_remove }}">
+                {{ v.label }}
+                <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+              </a>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        <a class="bbf__clear" href="{{ collection.url }}">Tout effacer</a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById('bbf-{{ block.id }}');
+      if (!root || root.dataset.bbfInit) return;
+      root.dataset.bbfInit = '1';
+      var drops = root.querySelectorAll('[data-bbf-drop]');
+      drops.forEach(function (d) {
+        d.addEventListener('toggle', function () {
+          if (!d.open) return;
+          drops.forEach(function (o) { if (o !== d) o.open = false; });
+        });
+      });
+      document.addEventListener('click', function (e) {
+        if (root.contains(e.target)) return;
+        drops.forEach(function (o) { o.open = false; });
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') drops.forEach(function (o) { o.open = false; });
+      });
+      var pills = root.querySelector('.bbf__pills');
+      if (pills) {
+        var active = pills.querySelector('.bbf__pill.is-active');
+        if (active && active !== pills.firstElementChild) {
+          pills.scrollLeft = active.offsetLeft - 24;
+        }
+      }
+    })();
+  </script>
+{%- endif -%}
+
+{% stylesheet %}
+  .bbf {
+    --bbf-radius: 999px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    font-size: 14px;
+    color: var(--bbf-ink);
+  }
+
+  .bbf--sticky {
+    position: sticky;
+    top: calc(var(--header-height, 0px) + 8px);
+    z-index: 20;
+    background: #fff;
+    padding: 10px 0;
+  }
+
+  /* ---------- Pastilles ---------- */
+  .bbf__pills-wrap {
+    position: relative;
+    margin: 0 -4px;
+  }
+
+  .bbf__pills {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 4px;
+    scroll-behavior: smooth;
+  }
+
+  .bbf__pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bbf__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    padding: 9px 16px;
+    border-radius: var(--bbf-radius);
+    border: 1px solid var(--bbf-line);
+    background: #fff;
+    color: var(--bbf-ink);
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
+  }
+
+  .bbf__pill:hover {
+    background: var(--bbf-soft);
+    border-color: var(--bbf-accent);
+    transform: translateY(-1px);
+  }
+
+  .bbf__pill.is-active {
+    background: var(--bbf-ink);
+    border-color: var(--bbf-ink);
+    color: #fff;
+  }
+
+  .bbf__pill-x {
+    width: 10px;
+    height: 10px;
+    opacity: .8;
+  }
+
+  /* ---------- Barre ---------- */
+  .bbf__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 10px 4px;
+    border-top: 1px solid var(--bbf-line);
+    border-bottom: 1px solid var(--bbf-line);
+  }
+
+  .bbf__left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .bbf__count {
+    font-size: 12.5px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: rgb(from var(--bbf-ink) r g b / 55%);
+    margin-right: 6px;
+    white-space: nowrap;
+  }
+
+  .bbf__drop {
+    position: relative;
+  }
+
+  .bbf__drop > summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .bbf__drop > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .bbf__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 14px;
+    border-radius: var(--bbf-radius);
+    border: 1px solid var(--bbf-line);
+    background: #fff;
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--bbf-ink);
+    transition: background-color .18s ease, border-color .18s ease;
+  }
+
+  .bbf__trigger:hover {
+    background: var(--bbf-soft);
+    border-color: var(--bbf-accent);
+  }
+
+  .bbf__drop[open] > .bbf__trigger {
+    background: var(--bbf-soft);
+    border-color: var(--bbf-accent);
+  }
+
+  .bbf__drop[open] .bbf__chev {
+    transform: rotate(180deg);
+  }
+
+  .bbf__chev {
+    width: 10px;
+    height: 7px;
+    transition: transform .2s ease;
+    opacity: .65;
+  }
+
+  .bbf__sort-ico {
+    width: 13px;
+    height: 13px;
+    opacity: .7;
+  }
+
+  .bbf__sort-text i {
+    font-style: normal;
+    color: rgb(from var(--bbf-ink) r g b / 50%);
+  }
+
+  .bbf__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--bbf-accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* ---------- Panneau ---------- */
+  .bbf__panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 40;
+    min-width: 250px;
+    max-width: 320px;
+    padding: 14px;
+    border-radius: 16px;
+    border: 1px solid var(--bbf-line);
+    background: #fff;
+    box-shadow: 0 18px 40px rgb(from var(--bbf-ink) r g b / 12%);
+    animation: bbf-in .16s ease;
+  }
+
+  .bbf__drop--right .bbf__panel {
+    left: auto;
+    right: 0;
+  }
+
+  @keyframes bbf-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .bbf__options {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 280px;
+    overflow-y: auto;
+  }
+
+  .bbf__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 9px;
+    border-radius: 10px;
+    color: var(--bbf-ink);
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.2;
+    transition: background-color .15s ease;
+  }
+
+  .bbf__option:hover {
+    background: var(--bbf-soft);
+  }
+
+  .bbf__option-label {
+    flex: 1 1 auto;
+  }
+
+  .bbf__option-count {
+    font-size: 12px;
+    color: rgb(from var(--bbf-ink) r g b / 40%);
+  }
+
+  .bbf__option.is-active {
+    font-weight: 600;
+  }
+
+  .bbf__tick {
+    position: relative;
+    flex: 0 0 auto;
+    width: 17px;
+    height: 17px;
+    border-radius: 5px;
+    border: 1.5px solid var(--bbf-line);
+    background: #fff;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+
+  .bbf__tick--round {
+    border-radius: 50%;
+  }
+
+  .bbf__option.is-active .bbf__tick {
+    background: var(--bbf-ink);
+    border-color: var(--bbf-ink);
+  }
+
+  .bbf__option.is-active .bbf__tick::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 1.8px 1.8px 0;
+    transform: rotate(43deg);
+  }
+
+  .bbf__option.is-active .bbf__tick--round::after {
+    left: 5.5px;
+    top: 2.5px;
+  }
+
+  .bbf__swatch {
+    flex: 0 0 auto;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: var(--bbf-sw, #EDEFEE) var(--bbf-sw-img, none) center/cover;
+    box-shadow: 0 0 0 1px rgb(from var(--bbf-ink) r g b / 15%);
+  }
+
+  .bbf__option.is-active .bbf__swatch {
+    box-shadow: 0 0 0 1.5px var(--bbf-ink), inset 0 0 0 2px #fff;
+  }
+
+  /* ---------- Prix ---------- */
+  .bbf__presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .bbf__preset {
+    padding: 7px 11px;
+    border-radius: var(--bbf-radius);
+    border: 1px solid var(--bbf-line);
+    background: #fff;
+    color: var(--bbf-ink);
+    font-size: 12.5px;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+
+  .bbf__preset:hover {
+    background: var(--bbf-soft);
+    border-color: var(--bbf-accent);
+  }
+
+  .bbf__preset.is-active {
+    background: var(--bbf-ink);
+    border-color: var(--bbf-ink);
+    color: #fff;
+  }
+
+  .bbf__price-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bbf__price-field {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .bbf__price-field > span {
+    font-size: 12.5px;
+    color: rgb(from var(--bbf-ink) r g b / 55%);
+  }
+
+  .bbf__price-field em {
+    font-style: normal;
+    font-size: 12.5px;
+    color: rgb(from var(--bbf-ink) r g b / 55%);
+  }
+
+  .bbf__price-field input {
+    width: 100%;
+    min-width: 0;
+    padding: 8px 9px;
+    border-radius: 10px;
+    border: 1px solid var(--bbf-line);
+    background: #fff;
+    font-size: 13.5px;
+    color: var(--bbf-ink);
+    -moz-appearance: textfield;
+  }
+
+  .bbf__price-field input::-webkit-outer-spin-button,
+  .bbf__price-field input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .bbf__price-field input:focus {
+    outline: none;
+    border-color: var(--bbf-accent);
+    box-shadow: 0 0 0 3px rgb(from var(--bbf-accent) r g b / 18%);
+  }
+
+  .bbf__apply {
+    flex: 0 0 auto;
+    padding: 9px 14px;
+    border: 0;
+    border-radius: var(--bbf-radius);
+    background: var(--bbf-ink);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .18s ease;
+  }
+
+  .bbf__apply:hover {
+    background: var(--bbf-accent);
+  }
+
+  .bbf__reset {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: rgb(from var(--bbf-ink) r g b / 55%);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ---------- Filtres actifs ---------- */
+  .bbf__active {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 4px;
+  }
+
+  .bbf__active-label {
+    font-size: 12px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: rgb(from var(--bbf-ink) r g b / 45%);
+    margin-right: 2px;
+  }
+
+  .bbf__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: var(--bbf-radius);
+    background: var(--bbf-soft);
+    border: 1px solid var(--bbf-line);
+    color: var(--bbf-ink);
+    font-size: 13px;
+    line-height: 1;
+    text-decoration: none;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+
+  .bbf__chip:hover {
+    background: #fff;
+    border-color: var(--bbf-accent);
+  }
+
+  .bbf__chip svg {
+    width: 10px;
+    height: 10px;
+    opacity: .55;
+  }
+
+  .bbf__clear {
+    font-size: 12.5px;
+    color: rgb(from var(--bbf-ink) r g b / 55%);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    margin-left: 2px;
+  }
+
+  .bbf__clear:hover {
+    color: var(--bbf-ink);
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (width <= 749px) {
+    .bbf {
+      gap: 10px;
+    }
+
+    .bbf__pills-wrap::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 36px;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgb(255 255 255 / 0%), #fff 78%);
+    }
+
+    .bbf__bar {
+      gap: 8px;
+      padding: 9px 4px;
+    }
+
+    .bbf__left {
+      gap: 6px;
+      flex: 1 1 auto;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      scrollbar-width: none;
+    }
+
+    .bbf__left::-webkit-scrollbar {
+      display: none;
+    }
+
+    .bbf__count {
+      display: none;
+    }
+
+    .bbf__trigger {
+      padding: 8px 12px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .bbf__sort-text i {
+      display: none;
+    }
+
+    /* Le panneau reste ancre sous son bouton (pas de volet en bas d'ecran). */
+    .bbf__left:has(details[open]),
+    .bbf__bar:has(details[open]) {
+      overflow: visible;
+    }
+
+    .bbf__panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      bottom: auto;
+      left: 0;
+      right: auto;
+      min-width: 220px;
+      max-width: min(78vw, 320px);
+      max-height: 56vh;
+      overflow-y: auto;
+      border-radius: 16px;
+      box-shadow: 0 14px 36px rgb(from var(--bbf-ink) r g b / 16%);
+    }
+
+    .bbf__drop--right .bbf__panel {
+      left: auto;
+      right: 0;
+    }
+
+    .bbf__presets {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .bbf__active-label {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Filtres et tri",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Affichage"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Afficher les filtres",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sorting",
+      "label": "Afficher le tri",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tag_pills",
+      "label": "Afficher les pastilles de catégories",
+      "info": "Filtres rapides construits automatiquement à partir des tags des produits de la collection.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_availability",
+      "label": "Masquer le filtre « Disponibilité »",
+      "info": "Inutile tant que le suivi des stocks est désactivé.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Barre collante au défilement",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Tri"
+    },
+    {
+      "type": "textarea",
+      "id": "hidden_sorts",
+      "label": "Options de tri à masquer",
+      "info": "Codes séparés par des virgules : manual, best-selling, title-ascending, title-descending, price-ascending, price-descending, created-ascending, created-descending, relevance.",
+      "default": "title-ascending, title-descending, created-ascending, relevance"
+    },
+    {
+      "type": "header",
+      "content": "Pastilles de catégories"
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "Libellé de la pastille « tout »",
+      "default": "Tout voir"
+    },
+    {
+      "type": "range",
+      "id": "min_tag_count",
+      "label": "Nombre minimum de produits par pastille",
+      "info": "Une catégorie qui ne contient qu'un seul produit n'est pas affichée.",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "max_tags",
+      "label": "Nombre maximum de pastilles",
+      "min": 3,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "textarea",
+      "id": "hidden_tags",
+      "label": "Tags à ne jamais afficher",
+      "info": "Séparés par des virgules.",
+      "default": "handpan, handpans, Zensea, instrument, percussion, 440hz"
+    },
+    {
+      "type": "text",
+      "id": "hidden_tag_prefixes",
+      "label": "Préfixes de tags à masquer",
+      "info": "Séparés par des virgules. Tout tag commençant par l'un de ces préfixes est masqué.",
+      "default": "univers-, import-, espace"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "color_beige",
+      "label": "Beige (bordures)",
+      "default": "#B4C9BE"
+    },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Accent",
+      "default": "#90AFA0"
+    },
+    {
+      "type": "color",
+      "id": "color_ink",
+      "label": "Texte / sélection",
+      "default": "#292F2C"
+    },
+    {
+      "type": "color",
+      "id": "color_soft",
+      "label": "Fond doux",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "header",
+      "content": "Avancé"
+    },
+    {
+      "type": "text",
+      "id": "additional_class",
+      "label": "Classe CSS additionnelle"
+    }
+  ]
+}
+{% endschema %}

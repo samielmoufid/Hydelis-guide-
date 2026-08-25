@@ -1,0 +1,715 @@
+{% comment %}
+  Section : Nos Essentiels — Onglets de collections premium
+  Desktop carousel + onglets mobile visibles sans scroll
+{% endcomment %}
+
+{%- liquid
+  assign section_id = section.id
+  assign bg_color = section.settings.background_color
+  assign text_color = section.settings.text_color
+  assign pt = section.settings.padding_top
+  assign pb = section.settings.padding_bottom
+  assign max_w = section.settings.max_width
+  assign img_height = section.settings.image_height
+  assign btn_radius = section.settings.button_radius
+  assign img_radius = section.settings.image_radius
+  assign show_compare = section.settings.show_compare_price
+  assign show_btn = section.settings.show_button
+  assign btn_text = section.settings.button_text
+  assign title_size = section.settings.title_size
+  assign desktop_per_view = section.settings.desktop_products_per_view
+
+  assign desktop_max_w = max_w | times: 1.2 | round
+  assign desktop_img_height = img_height | times: 1.2 | round
+  assign desktop_title_size = title_size | times: 1.2 | round
+  assign desktop_pt = pt | times: 1.2 | round
+  assign desktop_pb = pb | times: 1.2 | round
+  assign desktop_gap = 28
+  assign desktop_gap_total = desktop_per_view | minus: 1 | times: desktop_gap
+-%}
+
+<style>
+  #nos-essentiels-{{ section_id }} {
+    background: {{ bg_color }};
+    color: {{ text_color }};
+    padding-top: {{ desktop_pt }}px;
+    padding-bottom: {{ desktop_pb }}px;
+    overflow: hidden;
+  }
+
+  #nos-essentiels-{{ section_id }} * {
+    box-sizing: border-box;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-inner {
+    max-width: {{ desktop_max_w }}px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-eyebrow {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #939F99;
+    margin: 0 0 12px;
+    font-weight: 400;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-title {
+    text-align: center;
+    font-size: {{ desktop_title_size }}px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0 0 42px;
+    color: {{ text_color }};
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-tabs-nav {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #E7E9E8;
+    margin-bottom: 54px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-tabs-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 14px 28px;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #A5AFAA;
+    cursor: pointer;
+    white-space: nowrap;
+    margin-bottom: -1px;
+    font-weight: 500;
+    transition: color .2s ease, border-color .2s ease;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-tab-btn[aria-selected="true"] {
+    color: #101211;
+    border-bottom-color: #101211;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-tab-btn:hover {
+    color: #303633;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-panel {
+    display: none;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-panel.is-active {
+    display: block;
+    opacity: 1;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-carousel-shell {
+    position: relative;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-carousel-nav {
+    position: absolute;
+    top: -48px;
+    right: 0;
+    display: flex;
+    gap: 10px;
+    z-index: 3;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-carousel-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid #D6DAD8;
+    background: #fff;
+    color: #101211;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s ease;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-carousel-btn:hover {
+    background: #101211;
+    color: #fff;
+    border-color: #101211;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: {{ desktop_gap }}px;
+    padding-bottom: 18px;
+    scrollbar-width: none;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-card {
+    flex: 0 0 calc((100% - {{ desktop_gap_total }}px) / {{ desktop_per_view }});
+    min-width: 0;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-card-img-wrap {
+    overflow: hidden;
+    border-radius: {{ img_radius }}px;
+    background: transparent;
+    margin-bottom: 20px;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-card-img-wrap img {
+    width: 100%;
+    height: {{ desktop_img_height }}px;
+    object-fit: contain;
+    display: block;
+    transition: transform .4s ease;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-card:hover .ne-card-img-wrap img {
+    transform: scale(1.04);
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 120px;
+    padding: 0 8px;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-card-title {
+    font-size: 16px;
+    font-weight: 400;
+    color: #101211;
+    margin: 0 0 12px;
+    line-height: 1.35;
+    letter-spacing: 0.02em;
+    min-height: 44px;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-card-prices {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-price-compare {
+    font-size: 16px;
+    color: #B7BFBB;
+    text-decoration: line-through;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-price-current {
+    font-size: 17px;
+    font-weight: 700;
+    color: #101211;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-card-btn {
+    display: block;
+    width: 100%;
+    padding: 14px 18px;
+    background: #101211;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-radius: {{ btn_radius }}px;
+    text-decoration: none;
+    margin-top: auto;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: all .25s ease;
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-card:hover .ne-card-btn {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #nos-essentiels-{{ section_id }} .ne-card-btn:hover {
+    background: #303633;
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    #nos-essentiels-{{ section_id }} {
+      padding-top: {{ pt }}px;
+      padding-bottom: {{ pb }}px;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-inner {
+      max-width: {{ max_w }}px;
+      padding: 0;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      padding: 0 18px;
+      margin-bottom: 10px;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-title {
+      font-size: {{ title_size }}px;
+      padding: 0 18px;
+      margin: 0 0 30px;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-tabs-nav {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      width: 100%;
+      padding: 0 6px;
+      margin-bottom: 34px;
+      overflow: visible;
+      border-bottom: 1px solid #E7E9E8;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-tab-btn {
+      width: 100%;
+      min-width: 0;
+      padding: 10px 2px;
+      font-size: 8px;
+      line-height: 1.2;
+      letter-spacing: 0.06em;
+      text-align: center;
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-carousel-nav {
+      display: none;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-grid {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 16px;
+      padding: 0 20px 16px;
+      scrollbar-width: none;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-card {
+      flex: 0 0 75vw;
+      max-width: 300px;
+      scroll-snap-align: start;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-card-img-wrap {
+      margin-bottom: 16px;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-card-img-wrap img {
+      height: 220px;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-card-title {
+      font-size: 13px;
+      min-height: auto;
+      margin: 0 0 8px;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-price-compare {
+      font-size: 13px;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-price-current {
+      font-size: 14px;
+    }
+
+    #nos-essentiels-{{ section_id }} .ne-card-btn {
+      opacity: 1 !important;
+      transform: none !important;
+      padding: 12px 16px;
+      font-size: 11px;
+    }
+  }
+</style>
+
+<section id="nos-essentiels-{{ section_id }}" aria-label="{{ section.settings.title | escape }}">
+  <div class="ne-inner">
+
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="ne-eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.title != blank -%}
+      <h2 class="ne-title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="ne-tabs-nav" role="tablist" aria-label="Collections">
+        {%- for block in section.blocks -%}
+          <button
+            class="ne-tab-btn"
+            role="tab"
+            id="ne-tab-{{ section_id }}-{{ forloop.index0 }}"
+            aria-controls="ne-panel-{{ section_id }}-{{ forloop.index0 }}"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            data-tab-index="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}
+          >
+            {{ block.settings.tab_label }}
+          </button>
+        {%- endfor -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- assign collection = block.settings.collection -%}
+        {%- assign max_products = block.settings.max_products | default: section.settings.max_products -%}
+
+        <div
+          class="ne-panel{% if forloop.first %} is-active{% endif %}"
+          role="tabpanel"
+          id="ne-panel-{{ section_id }}-{{ forloop.index0 }}"
+          aria-labelledby="ne-tab-{{ section_id }}-{{ forloop.index0 }}"
+        >
+          {%- if collection != blank and collection.products_count > 0 -%}
+            <div class="ne-carousel-shell">
+              <div class="ne-carousel-nav">
+                <button class="ne-carousel-btn ne-carousel-prev" type="button" aria-label="Produits précédents">‹</button>
+                <button class="ne-carousel-btn ne-carousel-next" type="button" aria-label="Produits suivants">›</button>
+              </div>
+
+              <div class="ne-grid">
+                {%- for product in collection.products limit: max_products -%}
+                  {%- assign img_alt = product.featured_image.alt | default: product.title -%}
+
+                  <article class="ne-card" onclick="window.location='{{ product.url }}'">
+                    <div class="ne-card-img-wrap">
+                      {%- if product.featured_image -%}
+                        <img
+                          src="{{ product.featured_image | image_url: width: 900 }}"
+                          alt="{{ img_alt | escape }}"
+                          width="900"
+                          height="{{ desktop_img_height }}"
+                          loading="lazy"
+                        >
+                      {%- else -%}
+                        {{ 'product-1' | placeholder_svg_tag: 'ne-placeholder-img' }}
+                      {%- endif -%}
+                    </div>
+
+                    <div class="ne-card-body">
+                      <h3 class="ne-card-title">{{ product.title }}</h3>
+
+                      <div class="ne-card-prices">
+                        {%- if show_compare and product.compare_at_price > product.price -%}
+                          <span class="ne-price-compare">{{ product.compare_at_price | money }}</span>
+                        {%- endif -%}
+                        <span class="ne-price-current">{{ product.price | money }}</span>
+                      </div>
+
+                      {%- if show_btn -%}
+                        <a
+                          href="{{ product.url }}"
+                          class="ne-card-btn"
+                          aria-label="{{ btn_text }} — {{ product.title }}"
+                          onclick="event.stopPropagation()"
+                        >
+                          {{ btn_text }}
+                        </a>
+                      {%- endif -%}
+                    </div>
+                  </article>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- else -%}
+            <p style="text-align:center;color:#A5AFAA;padding:40px 0;">Aucun produit dans cette collection.</p>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+(function() {
+  var sec = document.getElementById('nos-essentiels-{{ section_id }}');
+  if (!sec) return;
+
+  var tabs = sec.querySelectorAll('.ne-tab-btn');
+  var panels = sec.querySelectorAll('.ne-panel');
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var idx = parseInt(this.getAttribute('data-tab-index'));
+
+      tabs.forEach(function(t) {
+        t.setAttribute('aria-selected', 'false');
+      });
+
+      panels.forEach(function(p) {
+        p.classList.remove('is-active');
+        p.style.opacity = '0';
+      });
+
+      this.setAttribute('aria-selected', 'true');
+
+      var panel = panels[idx];
+      panel.classList.add('is-active');
+
+      var grid = panel.querySelector('.ne-grid');
+      if (grid) grid.scrollLeft = 0;
+
+      requestAnimationFrame(function() {
+        panel.style.opacity = '1';
+      });
+    });
+  });
+
+  sec.querySelectorAll('.ne-carousel-shell').forEach(function(shell) {
+    var grid = shell.querySelector('.ne-grid');
+    var prev = shell.querySelector('.ne-carousel-prev');
+    var next = shell.querySelector('.ne-carousel-next');
+
+    if (!grid || !prev || !next) return;
+
+    prev.addEventListener('click', function() {
+      grid.scrollBy({ left: -grid.clientWidth, behavior: 'smooth' });
+    });
+
+    next.addEventListener('click', function() {
+      grid.scrollBy({ left: grid.clientWidth, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Nos Essentiels",
+  "tag": "section",
+  "class": "nos-essentiels-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sous-titre",
+      "default": "L'ÉLÉGANCE PAR LA LUMIÈRE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre principal",
+      "default": "PAR TYPE"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille du titre mobile / base",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "desktop_products_per_view",
+      "label": "Produits visibles par slide desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur du texte",
+      "default": "#101211"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Couleur de fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Espacement supérieur mobile / base",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espacement inférieur mobile / base",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Largeur maximale mobile / base",
+      "min": 800,
+      "max": 1600,
+      "step": 40,
+      "default": 1280,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Hauteur images mobile / base",
+      "min": 160,
+      "max": 480,
+      "step": 20,
+      "default": 280,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Rayon des coins des images",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Nombre max de produits par défaut",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare_price",
+      "label": "Afficher le prix barré",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Afficher le bouton",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "VOIR LE PRODUIT"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Rayon des coins du bouton",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "default": 2,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Onglet collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Titre de l'onglet",
+          "default": "Collection"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection Shopify"
+        },
+        {
+          "type": "range",
+          "id": "max_products",
+          "label": "Nombre max de produits cet onglet",
+          "min": 2,
+          "max": 24,
+          "step": 1,
+          "default": 8
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nos Essentiels",
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "PLAFONNIERS"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "SUSPENSIONS"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "LUSTRES"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "LAMPES"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
