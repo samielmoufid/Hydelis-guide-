@@ -430,9 +430,9 @@
         "heading": "Du premier son entendu à vos mains.",
         "subheading": "Zensea est née d'un constat simple : trouver un handpan bien accordé, vendu honnêtement, avec sa gamme écrite noir sur blanc, ne devrait pas être un parcours du combattant.",
         "badge_text": "Maison française · Limoges",
-        "model_url": "",
-        "camera_orbit": "8deg 82deg 0.46m",
-        "camera_target": "0m 0m 0m",
+        "model_url": "https://cdn.shopify.com/3d/models/o/5921495b284c5f3c/zensea-handpan.glb",
+        "camera_orbit": "12deg 72deg 0.56m",
+        "camera_target": "0m 0.01m 0m",
         "fov": "30deg",
         "rotation": "11deg"
       }

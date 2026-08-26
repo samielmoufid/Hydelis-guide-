@@ -516,9 +516,9 @@
         "heading": "Une promesse simple, tenue sans astérisque.",
         "subheading": "Accordage vérifié avant l'envoi, gamme écrite noir sur blanc, livraison offerte dès 30 €, 30 jours pour changer d'avis, et des réponses écrites par des humains. Rien en petits caractères.",
         "badge_text": "Accordage vérifié · avant chaque envoi",
-        "model_url": "",
-        "camera_orbit": "16deg 82deg 0.55m",
-        "camera_target": "0m 0m 0m",
+        "model_url": "https://cdn.shopify.com/3d/models/o/988b936eab393d9e/zensea-diapason.glb",
+        "camera_orbit": "14deg 80deg 0.64m",
+        "camera_target": "0m 0.08m 0m",
         "fov": "30deg"
       }
     }
