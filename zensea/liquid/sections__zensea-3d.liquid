@@ -73,27 +73,27 @@
   .v3d-card { position: relative; display: grid; grid-template-columns: minmax(260px, 5fr) 7fr;
     gap: 0; overflow: hidden; border-radius: 20px;
     background:
-      radial-gradient(90% 120% at 15% 0%, rgba(207,167,74,0.12) 0%, transparent 55%),
+      radial-gradient(90% 120% at 15% 0%, rgba(46,94,70,0.12) 0%, transparent 55%),
       linear-gradient(150deg, #0E1B14 0%, #14241C 55%, #0D1812 100%);
-    border: 1px solid rgba(207,167,74,0.38);
+    border: 1px solid rgba(46,94,70,0.38);
     box-shadow: 0 24px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05); }
   @media (max-width: 749px) { .v3d-card { grid-template-columns: 1fr; } }
 
   .v3d-stage { position: relative; min-height: 300px; cursor: pointer; outline: none;
     background:
-      linear-gradient(rgba(207,167,74,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(207,167,74,0.05) 1px, transparent 1px),
+      linear-gradient(rgba(46,94,70,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,94,70,0.05) 1px, transparent 1px),
       radial-gradient(120% 90% at 50% 30%, #192F24 0%, #0D1913 75%);
     background-size: 34px 34px, 34px 34px, 100% 100%; }
-  .v3d-stage:focus-visible { box-shadow: inset 0 0 0 2px #CFA74A; }
+  .v3d-stage:focus-visible { box-shadow: inset 0 0 0 2px #2E5E46; }
   .v3d-mini { position: absolute; inset: 0; width: 100%; height: 100%; --poster-color: transparent; pointer-events: none; }
   .v3d-halo { position: absolute; left: 50%; bottom: 12%; width: 62%; height: 30px;
     transform: translateX(-50%); border-radius: 50%;
-    background: radial-gradient(ellipse, rgba(207,167,74,0.28) 0%, transparent 70%);
+    background: radial-gradient(ellipse, rgba(46,94,70,0.28) 0%, transparent 70%);
     animation: v3d-pulse 3.2s ease-in-out infinite; pointer-events: none; }
   @keyframes v3d-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
   .v3d-corners { position: absolute; inset: 14px; pointer-events: none; }
-  .v3d-corners i { position: absolute; width: 22px; height: 22px; border: 1.5px solid rgba(207,167,74,0.8); }
+  .v3d-corners i { position: absolute; width: 22px; height: 22px; border: 1.5px solid rgba(46,94,70,0.8); }
   .v3d-corners i:nth-child(1) { top: 0; left: 0; border-right: 0; border-bottom: 0; border-radius: 6px 0 0 0; }
   .v3d-corners i:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; border-radius: 0 6px 0 0; }
   .v3d-corners i:nth-child(3) { bottom: 0; left: 0; border-right: 0; border-top: 0; border-radius: 0 0 0 6px; }
@@ -101,22 +101,22 @@
   .v3d-live { position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
     display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
     color: #C8D8D0; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
-  .v3d-live i { width: 7px; height: 7px; border-radius: 50%; background: #CFA74A;
-    box-shadow: 0 0 8px 2px rgba(207,167,74,0.7); animation: v3d-pulse 1.8s ease-in-out infinite; }
+  .v3d-live i { width: 7px; height: 7px; border-radius: 50%; background: #2E5E46;
+    box-shadow: 0 0 8px 2px rgba(46,94,70,0.7); animation: v3d-pulse 1.8s ease-in-out infinite; }
 
   .v3d-copy { padding: 30px 28px 26px; display: flex; flex-direction: column; align-items: flex-start; }
-  .v3d-badge { display: inline-block; background: linear-gradient(100deg, #CFA74A, #E5C075);
+  .v3d-badge { display: inline-block; background: linear-gradient(100deg, #2E5E46, #5B8F72);
     color: #12211A; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em;
     text-transform: uppercase; padding: 6px 14px; border-radius: 999px; margin-bottom: 14px; }
   .v3d-title { font-size: clamp(22px, 4.5vw, 30px); line-height: 1.15; margin: 0 0 10px;
     font-weight: 650; color: #fff; }
   .v3d-text { margin: 0 0 20px; font-size: 15px; line-height: 1.6; color: #C1D2CA; max-width: 52ch; }
   .v3d-cta { display: inline-flex; align-items: center; gap: 11px; cursor: pointer;
-    background: linear-gradient(100deg, #CFA74A, #E0B766); color: #13221B; border: 0;
+    background: linear-gradient(100deg, #2E5E46, #5B8F72); color: #13221B; border: 0;
     border-radius: 999px; font-size: 15.5px; font-weight: 700; padding: 16px 30px;
-    box-shadow: 0 6px 22px rgba(207,167,74,0.28);
+    box-shadow: 0 6px 22px rgba(46,94,70,0.28);
     transition: transform 0.2s, box-shadow 0.2s; }
-  .v3d-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(207,167,74,0.42); }
+  .v3d-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(46,94,70,0.42); }
   .v3d-cta svg { width: 20px; height: 20px; }
   .v3d-note { margin: 13px 0 0; font-size: 12.5px; color: #839E90; }
 
@@ -125,23 +125,23 @@
   .v3d-modal-backdrop { position: absolute; inset: 0; background: rgba(6, 10, 8, 0.85); }
   .v3d-modal-panel { position: relative; width: min(94vw, 680px); height: min(88vh, 760px);
     display: flex; flex-direction: column; background: #101F18; border-radius: 20px;
-    border: 1px solid rgba(207,167,74,0.32); overflow: hidden; }
+    border: 1px solid rgba(46,94,70,0.32); overflow: hidden; }
   .v3d-modal-head { display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 18px; border-bottom: 1px solid rgba(207,167,74,0.16); }
+    padding: 14px 18px; border-bottom: 1px solid rgba(46,94,70,0.16); }
   .v3d-modal-title { color: #E6EFEB; font-weight: 600; font-size: 15px; }
-  .v3d-x { background: none; border: 0; color: #CFA74A; cursor: pointer; padding: 6px; }
+  .v3d-x { background: none; border: 0; color: #2E5E46; cursor: pointer; padding: 6px; }
   .v3d-x svg { width: 20px; height: 20px; }
   .v3d-full { flex: 1; width: 100%; --poster-color: transparent;
     background: radial-gradient(120% 100% at 50% 20%, #1D372A 0%, #101F18 72%); }
   .v3d-ar-btn { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
     display: inline-flex; align-items: center; gap: 9px;
-    background: linear-gradient(100deg, #CFA74A, #E0B766); color: #13221B;
+    background: linear-gradient(100deg, #2E5E46, #5B8F72); color: #13221B;
     border: 0; border-radius: 999px; font-weight: 700; font-size: 14.5px;
     padding: 14px 26px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
   .v3d-ar-btn svg { width: 18px; height: 18px; }
   .v3d-legend { display: flex; justify-content: space-between; gap: 10px; align-items: center;
-    padding: 12px 18px; border-top: 1px solid rgba(207,167,74,0.16); }
-  .v3d-dim { color: #CFA74A; font-size: 13px; font-weight: 600; }
+    padding: 12px 18px; border-top: 1px solid rgba(46,94,70,0.16); }
+  .v3d-dim { color: #2E5E46; font-size: 13px; font-weight: 600; }
   .v3d-hint { color: #718F80; font-size: 12px; text-align: right; }
 </style>
 
