@@ -110,16 +110,16 @@
       "settings": {
         "height_desktop": 300,
         "height_mobile": 180,
-        "rim": "#5B8F72",
-        "dune_1": "#437A5D",
-        "dune_2": "#3D7156",
-        "dune_3": "#376950",
-        "dune_4": "#33634B",
-        "dune_5": "#305F47",
-        "dune_6": "#2E5E46",
-        "ligne": "#5B8F72",
+        "rim": "#DFEAE4",
+        "dune_1": "#C7D9D0",
+        "dune_2": "#B0C9BC",
+        "dune_3": "#96B4A3",
+        "dune_4": "#7BA089",
+        "dune_5": "#5F8A70",
+        "dune_6": "#467358",
+        "ligne": "#DFEAE4",
         "ground": "#2E5E46",
-        "sky": "#2E5E46"
+        "sky": "#F6F9F8"
       }
     }
   },
