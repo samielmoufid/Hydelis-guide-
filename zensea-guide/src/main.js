@@ -11,7 +11,7 @@ const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const entry = $('#entry'), hud = $('#hud'), veil = $('#veil'), hint = $('#entry-hint')
 const btnSon = $('#enter-sound'), btnSilence = $('#enter-silent'), toggle = $('#sound-toggle')
-const lookHint = $('#look-hint'), choose = $('#choose'), walk = $('#walk')
+const lookHint = $('#look-hint'), choose = $('#choose'), walk = $('#walk'), murmure = $('#murmure')
 
 const ambiance = new Ambiance()
 let foret = null
@@ -24,6 +24,8 @@ try {
   console.warn('WebGL indisponible, repli 2D :', e)
   webgl = false
 }
+// Pratique pour inspecter la scène depuis la console.
+window.__foret = foret
 if (!webgl) {
   $('#scene').hidden = true
   $('#fallback').hidden = false
@@ -48,9 +50,18 @@ const pret = (async () => {
 })
 btnSon.disabled = true; btnSilence.disabled = true
 
+// Déclarés avant la boucle de rendu, qui démarre tout de suite.
+let arrive = false
+let musiqueLancee = false
 if (foret) {
   let raf
-  const boucle = () => { foret.rendu(); raf = requestAnimationFrame(boucle) }
+  const boucle = () => {
+    // Le vent qu'on entend est celui qu'on voit.
+    foret.ventExterne = ambiance.running ? ambiance.niveauVent : null
+    if (ambiance.hp) ambiance.setMusique(foret.distanceMusique(), foret.angleMusique())
+    if (musiqueLancee && !arrive && foret.distanceMusique() < 6) arrivee()
+    foret.rendu(); raf = requestAnimationFrame(boucle)
+  }
   boucle()
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) cancelAnimationFrame(raf); else boucle()
@@ -108,6 +119,45 @@ async function entrer(avecSon) {
     : (mobile ? 'Glissez pour regarder autour de vous' : 'Glissez pour regarder · maintenez ↑ ou Z pour marcher')
   await attendre(4500)
   hud.classList.add('is-settled')
+
+  // Acte 1 : quelqu'un joue, un peu plus loin.
+  await attendre(2500)
+  lancerMusique()
+}
+
+function lancerMusique() {
+  if (musiqueLancee) return
+  musiqueLancee = true
+  if (ambiance.running) ambiance.handpanLointain()
+  murmure.textContent = 'Quelqu’un joue, un peu plus loin.'
+  hud.classList.add('is-musique')
+  choose.querySelector('.btn__label').textContent = 'Suivre la musique'
+}
+
+// Le bouton tourne le regard vers la musique, puis on se met en marche.
+async function suivre() {
+  if (!musiqueLancee) return
+  foret?.tournerVersMusique()
+  murmure.textContent = ''
+  // On ne part qu'une fois tourné, sinon on marche en courbe et on la manque.
+  for (let i = 0; i < 60 && foret?.cibleYaw != null; i++) await attendre(50)
+  if (foret && !foret.marche) marcher(true)
+}
+
+// Arrivée : la lumière monte — l'atelier viendra ici.
+async function arrivee() {
+  arrive = true
+  marcher(false)
+  veil.style.transition = 'opacity 1.6s cubic-bezier(.4,0,.6,1)'
+  void veil.offsetHeight
+  veil.style.opacity = '1'
+  await attendre(1700)
+  toast('L’atelier s’ouvrira ici — la suite du voyage.')
+  await attendre(1200)
+  veil.style.transition = 'opacity 2.4s cubic-bezier(.3,0,.2,1)'
+  veil.style.opacity = '0'
+  await attendre(3000)
+  arrive = false
 }
 
 btnSon.addEventListener('click', () => entrer(true))
@@ -120,6 +170,7 @@ if (foret) foret.onInteraction = () => { if (hud.classList.contains('is-live')) 
 // Un appui lance la marche, un autre l'arrête ; si on maintient le bouton
 // plus d'un instant, relâcher arrête aussi. Les deux gestes marchent, parce
 // que les deux sont naturels. Au clavier : ↑, Z ou W maintenus.
+let marcher = () => {}
 if (foret) {
   foret.onPas = (pan, force) => ambiance.pas(pan, force)
   const va = on => {
@@ -145,7 +196,12 @@ if (foret) {
   window.addEventListener('blur', () => va(false))
   document.addEventListener('visibilitychange', () => { if (document.hidden) va(false) })
   // Au bout du chemin, la marche s'arrête d'elle-même.
-  foret.onArret = () => va(false)
+  foret.onArret = () => {
+    va(false)
+    // Au bout du chemin et tout près de la musique : on y est.
+    if (musiqueLancee && !arrive && foret.distanceMusique() < 11) arrivee()
+  }
+  marcher = va
 }
 
 // ---- Son -----------------------------------------------------------------
@@ -153,7 +209,7 @@ toggle.addEventListener('click', () => {
   const on = toggle.getAttribute('aria-pressed') === 'true'
   if (on) { ambiance.stop(); toggle.setAttribute('aria-pressed', 'false') }
   else {
-    if (ambiance.unlock()) { ambiance.start(2.5); toggle.setAttribute('aria-pressed', 'true') }
+    if (ambiance.unlock()) { ambiance.start(2.5); toggle.setAttribute('aria-pressed', 'true'); if (musiqueLancee) ambiance.handpanLointain() }
   }
 })
 document.addEventListener('visibilitychange', () => {
@@ -165,7 +221,8 @@ document.addEventListener('visibilitychange', () => {
 // Le bouton est en place ; l'écran de choix sera ajouté quand les visuels et
 // les sons des handpans seront livrés.
 choose.addEventListener('click', () => {
-  toast('Le choix du handpan arrive ici — la suite du voyage.')
+  if (musiqueLancee) suivre()
+  else toast('Écoutez… quelqu’un ne va pas tarder à jouer.')
 })
 
 let toastEl, toastTimer

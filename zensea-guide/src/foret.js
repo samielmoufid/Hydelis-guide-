@@ -24,9 +24,9 @@ const SUN_EL = 15.8 * DEG
 const SUN_DIR = new THREE.Vector3(-Math.sin(SUN_YAW) * Math.cos(SUN_EL), Math.sin(SUN_EL), -Math.cos(SUN_YAW) * Math.cos(SUN_EL))
 
 const RAYON = 60          // rayon de la sphère
-const PORTEE = 30         // distance maximale de marche depuis le centre
-const VITESSE = 1.6       // unités par seconde
-const CADENCE = 1.55      // pas par seconde
+const PORTEE = 32         // distance maximale de marche depuis le centre
+const VITESSE = 2.6       // unités par seconde
+const CADENCE = 1.9       // pas par seconde
 const PITCH_MAX = 72 * DEG
 
 export class Foret {
@@ -59,6 +59,11 @@ export class Foret {
     this.dernierPas = 0
     this.onPas = null
 
+    // Là d'où vient la musique : à gauche de la vue de départ, près du bout
+    // du chemin. On y marche ; on « arrive » quand on en est tout près.
+    this.musique = new THREE.Vector3()
+    this.cibleYaw = null
+
     this.tPrec = performance.now()
     this.t0 = this.tPrec
     this.intro = 0
@@ -68,6 +73,7 @@ export class Foret {
     this._soleil()
     this._rais()
     this._poussieres()
+    this._feuilles()
     this._brume()
     this._controles()
     this.resize()
@@ -77,12 +83,38 @@ export class Foret {
   get maxTexture() { return this.renderer.capabilities.maxTextureSize }
 
   // ---- Le panorama --------------------------------------------------------
+  // Le feuillage frémit : une ondulation très fine des coordonnées de
+  // texture, appliquée seulement là où l'image est verte ou jaune-vert et
+  // au-dessus de l'horizon. Les troncs, le ciel et le sol restent en place.
+  // L'amplitude suit le vent — ce qu'on voit bouger est ce qu'on entend.
   _sphere() {
     const geo = new THREE.SphereGeometry(RAYON, 72, 48)
     geo.scale(-1, 1, 1)
-    this.panoMat = new THREE.MeshBasicMaterial({ color: 0x000000 })
+    this.panoMat = new THREE.ShaderMaterial({
+      uniforms: { map: { value: null }, uTime: { value: 0 }, uVent: { value: 0 }, uPret: { value: 0 } },
+      vertexShader: `
+        varying vec2 vUv;
+        void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+      fragmentShader: `
+        uniform sampler2D map; uniform float uTime, uVent, uPret; varying vec2 vUv;
+        void main(){
+          vec4 b = texture2D(map, vUv);
+          float vert  = smoothstep(0.02, 0.10, b.g - max(b.r, b.b) * 0.92);
+          float jaune = smoothstep(0.12, 0.30, min(b.r, b.g) - b.b) * (1.0 - smoothstep(0.80, 0.95, (b.r + b.g + b.b) / 3.0));
+          float haut  = smoothstep(0.47, 0.58, vUv.y);
+          float m = max(vert, jaune * 0.8) * haut;
+          vec2 d = vec2(sin(vUv.x * 210.0 + uTime * 1.6 + sin(vUv.y * 95.0 + uTime * 0.7) * 2.0),
+                        cos(vUv.y * 160.0 + uTime * 1.3 + vUv.x * 60.0));
+          d += 0.6 * vec2(sin(vUv.x * 520.0 - uTime * 3.1 + vUv.y * 30.0), cos(vUv.y * 470.0 + uTime * 2.6));
+          vec2 uv = vUv + d * m * (0.00035 + 0.0013 * uVent);
+          gl_FragColor = texture2D(map, uv) * uPret;
+          #include <colorspace_fragment>
+        }`
+    })
     this.pano = new THREE.Mesh(geo, this.panoMat)
     this.scene.add(this.pano)
+    this.vent = 0            // 0..1, fourni par l'ambiance sonore ou simulé
+    this.ventExterne = null
   }
 
   charger(url) {
@@ -95,9 +127,8 @@ export class Foret {
         tex.magFilter = THREE.LinearFilter
         tex.generateMipmaps = true
         tex.anisotropy = this.renderer.capabilities.getMaxAnisotropy()
-        this.panoMat.map = tex
-        this.panoMat.color.set(0xffffff)
-        this.panoMat.needsUpdate = true
+        this.panoMat.uniforms.map.value = tex
+        this.panoMat.uniforms.uPret.value = 1
         res()
       }, undefined, rej)
     })
@@ -226,6 +257,88 @@ export class Foret {
     this.scene.add(this.points)
   }
 
+  // ---- Feuilles mortes ----------------------------------------------------
+  // Des feuilles d'automne, comme celles du sol de la photo : elles tombent
+  // en tournant sur elles-mêmes, dérivent avec le vent, se posent, puis
+  // repartent quand une rafale les soulève. Repliées autour de la caméra
+  // comme les poussières, pour qu'il y en ait toujours autour de soi.
+  _feuilles() {
+    const cv = document.createElement('canvas'); cv.width = 64; cv.height = 96
+    const g = cv.getContext('2d')
+    g.fillStyle = '#fff'
+    g.beginPath(); g.moveTo(32, 2)
+    g.bezierCurveTo(60, 20, 62, 62, 32, 94)
+    g.bezierCurveTo(2, 62, 4, 20, 32, 2)
+    g.fill()
+    g.strokeStyle = 'rgba(0,0,0,0.28)'; g.lineWidth = 2
+    g.beginPath(); g.moveTo(32, 6); g.lineTo(32, 92); g.stroke()
+    g.lineWidth = 1.2
+    for (const y of [26, 42, 58, 74]) { g.beginPath(); g.moveTo(32, y); g.lineTo(52, y - 12); g.moveTo(32, y); g.lineTo(12, y - 12); g.stroke() }
+    const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace
+
+    const n = this.mobile ? 70 : 140
+    this.nF = n
+    const mat = new THREE.MeshBasicMaterial({ map: tex, alphaTest: 0.5, side: THREE.DoubleSide, transparent: false })
+    this.feuilles = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.13, 0.19), mat, n)
+    this.feuilles.frustumCulled = false
+    const teintes = [0xd9a441, 0xc7862c, 0xb8641f, 0xa84a22, 0xe0b95a, 0x9c6b2a, 0xc94f2b]
+    this.F = []
+    const BF = 14
+    for (let i = 0; i < n; i++) {
+      const f = {
+        x: (Math.random() - 0.5) * BF, y: -1.6 + Math.random() * 7, z: (Math.random() - 0.5) * BF,
+        vy: 0, vx: 0, vz: 0,
+        rx: Math.random() * 6.28, ry: Math.random() * 6.28, rz: Math.random() * 6.28,
+        wx: (Math.random() - 0.5) * 4, wy: (Math.random() - 0.5) * 4, wz: (Math.random() - 0.5) * 3,
+        phase: Math.random() * 6.28, repos: 0, taille: 0.6 + Math.random() * 0.55
+      }
+      this.F.push(f)
+      this.feuilles.setColorAt(i, new THREE.Color(teintes[i % teintes.length]).multiplyScalar(0.75 + Math.random() * 0.4))
+    }
+    this.BF = BF
+    this.feuilles.instanceColor.needsUpdate = true
+    this.scene.add(this.feuilles)
+    // Le vent vient du côté du soleil, comme la lumière.
+    this.ventDir = new THREE.Vector3(-SUN_DIR.x, 0, -SUN_DIR.z).normalize().multiplyScalar(-1)
+    this._m4 = new THREE.Matrix4(); this._q = new THREE.Quaternion(); this._e = new THREE.Euler(); this._v = new THREE.Vector3(); this._s = new THREE.Vector3()
+  }
+
+  _animerFeuilles(dt, t) {
+    const vent = this.vent, hb = this.BF / 2, B = this.BF
+    const rep = v => ((v + hb) % B + B) % B - hb
+    const rafale = vent * vent
+    for (let i = 0; i < this.nF; i++) {
+      const f = this.F[i]
+      if (f.repos > 0) {
+        // Posée au sol : une rafale suffisamment forte la soulève.
+        f.repos -= dt
+        if (rafale > 0.42 && Math.random() < dt * 1.6 * rafale) { f.repos = 0; f.vy = 0.6 + Math.random() * 1.2 * rafale }
+        else if (f.repos <= 0) { f.y = 5.5 + Math.random() * 1.5; f.x = this.pos.x + (Math.random() - 0.5) * B; f.z = this.pos.z + (Math.random() - 0.5) * B; f.vy = 0 }
+        else { this._poserFeuille(i, f); continue }
+      }
+      // Chute freinée, tourbillon, poussée du vent.
+      f.vy = lerp(f.vy, -(0.22 + 0.18 * Math.sin(f.phase * 3.1)) * f.taille, dt * 1.5)
+      const pousse = 0.25 + 2.4 * rafale
+      f.vx = lerp(f.vx, this.ventDir.x * pousse + Math.sin(t * 1.3 + f.phase) * 0.35, dt * 2)
+      f.vz = lerp(f.vz, this.ventDir.z * pousse + Math.cos(t * 1.1 + f.phase * 1.7) * 0.35, dt * 2)
+      f.x += f.vx * dt; f.y += f.vy * dt; f.z += f.vz * dt
+      const w = 1 + 2.5 * rafale
+      f.rx += f.wx * dt * w; f.ry += f.wy * dt * w; f.rz += f.wz * dt * w
+      if (f.y < -1.6) { f.y = -1.6; f.repos = 3 + Math.random() * 7; f.rx = Math.PI / 2 + (Math.random() - 0.5) * 0.4; f.vx = f.vz = 0 }
+      this._poserFeuille(i, f)
+    }
+    this.feuilles.instanceMatrix.needsUpdate = true
+  }
+
+  _poserFeuille(i, f) {
+    const hb = this.BF / 2, B = this.BF
+    const rep = v => ((v + hb) % B + B) % B - hb
+    this._v.set(this.pos.x + rep(f.x - this.pos.x), f.y, this.pos.z + rep(f.z - this.pos.z))
+    this._q.setFromEuler(this._e.set(f.rx, f.ry, f.rz))
+    this._s.set(f.taille, f.taille, f.taille)
+    this.feuilles.setMatrixAt(i, this._m4.compose(this._v, this._q, this._s))
+  }
+
   // ---- Brume au sol -------------------------------------------------------
   // Un halo doré très doux sous l'horizon, qui suit la caméra. Le cylindre
   // descend bien sous le champ le plus bas et un disque le ferme.
@@ -342,6 +455,16 @@ export class Foret {
     this.dragYaw = 0; this.dragPitch = 0; this.inertie = null
   }
 
+  distanceMusique() { return this.pos.distanceTo(this.musique) }
+  // Angle de la musique par rapport au regard, en radians (négatif = à gauche).
+  angleMusique() {
+    const dx = this.musique.x - this.pos.x, dz = this.musique.z - this.pos.z
+    const a = Math.atan2(-dx, -dz)
+    return ((a - this.yaw + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI
+  }
+  // Tourne doucement le regard vers la musique.
+  tournerVersMusique() { this.cibleYaw = this.yaw + this.angleMusique() }
+
   resize() {
     const w = window.innerWidth, h = window.innerHeight
     this.renderer.setSize(w, h, false)
@@ -350,6 +473,8 @@ export class Foret {
     // et on met le soleil plus près du centre, le champ horizontal étant réduit.
     this.fovBase = w < h ? 82 : 68
     this.yaw0 = SUN_YAW + (w < h ? 20 : 34) * DEG
+    const ym = this.yaw0 + 38 * DEG
+    this.musique.set(-Math.sin(ym) * (PORTEE - 3), 0, -Math.cos(ym) * (PORTEE - 3))
     this.camera.updateProjectionMatrix()
     this.pMat.uniforms.uScale.value = h * 0.42
   }
@@ -380,6 +505,24 @@ export class Foret {
     const pitchIntro = lerp(52 * DEG, 0, ease)
     const fov = lerp(34, this.fovBase, ease) + fovResp * ease
     let roll = lerp(-3 * DEG, 0, ease)
+
+    // Vent : celui de l'ambiance sonore si elle tourne, sinon une simulation
+    // de la même forme (deux respirations lentes superposées).
+    if (this.ventExterne != null) this.vent = lerp(this.vent, this.ventExterne, 0.05)
+    else this.vent = lerp(this.vent, 0.25 + 0.75 * (0.5 + 0.5 * Math.sin(t * 0.4)) * (0.4 + 0.6 * (0.5 + 0.5 * Math.sin(t * 0.09 + 1))), 0.05)
+    this.panoMat.uniforms.uTime.value = t
+    this.panoMat.uniforms.uVent.value = this.vent * ease
+    this.feuilles.visible = ease > 0.25
+    this._animerFeuilles(dt, t)
+
+    // Rotation demandée vers la musique : on ajoute au décalage du doigt.
+    if (this.cibleYaw != null) {
+      const d = ((this.cibleYaw - this.yaw + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI
+      // Rotation en fonction du temps, pas du nombre d'images : la même
+      // seconde sur un téléphone rapide et sur un vieux modèle.
+      this.dragYaw += d * Math.min(1, dt * 3.5)
+      if (Math.abs(d) < 0.8 * DEG) this.cibleYaw = null
+    }
 
     // Regard cible
     let yawT, pitchT

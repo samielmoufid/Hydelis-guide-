@@ -69,6 +69,9 @@ export class Ambiance {
     comp.threshold.value = -22; comp.knee.value = 18; comp.ratio.value = 3
     comp.attack.value = 0.01; comp.release.value = 0.35
     this.master.connect(comp).connect(c.destination)
+    this.oiseaux = c.createGain(); this.oiseaux.gain.value = 1
+    this.oiseaux.connect(this.master)
+    this.niveauVent = 0
 
     // Réverbération de sous-bois : réponse impulsionnelle synthétique,
     // un bruit qui s'éteint en 2,4 s, plus sombre en fin de queue.
@@ -174,7 +177,7 @@ export class Ambiance {
     const sec = c.createGain(); sec.gain.value = 1 - distance * 0.55
     const rev = c.createGain(); rev.gain.value = 0.25 + distance * 0.75
     if (p) { lp.connect(p); p.connect(sec); p.connect(rev) } else { lp.connect(sec); lp.connect(rev) }
-    sec.connect(this.master); rev.connect(this.reverb)
+    sec.connect(this.oiseaux); rev.connect(this.reverb)
 
     osc.start(t); osc.stop(t + dur + 0.05)
     osc2.start(t); osc2.stop(t + dur + 0.05)
@@ -251,6 +254,7 @@ export class Ambiance {
     this.running = false
     for (const id of this.timers) clearTimeout(id)
     this.timers = []
+    this.hp = null
   }
 
   // Un pas sur l'herbe et les feuilles : un coup sourd très court (le pied
@@ -289,6 +293,94 @@ export class Ambiance {
     feuilles.start(t2); feuilles.stop(t2 + 0.2)
   }
 
+  // ---- Le handpan au loin --------------------------------------------------
+  // Provisoire, en attendant l'enregistrement : un handpan synthétisé
+  // (fondamentale, octave, quinte supérieure, chacune avec sa propre
+  // extinction, et le petit choc de la main), qui improvise sur la gamme
+  // ré Kurd — la plus répandue. Il est loin : filtré, réverbéré, à gauche.
+  handpanLointain() {
+    if (!this.ctx || this.hp) return
+    const c = this.ctx
+    this.hp = {
+      gain: c.createGain(), lp: c.createBiquadFilter(),
+      pan: c.createStereoPanner ? c.createStereoPanner() : null, rev: c.createGain(),
+      gamme: [146.83, 220.0, 233.08, 261.63, 293.66, 329.63, 349.23, 392.0, 440.0],
+      prochain: c.currentTime + 1.5, degre: 4
+    }
+    const h = this.hp
+    h.gain.gain.value = 0
+    h.lp.type = 'lowpass'; h.lp.frequency.value = 1400
+    h.rev.gain.value = 0.9
+    let sortie = h.gain
+    if (h.pan) { h.pan.pan.value = -0.6; sortie.connect(h.pan); sortie = h.pan }
+    sortie.connect(h.lp)
+    h.lp.connect(this.master); h.lp.connect(h.rev).connect(this.reverb)
+    this._phraseHandpan()
+  }
+
+  _noteHandpan(t, f, vel) {
+    const c = this.ctx, h = this.hp
+    for (const [ratio, g, dur] of [[1, 1, 3.6], [2, 0.45, 2.4], [3, 0.22, 1.5], [4.9, 0.05, 0.6]]) {
+      const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f * ratio
+      const e = c.createGain()
+      e.gain.setValueAtTime(0.0001, t)
+      e.gain.exponentialRampToValueAtTime(0.22 * g * vel, t + 0.006 + 0.004 * ratio)
+      e.gain.exponentialRampToValueAtTime(0.0001, t + dur * (0.7 + 0.3 * vel))
+      o.connect(e).connect(h.gain)
+      o.start(t); o.stop(t + dur + 0.1)
+    }
+    // Le choc de la main sur l'acier.
+    const n = this._sourceBruit()
+    const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f * 2.2; bp.Q.value = 2
+    const e = c.createGain()
+    e.gain.setValueAtTime(0.0001, t); e.gain.exponentialRampToValueAtTime(0.06 * vel, t + 0.004); e.gain.exponentialRampToValueAtTime(0.0001, t + 0.05)
+    n.connect(bp).connect(e).connect(h.gain); n.start(t); n.stop(t + 0.1)
+  }
+
+  // Une mesure à la fois, programmée un peu en avance. Des pas conjoints
+  // surtout, un saut de temps en temps, la note grave qui revient poser le
+  // motif, des silences : ce que fait une main qui se promène.
+  _phraseHandpan() {
+    if (!this.hp || !this.running) return
+    const h = this.hp, c = this.ctx
+    const temps = 60 / 66
+    let t = h.prochain
+    const motifs = [[1, 0, 0.5, 0.5, 0.5, 0.5], [0.5, 0.5, 1, 0, 1], [0.5, 0.5, 0.5, 0.5, 0, 1], [1, 1, 0, 1]]
+    const motif = pick(motifs)
+    let premier = true
+    for (const dur of motif) {
+      if (dur === 0) { t += temps * 0.5; continue }
+      let f
+      if (premier && Math.random() < 0.5) { f = h.gamme[0]; premier = false }
+      else {
+        const saut = Math.random() < 0.22 ? (Math.random() < 0.5 ? 2 : -2) : (Math.random() < 0.5 ? 1 : -1)
+        h.degre = Math.max(1, Math.min(h.gamme.length - 1, h.degre + saut))
+        f = h.gamme[h.degre]
+      }
+      this._noteHandpan(t + rnd(-0.012, 0.012), f, rnd(0.55, 1))
+      t += temps * dur
+      premier = false
+    }
+    if (Math.random() < 0.3) t += temps           // une respiration
+    h.prochain = t
+    const id = setTimeout(() => this._phraseHandpan(), Math.max(50, (t - c.currentTime - 0.6) * 1000))
+    this.timers.push(id)
+  }
+
+  // Distance (unités de la scène) et angle (radians, négatif = à gauche) de la
+  // musique par rapport à l'auditeur. Les oiseaux s'effacent en approchant.
+  setMusique(distance, angle) {
+    if (!this.hp) return
+    const t = this.ctx.currentTime
+    const prox = Math.max(0, 1 - distance / 44)       // 0 loin … 1 tout près
+    const vol = Math.pow(prox, 1.7) * 0.9 + 0.03
+    this.hp.gain.gain.setTargetAtTime(vol, t, 0.3)
+    this.hp.lp.frequency.setTargetAtTime(700 + prox * prox * 7000, t, 0.4)
+    this.hp.rev.gain.setTargetAtTime(0.9 - prox * 0.6, t, 0.4)
+    if (this.hp.pan) this.hp.pan.pan.setTargetAtTime(Math.max(-0.9, Math.min(0.9, Math.sin(angle) * 0.9)), t, 0.15)
+    this.oiseaux.gain.setTargetAtTime(1 - prox * 0.7, t, 0.5)
+  }
+
   // Bouffée de vent : utilisée à l'entrée dans la forêt.
   rafale(force = 1) {
     if (!this.ctx) return
@@ -315,6 +407,7 @@ export class Ambiance {
       total += v
     }
     const moy = total / this.souffles.length
+    this.niveauVent = moy
     this.feuillesGain.gain.setTargetAtTime(0.045 * moy * moy, t, 0.5)
     this._raf = requestAnimationFrame(() => this._boucle())
   }
