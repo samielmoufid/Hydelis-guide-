@@ -1,0 +1,442 @@
+{%- liquid
+  assign sid = section.id
+  assign st = section.settings
+-%}
+
+<div id="faqp-{{ sid }}" class="faqp">
+  <div class="faqp__inner">
+    {%- if st.title != blank -%}<h2 class="faqp__title">{{ st.title }}</h2>{%- endif -%}
+    {%- if st.subtitle != blank -%}<p class="faqp__sub">{{ st.subtitle }}</p>{%- endif -%}
+
+    <div class="faqp__list">
+
+      <div class="faqp__item" data-faq-item>
+        <button type="button" class="faqp__q" aria-expanded="false"><span>Combien de temps prend la livraison ?</span><span class="faqp__ico" aria-hidden="true"></span></button>
+        <div class="faqp__a"><p>Votre commande est préparée sous 24 à 48 heures ouvrées, puis livrée en 7 à 13 jours ouvrés — soit 8 à 15 jours ouvrés au total, en France métropolitaine. Un lien de suivi vous est envoyé dès l’expédition.</p></div>
+      </div>
+
+      <div class="faqp__item" data-faq-item>
+        <button type="button" class="faqp__q" aria-expanded="false"><span>La livraison est-elle gratuite ?</span><span class="faqp__ico" aria-hidden="true"></span></button>
+        <div class="faqp__a"><p>Elle est offerte dès 30 € d’achat, partout en France. En dessous, les frais s’affichent au panier — jamais à la dernière étape.</p></div>
+      </div>
+
+      <div class="faqp__item" data-faq-item>
+        <button type="button" class="faqp__q" aria-expanded="false"><span>Il faut savoir jouer pour commencer ?</span><span class="faqp__ico" aria-hidden="true"></span></button>
+        <div class="faqp__a"><p>Non, et ce n’est pas une formule commerciale. Toutes les notes d’un handpan appartiennent à la même gamme : posez les mains, ce qui sort est juste. Rien à monter, rien à régler — l’instrument se joue dès l’ouverture du carton.</p></div>
+      </div>
+
+      <div class="faqp__item" data-faq-item>
+        <button type="button" class="faqp__q" aria-expanded="false"><span>Comment savez-vous que l’instrument sonne juste ?</span><span class="faqp__ico" aria-hidden="true"></span></button>
+        <div class="faqp__a"><p>Chaque instrument est joué note par note et contrôlé au diapason 440 Hz avant de quitter l’atelier. Ceux qui ne tiennent pas l’accord ne partent pas. La gamme exacte est écrite noir sur blanc sur la fiche produit.</p></div>
+      </div>
+
+      <div class="faqp__item" data-faq-item>
+        <button type="button" class="faqp__q" aria-expanded="false"><span>Quels accessoires sont fournis avec l’instrument ?</span><span class="faqp__ico" aria-hidden="true"></span></button>
+        <div class="faqp__a"><p>Le contenu du carton est détaillé sur chaque fiche produit : housse de transport rembourrée, paire de mailloches et fiole d’huile de protection selon les modèles. Rien à racheter le lendemain pour pouvoir jouer.</p></div>
+      </div>
+
+      <div class="faqp__item" data-faq-item>
+        <button type="button" class="faqp__q" aria-expanded="false"><span>Puis-je retourner un article s’il ne me convient pas ?</span><span class="faqp__ico" aria-hidden="true"></span></button>
+        <div class="faqp__a"><p>Oui, vous disposez de 30 jours après réception pour changer d’avis, sans avoir à vous justifier. L’instrument doit revenir dans son emballage d’origine ; les frais de retour restent à votre charge.</p></div>
+      </div>
+
+      <div class="faqp__item" data-faq-item>
+        <button type="button" class="faqp__q" aria-expanded="false"><span>Quelle est la durée de la garantie ?</span><span class="faqp__ico" aria-hidden="true"></span></button>
+        <div class="faqp__a"><p>Tous nos instruments sont couverts par une garantie de 24 mois, incluse d’office et sans surcoût. En cas de défaut de fabrication, nous remplaçons ou nous remboursons — sans expertise à vos frais.</p></div>
+      </div>
+
+      <div class="faqp__item" data-faq-item>
+        <button type="button" class="faqp__q" aria-expanded="false"><span>Quels moyens de paiement acceptez-vous ?</span><span class="faqp__ico" aria-hidden="true"></span></button>
+        <div class="faqp__a"><p>Nous acceptons la carte bancaire, Apple Pay, Google Pay et Shop Pay. Tous les paiements sont 100% sécurisés.</p></div>
+      </div>
+
+      <div class="faqp__item" data-faq-item>
+        <button type="button" class="faqp__q" aria-expanded="false"><span>Comment vous contacter en cas de question ?</span><span class="faqp__ico" aria-hidden="true"></span></button>
+        <div class="faqp__a"><p>Notre service client est disponible par WhatsApp et par e-mail, 7j/7. Nous répondons généralement en moins de 24h.</p></div>
+      </div>
+
+      <div class="faqp__item" data-faq-item>
+        <button type="button" class="faqp__q" aria-expanded="false"><span>Puis-je modifier ou annuler ma commande ?</span><span class="faqp__ico" aria-hidden="true"></span></button>
+        <div class="faqp__a"><p>Oui, tant que votre commande n’a pas encore été expédiée. Contactez-nous au plus vite via WhatsApp et nous ferons le nécessaire.</p></div>
+      </div>
+
+    </div>
+
+    {%- if st.button_text != blank -%}
+      <div class="faqp__btnwrap">
+        <a href="{{ st.button_link | default: '/pages/faq' }}" class="faqp__btn">{{ st.button_text }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- style -%}
+  #faqp-{{ sid }} {
+    background: {{ st.bg }};
+    padding: {{ st.pad_top_m }}px 20px {{ st.pad_bot_m }}px;
+  }
+  #faqp-{{ sid }} .faqp__inner { max-width: {{ st.max_width }}px; margin: 0 auto; }
+  #faqp-{{ sid }} .faqp__title {
+    text-align: center; font-family: Georgia, 'Times New Roman', serif;
+    font-size: {{ st.title_size_m }}px; font-weight: 700; letter-spacing: -0.02em;
+    color: {{ st.title_color }}; margin: 0 0 12px; line-height: 1.1;
+  }
+  #faqp-{{ sid }} .faqp__sub {
+    text-align: center; font-size: {{ st.sub_size_m }}px; color: {{ st.sub_color }};
+    margin: 0 auto 32px; max-width: 640px; line-height: 1.5;
+  }
+  #faqp-{{ sid }} .faqp__item { border-bottom: 1px solid {{ st.divider }}; }
+  #faqp-{{ sid }} .faqp__item:first-child { border-top: 1px solid {{ st.divider }}; }
+  #faqp-{{ sid }} .faqp__q {
+    width: 100%; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    text-align: left; padding: {{ st.row_pad }}px 4px;
+    font-family: inherit; font-size: {{ st.q_size_m }}px; font-weight: 600; color: {{ st.q_color }};
+    line-height: 1.35;
+  }
+  #faqp-{{ sid }} .faqp__ico { position: relative; flex: 0 0 auto; width: 18px; height: 18px; }
+  #faqp-{{ sid }} .faqp__ico::before,
+  #faqp-{{ sid }} .faqp__ico::after {
+    content: ''; position: absolute; top: 50%; left: 50%; background: {{ st.ico_color }};
+    transform: translate(-50%,-50%); transition: transform .3s ease, opacity .3s ease;
+  }
+  #faqp-{{ sid }} .faqp__ico::before { width: 16px; height: 2px; }
+  #faqp-{{ sid }} .faqp__ico::after { width: 2px; height: 16px; }
+  #faqp-{{ sid }} .faqp__item.is-open .faqp__ico::after { transform: translate(-50%,-50%) rotate(90deg); opacity: 0; }
+  #faqp-{{ sid }} .faqp__a { overflow: hidden; max-height: 0; transition: max-height .35s ease; }
+  #faqp-{{ sid }} .faqp__a p {
+    margin: 0; padding: 0 4px {{ st.row_pad }}px; font-size: {{ st.a_size_m }}px;
+    color: {{ st.a_color }}; line-height: 1.6;
+  }
+  #faqp-{{ sid }} .faqp__btnwrap { text-align: center; margin-top: 32px; }
+  #faqp-{{ sid }} .faqp__btn {
+    display: inline-block; text-decoration: none; padding: 16px 40px;
+    font-size: {{ st.btn_size }}px; font-weight: 600; letter-spacing: 0.01em;
+    color: {{ st.btn_text }}; background: {{ st.btn_bg }};
+    border-radius: {{ st.btn_radius }}px; transition: opacity .2s ease, transform .2s ease;
+  }
+  #faqp-{{ sid }} .faqp__btn:hover { opacity: .9; transform: translateY(-1px); }
+
+  @media (min-width: 750px) {
+    #faqp-{{ sid }} { padding: {{ st.pad_top }}px 24px {{ st.pad_bot }}px; }
+    #faqp-{{ sid }} .faqp__title { font-size: {{ st.title_size }}px; }
+    #faqp-{{ sid }} .faqp__sub { font-size: {{ st.sub_size }}px; margin-bottom: 44px; }
+    #faqp-{{ sid }} .faqp__q { font-size: {{ st.q_size }}px; }
+    #faqp-{{ sid }} .faqp__a p { font-size: {{ st.a_size }}px; }
+  }
+{%- endstyle -%}
+
+<script>
+(function(){
+  var root = document.getElementById('faqp-{{ sid }}');
+  if(!root) return;
+  var items = root.querySelectorAll('[data-faq-item]');
+  items.forEach(function(item){
+    var btn = item.querySelector('.faqp__q');
+    var ans = item.querySelector('.faqp__a');
+    btn.addEventListener('click', function(){
+      var open = item.classList.contains('is-open');
+      {% if st.single_open %}
+      items.forEach(function(o){
+        if(o!==item && o.classList.contains('is-open')){ o.classList.remove('is-open'); o.querySelector('.faqp__a').style.maxHeight='0px'; o.querySelector('.faqp__q').setAttribute('aria-expanded','false'); }
+      });
+      {% endif %}
+      if(open){ item.classList.remove('is-open'); ans.style.maxHeight='0px'; btn.setAttribute('aria-expanded','false'); }
+      else { item.classList.add('is-open'); ans.style.maxHeight = ans.scrollHeight + 'px'; btn.setAttribute('aria-expanded','true'); }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ Premium",
+  "tag": "section",
+  "class": "section-faq-premium",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Vos questions, nos réponses."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Tout ce qu'il faut savoir avant de commander chez Zensea."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Texte du bouton",
+      "default": "Voir toutes les questions"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Lien du bouton (laisser vide = /pages/faq)"
+    },
+    {
+      "type": "checkbox",
+      "id": "single_open",
+      "label": "Une seule question ouverte à la fois",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Typographie"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille titre — ordinateur",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "title_size_m",
+      "label": "Taille titre — mobile",
+      "min": 20,
+      "max": 44,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "sub_size",
+      "label": "Taille sous-titre — ordinateur",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "sub_size_m",
+      "label": "Taille sous-titre — mobile",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "q_size",
+      "label": "Taille questions — ordinateur",
+      "min": 14,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "q_size_m",
+      "label": "Taille questions — mobile",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "a_size",
+      "label": "Taille réponses — ordinateur",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "a_size_m",
+      "label": "Taille réponses — mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "row_pad",
+      "label": "Espacement des lignes",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Titre",
+      "default": "#181C1A"
+    },
+    {
+      "type": "color",
+      "id": "sub_color",
+      "label": "Sous-titre",
+      "default": "#65716B"
+    },
+    {
+      "type": "color",
+      "id": "q_color",
+      "label": "Questions",
+      "default": "#181C1A"
+    },
+    {
+      "type": "color",
+      "id": "a_color",
+      "label": "Réponses",
+      "default": "#59655F"
+    },
+    {
+      "type": "color",
+      "id": "ico_color",
+      "label": "Icône +/-",
+      "default": "#8AAA9A"
+    },
+    {
+      "type": "color",
+      "id": "divider",
+      "label": "Séparateurs",
+      "default": "#EBEDEC"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Fond bouton",
+      "default": "#181C1A"
+    },
+    {
+      "type": "color",
+      "id": "btn_text",
+      "label": "Texte bouton",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "btn_size",
+      "label": "Taille texte bouton",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "label": "Arrondi bouton",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Espacements"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Largeur maximale",
+      "min": 600,
+      "max": 1100,
+      "step": 20,
+      "unit": "px",
+      "default": 820
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Marge haute — ordinateur",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "pad_bot",
+      "label": "Marge basse — ordinateur",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "pad_top_m",
+      "label": "Marge haute — mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pad_bot_m",
+      "label": "Marge basse — mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "max_blocks": 50,
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "html",
+          "id": "answer",
+          "label": "Réponse"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Premium"
+    }
+  ]
+}
+{% endschema %}

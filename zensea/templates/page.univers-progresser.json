@@ -1,0 +1,44 @@
+{
+  "sections": {
+    "espace": {
+      "type": "espace-collections",
+      "settings": {
+        "eyebrow": "Progresser",
+        "title": "Quand neuf notes ne suffisent plus",
+        "intro": "Douze notes ouvrent la palette harmonique complète : de vrais morceaux, des accords, des passages qu'on ne pouvait pas jouer avant. C'est le format vers lequel on va après quelques mois.",
+        "handles": "handpans-12-notes, handpans-10-notes, tous-les-handpans, handpans-440-hz",
+        "columns": 3,
+        "gap": 24,
+        "radius": 16,
+        "max_width": 1280,
+        "pad_top": 72,
+        "pad_bot": 72,
+        "bg_color": "#FFFFFF",
+        "text_color": "#22332A",
+        "muted_color": "#5A6B60",
+        "accent_color": "#2E5E46"
+      }
+    },
+    "velluce_dunes": {
+      "type": "zensea-dunes",
+      "settings": {
+        "height_desktop": 300,
+        "height_mobile": 180,
+        "rim": "#DFEAE4",
+        "dune_1": "#C7D9D0",
+        "dune_2": "#B0C9BC",
+        "dune_3": "#96B4A3",
+        "dune_4": "#7BA089",
+        "dune_5": "#5F8A70",
+        "dune_6": "#467358",
+        "ligne": "#DFEAE4",
+        "ground": "#2E5E46",
+        "sky": "#F6F9F8"
+      }
+    }
+  },
+  "order": [
+    "espace",
+    "velluce_dunes"
+  ]
+}

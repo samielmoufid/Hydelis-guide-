@@ -1,0 +1,38 @@
+<!doctype html><meta charset="utf-8">
+<style>body{margin:0;background:#f4ede4;display:grid;grid-template-columns:repeat(3,1fr)}div{position:relative}span{position:absolute;left:8px;top:8px;color:#a96e4f;font:12px sans-serif;z-index:2}canvas{width:100%;height:100%;display:block}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/examples/":"/node_modules/three/examples/"}}</script>
+<body>
+<script type="module">
+import * as THREE from 'three'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+const FILES = ['deco-sceau-velluce','deco-trio-pro','deco-bulles-faq']
+const loader = new GLTFLoader()
+let done = 0
+for (const h of FILES) {
+  const cell = document.createElement('div')
+  cell.style.height = innerHeight + 'px'
+  cell.innerHTML = `<span>${h}</span>`
+  const canvas = document.createElement('canvas')
+  cell.appendChild(canvas)
+  document.body.appendChild(cell)
+  const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
+  r.setSize(cell.clientWidth, cell.clientHeight, false)
+  r.outputColorSpace = THREE.SRGBColorSpace
+  const scene = new THREE.Scene()
+  scene.environment = new THREE.PMREMGenerator(r).fromScene(new RoomEnvironment(), 0.04).texture
+  scene.add(new THREE.HemisphereLight(0xfff6e8, 0xcabfae, 0.9))
+  const key = new THREE.DirectionalLight(0xfff1df, 1.8); key.position.set(2, 3, 3); scene.add(key)
+  const cam = new THREE.PerspectiveCamera(30, cell.clientWidth / cell.clientHeight, 0.01, 10)
+  loader.load(`/velluce/models/${h}.glb`, (g) => {
+    scene.add(g.scene)
+    const bb = new THREE.Box3().setFromObject(g.scene)
+    const c = bb.getCenter(new THREE.Vector3())
+    const size = bb.getSize(new THREE.Vector3()).length()
+    cam.position.set(c.x + size * 0.75, c.y + size * 0.32, c.z + size * 1.15)
+    cam.lookAt(c)
+    r.render(scene, cam)
+    if (++done === FILES.length) document.title = 'READY'
+  })
+}
+</script>

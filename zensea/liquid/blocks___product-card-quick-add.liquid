@@ -1,0 +1,357 @@
+{% assign product = closest.product %}
+
+<script type="module" src="{{ 'quick-add.js' | asset_url }}"></script>
+
+{%- liquid
+  assign bb_variant = product.selected_or_first_available_variant
+  if bb_variant == blank
+    assign bb_variant = product.variants.first
+  endif
+-%}
+
+<quick-add-component
+  class="
+    quick-add-component
+    {%- if block.settings.align_quick_add_together %} quick-add-component--aligned-at-bottom{% endif -%}
+    {%- if block.settings.show_on_display == 'desktop_only' %} mobile-hide{% endif -%}
+    {%- if block.settings.show_on_display == 'mobile_only' %} desktop-hide{% endif -%}
+    {%- if block.settings.additional_class != blank %} {{ block.settings.additional_class }}{% endif -%}
+  "
+  style="
+    --margin-top: {{ block.settings.margin_top }}px;
+    --margin-bottom: {{ block.settings.margin_bottom }}px;
+  "
+  {{ block.shopify_attributes }}
+  {% if request.visual_preview_mode %}
+    data-visual-preview-mode
+  {% endif %}
+>
+  {%- comment -%}
+    Velluce : ajout direct au panier, y compris pour les produits a plusieurs variantes.
+    L'ancienne fenetre d'apercu produit (dialog-component / popup-toggle) a ete supprimee :
+    un clic ajoute la variante affichee au panier, sans rien ouvrir.
+  {%- endcomment -%}
+  <button
+    class="button button--{{ block.settings.button_style }} button--{{ block.settings.button_shape }} button--full-width quick-add-button bbq-btn"
+    data-ref="add-to-cart-button"
+    data-product-id="{{ product.id }}"
+    data-variant-id="{{ bb_variant.id }}"
+    {% if product.available == false %}
+      disabled
+    {% endif %}
+  >
+    <span class="button__content">
+      {%- if product.available -%}
+        <svg class="bbq-cart" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M2.5 3.5h1.9l1.7 8.2a1.5 1.5 0 0 0 1.5 1.2h6.6a1.5 1.5 0 0 0 1.5-1.15L17.5 6.3H5.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="8.4" cy="16.4" r="1.25" fill="currentColor"/>
+          <circle cx="14.6" cy="16.4" r="1.25" fill="currentColor"/>
+        </svg>
+        <span class="full-add-to-cart-text">
+          {{ 'products.add_to_cart' | t }}
+        </span>
+        <span class="small-add-to-cart-text">
+          {{ 'products.add' | t }}
+        </span>
+      {%- else -%}
+        {{ 'products.add_to_cart_unavailable' | t }}
+      {%- endif -%}
+    </span>
+
+    {% render 'loading-spinner' %}
+  </button>
+</quick-add-component>
+
+<script>
+  (function () {
+    if (window.__bbQuickAddSwatchSync) return;
+    window.__bbQuickAddSwatchSync = true;
+
+    /* Quand le client choisit une pastille de couleur sur la fiche,
+       le bouton « Ajouter au panier » suit la variante correspondante.
+       On ecoute pointerdown : le gestionnaire des pastilles stoppe le clic. */
+    document.addEventListener(
+      'pointerdown',
+      function (event) {
+        var target = event.target;
+        if (!target || !target.closest) return;
+        var swatch = target.closest('.pcard-swatch');
+        if (!swatch) return;
+        var card = swatch.closest('product-card') || swatch.closest('.product-card');
+        if (!card) return;
+        var url = swatch.getAttribute('data-url') || '';
+        var match = url.match(/variant=(\d+)/);
+        if (!match) return;
+        var button = card.querySelector('[data-ref="add-to-cart-button"]');
+        if (button) button.setAttribute('data-variant-id', match[1]);
+      },
+      true
+    );
+  })();
+</script>
+
+{% stylesheet %}
+  .quick-add-component {
+    display: block;
+    width: 100%;
+    cursor: auto;
+    /* margin-top:auto aligne tous les boutons sur la meme ligne dans une grille. */
+    margin-top: auto;
+    padding-top: var(--margin-top);
+    margin-bottom: var(--margin-bottom);
+  }
+
+  .quick-add-component--aligned-at-bottom {
+    margin-top: auto;
+  }
+
+  /* Les fiches sans pastilles de couleur reservent la meme hauteur,
+     pour que tous les boutons soient alignes sur la meme ligne. */
+  product-card:not(:has(.pcard-swatches)) .quick-add-component,
+  product-card:has(.pcard-swatches:empty) .quick-add-component {
+    margin-bottom: calc(var(--margin-bottom) + 39px);
+  }
+
+  .quick-add-component .button {
+    container-type: inline-size;
+  }
+
+  /* ---------------------------------------------------------------
+     Bouton « Ajouter au panier » — style Velluce
+     --------------------------------------------------------------- */
+  .quick-add-component .quick-add-button.bbq-btn {
+    --bbq-ink: #292F2C;
+    --bbq-accent: #90AFA0;
+    --bbq-beige: #B4C9BE;
+    --bbq-line: #CFDDD6;
+    --bbq-soft: #F6F9F8;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 36px;
+    padding-block: 0;
+    padding-inline: 10px;
+    border: 1px solid var(--bbq-line);
+    border-radius: 999px;
+    background: var(--bbq-soft);
+    color: var(--bbq-ink);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: 0;
+    text-transform: none;
+    box-shadow: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .quick-add-component .quick-add-button.bbq-btn .button__content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  .quick-add-component .quick-add-button.bbq-btn .bbq-cart {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+    opacity: 0.75;
+    transition: opacity 0.2s ease;
+  }
+
+  @media (hover: hover) {
+    .quick-add-component .quick-add-button.bbq-btn:hover:not([disabled]) {
+      background: var(--bbq-beige);
+      border-color: var(--bbq-beige);
+      color: var(--bbq-ink);
+    }
+
+    .quick-add-component .quick-add-button.bbq-btn:hover:not([disabled]) .bbq-cart {
+      opacity: 1;
+    }
+  }
+
+  .quick-add-component .quick-add-button.bbq-btn:active:not([disabled]) {
+    background: var(--bbq-accent);
+    border-color: var(--bbq-accent);
+    color: #fff;
+  }
+
+  .quick-add-component .quick-add-button.bbq-btn:focus-visible {
+    outline: 2px solid var(--bbq-accent);
+    outline-offset: 2px;
+  }
+
+  .quick-add-component .quick-add-button.bbq-btn[disabled] {
+    background: transparent;
+    border-color: var(--bbq-line);
+    color: rgb(44 44 44 / 40%);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  /* Libelle : on garde « Ajouter au panier » le plus longtemps possible. */
+  .quick-add-button .full-add-to-cart-text {
+    display: block;
+  }
+
+  .quick-add-button .small-add-to-cart-text {
+    display: none;
+  }
+
+  @container (width < 145px) {
+    .quick-add-component .quick-add-button.bbq-btn .button__content {
+      font-size: 12px;
+      gap: 5px;
+    }
+  }
+
+  @container (width < 118px) {
+    .quick-add-component .quick-add-button.bbq-btn .bbq-cart {
+      display: none;
+    }
+  }
+
+  @container (width < 94px) {
+    .quick-add-button .full-add-to-cart-text {
+      display: none;
+    }
+
+    .quick-add-button .small-add-to-cart-text {
+      display: block;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:product_card_quick_add",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "show_on_display",
+      "label": "t:show_on_display",
+      "default": "desktop_and_mobile",
+      "options": [
+        {
+          "value": "desktop_and_mobile",
+          "label": "t:desktop_and_mobile"
+        },
+        {
+          "value": "desktop_only",
+          "label": "t:desktop_only"
+        },
+        {
+          "value": "mobile_only",
+          "label": "t:mobile_only"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:style"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "t:button_style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "t:primary"
+        },
+        {
+          "value": "secondary",
+          "label": "t:secondary"
+        }
+      ],
+      "default": "secondary"
+    },
+    {
+      "type": "select",
+      "id": "button_shape",
+      "label": "t:button_shape",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:normal"
+        },
+        {
+          "value": "small",
+          "label": "t:small"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "checkbox",
+      "id": "align_quick_add_together",
+      "label": "t:align_quick_add_together",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_media_gallery",
+      "label": "t:show_product_media_gallery",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:margins"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "t:margin_top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "t:margin_bottom",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "t:advanced_settings"
+    },
+    {
+      "type": "text",
+      "id": "additional_class",
+      "label": "t:additional_class",
+      "info": "t:additional_class_info"
+    },
+    {
+      "type": "header",
+      "content": "t:go_further"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:go_further_description"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:product_card_quick_add",
+      "category": "t:product"
+    }
+  ]
+}
+{% endschema %}

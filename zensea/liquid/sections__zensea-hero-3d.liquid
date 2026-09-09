@@ -1,0 +1,371 @@
+{% comment %}
+  Velluce — Héro 3D de page (F.A.Q, Notre promesse, Notre histoire…).
+  Même langage visuel que la page Contact : DA beige, grain, objet 3D
+  en lévitation (model-viewer) avec halo, anneaux et ombre portée.
+  Typographie équilibrée : text-wrap balance sur le titre, pretty sur
+  l'accroche — pas de retours à la ligne disgracieux.
+{% endcomment %}
+
+<section
+  class="vh3"
+  id="vh3-{{ section.id }}"
+  style="
+    --vh3-bg: {{ section.settings.bg }};
+    --vh3-sand: {{ section.settings.sand }};
+    --vh3-ink: {{ section.settings.ink }};
+    --vh3-accent: {{ section.settings.accent }};
+    --vh3-glow: {{ section.settings.glow }};
+  "
+>
+  <div class="vh3__grain" aria-hidden="true"></div>
+
+  <header class="vh3__hero">
+    <div class="vh3__copy">
+      <p class="vh3__eyebrow">{{ section.settings.eyebrow }}</p>
+      <h1 class="vh3__h1">{{ section.settings.heading }}</h1>
+      <p class="vh3__lead">{{ section.settings.subheading }}</p>
+      {% if section.settings.badge_text != blank %}
+        <div class="vh3__pulse">
+          <span class="vh3__dot" aria-hidden="true"></span>
+          {{ section.settings.badge_text }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="vh3__stage" aria-hidden="true">
+      <div class="vh3__orbit">
+        <div class="vh3__halo"></div>
+        <model-viewer
+          class="vh3__mv"
+          src="{{ section.settings.model_url }}"
+          alt=""
+          auto-rotate
+          auto-rotate-delay="0"
+          rotation-per-second="{{ section.settings.rotation | default: '16deg' }}"
+          camera-orbit="{{ section.settings.camera_orbit | default: '18deg 80deg 0.5m' }}"
+          camera-target="{{ section.settings.camera_target | default: '0m 0m 0m' }}"
+          field-of-view="{{ section.settings.fov | default: '30deg' }}"
+          disable-zoom
+          disable-pan
+          disable-tap
+          interaction-prompt="none"
+          exposure="1.15"
+          shadow-intensity="0"
+          loading="lazy"
+          reveal="auto"
+        ></model-viewer>
+        <div class="vh3__ring vh3__ring--1"></div>
+        <div class="vh3__ring vh3__ring--2"></div>
+        <div class="vh3__ring vh3__ring--3"></div>
+        <div class="vh3__floor"></div>
+      </div>
+    </div>
+  </header>
+</section>
+
+{% stylesheet %}
+  .vh3 {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 90% at 78% 4%, var(--vh3-glow) 0%, rgba(255,255,255,0) 58%),
+      linear-gradient(180deg, var(--vh3-bg) 0%, var(--vh3-sand) 100%);
+    color: var(--vh3-ink);
+    padding: 0 20px;
+    font-family: var(--font-body-family, "Jost", system-ui, sans-serif);
+  }
+
+  .vh3__grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .5;
+    background-image: radial-gradient(rgba(46,94,70,.055) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+
+  .vh3__hero {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 78px 0 40px;
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .vh3__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 2.6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--vh3-accent);
+    margin: 0 0 18px;
+  }
+
+  .vh3__h1 {
+    font-family: var(--font-heading-family, Georgia, serif);
+    font-weight: 400;
+    font-size: clamp(34px, 4.4vw, 58px);
+    line-height: 1.08;
+    letter-spacing: -1px;
+    margin: 0 0 20px;
+    text-wrap: balance;
+    max-width: 16ch;
+  }
+
+  .vh3__lead {
+    font-size: 17px;
+    line-height: 1.75;
+    color: #4D6258;
+    max-width: 52ch;
+    margin: 0 0 26px;
+    text-wrap: pretty;
+  }
+
+  .vh3__pulse {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px 10px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(46,94,70,.18);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    font-size: 13.5px;
+    color: #305844;
+    box-shadow: 0 10px 26px rgba(46,94,70,.10);
+  }
+
+  .vh3__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #6cc07a;
+    box-shadow: 0 0 0 0 rgba(108,192,122,.55);
+    animation: vh3Pulse 2.4s ease-out infinite;
+  }
+
+  @keyframes vh3Pulse {
+    0% { box-shadow: 0 0 0 0 rgba(108,192,122,.5); }
+    70% { box-shadow: 0 0 0 12px rgba(108,192,122,0); }
+    100% { box-shadow: 0 0 0 0 rgba(108,192,122,0); }
+  }
+
+  .vh3__stage {
+    position: relative;
+    height: 400px;
+    perspective: 1000px;
+  }
+
+  .vh3__orbit {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(12deg) rotateY(-14deg);
+    animation: vh3Float 7s ease-in-out infinite;
+  }
+
+  @keyframes vh3Float {
+    0%, 100% { transform: rotateX(12deg) rotateY(-14deg) translateY(0); }
+    50% { transform: rotateX(10deg) rotateY(-10deg) translateY(-14px); }
+  }
+
+  .vh3__halo {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    width: 400px;
+    height: 400px;
+    margin: -200px 0 0 -200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(199,217,208,.5) 0%, rgba(199,217,208,.15) 42%, rgba(199,217,208,0) 70%);
+    filter: blur(2px);
+  }
+
+  .vh3__mv {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    width: 330px;
+    height: 380px;
+    margin: -190px 0 0 -165px;
+    --poster-color: transparent;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .vh3__ring {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    border-radius: 50%;
+    border: 1px solid rgba(46,94,70,.2);
+    transform-style: preserve-3d;
+  }
+
+  .vh3__ring--1 { width: 290px; height: 290px; margin: -145px 0 0 -145px; transform: rotateX(74deg); }
+  .vh3__ring--2 { width: 385px; height: 385px; margin: -192px 0 0 -192px; transform: rotateX(74deg) translateZ(-38px); border-color: rgba(46,94,70,.13); }
+  .vh3__ring--3 { width: 200px; height: 200px; margin: -100px 0 0 -100px; transform: rotateX(74deg) translateZ(30px); border-color: rgba(46,94,70,.26); }
+
+  .vh3__floor {
+    position: absolute;
+    left: 50%;
+    top: 80%;
+    width: 300px;
+    height: 56px;
+    margin-left: -150px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(46,94,70,.22) 0%, rgba(46,94,70,0) 72%);
+    filter: blur(6px);
+  }
+
+  @media (max-width: 1000px) {
+    .vh3__hero { grid-template-columns: 1fr; padding-top: 54px; gap: 12px; }
+    .vh3__stage { height: 300px; order: -1; }
+  }
+
+  @media (max-width: 620px) {
+    .vh3__hero { padding-bottom: 30px; }
+    .vh3__stage { height: 250px; }
+    .vh3__halo { width: 280px; height: 280px; margin: -140px 0 0 -140px; }
+    .vh3__mv { width: 230px; height: 260px; margin: -130px 0 0 -115px; }
+    .vh3__ring--1 { width: 205px; height: 205px; margin: -102px 0 0 -102px; }
+    .vh3__ring--2 { width: 270px; height: 270px; margin: -135px 0 0 -135px; }
+    .vh3__ring--3 { width: 140px; height: 140px; margin: -70px 0 0 -70px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vh3__orbit, .vh3__dot { animation: none !important; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var stages = document.querySelectorAll('.vh3__stage');
+    if (!stages.length) return;
+    function loadViewer() {
+      if (!window.customElements || customElements.get('model-viewer')) return;
+      if (document.querySelector('script[data-v3d-lib]')) return;
+      var s = document.createElement('script');
+      s.type = 'module';
+      s.setAttribute('data-v3d-lib', '');
+      s.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js';
+      document.head.appendChild(s);
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries.some(function (e) { return e.isIntersecting; })) { loadViewer(); io.disconnect(); }
+      }, { rootMargin: '600px' });
+      stages.forEach(function (st) { io.observe(st); });
+    } else {
+      loadViewer();
+    }
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Zensea Héro 3D",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "Zensea"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Un titre qui respire."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Accroche",
+      "default": "Une phrase d'introduction équilibrée, qui se lit d'un trait."
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge (vide = masqué)"
+    },
+    {
+      "type": "header",
+      "content": "Visuel 3D"
+    },
+    {
+      "type": "text",
+      "id": "model_url",
+      "label": "URL du modèle 3D (.glb)"
+    },
+    {
+      "type": "text",
+      "id": "camera_orbit",
+      "label": "Cadrage caméra (orbit)",
+      "default": "18deg 80deg 0.5m"
+    },
+    {
+      "type": "text",
+      "id": "camera_target",
+      "label": "Cible caméra",
+      "default": "0m 0m 0m"
+    },
+    {
+      "type": "text",
+      "id": "fov",
+      "label": "Champ de vision",
+      "default": "30deg"
+    },
+    {
+      "type": "text",
+      "id": "rotation",
+      "label": "Vitesse de rotation",
+      "default": "16deg"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Fond haut",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "sand",
+      "label": "Fond bas",
+      "default": "#E8F0EC"
+    },
+    {
+      "type": "color",
+      "id": "ink",
+      "label": "Texte",
+      "default": "#292F2C"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent",
+      "default": "#2E5E46"
+    },
+    {
+      "type": "color",
+      "id": "glow",
+      "label": "Halo lumineux",
+      "default": "#DFEAE4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zensea Héro 3D"
+    }
+  ]
+}
+{% endschema %}

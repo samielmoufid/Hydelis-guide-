@@ -1,0 +1,286 @@
+{% comment %}
+  Section description de collection avec système "En savoir plus"
+  Optimisée pour SEO et Performance - Compatible thème Impact
+{% endcomment %}
+
+{%- render 'section-spacing-collapsing' -%}
+
+{% liquid
+  # Gestion du contenu automatique vs manuel
+  if section.settings.auto_description
+    assign description_content = collection.description
+  else
+    assign description_content = section.settings.manual_description
+  endif
+%}
+
+{% if description_content != blank %}
+  <style>
+    #shopify-section-{{ section.id }} {
+      --description-title-color: {{ section.settings.title_color }};
+      --description-text-color: {{ section.settings.text_color }};
+      --description-button-bg: {{ section.settings.button_background }};
+      --description-button-hover: {{ section.settings.button_hover }};
+      --description-button-text: {{ section.settings.button_text_color }};
+    }
+
+    #shopify-section-{{ section.id }} > .section {
+      padding-inline: 0 !important;
+    }
+
+    #shopify-section-{{ section.id }} .collection-description__content h2 {
+      color: var(--description-title-color);
+      font-size: {{ section.settings.heading_size }}px;
+      font-weight: 600;
+      margin-bottom: var(--spacing-4);
+      line-height: 1.3;
+    }
+
+    #shopify-section-{{ section.id }} .collection-description__content h3 {
+      color: var(--description-title-color);
+      font-size: calc({{ section.settings.heading_size }}px * 0.85);
+      font-weight: 600;
+      margin-bottom: var(--spacing-3);
+      line-height: 1.3;
+    }
+
+    #shopify-section-{{ section.id }} .collection-description__content h4,
+    #shopify-section-{{ section.id }} .collection-description__content h5,
+    #shopify-section-{{ section.id }} .collection-description__content h6 {
+      color: var(--description-title-color);
+      font-size: calc({{ section.settings.heading_size }}px * 0.75);
+      font-weight: 600;
+      margin-bottom: var(--spacing-2);
+      line-height: 1.3;
+    }
+
+    #shopify-section-{{ section.id }} .collection-description__content p {
+      color: var(--description-text-color);
+      font-size: var(--text-base);
+      line-height: 1.6;
+      margin-bottom: var(--spacing-4);
+    }
+
+    #shopify-section-{{ section.id }} .collection-description__content a {
+      color: {{ settings.bold_text_color }};
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    #shopify-section-{{ section.id }} .collection-description__content a:hover {
+      opacity: 0.7;
+    }
+
+    #shopify-section-{{ section.id }} .collection-description__content strong,
+    #shopify-section-{{ section.id }} .collection-description__content b {
+      color: {{ settings.bold_text_color }};
+      font-weight: 600;
+    }
+
+    #shopify-section-{{ section.id }} .collection-description__button {
+      background-color: var(--description-button-bg);
+      color: var(--description-button-text);
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--rounded-button);
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+      margin-block: var(--spacing-4);
+      display: inline-block;
+    }
+
+    #shopify-section-{{ section.id }} .collection-description__button:hover {
+      background-color: var(--description-button-hover);
+    }
+
+    #shopify-section-{{ section.id }} .collection-description__hidden {
+      display: none;
+    }
+
+    @media screen and (max-width: 999px) {
+      #shopify-section-{{ section.id }} .collection-description__content h2 {
+        font-size: calc({{ section.settings.heading_size }}px * 0.85);
+      }
+    }
+  </style>
+
+  <div {% render 'section-properties' %}>
+    <div class="container">
+      <span id="collection-description" class="visually-hidden" aria-hidden="true"></span>
+      <div id="collection-description-{{ section.id }}" class="collection-description__content prose">
+        {% assign sections_list = description_content | split: '<h2>' %}
+        {% assign count = 0 %}
+        {% assign has_multiple_sections = false %}
+        
+        {% for desc_section in sections_list %}
+          {% if desc_section contains '</h2>' %}
+            {% if count > 0 and count == 1 and section.settings.show_toggle_button %}
+              <button 
+                type="button"
+                class="collection-description__button" 
+                id="toggle-btn-{{ section.id }}"
+                aria-expanded="false"
+                aria-controls="hidden-content-{{ section.id }}">
+                {{ section.settings.button_text_more }}
+              </button>
+              <div id="hidden-content-{{ section.id }}" class="collection-description__hidden" aria-hidden="true">
+              {% assign has_multiple_sections = true %}
+            {% endif %}
+            
+            {% assign parts = desc_section | split: '</h2>' %}
+            <h2>{{ parts[0] }}</h2>
+            <div>{{ parts[1] }}</div>
+            
+            {% assign count = count | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+        
+        {% if has_multiple_sections and section.settings.show_toggle_button %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const button = document.getElementById('toggle-btn-{{ section.id }}');
+      const hiddenContent = document.getElementById('hidden-content-{{ section.id }}');
+      
+      if (button && hiddenContent) {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          const isHidden = hiddenContent.classList.contains('collection-description__hidden');
+          
+          if (isHidden) {
+            hiddenContent.classList.remove('collection-description__hidden');
+            hiddenContent.setAttribute('aria-hidden', 'false');
+            button.setAttribute('aria-expanded', 'true');
+            button.textContent = "{{ section.settings.button_text_less }}";
+          } else {
+            hiddenContent.classList.add('collection-description__hidden');
+            hiddenContent.setAttribute('aria-hidden', 'true');
+            button.setAttribute('aria-expanded', 'false');
+            button.textContent = "{{ section.settings.button_text_more }}";
+          }
+        });
+      }
+    })();
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Collection description",
+  "tag": "section",
+  "class": "shopify-section--collection-description",
+  "enabled_on": {
+    "templates": [
+      "collection"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_description",
+      "label": "Utiliser automatiquement la description de la collection",
+      "default": true,
+      "info": "Si décoché, vous pouvez saisir manuellement la description ci-dessous"
+    },
+    {
+      "type": "richtext",
+      "id": "manual_description",
+      "label": "Description personnalisée",
+      "info": "Utilisez des titres pour créer des sections. Le premier paragraphe sera visible, les suivants cachés derrière le bouton.",
+      "visible_if": "{{ section.settings.auto_description == false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_toggle_button",
+      "label": "Afficher le bouton 'En savoir plus'",
+      "default": true,
+      "info": "Cache les sections après la première sous un bouton dépliable"
+    },
+    {
+      "type": "text",
+      "id": "button_text_more",
+      "label": "Texte du bouton (voir plus)",
+      "default": "En savoir plus"
+    },
+    {
+      "type": "text",
+      "id": "button_text_less",
+      "label": "Texte du bouton (voir moins)",
+      "default": "Voir moins"
+    },
+    {
+      "type": "header",
+      "content": "Apparence"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Taille des titres H2",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur des titres",
+      "default": "#4A5BA6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur du texte",
+      "default": "#303633"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Couleur de fond du bouton",
+      "default": "#4A5BA6"
+    },
+    {
+      "type": "color",
+      "id": "button_hover",
+      "label": "Couleur de fond du bouton (survol)",
+      "default": "#6b73be"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Couleur du texte du bouton",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs de fond"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Fond de la section"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Fond en dégradé"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection description"
+    }
+  ]
+}
+{% endschema %}

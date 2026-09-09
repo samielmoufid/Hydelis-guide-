@@ -1,0 +1,652 @@
+{%- liquid
+  assign s = section.settings
+  assign pool = null
+
+  if s.collection != blank
+    assign pool = s.collection.products
+  endif
+
+  if pool == null and product != blank
+    for c in product.collections
+      if c.handle == 'frontpage' or c.handle == 'meilleurs-ventes'
+        continue
+      endif
+      if c.all_products_count > 4
+        assign pool = c.products
+        break
+      endif
+    endfor
+  endif
+
+  if pool == null
+    assign pool = collections.all.products
+  endif
+
+  assign limit = s.max_products | plus: 1
+-%}
+
+<section id="vya-{{ section.id }}" class="vya">
+  <div class="vya__wrap">
+
+    <header class="vya__head">
+      <div class="vya__headtext">
+        {%- if s.eyebrow != blank -%}
+          <p class="vya__eyebrow"><span class="vya__rule"></span>{{ s.eyebrow }}</p>
+        {%- endif -%}
+        {%- if s.title != blank -%}<h2 class="vya__title">{{ s.title }}</h2>{%- endif -%}
+        {%- if s.subtitle != blank -%}<p class="vya__sub">{{ s.subtitle }}</p>{%- endif -%}
+      </div>
+
+      <div class="vya__nav" data-vya-nav>
+        <button type="button" class="vya__arrow" data-vya-prev aria-label="Produit précédent">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" class="vya__arrow" data-vya-next aria-label="Produit suivant">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="vya__viewport">
+      <ul class="vya__track" data-vya-track>
+        {%- assign shown = 0 -%}
+        {%- for p in pool limit: limit -%}
+          {%- if product != blank and p.id == product.id -%}{%- continue -%}{%- endif -%}
+          {%- if shown >= s.max_products -%}{%- break -%}{%- endif -%}
+          {%- assign shown = shown | plus: 1 -%}
+
+          {%- assign on_sale = false -%}
+          {%- if p.compare_at_price > p.price -%}{%- assign on_sale = true -%}{%- endif -%}
+
+          <li class="vya__slide">
+            <a class="vya__card" href="{{ p.url }}">
+              <div class="vya__media">
+                {%- if p.featured_image -%}
+                  {{ p.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', class: 'vya__img', alt: p.title }}
+                {%- else -%}
+                  {%- render 'zensea-illus', key: 'handpan', uid: block.id, name: 'Zensea', class: 'vya__img' -%}
+                {%- endif -%}
+                {%- if p.images[1] != blank and s.hover_second_image -%}
+                  {{ p.images[1] | image_url: width: 800 | image_tag: loading: 'lazy', class: 'vya__img vya__img--alt', alt: p.title }}
+                {%- endif -%}
+                {%- if on_sale and s.show_badge -%}
+                  {%- assign pct = p.compare_at_price | minus: p.price | times: 100.0 | divided_by: p.compare_at_price | round -%}
+                  <span class="vya__badge">−{{ pct }} %</span>
+                {%- endif -%}
+              </div>
+              <div class="vya__info">
+                {%- assign vl_parts = p.title | split: ' — ' -%}
+                <h3 class="vya__name">{{ vl_parts | first | split: ' (' | first }}</h3>
+                {%- if vl_parts.size > 1 -%}
+                  <p class="vya__desc">{{ vl_parts | slice: 1, 10 | join: ' — ' }}</p>
+                {%- endif -%}
+                <p class="vya__price">
+                  <span class="vya__now">{{ p.price | money }}</span>
+                  {%- if on_sale -%}<s class="vya__was">{{ p.compare_at_price | money }}</s>{%- endif -%}
+                </p>
+              </div>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <span class="vya__fade" aria-hidden="true"></span>
+    </div>
+
+    <div class="vya__progress" data-vya-progress><span data-vya-bar></span></div>
+
+    {%- if s.link_text != blank -%}
+      <a class="vya__all" href="{{ s.link_url | default: '/collections/all' }}">
+        <span>{{ s.link_text }}</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<style>
+  #vya-{{ section.id }} {
+    --vya-ink: {{ s.title_color }};
+    --vya-accent: {{ s.accent_color }};
+    --vya-card: {{ s.card_bg }};
+    --vya-gap: {{ s.gap }}px;
+    --vya-per: {{ s.per_view }};
+    --vya-peek: {{ s.peek }}px;
+    background: {{ s.section_bg }};
+    padding: {{ s.padding_top }}px 0 {{ s.padding_bottom }}px;
+  }
+  #vya-{{ section.id }} .vya__wrap {
+    max-width: {{ s.max_width }}px;
+    margin: 0 auto;
+    padding-left: clamp(18px, 4vw, 56px);
+    padding-right: 0;
+  }
+
+  /* ---------- En-tête ---------- */
+  #vya-{{ section.id }} .vya__head {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+    padding-right: clamp(18px, 4vw, 56px);
+    margin-bottom: 30px;
+  }
+  #vya-{{ section.id }} .vya__eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    margin: 0 0 14px;
+    font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--vya-accent); font-weight: 500;
+  }
+  #vya-{{ section.id }} .vya__rule { width: 32px; height: 1px; background: currentColor; opacity: .55; }
+  #vya-{{ section.id }} .vya__title {
+    margin: 0;
+    font-family: var(--font-heading--family, Georgia, serif);
+    font-weight: 400;
+    font-size: {{ s.title_size }}px;
+    line-height: 1.1;
+    letter-spacing: -.015em;
+    color: var(--vya-ink);
+  }
+  #vya-{{ section.id }} .vya__sub {
+    margin: 12px 0 0; max-width: 52ch;
+    font-size: 15px; line-height: 1.65; color: var(--vya-ink); opacity: .62;
+  }
+
+  #vya-{{ section.id }} .vya__nav { display: flex; gap: 10px; flex: 0 0 auto; }
+  #vya-{{ section.id }} .vya__arrow {
+    width: 46px; height: 46px; border-radius: 50%;
+    border: 1px solid var(--vya-ink);
+    background: transparent; color: var(--vya-ink);
+    display: grid; place-items: center; cursor: pointer;
+    transition: background .35s ease, color .35s ease, opacity .3s ease;
+  }
+  #vya-{{ section.id }} .vya__arrow svg { width: 19px; height: 19px; }
+  #vya-{{ section.id }} .vya__arrow:hover { background: var(--vya-ink); color: {{ s.section_bg }}; }
+  #vya-{{ section.id }} .vya__arrow[disabled] { opacity: .22; pointer-events: none; }
+
+  /* ---------- Piste ---------- */
+  #vya-{{ section.id }} .vya__viewport { position: relative; }
+  #vya-{{ section.id }} .vya__track {
+    display: flex;
+    gap: var(--vya-gap);
+    margin: 0; padding: 0 clamp(18px, 4vw, 56px) 4px 0;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+  }
+  #vya-{{ section.id }} .vya__track::-webkit-scrollbar { display: none; }
+  #vya-{{ section.id }} .vya__track.is-drag { cursor: grabbing; scroll-behavior: auto; scroll-snap-type: none; }
+
+  #vya-{{ section.id }} .vya__slide {
+    flex: 0 0 calc((100% - var(--vya-peek) - (var(--vya-per) - 1) * var(--vya-gap)) / var(--vya-per));
+    scroll-snap-align: start;
+  }
+
+  #vya-{{ section.id }} .vya__card { display: block; text-decoration: none; color: inherit; }
+
+  #vya-{{ section.id }} .vya__media {
+    position: relative;
+    aspect-ratio: {{ s.image_ratio }};
+    border-radius: {{ s.card_radius }}px;
+    overflow: hidden;
+    background: var(--vya-card);
+  }
+  #vya-{{ section.id }} .vya__img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: {{ s.image_fit }};
+    {% if s.image_fit == 'contain' %}padding: 12%;{% endif %}
+    transition: transform .8s cubic-bezier(.2,.7,.2,1), opacity .5s ease;
+  }
+  #vya-{{ section.id }} .vya__img--alt { opacity: 0; }
+  #vya-{{ section.id }} .vya__card:hover .vya__img { transform: scale(1.045); }
+  #vya-{{ section.id }} .vya__card:hover .vya__img--alt { opacity: 1; }
+
+  #vya-{{ section.id }} .vya__badge {
+    position: absolute; left: 12px; top: 12px; z-index: 2;
+    padding: 6px 11px;
+    font-size: 11px; letter-spacing: .09em; font-weight: 600;
+    box-shadow: 0 1px 6px rgba(11,21,16,.10);
+    background: {{ s.badge_color }}; color: {{ s.badge_ink }};
+    border-radius: 999px;
+  }
+
+  #vya-{{ section.id }} .vya__info { padding: 16px 2px 0; }
+  #vya-{{ section.id }} .vya__name {
+    margin: 0;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 17px; font-weight: 500; line-height: 1.35;
+    color: #0D1712;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  #vya-{{ section.id }} .vya__desc {
+    margin: 4px 0 0;
+    font-size: 13px; line-height: 1.45; color: #576F63;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  #vya-{{ section.id }} .vya__price {
+    margin: 8px 0 0;
+    display: flex; align-items: baseline; gap: 9px;
+    font-size: 14.5px; color: var(--vya-ink);
+  }
+  #vya-{{ section.id }} .vya__now { font-weight: 600; }
+  #vya-{{ section.id }} .vya__was { opacity: .42; font-size: 13px; }
+
+  /* dégradé qui montre qu'il y a une suite */
+  #vya-{{ section.id }} .vya__fade {
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: clamp(18px, 4vw, 56px);
+    background: linear-gradient(to left, {{ s.section_bg }} 30%, {{ s.section_bg }}00);
+    pointer-events: none;
+  }
+
+  /* ---------- Barre de progression ---------- */
+  #vya-{{ section.id }} .vya__progress {
+    position: relative;
+    height: 2px;
+    margin: 26px clamp(18px, 4vw, 56px) 0 0;
+    background: {{ s.title_color }}1A;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  #vya-{{ section.id }} .vya__progress span {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 22%;
+    background: var(--vya-accent);
+    border-radius: 2px;
+    transition: transform .25s ease, width .25s ease;
+  }
+
+  #vya-{{ section.id }} .vya__all {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 30px;
+    font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--vya-ink); text-decoration: none;
+    padding-bottom: 7px;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px; background-repeat: no-repeat; background-position: 0 100%;
+    transition: background-size .5s cubic-bezier(.2,.7,.2,1);
+  }
+  #vya-{{ section.id }} .vya__all svg { width: 16px; height: 16px; transition: transform .45s ease; }
+  #vya-{{ section.id }} .vya__all:hover { background-size: 0% 1px; background-position: 100% 100%; }
+  #vya-{{ section.id }} .vya__all:hover svg { transform: translateX(5px); }
+
+  /* ---------- Tablette ---------- */
+  @media (max-width: 1100px) {
+    #vya-{{ section.id }} { --vya-per: {{ s.per_view_tablet }}; }
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 749px) {
+    #vya-{{ section.id }} {
+      --vya-per: {{ s.per_view_mobile }};
+      --vya-peek: {{ s.peek_m }}px;
+      --vya-gap: {{ s.gap_mobile }}px;
+      padding: {{ s.padding_top | times: 0.75 | round }}px 0 {{ s.padding_bottom | times: 0.75 | round }}px;
+    }
+    #vya-{{ section.id }} .vya__head { display: block; margin-bottom: 22px; }
+    #vya-{{ section.id }} .vya__title { font-size: {{ s.title_size_mobile }}px; }
+    #vya-{{ section.id }} .vya__sub { font-size: 14px; margin-top: 10px; }
+    #vya-{{ section.id }} .vya__nav { display: none; }
+    #vya-{{ section.id }} .vya__info { padding-top: 13px; }
+    #vya-{{ section.id }} .vya__name { font-size: 15px; }
+    #vya-{{ section.id }} .vya__desc { font-size: 12.5px; }
+    #vya-{{ section.id }} .vya__price { font-size: 14px; }
+    #vya-{{ section.id }} .vya__progress { margin-top: 20px; }
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('vya-{{ section.id }}');
+    if (!root) return;
+    var track = root.querySelector('[data-vya-track]');
+    var bar   = root.querySelector('[data-vya-bar]');
+    var prev  = root.querySelector('[data-vya-prev]');
+    var next  = root.querySelector('[data-vya-next]');
+    if (!track) return;
+
+    function step() {
+      var slide = track.querySelector('.vya__slide');
+      if (!slide) return track.clientWidth * 0.8;
+      var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || 0) || 0;
+      return slide.getBoundingClientRect().width + gap;
+    }
+
+    function sync() {
+      var max = track.scrollWidth - track.clientWidth;
+      var ratio = track.clientWidth / track.scrollWidth;
+      if (bar) {
+        var w = Math.max(ratio * 100, 12);
+        bar.style.width = w + '%';
+        var p = max > 0 ? track.scrollLeft / max : 0;
+        bar.style.transform = 'translateX(' + (p * (100 / w * 100 - 100)) + '%)';
+      }
+      if (prev) prev.disabled = track.scrollLeft <= 2;
+      if (next) next.disabled = track.scrollLeft >= max - 2;
+    }
+
+    if (prev) prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    if (next) next.addEventListener('click', function () { track.scrollBy({ left:  step(), behavior: 'smooth' }); });
+    track.addEventListener('scroll', function () { window.requestAnimationFrame(sync); }, { passive: true });
+    window.addEventListener('resize', sync);
+
+    /* glisser à la souris sur ordinateur */
+    var down = false, startX = 0, startScroll = 0, moved = 0;
+    track.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      down = true; moved = 0;
+      startX = e.clientX; startScroll = track.scrollLeft;
+      track.classList.add('is-drag');
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!down) return;
+      var d = e.clientX - startX;
+      moved = Math.abs(d);
+      track.scrollLeft = startScroll - d;
+    });
+    window.addEventListener('pointerup', function () {
+      if (!down) return;
+      down = false;
+      track.classList.remove('is-drag');
+      sync();
+    });
+    track.addEventListener('click', function (e) {
+      if (moved > 6) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+
+    sync();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Vous aimerez aussi",
+  "tag": "section",
+  "class": "vya-section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection à afficher",
+      "info": "Laisser vide : les produits de la même collection que le produit consulté."
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Nombre de produits",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Textes"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "Dans le même esprit"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Vous aimerez aussi"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Choisis avec le même soin, dans le même univers."
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Lien sous le carrousel",
+      "default": "Voir toute la collection"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Cible du lien"
+    },
+    {
+      "type": "header",
+      "content": "Cartes produit"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Format de l'image",
+      "options": [
+        {
+          "value": "1 / 1",
+          "label": "Carré"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Portrait"
+        },
+        {
+          "value": "3 / 4",
+          "label": "Portrait haut"
+        }
+      ],
+      "default": "4 / 5"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Cadrage de l'image",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Remplir le cadre"
+        },
+        {
+          "value": "contain",
+          "label": "Produit entier visible"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_second_image",
+      "label": "Afficher la 2e photo au survol",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Afficher le badge de remise",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Arrondi des cartes",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 6,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Carrousel"
+    },
+    {
+      "type": "range",
+      "id": "per_view",
+      "label": "Produits visibles — ordinateur",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "per_view_tablet",
+      "label": "Produits visibles — tablette",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "per_view_mobile",
+      "label": "Produits visibles — mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "peek",
+      "label": "Aperçu du produit suivant — ordinateur",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 70,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "peek_m",
+      "label": "Aperçu du produit suivant — mobile",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espace entre les cartes",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Espace entre les cartes — mobile",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Fond de la section",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Fond des visuels",
+      "default": "#ECF3F0"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du texte",
+      "default": "#0B1510"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Couleur d'accent",
+      "default": "#7C988A"
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Fond du badge remise",
+      "default": "#B4C9BE"
+    },
+    {
+      "type": "color",
+      "id": "badge_ink",
+      "label": "Texte du badge remise",
+      "default": "#0B1510"
+    },
+    {
+      "type": "header",
+      "content": "Dimensions"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille du titre",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 38,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Taille du titre — mobile",
+      "min": 20,
+      "max": 44,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Largeur maximale",
+      "min": 900,
+      "max": 1800,
+      "step": 20,
+      "default": 1440,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding haut",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 84,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bas",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "default": 84,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vous aimerez aussi"
+    }
+  ]
+}
+{% endschema %}

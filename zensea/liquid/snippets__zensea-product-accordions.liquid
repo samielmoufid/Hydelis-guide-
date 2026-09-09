@@ -1,0 +1,102 @@
+{%- comment -%}
+  Velluce — accordéons de la page produit (3 blocs)
+  Rendu depuis blocks/custom-code.liquid dès qu'un bloc de code contient le marqueur "bb-acc".
+  Paramètre attendu : product (objet produit)
+{%- endcomment -%}
+
+{%- liquid
+  assign bb_prod = product
+  if bb_prod == blank
+    assign bb_prod = closest.product
+  endif
+-%}
+
+<div class="bb-acc-wrap">
+  {%- if bb_prod.description != blank -%}
+    <details class="bb-acc">
+      <summary>Description</summary>
+      <div class="bb-acc-body bb-acc-body--rte">
+        {{ bb_prod.description }}
+      </div>
+    </details>
+  {%- endif -%}
+
+  <details class="bb-acc">
+    <summary>Livraison &amp; retours</summary>
+    <div class="bb-acc-body">
+      <p>Votre commande est préparée sous <strong>24 à 48 heures ouvrées</strong> : l'instrument est sorti, joué note par note, contrôlé au diapason 440&nbsp;Hz, puis calé dans son carton renforcé.</p>
+      <p><strong>Livraison en 7 à 13 jours ouvrés</strong>, soit 8 à 15 jours ouvrés au total. Offerte dès 30&nbsp;€ d'achat, partout en France.</p>
+      <p>Vous recevez un e-mail de confirmation, puis un second e-mail d'expédition avec votre numéro de suivi. Le colis voyage suivi de bout en bout.</p>
+      <p>Vous disposez de <strong>30 jours</strong> à compter de la réception pour demander un retour ou un échange, sans avoir à justifier de motif. Les frais de retour restent à votre charge ; le remboursement part sous 7 à 14 jours après réception.</p>
+    </div>
+  </details>
+
+  <details class="bb-acc">
+    <summary>Garantie 24 mois &amp; entretien</summary>
+    <div class="bb-acc-body">
+      <p>Chaque instrument Zensea est couvert par une <strong>garantie de 24 mois</strong>, incluse d'office et sans surcoût. Un défaut de fabrication — une soudure qui cède, une note qui décroche sans cause extérieure, un accessoire livré défectueux ? Vous écrivez, on répond en français, on remplace ou on rembourse. Pas d'expertise à vos frais.</p>
+      <p>Rien à installer : l'instrument s'utilise dès l'ouverture du carton, posé sur les genoux, sur un coussin ou sur son support. <strong>Aucun solfège requis</strong> — toutes les notes appartiennent à la même gamme, donc tout ce que vos mains trouvent sonne juste.</p>
+      <p><strong>Entretien&nbsp;:</strong> un chiffon doux et sec après chaque session, quelques gouttes d'huile de protection tous les deux à trois mois sur l'acier. À éviter : les chocs, l'humidité prolongée, une voiture en plein soleil et toute tentative d'accordage maison. Trois réflexes, et l'instrument garde son accord des années.</p>
+    </div>
+  </details>
+</div>
+
+<style>
+  .bb-acc-wrap .bb-acc {
+    border-top: 1px solid #B4C9BE;
+  }
+  .bb-acc-wrap .bb-acc:last-of-type {
+    border-bottom: 1px solid #B4C9BE;
+  }
+  .bb-acc-wrap .bb-acc summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 2px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 15px;
+    color: #181C1A;
+    list-style: none;
+  }
+  .bb-acc-wrap .bb-acc summary::-webkit-details-marker { display: none; }
+  .bb-acc-wrap .bb-acc summary::after {
+    content: "+";
+    font-size: 20px;
+    line-height: 1;
+    color: #B4C9BE;
+    font-weight: 400;
+    transition: transform .2s ease;
+  }
+  .bb-acc-wrap .bb-acc[open] summary::after { transform: rotate(45deg); }
+  .bb-acc-wrap .bb-acc .bb-acc-body {
+    padding: 0 2px 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #404844;
+  }
+  .bb-acc-wrap .bb-acc .bb-acc-body > *:first-child { margin-top: 0; }
+  .bb-acc-wrap .bb-acc .bb-acc-body > *:last-child { margin-bottom: 0; }
+  .bb-acc-wrap .bb-acc .bb-acc-body p { margin: 0 0 10px; }
+
+  /* Description issue de Shopify : on normalise le rendu du texte riche. */
+  .bb-acc-body--rte h1,
+  .bb-acc-body--rte h2,
+  .bb-acc-body--rte h3,
+  .bb-acc-body--rte h4 {
+    margin: 18px 0 8px;
+    font-size: 15px;
+    line-height: 1.35;
+    font-weight: 700;
+    color: #181C1A;
+  }
+  .bb-acc-body--rte ul,
+  .bb-acc-body--rte ol { margin: 0 0 12px; padding-left: 20px; }
+  .bb-acc-body--rte li { margin-bottom: 6px; }
+  .bb-acc-body--rte img { max-width: 100%; height: auto; border-radius: 8px; }
+  .bb-acc-body--rte table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .bb-acc-body--rte td,
+  .bb-acc-body--rte th { border: 1px solid #CFDDD6; padding: 8px; text-align: left; }
+  .bb-acc-body--rte a { color: #2E5E46; text-decoration: underline; }
+</style>

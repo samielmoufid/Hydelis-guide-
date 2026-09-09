@@ -1,0 +1,702 @@
+{%- liquid
+  assign sid = section.id
+  assign st = section.settings
+-%}
+
+<div id="ImgCar-{{ sid }}" class="imgcar">
+  {%- if st.title != blank or st.subtitle != blank -%}
+    <div class="imgcar__head">
+      {%- if st.title != blank -%}<h2 class="imgcar__title">{{ st.title }}</h2>{%- endif -%}
+      {%- if st.subtitle != blank -%}<p class="imgcar__sub">{{ st.subtitle }}</p>{%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="imgcar__wrap">
+    {%- if st.show_arrows -%}<button class="imgcar__nav imgcar__nav--prev" data-dir="-1" aria-label="Précédent">&#8249;</button>{%- endif -%}
+
+    <div class="imgcar__track" data-track>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign img = block.settings.image
+          assign vid = block.settings.video
+          assign poster = ''
+          if img != blank
+            assign poster = img | image_url: width: 900
+          elsif vid != blank and vid.preview_image != blank
+            assign poster = vid.preview_image | image_url: width: 900
+          endif
+        -%}
+        {%- capture card -%}
+          <div class="imgcar__stage">
+            <div class="imgcar__media">
+              {%- if vid != blank -%}
+                {{ vid | video_tag:
+                  image_size: '900x',
+                  autoplay: true,
+                  loop: true,
+                  muted: true,
+                  controls: false,
+                  playsinline: true,
+                  preload: 'metadata',
+                  class: 'imgcar__video'
+                }}
+                <span class="imgcar__sound" data-sound aria-label="Activer le son">
+                  <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" data-ic-off><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z" opacity=".95"/><path d="M3 3l18 18" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                  <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" data-ic-on style="display:none"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a6.8 6.8 0 0 1 0 13.4v2.1a8.9 8.9 0 0 0 0-17.6z"/></svg>
+                </span>
+              {%- elsif img != blank -%}
+                {{ img | image_url: width: 1100 | image_tag: loading: 'lazy', widths: '400,550,700,900,1100', sizes: '(max-width:749px) 78vw, 440px', alt: block.settings.caption }}
+              {%- else -%}
+                {%- render 'zensea-illus', key: 'handpan', uid: block.id, name: 'Zensea', class: 'imgcar__ph' -%}
+              {%- endif -%}
+            </div>
+          </div>
+          {%- if block.settings.caption != blank -%}<span class="imgcar__cap">{{ block.settings.caption }}</span>{%- endif -%}
+        {%- endcapture -%}
+        {%- if block.settings.link != blank -%}
+          <a href="{{ block.settings.link }}" class="imgcar__card" {{ block.shopify_attributes }}>{{ card }}</a>
+        {%- else -%}
+          <div class="imgcar__card" {{ block.shopify_attributes }}>{{ card }}</div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if st.show_arrows -%}<button class="imgcar__nav imgcar__nav--next" data-dir="1" aria-label="Suivant">&#8250;</button>{%- endif -%}
+  </div>
+</div>
+
+{%- style -%}
+  #ImgCar-{{ sid }} {
+    background: {{ st.bg }};
+    padding: {{ st.pad_top_m }}px 0 {{ st.pad_bot_m }}px;
+  }
+  #ImgCar-{{ sid }} .imgcar__head { text-align: center; margin: 0 20px 24px; }
+  #ImgCar-{{ sid }} .imgcar__title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: {{ st.title_size_m }}px; font-weight: {{ st.title_weight }};
+    {% if st.title_italic %}font-style: italic;{% endif %}
+    color: {{ st.title_color }}; margin: 0 0 8px;
+  }
+  #ImgCar-{{ sid }} .imgcar__sub { font-size: {{ st.sub_size_m }}px; color: {{ st.sub_color }}; margin: 0; }
+
+  #ImgCar-{{ sid }} .imgcar__wrap { position: relative; }
+  #ImgCar-{{ sid }} .imgcar__track {
+    display: flex; align-items: flex-start; gap: {{ st.gap }}px;
+    overflow-x: auto; scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  #ImgCar-{{ sid }} .imgcar__track::-webkit-scrollbar { display: none; }
+  #ImgCar-{{ sid }} .imgcar__card {
+    flex: 0 0 {{ st.cardpx_m }}px; scroll-snap-align: center;
+    text-decoration: none; display: block;
+  }
+  /* La scène garde une hauteur fixe (la plus grande) : l'image grandit à l'intérieur sans décaler la mise en page */
+  #ImgCar-{{ sid }} .imgcar__stage {
+    height: max({{ st.center_h_m | times: 0.92 | round }}px, {{ st.side_h_m | times: 0.92 | round }}px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #ImgCar-{{ sid }} .imgcar__media {
+    position: relative; width: 100%; height: {{ st.side_h_m | times: 0.92 | round }}px;
+    border-radius: {{ st.radius }}px; overflow: hidden; background: #E3EDE8;
+    transition: height .5s cubic-bezier(.22,.61,.36,1), opacity .5s ease;
+    opacity: {{ st.side_opacity | divided_by: 100.0 }};
+  }
+  #ImgCar-{{ sid }} .imgcar__card.is-active .imgcar__media { height: {{ st.center_h_m | times: 0.92 | round }}px; opacity: 1; }
+  #ImgCar-{{ sid }} .imgcar__media img,
+  #ImgCar-{{ sid }} .imgcar__media video,
+  #ImgCar-{{ sid }} .imgcar__media .imgcar__video,
+  #ImgCar-{{ sid }} .imgcar__ph {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  #ImgCar-{{ sid }} .imgcar__media .shopify-video-wrapper,
+  #ImgCar-{{ sid }} .imgcar__media deferred-media {
+    display: block; width: 100%; height: 100%;
+  }
+  #ImgCar-{{ sid }} .imgcar__sound {
+    position: absolute; right: 12px; bottom: 12px; z-index: 3;
+    display: none; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(24,18,6,.42); color: #fff;
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.28);
+    cursor: pointer; transition: background .25s ease, opacity .3s ease;
+  }
+  #ImgCar-{{ sid }} .imgcar__card.is-active .imgcar__sound { display: flex; }
+  #ImgCar-{{ sid }} .imgcar__sound:hover { background: rgba(24,18,6,.62); }
+  #ImgCar-{{ sid }} .imgcar__cap {
+    display: block; margin-top: 10px; font-size: {{ st.cap_size }}px;
+    color: {{ st.cap_color }}; text-align: {{ st.cap_align }};
+    opacity: 0; transition: opacity .4s ease;
+  }
+  #ImgCar-{{ sid }} .imgcar__card.is-active .imgcar__cap { opacity: 1; }
+
+  #ImgCar-{{ sid }} .imgcar__nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+    width: 44px; height: 44px; border-radius: 50%; border: none; cursor: pointer;
+    background: {{ st.nav_bg }}; color: {{ st.nav_color }};
+    font-size: 24px; line-height: 1; display: none; align-items: center; justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,.12); transition: opacity .2s;
+  }
+  #ImgCar-{{ sid }} .imgcar__nav--prev { left: 14px; }
+  #ImgCar-{{ sid }} .imgcar__nav--next { right: 14px; }
+  #ImgCar-{{ sid }} .imgcar__nav:hover { opacity: .85; }
+
+  @media (min-width: 750px) {
+    #ImgCar-{{ sid }} { padding: {{ st.pad_top }}px 0 {{ st.pad_bot }}px; }
+    #ImgCar-{{ sid }} .imgcar__title { font-size: {{ st.title_size }}px; }
+    #ImgCar-{{ sid }} .imgcar__sub { font-size: {{ st.sub_size }}px; }
+    #ImgCar-{{ sid }} .imgcar__card { flex-basis: {{ st.cardpx }}px; }
+    #ImgCar-{{ sid }} .imgcar__stage { height: max({{ st.center_h | times: 0.92 | round }}px, {{ st.side_h | times: 0.92 | round }}px); }
+    #ImgCar-{{ sid }} .imgcar__media { height: {{ st.side_h | times: 0.92 | round }}px; }
+    #ImgCar-{{ sid }} .imgcar__card.is-active .imgcar__media { height: {{ st.center_h | times: 0.92 | round }}px; }
+    {% if st.show_arrows %}#ImgCar-{{ sid }} .imgcar__nav { display: flex; }{% endif %}
+  }
+{%- endstyle -%}
+
+<script>
+(function(){
+  var root = document.getElementById('ImgCar-{{ sid }}');
+  if(!root) return;
+
+  var track = root.querySelector('[data-track]');
+  if(!track) return;
+  var reals = Array.prototype.slice.call(track.querySelectorAll('.imgcar__card'));
+  var n = reals.length;
+  if(!n) return;
+
+  /* ── Boucle infinie : clones avant/après ── */
+  var infinite = n >= 3;
+  if (infinite) {
+    var after = document.createDocumentFragment();
+    var before = document.createDocumentFragment();
+    reals.forEach(function(c){ var cl=c.cloneNode(true); cl.setAttribute('aria-hidden','true'); after.appendChild(cl); });
+    reals.forEach(function(c){ var cl=c.cloneNode(true); cl.setAttribute('aria-hidden','true'); before.appendChild(cl); });
+    track.appendChild(after);
+    track.insertBefore(before, track.firstChild);
+  }
+  var cards = Array.prototype.slice.call(track.querySelectorAll('.imgcar__card'));
+
+  /* ── Vidéos : originaux ET clones, lecture auto muette, son au clic ── */
+  var vids = Array.prototype.slice.call(root.querySelectorAll('video'));
+  vids.forEach(function(v){
+    v.muted = true; v.defaultMuted = true; v.loop = true;
+    v.playsInline = true; v.autoplay = true;
+    v.setAttribute('playsinline',''); v.setAttribute('muted',''); v.setAttribute('autoplay','');
+    v.removeAttribute('controls');
+  });
+  function tryPlay(v){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+  function playVisible(){
+    vids.forEach(function(v){
+      var r = v.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < window.innerHeight && r.right > 0 && r.left < window.innerWidth) tryPlay(v);
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { tryPlay(e.target); } else { e.target.pause(); }
+      });
+    }, { threshold: 0.15 });
+    vids.forEach(function(v){ io.observe(v); });
+  } else {
+    vids.forEach(tryPlay);
+  }
+  /* iOS (économie d'énergie) : relance au premier toucher et au retour d'onglet */
+  window.addEventListener('touchstart', playVisible, { once: true, passive: true });
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) setTimeout(playVisible, 120); });
+  setTimeout(playVisible, 350);
+
+  root.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-sound]');
+    if(!btn) return;
+    e.preventDefault(); e.stopPropagation();
+    var media = btn.closest('.imgcar__media');
+    var v = media && media.querySelector('video');
+    if(!v) return;
+    v.muted = !v.muted;
+    var off = btn.querySelector('[data-ic-off]'), on = btn.querySelector('[data-ic-on]');
+    if(off) off.style.display = v.muted ? '' : 'none';
+    if(on) on.style.display = v.muted ? 'none' : '';
+    if(!v.muted) tryPlay(v);
+  });
+
+  /* ── Géométrie ── */
+  function pad(){
+    if (infinite) { track.style.paddingLeft = '0px'; track.style.paddingRight = '0px'; return; }
+    var p = Math.max(8, (track.clientWidth - cards[0].offsetWidth)/2);
+    track.style.paddingLeft = p + 'px'; track.style.paddingRight = p + 'px';
+  }
+  function centerIdx(){
+    var c = track.scrollLeft + track.clientWidth/2, best=0, bd=Infinity;
+    for (var i=0;i<cards.length;i++){
+      var cc = cards[i].offsetLeft + cards[i].offsetWidth/2, d = Math.abs(cc-c);
+      if (d<bd){ bd=d; best=i; }
+    }
+    return best;
+  }
+  function markActive(){
+    var b = centerIdx();
+    for (var i=0;i<cards.length;i++){ cards[i].classList.toggle('is-active', i===b); }
+  }
+  function leftFor(i){ var card=cards[i]; return card.offsetLeft - (track.clientWidth - card.offsetWidth)/2; }
+  function goTo(i, smooth){
+    i = Math.max(0, Math.min(cards.length-1, i));
+    track.scrollTo({ left: leftFor(i), behavior: smooth ? 'smooth' : 'auto' });
+  }
+
+  /* ── État d'interaction : on ne touche à RIEN tant que le doigt est posé
+        ou que l'inertie court encore ── */
+  var dragging = false;
+  var lastScroll = 0;
+  var quietUntil = 0;          /* l'auto-défilement attend la fin de l'inertie + un délai */
+  function holdOff(ms){ var t = Date.now() + ms; if (t > quietUntil) quietUntil = t; }
+
+  ['touchstart','pointerdown'].forEach(function(ev){
+    track.addEventListener(ev, function(){ dragging = true; holdOff(5000); }, { passive:true });
+  });
+  ['touchend','touchcancel','pointerup','pointercancel'].forEach(function(ev){
+    track.addEventListener(ev, function(){ dragging = false; holdOff(5000); }, { passive:true });
+  });
+  track.addEventListener('wheel', function(){ holdOff(5000); }, { passive:true });
+
+  var jumping = false;
+  function oneSet(){ return cards[n].offsetLeft - cards[0].offsetLeft; }
+  function reposition(){
+    if (!infinite || jumping || dragging) return;
+    if (Date.now() - lastScroll < 140) return;
+    var idx = centerIdx();
+    if (idx < n) { jump(track.scrollLeft + oneSet()); }
+    else if (idx >= 2*n) { jump(track.scrollLeft - oneSet()); }
+  }
+  function jump(x){
+    jumping = true;
+    var prev = track.style.scrollBehavior;
+    track.style.scrollBehavior = 'auto';
+    track.scrollLeft = x;
+    requestAnimationFrame(function(){ track.style.scrollBehavior = prev; jumping = false; markActive(); });
+  }
+
+  pad();
+  var startIdx = infinite ? n : 0;
+  requestAnimationFrame(function(){ goTo(startIdx, false); markActive(); });
+
+  var raf = false, idle = null;
+  track.addEventListener('scroll', function(){
+    lastScroll = Date.now();
+    if (!raf){ raf=true; requestAnimationFrame(function(){ markActive(); raf=false; }); }
+    if (jumping) return;
+    if (idle) clearTimeout(idle);
+    idle = setTimeout(reposition, 180);
+  }, { passive:true });
+
+  window.addEventListener('resize', function(){ pad(); markActive(); });
+
+  root.querySelectorAll('.imgcar__nav').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      holdOff(6000);
+      goTo(centerIdx() + parseInt(btn.dataset.dir,10), true);
+    });
+  });
+
+  {% if st.autoplay %}
+  setInterval(function(){
+    if (dragging || jumping) return;
+    if (Date.now() < quietUntil) return;
+    if (Date.now() - lastScroll < 600) return;
+    if (document.hidden) return;
+    goTo(centerIdx() + 1, true);
+  }, {{ st.interval }} * 1000);
+  {% endif %}
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Carrousel d'images",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Ils l'adoptent au quotidien"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Des intérieurs comme le vôtre"
+    },
+    {
+      "type": "header",
+      "content": "Titre — style"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille titre — ordinateur",
+      "min": 20,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "title_size_m",
+      "label": "Taille titre — mobile",
+      "min": 16,
+      "max": 44,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Graisse",
+      "default": "400",
+      "options": [
+        {
+          "value": "300",
+          "label": "Fine"
+        },
+        {
+          "value": "400",
+          "label": "Normale"
+        },
+        {
+          "value": "600",
+          "label": "Semi"
+        },
+        {
+          "value": "700",
+          "label": "Grasse"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "title_italic",
+      "label": "Italique",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur titre",
+      "default": "#181C1A"
+    },
+    {
+      "type": "range",
+      "id": "sub_size",
+      "label": "Taille sous-titre — ordinateur",
+      "min": 10,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "sub_size_m",
+      "label": "Taille sous-titre — mobile",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "sub_color",
+      "label": "Couleur sous-titre",
+      "default": "#606C66"
+    },
+    {
+      "type": "header",
+      "content": "Hauteur des images"
+    },
+    {
+      "type": "range",
+      "id": "center_h",
+      "label": "Hauteur image centrale — ordinateur",
+      "min": 260,
+      "max": 720,
+      "step": 10,
+      "unit": "px",
+      "default": 480
+    },
+    {
+      "type": "range",
+      "id": "side_h",
+      "label": "Hauteur images côtés — ordinateur",
+      "min": 200,
+      "max": 640,
+      "step": 10,
+      "unit": "px",
+      "default": 380
+    },
+    {
+      "type": "range",
+      "id": "center_h_m",
+      "label": "Hauteur image centrale — mobile",
+      "min": 220,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "side_h_m",
+      "label": "Hauteur images côtés — mobile",
+      "min": 160,
+      "max": 520,
+      "step": 10,
+      "unit": "px",
+      "default": 320
+    },
+    {
+      "type": "header",
+      "content": "Largeur des images"
+    },
+    {
+      "type": "range",
+      "id": "cardpx",
+      "label": "Largeur carte — ordinateur",
+      "min": 240,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 440
+    },
+    {
+      "type": "range",
+      "id": "cardpx_m",
+      "label": "Largeur carte — mobile",
+      "min": 200,
+      "max": 380,
+      "step": 5,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Espace entre images",
+      "min": 4,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Coins arrondis",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "side_opacity",
+      "label": "Opacité des images côtés",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Défilement automatique"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Activer le défilement automatique",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "interval",
+      "label": "Intervalle entre images",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Flèches sur ordinateur",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Légendes"
+    },
+    {
+      "type": "range",
+      "id": "cap_size",
+      "label": "Taille légende",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "cap_color",
+      "label": "Couleur légende",
+      "default": "#505A55"
+    },
+    {
+      "type": "select",
+      "id": "cap_align",
+      "label": "Alignement légende",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Gauche"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Flèches — style"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg",
+      "label": "Fond des flèches",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_color",
+      "label": "Couleur des flèches",
+      "default": "#181C1A"
+    },
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Couleur de fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Marge haute — ordinateur",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "pad_bot",
+      "label": "Marge basse — ordinateur",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "pad_top_m",
+      "label": "Marge haute — mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "pad_bot_m",
+      "label": "Marge basse — mobile",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Vidéo ou image",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Vidéo (prioritaire sur l'image)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (ou vignette de la vidéo)"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Légende (optionnel)"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien (optionnel)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Carrousel d'images",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

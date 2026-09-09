@@ -1,0 +1,587 @@
+{% comment %} UGC Video Carousel - rendu premium desktop/mobile {% endcomment %}
+
+{%- assign sid = section.id | replace: '_', '' | downcase -%}
+
+<section
+  class="ugc2-section"
+  id="ugc2-{{ sid }}"
+  style="
+    background: {{ section.settings.bg_color }};
+    --radius: {{ section.settings.card_radius }}px;
+    --overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    --title-size: {{ section.settings.title_size }}px;
+    --title-color: {{ section.settings.title_color }};
+    --gap: {{ section.settings.card_gap }}px;
+  "
+>
+  {% if section.settings.title != blank %}
+    <h2 class="ugc2-title">{{ section.settings.title }}</h2>
+  {% endif %}
+
+  <div class="ugc2-stage" aria-label="Carrousel vidéo">
+
+    <button class="ugc2-arrow ugc2-arrow--prev" aria-label="Vidéo précédente">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+
+    <div class="ugc2-viewport">
+      <div class="ugc2-track" id="ugc2-track-{{ sid }}">
+        {% for block in section.blocks %}
+          <div class="ugc2-card" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <div class="ugc2-media">
+
+              {% if block.settings.video != blank %}
+                {%- assign video = block.settings.video -%}
+                <video
+                  class="ugc2-video"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  {% if block.settings.cover_image != blank %}
+                    poster="{{ block.settings.cover_image | image_url: width: 900 }}"
+                  {% elsif video.preview_image != blank %}
+                    poster="{{ video.preview_image | image_url: width: 900 }}"
+                  {% endif %}
+                >
+                  {% for source in video.sources %}
+                    {% if source.format == 'mp4' %}
+                      <source src="{{ source.url }}" type="video/mp4">
+                    {% endif %}
+                  {% endfor %}
+                  {% for source in video.sources %}
+                    {% unless source.format == 'mp4' %}
+                      <source src="{{ source.url }}" type="video/{{ source.format }}">
+                    {% endunless %}
+                  {% endfor %}
+                </video>
+
+              {% elsif block.settings.cover_image != blank %}
+                <img
+                  class="ugc2-video"
+                  src="{{ block.settings.cover_image | image_url: width: 900 }}"
+                  alt="{{ block.settings.caption | default: 'UGC' }}"
+                  loading="lazy"
+                >
+
+              {% else %}
+                <div class="ugc2-placeholder">
+                  <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#B7BFBB" stroke-width="1.5">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                  </svg>
+                  <span>Ajouter une vidéo</span>
+                </div>
+              {% endif %}
+
+              <div class="ugc2-overlay"></div>
+
+              {% if block.settings.caption != blank %}
+                <p class="ugc2-caption">{{ block.settings.caption }}</p>
+              {% endif %}
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <button class="ugc2-arrow ugc2-arrow--next" aria-label="Vidéo suivante">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"/>
+      </svg>
+    </button>
+
+  </div>
+</section>
+
+<style>
+  #ugc2-{{ sid }} {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: 34px 0 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  #ugc2-{{ sid }} * {
+    box-sizing: border-box;
+  }
+
+  #ugc2-{{ sid }} .ugc2-title {
+    text-align: center;
+    font-size: var(--title-size);
+    color: var(--title-color);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    margin: 0 0 28px;
+    padding: 0 20px;
+    line-height: 1.05;
+  }
+
+  #ugc2-{{ sid }} .ugc2-stage {
+    position: relative;
+    width: 100%;
+  }
+
+  #ugc2-{{ sid }} .ugc2-viewport {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #ugc2-{{ sid }} .ugc2-track {
+    display: flex;
+    align-items: stretch;
+    gap: var(--gap);
+    will-change: transform;
+    user-select: none;
+    touch-action: pan-y;
+  }
+
+  #ugc2-{{ sid }} .ugc2-card {
+    flex: 0 0 292px;
+    width: 292px;
+    height: 512px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    background: #EDEFEE;
+  }
+
+  #ugc2-{{ sid }} .ugc2-media {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #ugc2-{{ sid }} .ugc2-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+
+  #ugc2-{{ sid }} .ugc2-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, var(--overlay));
+    pointer-events: none;
+  }
+
+  #ugc2-{{ sid }} .ugc2-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #EEF0EF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #A5AFAA;
+    font-size: 13px;
+  }
+
+  #ugc2-{{ sid }} .ugc2-caption {
+    position: absolute;
+    bottom: 18px;
+    left: 14px;
+    right: 14px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.65);
+    margin: 0;
+    z-index: 2;
+  }
+
+  #ugc2-{{ sid }} .ugc2-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 30;
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #101211;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+    padding: 0;
+  }
+
+  #ugc2-{{ sid }} .ugc2-arrow--prev {
+    left: 14px;
+  }
+
+  #ugc2-{{ sid }} .ugc2-arrow--next {
+    right: 14px;
+  }
+
+  #ugc2-{{ sid }} .ugc2-arrow svg {
+    display: block;
+  }
+
+  #ugc2-{{ sid }} .ugc2-arrow:active {
+    transform: translateY(-50%) scale(0.96);
+  }
+
+  @media (min-width: 769px) {
+    #ugc2-{{ sid }} .ugc2-title {
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width: 768px) {
+    #ugc2-{{ sid }} {
+      padding: 56px 0 38px;
+    }
+
+    #ugc2-{{ sid }} .ugc2-title {
+      font-size: clamp(36px, 10.5vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+      margin: 0 auto 70px;
+      padding: 0 18px;
+      max-width: 430px;
+    }
+
+    #ugc2-{{ sid }} .ugc2-track {
+      gap: 16px;
+    }
+
+    #ugc2-{{ sid }} .ugc2-card {
+      flex: 0 0 81.5vw;
+      width: 81.5vw;
+      height: calc(81.5vw * 16 / 9);
+      border-radius: 18px;
+    }
+
+    #ugc2-{{ sid }} .ugc2-arrow {
+      width: 48px;
+      height: 48px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    }
+
+    #ugc2-{{ sid }} .ugc2-arrow--prev {
+      left: 8px;
+    }
+
+    #ugc2-{{ sid }} .ugc2-arrow--next {
+      right: 8px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    #ugc2-{{ sid }} .ugc2-title {
+      font-size: 34px;
+      margin-bottom: 52px;
+    }
+
+    #ugc2-{{ sid }} .ugc2-card {
+      flex-basis: 82vw;
+      width: 82vw;
+      height: calc(82vw * 16 / 9);
+    }
+  }
+</style>
+
+<script>
+(function () {
+  const sid = '{{ sid }}';
+  const section = document.getElementById('ugc2-' + sid);
+  if (!section) return;
+
+  const track = section.querySelector('.ugc2-track');
+  const viewport = section.querySelector('.ugc2-viewport');
+  const prevBtn = section.querySelector('.ugc2-arrow--prev');
+  const nextBtn = section.querySelector('.ugc2-arrow--next');
+
+  if (!track || !viewport || !prevBtn || !nextBtn) return;
+
+  let originalCards = Array.from(track.querySelectorAll('.ugc2-card'));
+  const total = originalCards.length;
+
+  if (total === 0) return;
+
+  let cloneCount = Math.min(total, 4);
+  let current = cloneCount;
+  let isAnimating = false;
+
+  function buildInfiniteTrack() {
+    if (total <= 1) return;
+
+    const before = originalCards.slice(-cloneCount).map(card => {
+      const clone = card.cloneNode(true);
+      clone.classList.add('ugc2-clone');
+      return clone;
+    });
+
+    const after = originalCards.slice(0, cloneCount).map(card => {
+      const clone = card.cloneNode(true);
+      clone.classList.add('ugc2-clone');
+      return clone;
+    });
+
+    before.reverse().forEach(clone => track.insertBefore(clone, track.firstChild));
+    after.forEach(clone => track.appendChild(clone));
+  }
+
+  buildInfiniteTrack();
+
+  function cards() {
+    return Array.from(track.querySelectorAll('.ugc2-card'));
+  }
+
+  function getGap() {
+    return parseFloat(getComputedStyle(track).gap) || 0;
+  }
+
+  function getCardWidth() {
+    const firstCard = track.querySelector('.ugc2-card');
+    return firstCard ? firstCard.offsetWidth : 0;
+  }
+
+  function getOffset(index) {
+    const cardWidth = getCardWidth();
+    const gap = getGap();
+    const vpWidth = viewport.offsetWidth;
+    const cardLeft = index * (cardWidth + gap);
+    return cardLeft - (vpWidth / 2 - cardWidth / 2);
+  }
+
+  function applyOffset(index, animate) {
+    track.style.transition = animate
+      ? 'transform 0.48s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      : 'none';
+
+    track.style.transform = 'translate3d(' + (-getOffset(index)) + 'px, 0, 0)';
+  }
+
+  function pauseAllVideos() {
+    cards().forEach(card => {
+      const video = card.querySelector('video');
+      if (video) video.pause();
+    });
+  }
+
+  function playCurrentVideo() {
+    pauseAllVideos();
+
+    const activeCard = cards()[current];
+    if (!activeCard) return;
+
+    const video = activeCard.querySelector('video');
+    if (video) {
+      video.muted = true;
+      video.play().catch(() => {});
+    }
+  }
+
+  function updateActiveClass() {
+    cards().forEach((card, index) => {
+      card.classList.toggle('ugc2-card--active', index === current);
+    });
+  }
+
+  function goTo(index, animate = true) {
+    if (total <= 1) return;
+
+    current = index;
+    applyOffset(current, animate);
+    updateActiveClass();
+    playCurrentVideo();
+  }
+
+  function normalizeAfterLoop() {
+    if (total <= 1) return;
+
+    if (current >= cloneCount + total) {
+      current = cloneCount;
+      applyOffset(current, false);
+    }
+
+    if (current < cloneCount) {
+      current = cloneCount + total - 1;
+      applyOffset(current, false);
+    }
+
+    updateActiveClass();
+    playCurrentVideo();
+    isAnimating = false;
+  }
+
+  prevBtn.addEventListener('click', () => {
+    if (isAnimating || total <= 1) return;
+    isAnimating = true;
+    goTo(current - 1, true);
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (isAnimating || total <= 1) return;
+    isAnimating = true;
+    goTo(current + 1, true);
+  });
+
+  track.addEventListener('transitionend', normalizeAfterLoop);
+
+  let startX = 0;
+  let startY = 0;
+  let isTouching = false;
+
+  track.addEventListener('touchstart', e => {
+    if (!e.touches || !e.touches[0]) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isTouching = true;
+  }, { passive: true });
+
+  track.addEventListener('touchend', e => {
+    if (!isTouching || !e.changedTouches || !e.changedTouches[0]) return;
+
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) {
+        nextBtn.click();
+      } else {
+        prevBtn.click();
+      }
+    }
+
+    isTouching = false;
+  }, { passive: true });
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      applyOffset(current, false);
+    }, 120);
+  });
+
+  requestAnimationFrame(() => {
+    applyOffset(current, false);
+    updateActiveClass();
+    playCurrentVideo();
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Carrousel Vidéo UGC",
+  "tag": "section",
+  "class": "ugc-video-carousel-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "ADOPTÉ DANS LES INTÉRIEURS DU MONDE ENTIER"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur de fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Couleur du titre",
+      "default": "#101211"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Taille du titre desktop (px)",
+      "min": 18,
+      "max": 34,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Arrondi des cartes desktop (px)",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Opacité sombre sur les vidéos (%)",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Espacement entre vidéos desktop (px)",
+      "min": 8,
+      "max": 50,
+      "step": 2,
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video_card",
+      "name": "Vidéo",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Vidéo Shopify"
+        },
+        {
+          "type": "image_picker",
+          "id": "cover_image",
+          "label": "Image de couverture optionnelle"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Texte en bas optionnel"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Carrousel Vidéo UGC",
+      "blocks": [
+        {
+          "type": "video_card"
+        },
+        {
+          "type": "video_card"
+        },
+        {
+          "type": "video_card"
+        },
+        {
+          "type": "video_card"
+        },
+        {
+          "type": "video_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

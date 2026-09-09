@@ -1,0 +1,313 @@
+{% assign display_title = section.settings.custom_title | default: collection.title %}
+
+<section
+  class="hyd-col-title hyd-col-title--{{ section.settings.title_position }} hyd-col-title--font-{{ section.settings.title_font_style }}"
+  style="
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div
+    class="hyd-col-title__inner"
+    style="
+      padding-left: {{ section.settings.padding_left_desktop }}px;
+      padding-right: {{ section.settings.padding_right_desktop }}px;
+    "
+  >
+    {% if display_title != blank %}
+      <h1
+        class="hyd-col-title__heading"
+        style="
+          color: {{ section.settings.text_color }};
+          font-size: {{ section.settings.font_size_desktop }}px;
+          font-weight: {{ section.settings.font_weight }};
+        "
+      >
+        {{ display_title }}
+      </h1>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .hyd-col-title {
+    width: 100%;
+  }
+
+  .hyd-col-title__inner {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    display: flex;
+  }
+
+  .hyd-col-title--left .hyd-col-title__inner {
+    justify-content: flex-start;
+  }
+
+  .hyd-col-title--center .hyd-col-title__inner {
+    justify-content: center;
+  }
+
+  .hyd-col-title--right .hyd-col-title__inner {
+    justify-content: flex-end;
+  }
+
+  .hyd-col-title__heading {
+    margin: 0;
+    line-height: 1.04;
+    letter-spacing: -0.045em;
+    word-break: break-word;
+    max-width: 1200px;
+  }
+
+  .hyd-col-title--left .hyd-col-title__heading {
+    text-align: left;
+  }
+
+  .hyd-col-title--center .hyd-col-title__heading {
+    text-align: center;
+  }
+
+  .hyd-col-title--right .hyd-col-title__heading {
+    text-align: right;
+  }
+
+  .hyd-col-title--font-theme .hyd-col-title__heading {
+    font-family: inherit;
+  }
+
+  .hyd-col-title--font-modern .hyd-col-title__heading {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  .hyd-col-title--font-premium .hyd-col-title__heading {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .hyd-col-title--font-classic .hyd-col-title__heading {
+    font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: -0.035em;
+  }
+
+  @media screen and (max-width: 768px) {
+    .hyd-col-title {
+      padding-top: {{ section.settings.padding_top_mobile }}px !important;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px !important;
+    }
+
+    .hyd-col-title__inner {
+      padding-left: {{ section.settings.padding_left_mobile }}px !important;
+      padding-right: {{ section.settings.padding_right_mobile }}px !important;
+    }
+
+    .hyd-col-title__heading {
+      font-size: {{ section.settings.font_size_mobile }}px !important;
+      line-height: 1.08;
+      letter-spacing: -0.038em;
+      max-width: 100%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Titre collection premium",
+  "tag": "section",
+  "class": "hyd-collection-title-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_title",
+      "label": "Titre personnalisé",
+      "info": "Laissez vide pour afficher automatiquement le titre de la collection"
+    },
+    {
+      "type": "select",
+      "id": "title_position",
+      "label": "Position du titre",
+      "options": [
+        {
+          "value": "left",
+          "label": "Gauche"
+        },
+        {
+          "value": "center",
+          "label": "Centre"
+        },
+        {
+          "value": "right",
+          "label": "Droite"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "title_font_style",
+      "label": "Police du titre",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Police du thème"
+        },
+        {
+          "value": "modern",
+          "label": "Moderne"
+        },
+        {
+          "value": "premium",
+          "label": "Premium"
+        },
+        {
+          "value": "classic",
+          "label": "Classique serif"
+        }
+      ],
+      "default": "premium"
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Épaisseur du titre",
+      "options": [
+        {
+          "value": "500",
+          "label": "Moyen"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra-bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "font_size_desktop",
+      "label": "Taille du titre desktop",
+      "min": 32,
+      "max": 120,
+      "step": 2,
+      "default": 72,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "font_size_mobile",
+      "label": "Taille du titre mobile",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 38,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Espacement haut desktop",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "default": 52,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espacement bas desktop",
+      "min": 0,
+      "max": 140,
+      "step": 4,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Espacement haut mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Espacement bas mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "label": "Marge gauche desktop",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "label": "Marge droite desktop",
+      "min": 0,
+      "max": 240,
+      "step": 4,
+      "default": 64,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Marge gauche mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Marge droite mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Couleur du texte",
+      "default": "#101211"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur du fond",
+      "default": "#FAFAFA"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Titre collection premium"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,338 @@
+{% comment %}
+  Moyens de paiement.
+
+  Ajout Velluce : une liste choisie à la main, cochée dans l'éditeur, qui
+  prime sur la détection automatique. Par défaut Visa, Mastercard, American
+  Express, Apple Pay et PayPal — sans Shop Pay ni Google Pay.
+
+  À noter : ces icônes sont un affichage. Ce qui est réellement proposé au
+  moment de payer se règle dans Paramètres › Paiements de l'administration.
+{% endcomment %}
+
+<div
+  class="
+    payment-methods
+    {%- if block.settings.show_on_display == 'desktop_only' %} mobile-hide{% endif -%}
+    {%- if block.settings.show_on_display == 'mobile_only' %} desktop-hide{% endif -%}
+    {%- if block.settings.additional_class != blank %} {{ block.settings.additional_class }}{% endif -%}
+  "
+  style="
+    --margin-top: {{ block.settings.margin_top }}px;
+    --margin-bottom: {{ block.settings.margin_bottom }}px;
+    --icon-size: {{ block.settings.icon_size }}px;
+    --alignment: {{ block.settings.alignment_desktop }};
+    --alignment-mobile: {{ block.settings.alignment_mobile }};
+  "
+  {{ block.shopify_attributes }}
+  {% if request.visual_preview_mode %}
+    data-visual-preview-mode
+  {% endif %}
+>
+  {% if block.settings.velluce_custom %}
+    {% if block.settings.ic_visa %}{{ 'visa' | payment_type_svg_tag }}{% endif %}
+    {% if block.settings.ic_master %}{{ 'master' | payment_type_svg_tag }}{% endif %}
+    {% if block.settings.ic_amex %}{{ 'american_express' | payment_type_svg_tag }}{% endif %}
+    {% if block.settings.ic_apple_pay %}{{ 'apple_pay' | payment_type_svg_tag }}{% endif %}
+    {% if block.settings.ic_paypal %}{{ 'paypal' | payment_type_svg_tag }}{% endif %}
+    {% if block.settings.ic_maestro %}{{ 'maestro' | payment_type_svg_tag }}{% endif %}
+    {% if block.settings.ic_klarna %}{{ 'klarna' | payment_type_svg_tag }}{% endif %}
+    {% if block.settings.ic_gpay %}{{ 'google_pay' | payment_type_svg_tag }}{% endif %}
+    {% if block.settings.ic_shop %}{{ 'shopify_pay' | payment_type_svg_tag }}{% endif %}
+  {% elsif settings.force_icons_display == false %}
+    {%- for type in shop.enabled_payment_types -%}
+      {{ type | payment_type_svg_tag }}
+    {%- endfor -%}
+  {% else %}
+    {% if settings.show_visa %}
+      {{ 'visa' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_master %}
+      {{ 'master' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_maestro %}
+      {{ 'maestro' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_apple_pay %}
+      {{ 'apple_pay' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_google_pay %}
+      {{ 'google_pay' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_paypal %}
+      {{ 'paypal' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_klarna %}
+      {{ 'klarna' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_shopify_pay %}
+      {{ 'shopify_pay' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_american_express %}
+      {{ 'american_express' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_diners_club %}
+      {{ 'diners_club' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_discover %}
+      {{ 'discover' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_twint %}
+      {{ 'twint' | payment_type_svg_tag }}
+    {% endif %}
+
+    {% if settings.show_bancontact %}
+      {{ 'bancontact' | payment_type_svg_tag }}
+    {% endif %}
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .payment-methods {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--gap-xs);
+    margin: var(--margin-top) 0 var(--margin-bottom) 0;
+    width: 100%;
+    justify-content: var(--alignment-mobile);
+  }
+
+  shopify-visual-preview-block-list .payment-methods[data-visual-preview-mode] {
+    width: max-content;
+  }
+
+  @media (width > 750px) {
+    .payment-methods {
+      justify-content: var(--alignment);
+    }
+  }
+
+  .payment-methods svg {
+    width: var(--icon-size);
+    height: auto;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:payment_methods",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "show_on_display",
+      "label": "t:show_on_display",
+      "default": "desktop_and_mobile",
+      "options": [
+        {
+          "value": "desktop_and_mobile",
+          "label": "t:desktop_and_mobile"
+        },
+        {
+          "value": "desktop_only",
+          "label": "t:desktop_only"
+        },
+        {
+          "value": "mobile_only",
+          "label": "t:mobile_only"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "velluce_custom",
+      "label": "Choisir les icônes moi-même",
+      "default": true,
+      "info": "Décoché, le thème affiche les moyens de paiement détectés automatiquement."
+    },
+    {
+      "type": "paragraph",
+      "content": "Ces icônes servent uniquement d'affichage. Les moyens de paiement réellement proposés se règlent dans Paramètres › Paiements."
+    },
+    {
+      "type": "checkbox",
+      "id": "ic_visa",
+      "label": "Visa",
+      "default": true,
+      "visible_if": "{{ block.settings.velluce_custom }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "ic_master",
+      "label": "Mastercard",
+      "default": true,
+      "visible_if": "{{ block.settings.velluce_custom }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "ic_amex",
+      "label": "American Express",
+      "default": true,
+      "visible_if": "{{ block.settings.velluce_custom }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "ic_apple_pay",
+      "label": "Apple Pay",
+      "default": true,
+      "visible_if": "{{ block.settings.velluce_custom }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "ic_paypal",
+      "label": "PayPal",
+      "default": true,
+      "visible_if": "{{ block.settings.velluce_custom }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "ic_maestro",
+      "label": "Maestro",
+      "default": false,
+      "visible_if": "{{ block.settings.velluce_custom }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "ic_klarna",
+      "label": "Klarna",
+      "default": false,
+      "visible_if": "{{ block.settings.velluce_custom }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "ic_gpay",
+      "label": "Google Pay",
+      "default": false,
+      "visible_if": "{{ block.settings.velluce_custom }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "ic_shop",
+      "label": "Shop Pay",
+      "default": false,
+      "visible_if": "{{ block.settings.velluce_custom }}"
+    },
+    {
+      "type": "header",
+      "content": "t:style"
+    },
+    {
+      "type": "select",
+      "id": "alignment_desktop",
+      "label": "t:alignment_desktop",
+      "default": "flex-start",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:flex-start"
+        },
+        {
+          "value": "center",
+          "label": "t:centered"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:flex-end"
+        }
+      ],
+      "visible_if": "{{ block.settings.show_on_display != 'mobile_only' }}"
+    },
+    {
+      "type": "select",
+      "id": "alignment_mobile",
+      "label": "t:alignment_mobile",
+      "default": "flex-start",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "t:flex-start"
+        },
+        {
+          "value": "center",
+          "label": "t:centered"
+        },
+        {
+          "value": "flex-end",
+          "label": "t:flex-end"
+        }
+      ],
+      "visible_if": "{{ block.settings.show_on_display != 'desktop_only' }}"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "t:icon_size",
+      "min": 30,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 35
+    },
+    {
+      "type": "header",
+      "content": "t:margins"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "t:margin_top",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "t:margin_bottom",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "t:advanced_settings"
+    },
+    {
+      "type": "text",
+      "id": "additional_class",
+      "label": "t:additional_class",
+      "info": "t:additional_class_info"
+    },
+    {
+      "type": "header",
+      "content": "t:go_further"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:go_further_description"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:payment_methods",
+      "category": "t:footer",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

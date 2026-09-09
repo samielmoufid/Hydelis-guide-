@@ -1,0 +1,19 @@
+{% comment %}
+  Velluce — Bloc thème « Velluce 3D mini ».
+  Permet de placer (et déplacer dans l'éditeur) la mini carte 3D
+  n'importe où dans la colonne d'infos produit. Le rendu réel vit dans
+  snippets/velluce-3d-mini.liquid.
+{% endcomment %}
+
+<div {{ block.shopify_attributes }}>
+  {% render 'velluce-3d-mini', product: closest.product %}
+</div>
+
+{% schema %}
+{
+  "name": "Velluce 3D mini",
+  "tag": null,
+  "settings": [],
+  "presets": [{ "name": "Velluce 3D mini", "category": "Velluce" }]
+}
+{% endschema %}

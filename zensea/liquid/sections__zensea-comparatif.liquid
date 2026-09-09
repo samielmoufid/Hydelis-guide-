@@ -1,0 +1,238 @@
+{% comment %}
+  Velluce — Le vrai comparatif
+  Tableau de comparaison premium (crème + doré), colonne Velluce mise en
+  valeur, lignes éditables par blocs, optimisé mobile.
+{% endcomment %}
+
+<section class="vcmp" id="vcmp-{{ section.id }}">
+  <div class="vcmp-inner">
+    <p class="vcmp-kicker">{{ section.settings.kicker }}</p>
+    <h2 class="vcmp-title">{{ section.settings.titre }}</h2>
+    <p class="vcmp-sub">{{ section.settings.sous_titre }}</p>
+    <div class="vcmp-brand">
+      <span class="vcmp-brand-name">{{ section.settings.marque }}</span>
+      <span class="vcmp-brand-city">{{ section.settings.marque_sous }}</span>
+    </div>
+
+    <div class="vcmp-table" role="table" aria-label="{{ section.settings.titre | escape }}">
+      <div class="vcmp-row vcmp-head" role="row">
+        <div class="vcmp-crit" role="columnheader">{{ section.settings.col_criteres }}</div>
+        <div class="vcmp-us" role="columnheader">{{ section.settings.col_nous }}</div>
+        <div class="vcmp-them" role="columnheader">{{ section.settings.col_ailleurs }}</div>
+      </div>
+      {% for block in section.blocks %}
+        <div class="vcmp-row" role="row" {{ block.shopify_attributes }}>
+          <div class="vcmp-crit" role="cell">{{ block.settings.critere }}</div>
+          <div class="vcmp-us" role="cell">
+            <svg class="vcmp-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-label="Oui"><path d="M4.5 12.5l5 5L19.5 6.5"/></svg>
+          </div>
+          <div class="vcmp-them" role="cell">
+            <svg class="vcmp-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-label="Non"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.note_1 != blank %}<p class="vcmp-note">{{ section.settings.note_1 }}</p>{% endif %}
+    {% if section.settings.note_2 != blank %}<p class="vcmp-note">{{ section.settings.note_2 }}</p>{% endif %}
+  </div>
+</section>
+
+<style>
+  #vcmp-{{ section.id }} { background: {{ section.settings.fond }}; padding: 36px 16px; }
+  @media (max-width: 749px) { #vcmp-{{ section.id }} { padding: 24px 12px; } }
+  #vcmp-{{ section.id }} .vcmp-inner { max-width: 940px; margin: 0 auto; text-align: center; }
+
+  #vcmp-{{ section.id }} .vcmp-kicker { margin: 0 0 8px; color: #99B5A7;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
+  #vcmp-{{ section.id }} .vcmp-title { margin: 0 auto 10px; max-width: 24ch;
+    font-size: clamp(22px, 4.4vw, 34px); line-height: 1.12; font-weight: 750;
+    letter-spacing: -0.01em; color: #151716; }
+  #vcmp-{{ section.id }} .vcmp-sub { margin: 0 auto 14px; max-width: 62ch;
+    font-size: clamp(13px, 3.2vw, 15px); line-height: 1.5; color: #626F68; }
+  #vcmp-{{ section.id }} .vcmp-brand { margin-bottom: 14px; display: flex;
+    flex-direction: column; gap: 2px; }
+  #vcmp-{{ section.id }} .vcmp-brand-name { color: #99B5A7; font-size: 17px;
+    font-weight: 600; letter-spacing: 0.42em; text-indent: 0.42em; }
+  #vcmp-{{ section.id }} .vcmp-brand-city { color: #8AAB9A; font-size: 9.5px;
+    font-weight: 600; letter-spacing: 0.34em; text-indent: 0.34em; text-transform: uppercase; }
+
+  /* ————— Tableau ————— */
+  #vcmp-{{ section.id }} .vcmp-table { border-radius: 22px; overflow: hidden;
+    border: 1px solid #D6E4DD; background: #fffdf9;
+    box-shadow: 0 18px 44px rgba(31, 61, 47, 0.08); text-align: left; }
+  #vcmp-{{ section.id }} .vcmp-row { display: grid;
+    grid-template-columns: 1fr 190px 240px; align-items: stretch; }
+  #vcmp-{{ section.id }} .vcmp-row + .vcmp-row { border-top: 1px solid #E0ECE6; }
+  #vcmp-{{ section.id }} .vcmp-row > div { display: flex; align-items: center;
+    padding: 12px 20px; }
+
+  #vcmp-{{ section.id }} .vcmp-head { background: #D9E7E0; }
+  #vcmp-{{ section.id }} .vcmp-head > div { padding-top: 11px; padding-bottom: 11px;
+    font-size: 12.5px; font-weight: 750; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #305844; }
+
+  #vcmp-{{ section.id }} .vcmp-crit { font-size: 14.5px; color: #162920; font-weight: 500; }
+
+  /* Colonne Zensea : carte claire surélevée, liseré doré */
+  #vcmp-{{ section.id }} .vcmp-us { justify-content: center; background: #fbf8f1;
+    border-left: 1px solid #D2DED8; border-right: 1px solid #D2DED8;
+    position: relative; }
+  #vcmp-{{ section.id }} .vcmp-head .vcmp-us { background: #E8F1EC; color: #648072;
+    box-shadow: inset 0 3px 0 #B4C9BE; }
+  #vcmp-{{ section.id }} .vcmp-them { justify-content: center; }
+  #vcmp-{{ section.id }} .vcmp-head .vcmp-them { justify-content: center; text-align: center; }
+
+  #vcmp-{{ section.id }} .vcmp-check { width: 21px; height: 21px; color: #99B5A7; }
+  #vcmp-{{ section.id }} .vcmp-cross { width: 18px; height: 18px; color: #1D362A; opacity: 0.85; }
+
+  #vcmp-{{ section.id }} .vcmp-note { margin: 12px auto 0; max-width: 70ch;
+    font-size: 13px; line-height: 1.5; color: #749182; }
+  #vcmp-{{ section.id }} .vcmp-note + .vcmp-note { margin-top: 4px; }
+
+  /* ————— Mobile ————— */
+  @media (max-width: 749px) {
+    #vcmp-{{ section.id }} .vcmp-table { border-radius: 18px; }
+    #vcmp-{{ section.id }} .vcmp-row { grid-template-columns: 1fr 74px 84px; }
+    #vcmp-{{ section.id }} .vcmp-row > div { padding: 10px 10px; }
+    #vcmp-{{ section.id }} .vcmp-head > div { font-size: 9.5px; letter-spacing: 0.08em;
+      padding: 12px 8px; justify-content: flex-start; }
+    #vcmp-{{ section.id }} .vcmp-head .vcmp-us,
+    #vcmp-{{ section.id }} .vcmp-head .vcmp-them { justify-content: center; text-align: center; }
+    #vcmp-{{ section.id }} .vcmp-crit { font-size: 12.5px; line-height: 1.3; }
+    #vcmp-{{ section.id }} .vcmp-check { width: 19px; height: 19px; }
+    #vcmp-{{ section.id }} .vcmp-cross { width: 16px; height: 16px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Zensea Comparatif",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "fond",
+      "label": "Couleur de fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Surtitre",
+      "default": "Le vrai comparatif"
+    },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre",
+      "default": "Ce que vous devriez exiger d'une boutique de instruments"
+    },
+    {
+      "type": "textarea",
+      "id": "sous_titre",
+      "label": "Sous-titre",
+      "default": "Six critères vérifiables en deux minutes. Ouvrez n'importe quel autre site de instruments dans un onglet et contrôlez-les un par un avant de commander ici."
+    },
+    {
+      "type": "text",
+      "id": "marque",
+      "label": "Marque",
+      "default": "VELLUCE"
+    },
+    {
+      "type": "text",
+      "id": "marque_sous",
+      "label": "Sous la marque",
+      "default": "Paris"
+    },
+    {
+      "type": "text",
+      "id": "col_criteres",
+      "label": "Colonne 1",
+      "default": "Critères"
+    },
+    {
+      "type": "text",
+      "id": "col_nous",
+      "label": "Colonne 2",
+      "default": "Zensea"
+    },
+    {
+      "type": "text",
+      "id": "col_ailleurs",
+      "label": "Colonne 3",
+      "default": "Ce qu'on trouve ailleurs*"
+    },
+    {
+      "type": "text",
+      "id": "note_1",
+      "label": "Note 1",
+      "default": "*Comparatif établi en analysant une à une 30 boutiques de instruments françaises, en août 2026."
+    },
+    {
+      "type": "text",
+      "id": "note_2",
+      "label": "Note 2",
+      "default": "Aucune n'indiquait de cote de pose."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ligne",
+      "name": "Critère",
+      "settings": [
+        {
+          "type": "text",
+          "id": "critere",
+          "label": "Texte du critère",
+          "default": "Votre critère"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zensea Comparatif",
+      "blocks": [
+        {
+          "type": "ligne",
+          "settings": {
+            "critere": "Le diamètre conseillé pour votre pièce"
+          }
+        },
+        {
+          "type": "ligne",
+          "settings": {
+            "critere": "La hauteur de pose, chiffrée"
+          }
+        },
+        {
+          "type": "ligne",
+          "settings": {
+            "critere": "Le prix expliqué, pas seulement barré"
+          }
+        },
+        {
+          "type": "ligne",
+          "settings": {
+            "critere": "On vous dit aussi quand ne rien acheter"
+          }
+        },
+        {
+          "type": "ligne",
+          "settings": {
+            "critere": "Aucun compte à rebours, aucune fausse urgence"
+          }
+        },
+        {
+          "type": "ligne",
+          "settings": {
+            "critere": "Une réponse humaine, en français, avant l'achat"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,346 @@
+{%- comment -%}
+  Zensea — visuel codé (SVG) pour les cartes de collection sans photo.
+  Rendu volumétrique sur fond clair : dégradés radiaux, spéculaire, ombre portée.
+  Paramètres :
+    key  — identifiant d'instrument / matière / usage (souvent le handle de collection)
+    uid  — identifiant unique pour ne pas dupliquer les ids SVG
+    name — libellé, utilisé pour l'accessibilité
+    [class] — classe CSS du conteneur d'accueil (défaut : vgr__illu)
+    [fit]   — preserveAspectRatio (défaut : xMidYMid slice)
+{%- endcomment -%}
+
+{%- liquid
+  assign h = key | downcase
+  assign k = 'handpan'
+
+  # --- accessoires et entretien (les plus spécifiques d'abord)
+  if h contains 'maillet' or h contains 'mailloche' or h contains 'entretien'
+    assign k = 'maillets'
+  elsif h contains 'housse' or h contains 'support' or h contains 'transport' or h contains 'sac'
+    assign k = 'housse'
+  elsif h contains 'accessoire'
+    assign k = 'accessoires'
+
+  # --- familles d'instruments
+  elsif h contains 'tongue' or h contains 'langue'
+    assign k = 'tongue'
+  elsif h contains 'kalimba' or h contains 'pouce'
+    assign k = 'kalimba'
+  elsif h contains 'bol' or h contains 'chantant' or h contains 'tibet'
+    assign k = 'bol'
+  elsif h contains 'ocarina' or h contains 'flute'
+    assign k = 'ocarina'
+
+  # --- guides et pédagogie
+  elsif h contains 'guide' or h contains 'debutant' or h contains 'commencer' or h contains 'apprendre'
+    assign k = 'guide'
+
+  # --- handpans par nombre de notes
+  elsif h contains '12-notes' or h contains '12 notes' or h contains '13-notes'
+    assign k = 'handpan12'
+  elsif h contains '10-notes' or h contains '10 notes' or h contains '11-notes'
+    assign k = 'handpan12'
+  elsif h contains '9-notes' or h contains '9 notes' or h contains '8-notes'
+    assign k = 'handpan'
+
+  # --- handpans (le plus générique, testé en dernier)
+  elsif h contains 'handpan' or h contains '440' or h contains 'hang'
+    assign k = 'handpan'
+  endif
+
+  assign u = uid | default: 'x'
+-%}
+
+<svg class="{{ class | default: 'vgr__illu' }}" viewBox="0 0 400 420" role="img" aria-label="{{ name | default: 'Zensea' | escape }}" preserveAspectRatio="{{ fit | default: 'xMidYMid slice' }}" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg{{ u }}" cx="50%" cy="32%" r="80%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#F7FAF8"/>
+      <stop offset="1" stop-color="#E2ECE7"/>
+    </radialGradient>
+    <radialGradient id="halo{{ u }}" cx="50%" cy="4%" r="100%">
+      <stop offset="0" stop-color="#E8C98A" stop-opacity=".46"/>
+      <stop offset="0.5" stop-color="#CFE0D6" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#CFE0D6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="floor{{ u }}" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#3F5B4C" stop-opacity=".30"/>
+      <stop offset="1" stop-color="#3F5B4C" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="spec{{ u }}" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".78"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- acier nitruré : la coque des handpans et tongue drums -->
+    <radialGradient id="acier{{ u }}" cx="34%" cy="24%" r="86%">
+      <stop offset="0" stop-color="#F2F7F4"/>
+      <stop offset="0.26" stop-color="#C4D6CC"/>
+      <stop offset="0.62" stop-color="#7F9C8C"/>
+      <stop offset="1" stop-color="#3B5A49"/>
+    </radialGradient>
+    <linearGradient id="acierD{{ u }}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4C6C5A"/>
+      <stop offset="1" stop-color="#1F3D2F"/>
+    </linearGradient>
+    <radialGradient id="dome{{ u }}" cx="38%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".92"/>
+      <stop offset="0.45" stop-color="#B9CEC3"/>
+      <stop offset="1" stop-color="#54725F"/>
+    </radialGradient>
+    <radialGradient id="creux{{ u }}" cx="42%" cy="34%" r="80%">
+      <stop offset="0" stop-color="#DCE9E2" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#3F5B4C" stop-opacity=".55"/>
+    </radialGradient>
+
+    <!-- laiton : bols chantants, tiges de kalimba, liserés -->
+    <linearGradient id="laiton{{ u }}" x1="0" y1="0" x2="1" y2="0.55">
+      <stop offset="0" stop-color="#8A6A20"/>
+      <stop offset="0.2" stop-color="#E8C98A"/>
+      <stop offset="0.46" stop-color="#B98A2E"/>
+      <stop offset="0.72" stop-color="#F3E2C0"/>
+      <stop offset="1" stop-color="#9B7929"/>
+    </linearGradient>
+    <linearGradient id="laitonD{{ u }}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#B98A2E"/>
+      <stop offset="1" stop-color="#6E5419"/>
+    </linearGradient>
+
+    <!-- bois : kalimbas, supports, mailloches -->
+    <linearGradient id="bois{{ u }}" x1="0.08" y1="0" x2="0.92" y2="1">
+      <stop offset="0" stop-color="#C9A46A"/>
+      <stop offset="0.42" stop-color="#A97F3E"/>
+      <stop offset="1" stop-color="#6E5423"/>
+    </linearGradient>
+
+    <!-- terre cuite des ocarinas, ramenée dans la gamme Zensea -->
+    <radialGradient id="terre{{ u }}" cx="34%" cy="26%" r="84%">
+      <stop offset="0" stop-color="#E4EEE8"/>
+      <stop offset="0.45" stop-color="#9DB8A9"/>
+      <stop offset="1" stop-color="#46644F"/>
+    </radialGradient>
+
+    <!-- textile : housses, coussins -->
+    <linearGradient id="tissu{{ u }}" x1="0" y1="0" x2="0.25" y2="1">
+      <stop offset="0" stop-color="#4C7A5F"/>
+      <stop offset="0.55" stop-color="#2E5E46"/>
+      <stop offset="1" stop-color="#1F3D2F"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="400" height="420" fill="url(#bg{{ u }})"/>
+
+  {%- case k -%}
+
+  {%- comment -%} ============ HANDPAN 9 NOTES ============ {%- endcomment -%}
+  {%- when 'handpan' -%}
+    <ellipse cx="200" cy="206" rx="156" ry="128" fill="url(#halo{{ u }})"/>
+    <ellipse cx="200" cy="330" rx="136" ry="22" fill="url(#floor{{ u }})"/>
+    <path d="M60 224a140 92 0 0 0 280 0v20a140 92 0 0 1-280 0z" fill="url(#acierD{{ u }})"/>
+    <ellipse cx="200" cy="224" rx="140" ry="92" fill="url(#acier{{ u }})"/>
+    <ellipse cx="200" cy="224" rx="140" ry="92" fill="none" stroke="#ffffff" stroke-opacity=".42" stroke-width="1.4"/>
+    <ellipse cx="200" cy="224" rx="118" ry="74" fill="none" stroke="#1F3D2F" stroke-opacity=".16" stroke-width="1"/>
+    <ellipse cx="289" cy="247" rx="21" ry="12" fill="url(#creux{{ u }})"/>
+    <ellipse cx="237" cy="279" rx="22" ry="13" fill="url(#creux{{ u }})"/>
+    <ellipse cx="163" cy="279" rx="22" ry="13" fill="url(#creux{{ u }})"/>
+    <ellipse cx="111" cy="247" rx="21" ry="12" fill="url(#creux{{ u }})"/>
+    <ellipse cx="111" cy="201" rx="20" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="163" cy="169" rx="21" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="237" cy="169" rx="21" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="289" cy="201" rx="20" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="200" cy="216" rx="36" ry="25" fill="url(#dome{{ u }})"/>
+    <ellipse cx="192" cy="209" rx="16" ry="9" fill="#ffffff" fill-opacity=".42"/>
+    <ellipse cx="146" cy="182" rx="48" ry="21" fill="url(#spec{{ u }})" transform="rotate(-17 146 182)"/>
+
+  {%- comment -%} ============ HANDPAN 12 NOTES ============ {%- endcomment -%}
+  {%- when 'handpan12' -%}
+    <ellipse cx="200" cy="206" rx="156" ry="128" fill="url(#halo{{ u }})"/>
+    <ellipse cx="200" cy="330" rx="136" ry="22" fill="url(#floor{{ u }})"/>
+    <path d="M58 224a142 94 0 0 0 284 0v20a142 94 0 0 1-284 0z" fill="url(#acierD{{ u }})"/>
+    <ellipse cx="200" cy="224" rx="142" ry="94" fill="url(#acier{{ u }})"/>
+    <ellipse cx="200" cy="224" rx="142" ry="94" fill="none" stroke="#ffffff" stroke-opacity=".42" stroke-width="1.4"/>
+    <ellipse cx="200" cy="224" rx="122" ry="78" fill="none" stroke="#1F3D2F" stroke-opacity=".16" stroke-width="1"/>
+    <ellipse cx="297" cy="240" rx="17" ry="10" fill="url(#creux{{ u }})"/>
+    <ellipse cx="271" cy="268" rx="18" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="226" cy="284" rx="19" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="174" cy="284" rx="19" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="129" cy="268" rx="18" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="103" cy="240" rx="17" ry="10" fill="url(#creux{{ u }})"/>
+    <ellipse cx="103" cy="208" rx="16" ry="9" fill="url(#creux{{ u }})"/>
+    <ellipse cx="129" cy="180" rx="17" ry="9" fill="url(#creux{{ u }})"/>
+    <ellipse cx="174" cy="164" rx="18" ry="10" fill="url(#creux{{ u }})"/>
+    <ellipse cx="226" cy="164" rx="18" ry="10" fill="url(#creux{{ u }})"/>
+    <ellipse cx="271" cy="180" rx="17" ry="9" fill="url(#creux{{ u }})"/>
+    <ellipse cx="297" cy="208" rx="16" ry="9" fill="url(#creux{{ u }})"/>
+    <ellipse cx="200" cy="218" rx="33" ry="23" fill="url(#dome{{ u }})"/>
+    <ellipse cx="193" cy="211" rx="15" ry="8" fill="#ffffff" fill-opacity=".42"/>
+    <ellipse cx="146" cy="184" rx="48" ry="21" fill="url(#spec{{ u }})" transform="rotate(-17 146 184)"/>
+
+  {%- comment -%} ============ TONGUE DRUM ============ {%- endcomment -%}
+  {%- when 'tongue' -%}
+    <ellipse cx="200" cy="204" rx="150" ry="122" fill="url(#halo{{ u }})"/>
+    <ellipse cx="200" cy="336" rx="126" ry="21" fill="url(#floor{{ u }})"/>
+    <path d="M74 232a126 84 0 0 0 252 0v32a126 84 0 0 1-252 0z" fill="url(#acierD{{ u }})"/>
+    <ellipse cx="200" cy="232" rx="126" ry="84" fill="url(#acier{{ u }})"/>
+    <ellipse cx="200" cy="232" rx="126" ry="84" fill="none" stroke="#ffffff" stroke-opacity=".4" stroke-width="1.4"/>
+    <g fill="none" stroke="#1F3D2F" stroke-opacity=".55" stroke-width="4.6" stroke-linecap="round">
+      <path d="M200 196v-26"/>
+      <path d="M243 205q16 -16 22 -30"/>
+      <path d="M266 232q22 -6 36 -14"/>
+      <path d="M243 259q16 16 22 30"/>
+      <path d="M200 268v26"/>
+      <path d="M157 259q-16 16 -22 30"/>
+      <path d="M134 232q-22 -6 -36 -14"/>
+      <path d="M157 205q-16 -16 -22 -30"/>
+    </g>
+    <ellipse cx="200" cy="232" rx="34" ry="23" fill="url(#dome{{ u }})"/>
+    <ellipse cx="193" cy="226" rx="14" ry="8" fill="#ffffff" fill-opacity=".4"/>
+    <ellipse cx="152" cy="196" rx="44" ry="19" fill="url(#spec{{ u }})" transform="rotate(-17 152 196)"/>
+
+  {%- comment -%} ============ KALIMBA ============ {%- endcomment -%}
+  {%- when 'kalimba' -%}
+    <ellipse cx="200" cy="198" rx="146" ry="118" fill="url(#halo{{ u }})"/>
+    <ellipse cx="200" cy="344" rx="112" ry="18" fill="url(#floor{{ u }})"/>
+    <path d="M116 330h168V148a26 26 0 0 0-26-26H142a26 26 0 0 0-26 26z" fill="#3E5A4A" opacity=".28"/>
+    <path d="M110 324h168V142a26 26 0 0 0-26-26H136a26 26 0 0 0-26 26z" fill="url(#bois{{ u }})"/>
+    <path d="M110 324h168V142a26 26 0 0 0-26-26H136a26 26 0 0 0-26 26z" fill="none" stroke="#ffffff" stroke-opacity=".3" stroke-width="1.3"/>
+    <ellipse cx="194" cy="262" rx="27" ry="27" fill="#2B4436" opacity=".8"/>
+    <ellipse cx="194" cy="259" rx="27" ry="27" fill="none" stroke="#E8C98A" stroke-opacity=".55" stroke-width="1.6"/>
+    <rect x="128" y="186" width="132" height="9" rx="4.5" fill="url(#laitonD{{ u }})"/>
+    <g stroke="url(#laiton{{ u }})" stroke-width="6.4" stroke-linecap="round">
+      <path d="M194 190v-58"/>
+      <path d="M177 190v-52"/>
+      <path d="M211 190v-52"/>
+      <path d="M160 190v-45"/>
+      <path d="M228 190v-45"/>
+      <path d="M143 190v-38"/>
+      <path d="M245 190v-38"/>
+    </g>
+    <rect x="128" y="200" width="132" height="7" rx="3.5" fill="#2B4436" opacity=".55"/>
+    <ellipse cx="152" cy="238" rx="34" ry="52" fill="url(#spec{{ u }})" transform="rotate(-12 152 238)" opacity=".5"/>
+
+  {%- comment -%} ============ BOL CHANTANT ============ {%- endcomment -%}
+  {%- when 'bol' -%}
+    <ellipse cx="200" cy="196" rx="150" ry="120" fill="url(#halo{{ u }})"/>
+    <ellipse cx="200" cy="330" rx="124" ry="20" fill="url(#floor{{ u }})"/>
+    <path d="M126 300q-14 -12 -14 -22 0 -14 88 -14t88 14q0 10 -14 22z" fill="url(#tissu{{ u }})"/>
+    <path d="M112 278q0 -14 88 -14t88 14" fill="none" stroke="#8FB3A0" stroke-opacity=".45" stroke-width="1.4"/>
+    <path d="M118 196a82 82 0 0 0 164 0z" fill="url(#laiton{{ u }})"/>
+    <path d="M118 196a82 82 0 0 0 164 0z" fill="none" stroke="#6E5419" stroke-opacity=".5" stroke-width="1.4"/>
+    <ellipse cx="200" cy="196" rx="82" ry="26" fill="url(#laitonD{{ u }})"/>
+    <ellipse cx="200" cy="196" rx="70" ry="20" fill="#22332A" opacity=".55"/>
+    <ellipse cx="200" cy="199" rx="70" ry="20" fill="none" stroke="#E8C98A" stroke-opacity=".6" stroke-width="1.5"/>
+    <path d="M150 232q18 26 50 32" fill="none" stroke="#ffffff" stroke-opacity=".4" stroke-width="5" stroke-linecap="round"/>
+    <rect x="300" y="150" width="12" height="120" rx="6" fill="url(#bois{{ u }})" transform="rotate(14 306 210)"/>
+    <ellipse cx="288" cy="150" rx="19" ry="19" fill="url(#bois{{ u }})"/>
+    <ellipse cx="283" cy="144" rx="7" ry="6" fill="#ffffff" fill-opacity=".33"/>
+
+  {%- comment -%} ============ OCARINA ============ {%- endcomment -%}
+  {%- when 'ocarina' -%}
+    <ellipse cx="200" cy="200" rx="146" ry="118" fill="url(#halo{{ u }})"/>
+    <ellipse cx="204" cy="326" rx="112" ry="19" fill="url(#floor{{ u }})"/>
+    <path d="M118 240q-8 -78 62 -94 74 -17 106 32 20 28 -2 56 -24 30 -84 34 -74 5 -82 -28z" fill="url(#terre{{ u }})"/>
+    <path d="M118 240q-8 -78 62 -94 74 -17 106 32 20 28 -2 56 -24 30 -84 34 -74 5 -82 -28z" fill="none" stroke="#ffffff" stroke-opacity=".34" stroke-width="1.4"/>
+    <path d="M286 178q34 -6 44 10 10 16 -12 24 -18 6 -34 -4z" fill="url(#terre{{ u }})"/>
+    <path d="M286 178q34 -6 44 10 10 16 -12 24 -18 6 -34 -4z" fill="none" stroke="#ffffff" stroke-opacity=".3" stroke-width="1.2"/>
+    <path d="M300 190h26" stroke="#22332A" stroke-opacity=".5" stroke-width="3.4" stroke-linecap="round"/>
+    <g fill="#22332A" fill-opacity=".55">
+      <ellipse cx="164" cy="190" rx="9" ry="8"/>
+      <ellipse cx="196" cy="180" rx="9" ry="8"/>
+      <ellipse cx="228" cy="184" rx="9" ry="8"/>
+      <ellipse cx="176" cy="226" rx="8" ry="7"/>
+      <ellipse cx="210" cy="220" rx="8" ry="7"/>
+      <ellipse cx="242" cy="226" rx="7" ry="6"/>
+    </g>
+    <ellipse cx="168" cy="158" rx="46" ry="20" fill="url(#spec{{ u }})" transform="rotate(-16 168 158)"/>
+
+  {%- comment -%} ============ HOUSSES ET SUPPORTS ============ {%- endcomment -%}
+  {%- when 'housse' -%}
+    <ellipse cx="200" cy="196" rx="150" ry="120" fill="url(#halo{{ u }})"/>
+    <ellipse cx="196" cy="344" rx="126" ry="19" fill="url(#floor{{ u }})"/>
+    <path d="M96 336q-16 -96 8 -150 22 -50 96 -50t96 50q24 54 8 150z" fill="url(#tissu{{ u }})"/>
+    <path d="M96 336q-16 -96 8 -150 22 -50 96 -50t96 50q24 54 8 150z" fill="none" stroke="#8FB3A0" stroke-opacity=".4" stroke-width="1.5"/>
+    <path d="M104 250h192" stroke="#8FB3A0" stroke-opacity=".38" stroke-width="2.6"/>
+    <path d="M162 136q0 -30 38 -30t38 30" fill="none" stroke="url(#laiton{{ u }})" stroke-width="8" stroke-linecap="round"/>
+    <rect x="140" y="272" width="120" height="34" rx="17" fill="#1B3125" opacity=".55"/>
+    <rect x="140" y="272" width="120" height="34" rx="17" fill="none" stroke="#E8C98A" stroke-opacity=".45" stroke-width="1.4"/>
+    <path d="M152 289h96" stroke="#E8C98A" stroke-opacity=".5" stroke-width="2.4" stroke-linecap="round"/>
+    <ellipse cx="146" cy="196" rx="40" ry="66" fill="url(#spec{{ u }})" transform="rotate(-10 146 196)" opacity=".38"/>
+
+  {%- comment -%} ============ MAILLOCHES ET ENTRETIEN ============ {%- endcomment -%}
+  {%- when 'maillets' -%}
+    <ellipse cx="200" cy="196" rx="150" ry="120" fill="url(#halo{{ u }})"/>
+    <ellipse cx="200" cy="332" rx="128" ry="20" fill="url(#floor{{ u }})"/>
+    <g transform="rotate(-20 200 220)">
+      <rect x="194" y="150" width="13" height="150" rx="6.5" fill="url(#bois{{ u }})"/>
+      <ellipse cx="200" cy="148" rx="27" ry="27" fill="url(#tissu{{ u }})"/>
+      <ellipse cx="192" cy="140" rx="10" ry="8" fill="#ffffff" fill-opacity=".26"/>
+    </g>
+    <g transform="rotate(20 200 220)">
+      <rect x="194" y="150" width="13" height="150" rx="6.5" fill="url(#bois{{ u }})"/>
+      <ellipse cx="200" cy="148" rx="27" ry="27" fill="url(#laiton{{ u }})"/>
+      <ellipse cx="192" cy="140" rx="10" ry="8" fill="#ffffff" fill-opacity=".33"/>
+    </g>
+    <path d="M96 300q46 -22 104 -22t104 22q-8 22 -104 22T96 300z" fill="#2E5E46" opacity=".22"/>
+    <path d="M96 300q46 -22 104 -22t104 22" fill="none" stroke="#2E5E46" stroke-opacity=".45" stroke-width="2"/>
+
+  {%- comment -%} ============ ACCESSOIRES ============ {%- endcomment -%}
+  {%- when 'accessoires' -%}
+    <ellipse cx="200" cy="192" rx="150" ry="120" fill="url(#halo{{ u }})"/>
+    <ellipse cx="200" cy="336" rx="132" ry="20" fill="url(#floor{{ u }})"/>
+    <path d="M62 320q-10 -66 6 -104 16 -36 66 -36t66 36q16 38 6 104z" fill="url(#tissu{{ u }})"/>
+    <path d="M108 180q0 -22 26 -22t26 22" fill="none" stroke="url(#laiton{{ u }})" stroke-width="7" stroke-linecap="round"/>
+    <rect x="96" y="252" width="76" height="24" rx="12" fill="#1B3125" opacity=".5"/>
+    <g transform="rotate(16 288 240)">
+      <rect x="282" y="180" width="11" height="118" rx="5.5" fill="url(#bois{{ u }})"/>
+      <ellipse cx="288" cy="178" rx="22" ry="22" fill="url(#laiton{{ u }})"/>
+      <ellipse cx="281" cy="171" rx="8" ry="7" fill="#ffffff" fill-opacity=".33"/>
+    </g>
+    <g transform="rotate(-8 246 250)">
+      <rect x="241" y="196" width="10" height="106" rx="5" fill="url(#bois{{ u }})"/>
+      <ellipse cx="246" cy="194" rx="19" ry="19" fill="url(#tissu{{ u }})"/>
+    </g>
+    <path d="M188 320h150" stroke="#2E5E46" stroke-opacity=".3" stroke-width="2.4" stroke-linecap="round"/>
+
+  {%- comment -%} ============ GUIDE / PAR OÙ COMMENCER ============ {%- endcomment -%}
+  {%- when 'guide' -%}
+    <ellipse cx="200" cy="196" rx="152" ry="122" fill="url(#halo{{ u }})"/>
+    <ellipse cx="200" cy="338" rx="130" ry="20" fill="url(#floor{{ u }})"/>
+    <path d="M76 296V148q54 -22 120 -6v154q-66 -16 -120 0z" fill="#ffffff"/>
+    <path d="M76 296V148q54 -22 120 -6v154q-66 -16 -120 0z" fill="none" stroke="#A8BCAE" stroke-width="1.6"/>
+    <path d="M324 296V148q-54 -22 -120 -6v154q66 -16 120 0z" fill="#F4F8F5"/>
+    <path d="M324 296V148q-54 -22 -120 -6v154q66 -16 120 0z" fill="none" stroke="#A8BCAE" stroke-width="1.6"/>
+    <path d="M200 142v154" stroke="#2E5E46" stroke-opacity=".45" stroke-width="2.4"/>
+    <g stroke="#5A6B60" stroke-opacity=".5" stroke-width="3.4" stroke-linecap="round">
+      <path d="M96 180h78"/><path d="M96 200h64"/><path d="M96 220h72"/>
+      <path d="M226 180h78"/><path d="M226 200h58"/>
+    </g>
+    <ellipse cx="266" cy="244" rx="42" ry="26" fill="url(#acier{{ u }})"/>
+    <ellipse cx="266" cy="244" rx="42" ry="26" fill="none" stroke="#ffffff" stroke-opacity=".45" stroke-width="1.2"/>
+    <ellipse cx="266" cy="241" rx="11" ry="7" fill="url(#dome{{ u }})"/>
+    <g fill="#E8C98A">
+      <ellipse cx="132" cy="126" rx="9" ry="7" transform="rotate(-18 132 126)"/>
+      <path d="M139 124v-30l16 -5v30z" opacity=".9"/>
+      <ellipse cx="152" cy="119" rx="9" ry="7" transform="rotate(-18 152 119)"/>
+    </g>
+
+  {%- comment -%} ============ DÉFAUT : HANDPAN ============ {%- endcomment -%}
+  {%- else -%}
+    <ellipse cx="200" cy="206" rx="156" ry="128" fill="url(#halo{{ u }})"/>
+    <ellipse cx="200" cy="330" rx="136" ry="22" fill="url(#floor{{ u }})"/>
+    <path d="M60 224a140 92 0 0 0 280 0v20a140 92 0 0 1-280 0z" fill="url(#acierD{{ u }})"/>
+    <ellipse cx="200" cy="224" rx="140" ry="92" fill="url(#acier{{ u }})"/>
+    <ellipse cx="200" cy="224" rx="140" ry="92" fill="none" stroke="#ffffff" stroke-opacity=".42" stroke-width="1.4"/>
+    <ellipse cx="289" cy="247" rx="21" ry="12" fill="url(#creux{{ u }})"/>
+    <ellipse cx="237" cy="279" rx="22" ry="13" fill="url(#creux{{ u }})"/>
+    <ellipse cx="163" cy="279" rx="22" ry="13" fill="url(#creux{{ u }})"/>
+    <ellipse cx="111" cy="247" rx="21" ry="12" fill="url(#creux{{ u }})"/>
+    <ellipse cx="111" cy="201" rx="20" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="163" cy="169" rx="21" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="237" cy="169" rx="21" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="289" cy="201" rx="20" ry="11" fill="url(#creux{{ u }})"/>
+    <ellipse cx="200" cy="216" rx="36" ry="25" fill="url(#dome{{ u }})"/>
+    <ellipse cx="192" cy="209" rx="16" ry="9" fill="#ffffff" fill-opacity=".42"/>
+    <ellipse cx="146" cy="182" rx="48" ry="21" fill="url(#spec{{ u }})" transform="rotate(-17 146 182)"/>
+  {%- endcase -%}
+</svg>

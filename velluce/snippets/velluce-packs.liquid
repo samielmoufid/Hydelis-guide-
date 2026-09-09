@@ -1,0 +1,343 @@
+{% comment %}
+  Velluce — Packs Solo / Duo / Famille (v2, widget de fiche produit).
+  Rendu dans le bloc _product-form, juste au-dessus du bouton
+  « Ajouter au panier ». Grandes cartes empilées sélectionnables avec
+  images du produit (×1 / ×2 / ×3), choix de la variante pour chaque
+  unité, prix recalculés en direct (−10 % dès 2, −15 % dès 3 — remises
+  réellement appliquées au panier par les réductions automatiques).
+{% endcomment %}
+
+{%- if request.page_type == 'product' and product != blank and request.path contains product.handle -%}
+{%- assign vpk_variant = product.selected_or_first_available_variant -%}
+{%- assign vpk_solo = vpk_variant.price -%}
+{%- assign vpk_cmp2 = vpk_variant.price | times: 2 -%}
+{%- assign vpk_cmp3 = vpk_variant.price | times: 3 -%}
+{%- assign vpk_duo = vpk_cmp2 | times: 90 | divided_by: 100 -%}
+{%- assign vpk_fam = vpk_cmp3 | times: 85 | divided_by: 100 -%}
+
+{%- assign vpk_hay = product.type | append: ' ' | append: product.title | downcase -%}
+{%- if vpk_hay contains 'ampoule' -%}
+  {%- assign vpk_titre = "Ne cherchez pas la bonne ampoule pendant des heures" -%}
+  {%- assign vpk_d1 = "Pour une lampe seule." -%}
+  {%- assign vpk_d2 = "Pour une suspension double." -%}
+  {%- assign vpk_d3 = "Pour équiper tout un lustre." -%}
+{%- elsif vpk_hay contains 'applique' -%}
+  {%- assign vpk_titre = "Les appliques vont par paires. Ce sont elles qui ont raison." -%}
+  {%- assign vpk_d1 = "Un point lumineux discret." -%}
+  {%- assign vpk_d2 = "La paire parfaite, de chaque côté." -%}
+  {%- assign vpk_d3 = "Pour rythmer un couloir entier." -%}
+{%- elsif vpk_hay contains 'suspension' -%}
+  {%- assign vpk_titre = "Une, c'est joli. Deux ou trois, c'est signé." -%}
+  {%- assign vpk_d1 = "Pour sublimer un espace." -%}
+  {%- assign vpk_d2 = "L'harmonie au-dessus d'une table." -%}
+  {%- assign vpk_d3 = "L'alignement parfait sur un îlot." -%}
+{%- elsif vpk_hay contains 'plafonnier' -%}
+  {%- assign vpk_titre = "Une pièce éclairée donne envie d'assortir les autres" -%}
+  {%- assign vpk_d1 = "Pour commencer par une pièce." -%}
+  {%- assign vpk_d2 = "Deux pièces, un seul style." -%}
+  {%- assign vpk_d3 = "La maison entière, accordée." -%}
+{%- elsif vpk_hay contains 'lustre' -%}
+  {%- assign vpk_titre = "La pièce maîtresse mérite d'être déclinée" -%}
+  {%- assign vpk_d1 = "Pour la pièce qui compte." -%}
+  {%- assign vpk_d2 = "Salon et entrée, même prestige." -%}
+  {%- assign vpk_d3 = "Pour les grandes maisons." -%}
+{%- else -%}
+  {%- assign vpk_titre = "Des ensembles pensés pour chaque intérieur" -%}
+  {%- assign vpk_d1 = "Pour sublimer un espace." -%}
+  {%- assign vpk_d2 = "Pour créer une harmonie." -%}
+  {%- assign vpk_d3 = "Une composition complète." -%}
+{%- endif -%}
+
+<div class="vpk" id="vpk-{{ product.id }}" data-currency="{{ cart.currency.iso_code }}" data-default="{{ vpk_variant.id }}">
+  <div class="vpk-head">
+    <p class="vpk-kicker">Offres groupées</p>
+    <p class="vpk-title">{{ vpk_titre }}</p>
+  </div>
+
+  <div class="vpk-cards" role="radiogroup" aria-label="Choisissez votre pack">
+
+    <div class="vpk-card" role="radio" tabindex="0" aria-checked="false" data-vpk-qty="1" data-vpk-name="Solo">
+      <span class="vpk-radio" aria-hidden="true"></span>
+      <span class="vpk-imgs" aria-hidden="true">
+        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="" loading="lazy">
+      </span>
+      <span class="vpk-info">
+        <span class="vpk-name">Solo <em>· 1 luminaire</em></span>
+        <span class="vpk-desc">{{ vpk_d1 }}</span>
+      </span>
+      <span class="vpk-pricebox">
+        <span class="vpk-price" data-vpk-price>{{ vpk_solo | money }}</span>
+      </span>
+      {%- if product.variants.size > 1 -%}
+      <span class="vpk-units" data-vpk-units>
+        {%- for i in (1..1) -%}
+        <label class="vpk-unit"><span>Luminaire {{ i }}</span>
+          <select data-vpk-unit>
+            {%- for v in product.variants -%}
+            <option value="{{ v.id }}"{% if v.id == vpk_variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}{% unless v.available %} — épuisé{% endunless %}</option>
+            {%- endfor -%}
+          </select>
+        </label>
+        {%- endfor -%}
+      </span>
+      {%- endif -%}
+    </div>
+
+    <div class="vpk-card vpk-pop" role="radio" tabindex="0" aria-checked="true" data-vpk-qty="2" data-vpk-name="Duo">
+      <span class="vpk-pop-badge">Le plus populaire</span>
+      <span class="vpk-radio" aria-hidden="true"></span>
+      <span class="vpk-imgs" aria-hidden="true">
+        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="" loading="lazy">
+        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="" loading="lazy">
+      </span>
+      <span class="vpk-info">
+        <span class="vpk-name">Duo <em>· 2 luminaires</em></span>
+        <span class="vpk-desc">{{ vpk_d2 }}</span>
+      </span>
+      <span class="vpk-pricebox">
+        <span class="vpk-price" data-vpk-price>{{ vpk_duo | money }}</span>
+        <span class="vpk-compare" data-vpk-compare>{{ vpk_cmp2 | money }}</span>
+        <span class="vpk-savepill">−10&nbsp;%</span>
+      </span>
+      {%- if product.variants.size > 1 -%}
+      <span class="vpk-units" data-vpk-units>
+        {%- for i in (1..2) -%}
+        <label class="vpk-unit"><span>Luminaire {{ i }}</span>
+          <select data-vpk-unit>
+            {%- for v in product.variants -%}
+            <option value="{{ v.id }}"{% if v.id == vpk_variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}{% unless v.available %} — épuisé{% endunless %}</option>
+            {%- endfor -%}
+          </select>
+        </label>
+        {%- endfor -%}
+      </span>
+      {%- endif -%}
+    </div>
+
+    <div class="vpk-card" role="radio" tabindex="0" aria-checked="false" data-vpk-qty="3" data-vpk-name="Famille">
+      <span class="vpk-radio" aria-hidden="true"></span>
+      <span class="vpk-imgs" aria-hidden="true">
+        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="" loading="lazy">
+        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="" loading="lazy">
+        <img src="{{ product.featured_image | image_url: width: 120 }}" alt="" loading="lazy">
+      </span>
+      <span class="vpk-info">
+        <span class="vpk-name">Famille <em>· 3 luminaires</em></span>
+        <span class="vpk-desc">{{ vpk_d3 }}</span>
+      </span>
+      <span class="vpk-pricebox">
+        <span class="vpk-price" data-vpk-price>{{ vpk_fam | money }}</span>
+        <span class="vpk-compare" data-vpk-compare>{{ vpk_cmp3 | money }}</span>
+        <span class="vpk-savepill">−15&nbsp;%</span>
+      </span>
+      {%- if product.variants.size > 1 -%}
+      <span class="vpk-units" data-vpk-units>
+        {%- for i in (1..3) -%}
+        <label class="vpk-unit"><span>Luminaire {{ i }}</span>
+          <select data-vpk-unit>
+            {%- for v in product.variants -%}
+            <option value="{{ v.id }}"{% if v.id == vpk_variant.id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }}{% unless v.available %} — épuisé{% endunless %}</option>
+            {%- endfor -%}
+          </select>
+        </label>
+        {%- endfor -%}
+      </span>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <button type="button" class="vpk-cta" data-vpk-add>
+    <span data-vpk-cta-label>Ajouter le pack Duo</span><span class="vpk-arrow" aria-hidden="true">→</span>
+  </button>
+  <p class="vpk-foot">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/></svg>
+    Livraison offerte · Remise appliquée automatiquement au panier
+  </p>
+
+  <script type="application/json" data-vpk-data>
+    [{%- for v in product.variants -%}{"id":{{ v.id }},"p":{{ v.price }},"a":{% if v.available %}true{% else %}false{% endif %}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+  </script>
+</div>
+
+<style>
+  #vpk-{{ product.id }} { margin: 6px 0 4px; text-align: left; }
+  #vpk-{{ product.id }} .vpk-head { text-align: center; margin-bottom: 14px; }
+  #vpk-{{ product.id }} .vpk-kicker { margin: 0 0 6px; color: #c2ae8c; font-size: 11px;
+    font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; }
+  #vpk-{{ product.id }} .vpk-title { margin: 0 auto; max-width: 30ch; font-size: 19px;
+    line-height: 1.25; font-weight: 700; color: #161616; letter-spacing: -0.01em; }
+
+  #vpk-{{ product.id }} .vpk-cards { display: flex; flex-direction: column; gap: 12px; }
+  #vpk-{{ product.id }} .vpk-card { position: relative; display: grid;
+    grid-template-columns: auto auto 1fr auto; align-items: center; gap: 12px;
+    padding: 15px 16px; border-radius: 16px; background: #ffffff;
+    border: 1.5px solid #e7e0d3; cursor: pointer; user-select: none;
+    transition: border-color 0.18s, box-shadow 0.18s, background 0.18s; }
+  #vpk-{{ product.id }} .vpk-card:hover { border-color: #d8cbb4; }
+  #vpk-{{ product.id }} .vpk-card[aria-checked="true"] { border-color: #c2ae8c;
+    background: #ffffff; box-shadow: 0 10px 28px rgba(140, 115, 70, 0.14); }
+  #vpk-{{ product.id }} .vpk-card:focus-visible { outline: 2px solid #c2ae8c; outline-offset: 2px; }
+
+  #vpk-{{ product.id }} .vpk-pop-badge { position: absolute; top: -10px; right: 14px;
+    background: #cfc0ae; color: #fff; font-size: 9px; font-weight: 750;
+    letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 11px;
+    border-radius: 999px; white-space: nowrap; }
+
+  #vpk-{{ product.id }} .vpk-radio { width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid #d8cbb4; background: #fff; flex: none; position: relative;
+    transition: border-color 0.18s, background 0.18s; }
+  #vpk-{{ product.id }} .vpk-card[aria-checked="true"] .vpk-radio { border-color: #c2ae8c;
+    background: #c2ae8c; }
+  #vpk-{{ product.id }} .vpk-card[aria-checked="true"] .vpk-radio::after { content: "";
+    position: absolute; left: 5px; top: 2px; width: 5px; height: 9px;
+    border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(42deg); }
+
+  #vpk-{{ product.id }} .vpk-imgs { display: flex; align-items: center; }
+  #vpk-{{ product.id }} .vpk-imgs img { width: 52px; height: 52px; object-fit: cover;
+    border-radius: 12px; border: 2px solid #fff; background: #f3efe6;
+    box-shadow: 0 3px 10px rgba(60, 50, 30, 0.16); }
+  #vpk-{{ product.id }} .vpk-imgs img + img { margin-left: -20px; }
+
+  #vpk-{{ product.id }} .vpk-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  #vpk-{{ product.id }} .vpk-name { font-size: 15.5px; font-weight: 700; color: #161616; }
+  #vpk-{{ product.id }} .vpk-name em { font-style: normal; font-weight: 600; font-size: 11px;
+    color: #b3a184; letter-spacing: 0.08em; text-transform: uppercase; }
+  #vpk-{{ product.id }} .vpk-desc { font-size: 12.5px; line-height: 1.4; color: #6d6a64; }
+
+  #vpk-{{ product.id }} .vpk-pricebox { display: flex; flex-direction: column;
+    align-items: flex-end; gap: 2px; }
+  #vpk-{{ product.id }} .vpk-price { font-size: 17px; font-weight: 750; color: #161616;
+    white-space: nowrap; }
+  #vpk-{{ product.id }} .vpk-compare { font-size: 12px; color: #a39d92;
+    text-decoration: line-through; white-space: nowrap; }
+  #vpk-{{ product.id }} .vpk-savepill { background: #f2ecdf; color: #7d6c4d;
+    font-size: 10px; font-weight: 750; letter-spacing: 0.06em; padding: 2px 8px;
+    border-radius: 6px; white-space: nowrap; }
+
+  #vpk-{{ product.id }} .vpk-units { grid-column: 1 / -1; display: none;
+    flex-direction: column; gap: 8px; padding-top: 4px;
+    border-top: 1px dashed #e7e0d3; margin-top: 2px; }
+  #vpk-{{ product.id }} .vpk-card[aria-checked="true"] .vpk-units { display: flex; }
+  #vpk-{{ product.id }} .vpk-unit { display: grid; grid-template-columns: 92px 1fr;
+    align-items: center; gap: 10px; font-size: 12px; color: #6d6a64; font-weight: 600; }
+  #vpk-{{ product.id }} .vpk-unit select { width: 100%; padding: 9px 12px;
+    border-radius: 10px; border: 1px solid #e7e0d3; background: #fff;
+    font-size: 13px; color: #161616; }
+
+  #vpk-{{ product.id }} .vpk-cta { display: inline-flex; align-items: center;
+    justify-content: center; gap: 10px; width: 100%; margin-top: 14px; cursor: pointer;
+    background: #cfc0ae; color: #2c2c2c; border: 0; border-radius: 20px;
+    font-size: 13.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 16px 12px; transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s; }
+  #vpk-{{ product.id }} .vpk-cta:hover { transform: translateY(-2px); background: #c6b5a0;
+    box-shadow: 0 8px 22px rgba(160, 140, 105, 0.38); }
+  #vpk-{{ product.id }} .vpk-cta[disabled] { opacity: 0.6; cursor: wait; }
+  #vpk-{{ product.id }} .vpk-foot { display: flex; align-items: center; justify-content: center;
+    gap: 7px; margin: 10px 0 0; font-size: 11.5px; font-weight: 600; color: #8b857a; }
+  #vpk-{{ product.id }} .vpk-foot svg { width: 14px; height: 14px; color: #c2ae8c; flex: none; }
+
+  @media (max-width: 479px) {
+    #vpk-{{ product.id }} .vpk-card { gap: 9px; padding: 13px 12px; }
+    #vpk-{{ product.id }} .vpk-imgs img { width: 44px; height: 44px; border-radius: 10px; }
+    #vpk-{{ product.id }} .vpk-imgs img + img { margin-left: -22px; }
+    #vpk-{{ product.id }} .vpk-name { font-size: 14px; }
+    #vpk-{{ product.id }} .vpk-desc { font-size: 11.5px; }
+    #vpk-{{ product.id }} .vpk-price { font-size: 15.5px; }
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('vpk-{{ product.id }}')
+    if (!root || root.dataset.vpkInit) return
+    root.dataset.vpkInit = '1'
+    var variants = JSON.parse(root.querySelector('[data-vpk-data]').textContent)
+    var byId = {}
+    variants.forEach(function (v) { byId[v.id] = v })
+    var defId = parseInt(root.getAttribute('data-default'), 10)
+    var currency = root.getAttribute('data-currency') || 'EUR'
+    var discounts = { 1: 0, 2: 0.10, 3: 0.15 }
+    var fmt = function (cents) {
+      return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: currency }).format(cents / 100)
+    }
+    var urlV = parseInt(new URLSearchParams(window.location.search).get('variant') || '', 10)
+    if (urlV && byId[urlV]) {
+      defId = urlV
+      root.querySelectorAll('select[data-vpk-unit]').forEach(function (s) { s.value = String(urlV) })
+    }
+    function cardPrice(card) {
+      var qty = parseInt(card.getAttribute('data-vpk-qty'), 10)
+      var sels = card.querySelectorAll('select[data-vpk-unit]')
+      var total = 0
+      if (sels.length) {
+        sels.forEach(function (s) { total += byId[parseInt(s.value, 10)].p })
+      } else {
+        total = byId[defId].p * qty
+      }
+      var final = Math.round(total * (1 - discounts[qty]))
+      card.querySelector('[data-vpk-price]').textContent = fmt(final)
+      var cmp = card.querySelector('[data-vpk-compare]')
+      if (cmp) cmp.textContent = fmt(total)
+      return final
+    }
+    function refresh() {
+      var label = root.querySelector('[data-vpk-cta-label]')
+      var active = root.querySelector('.vpk-card[aria-checked="true"]')
+      root.querySelectorAll('.vpk-card').forEach(cardPrice)
+      if (active) {
+        label.textContent = 'Ajouter le pack ' + active.getAttribute('data-vpk-name') + ' · ' + fmt(cardPrice(active))
+      }
+    }
+    root.querySelectorAll('.vpk-card').forEach(function (card) {
+      function select() {
+        root.querySelectorAll('.vpk-card').forEach(function (c) {
+          c.setAttribute('aria-checked', c === card ? 'true' : 'false')
+        })
+        refresh()
+      }
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('select')) return
+        select()
+      })
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select() }
+      })
+      card.querySelectorAll('select[data-vpk-unit]').forEach(function (s) {
+        s.addEventListener('change', refresh)
+      })
+    })
+    var btn = root.querySelector('[data-vpk-add]')
+    btn.addEventListener('click', function () {
+      var active = root.querySelector('.vpk-card[aria-checked="true"]')
+      if (!active) return
+      var qty = parseInt(active.getAttribute('data-vpk-qty'), 10)
+      var sels = active.querySelectorAll('select[data-vpk-unit]')
+      var counts = {}
+      if (sels.length) {
+        sels.forEach(function (s) { counts[s.value] = (counts[s.value] || 0) + 1 })
+      } else {
+        counts[defId] = qty
+      }
+      var items = Object.keys(counts).map(function (id) {
+        return { id: parseInt(id, 10), quantity: counts[id] }
+      })
+      var label = root.querySelector('[data-vpk-cta-label]')
+      var old = label.textContent
+      btn.disabled = true
+      label.textContent = 'Ajout en cours…'
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: items })
+      }).then(function (r) {
+        if (!r.ok) throw new Error()
+        window.location.href = '/cart'
+      }).catch(function () {
+        btn.disabled = false
+        label.textContent = old
+      })
+    })
+    refresh()
+  })()
+</script>
+{%- endif -%}

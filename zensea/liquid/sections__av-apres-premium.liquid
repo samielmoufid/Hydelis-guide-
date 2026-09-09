@@ -1,0 +1,585 @@
+{% comment %} Avant Apres Premium - Typo complete corrigee {% endcomment %}
+
+{%- liquid
+  assign title = section.settings.title | default: 'Avant & Apres'
+  assign subtitle = section.settings.subtitle | default: "De l'ombre a la lumiere ! Un investissement durable"
+
+  assign img_before_desktop = section.settings.image_before_desktop
+  assign img_after_desktop = section.settings.image_after_desktop
+  assign img_before_mobile = section.settings.image_before_mobile
+  assign img_after_mobile = section.settings.image_after_mobile
+
+  assign height_desktop = section.settings.height_desktop
+  assign height_mobile = section.settings.height_mobile
+  assign border_radius = section.settings.border_radius
+  assign bg_color = section.settings.bg_color
+  assign max_width = section.settings.max_width
+  assign side_padding_desktop = section.settings.side_padding_desktop
+
+  assign title_size_desktop = section.settings.title_size_desktop
+  assign title_size_mobile = section.settings.title_size_mobile
+  assign subtitle_size_desktop = section.settings.subtitle_size_desktop
+  assign subtitle_size_mobile = section.settings.subtitle_size_mobile
+
+  assign title_font_family = 'Georgia, "Times New Roman", serif'
+
+  case section.settings.title_font
+    when 'theme'
+      assign title_font_family = 'var(--font-heading-family)'
+    when 'georgia'
+      assign title_font_family = 'Georgia, "Times New Roman", serif'
+    when 'times'
+      assign title_font_family = '"Times New Roman", Times, serif'
+    when 'serif'
+      assign title_font_family = 'serif'
+    when 'sans'
+      assign title_font_family = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif'
+  endcase
+-%}
+
+<section id="before-after-{{ section.id }}" class="bap-section">
+  <div class="bap-inner">
+
+    <div class="bap-header">
+      {% if title != blank %}
+        <h2 class="bap-title">{{ title }}</h2>
+      {% endif %}
+
+      {% if subtitle != blank %}
+        <p class="bap-subtitle">{{ subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="bap-wrapper" data-bap-id="{{ section.id }}">
+
+      <div class="bap-image bap-image-after">
+        {% if img_after_desktop != blank %}
+          <picture>
+            {% if img_after_mobile != blank %}
+              <source media="(max-width: 768px)" srcset="{{ img_after_mobile | image_url: width: 1000 }}">
+            {% endif %}
+            <img
+              src="{{ img_after_desktop | image_url: width: 2200 }}"
+              alt="Apres"
+              loading="lazy"
+              draggable="false"
+            >
+          </picture>
+        {% else %}
+          <div class="bap-placeholder">Image Apres</div>
+        {% endif %}
+      </div>
+
+      <div class="bap-before-wrap" data-bap-before="{{ section.id }}">
+        <div class="bap-image bap-image-before">
+          {% if img_before_desktop != blank %}
+            <picture>
+              {% if img_before_mobile != blank %}
+                <source media="(max-width: 768px)" srcset="{{ img_before_mobile | image_url: width: 1000 }}">
+              {% endif %}
+              <img
+                src="{{ img_before_desktop | image_url: width: 2200 }}"
+                alt="Avant"
+                loading="lazy"
+                draggable="false"
+              >
+            </picture>
+          {% else %}
+            <div class="bap-placeholder">Image Avant</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="bap-slider-line" data-bap-line="{{ section.id }}"></div>
+
+      <button class="bap-handle" type="button" data-bap-handle="{{ section.id }}" aria-label="Comparer avant apres">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  #before-after-{{ section.id }} {
+    background: {{ bg_color }} !important;
+    padding-top: 48px !important;
+    padding-bottom: 64px !important;
+    padding-left: {{ side_padding_desktop }}px !important;
+    padding-right: {{ side_padding_desktop }}px !important;
+    overflow: hidden !important;
+  }
+
+  #before-after-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  #before-after-{{ section.id }} .bap-inner {
+    width: 100% !important;
+    max-width: {{ max_width }}px !important;
+    margin: 0 auto !important;
+  }
+
+  #before-after-{{ section.id }} .bap-header {
+    text-align: center !important;
+    margin-bottom: 28px !important;
+  }
+
+  #before-after-{{ section.id }} .bap-title {
+    margin: 0 0 18px !important;
+    color: #050505 !important;
+    font-family: {{ title_font_family }} !important;
+    font-size: {{ title_size_desktop }}px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    letter-spacing: -0.045em !important;
+    text-align: center !important;
+  }
+
+  #before-after-{{ section.id }} .bap-subtitle {
+    margin: 0 !important;
+    color: #050505 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif !important;
+    font-size: {{ subtitle_size_desktop }}px !important;
+    font-weight: 400 !important;
+    line-height: 1.28 !important;
+    letter-spacing: 0.005em !important;
+    text-align: center !important;
+  }
+
+  #before-after-{{ section.id }} .bap-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    height: {{ height_desktop }}px !important;
+    border-radius: {{ border_radius }}px !important;
+    overflow: hidden !important;
+    cursor: ew-resize !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    touch-action: none !important;
+    background: #E3E7E5 !important;
+  }
+
+  #before-after-{{ section.id }} .bap-image,
+  #before-after-{{ section.id }} .bap-image picture,
+  #before-after-{{ section.id }} .bap-image img,
+  #before-after-{{ section.id }} .bap-placeholder {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+
+  #before-after-{{ section.id }} .bap-image {
+    position: absolute !important;
+    inset: 0 !important;
+  }
+
+  #before-after-{{ section.id }} .bap-image img {
+    object-fit: cover !important;
+    pointer-events: none !important;
+  }
+
+  #before-after-{{ section.id }} .bap-image-after {
+    z-index: 1 !important;
+  }
+
+  #before-after-{{ section.id }} .bap-before-wrap {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 50%;
+    overflow: hidden !important;
+    z-index: 2 !important;
+  }
+
+  #before-after-{{ section.id }} .bap-before-wrap .bap-image-before {
+    width: var(--bap-wrapper-width, 100%) !important;
+    max-width: none !important;
+  }
+
+  #before-after-{{ section.id }} .bap-placeholder {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #D6DAD8 !important;
+    color: #707E77 !important;
+    font-size: 15px !important;
+    font-family: Arial, sans-serif !important;
+  }
+
+  #before-after-{{ section.id }} .bap-slider-line {
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 50%;
+    width: 2px !important;
+    background: rgba(255,255,255,0.92) !important;
+    z-index: 5 !important;
+    transform: translateX(-50%) !important;
+    pointer-events: none !important;
+  }
+
+  #before-after-{{ section.id }} .bap-handle {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50%;
+    z-index: 6 !important;
+    width: 38px !important;
+    height: 38px !important;
+    border: none !important;
+    border-radius: 999px !important;
+    background: #fff !important;
+    color: #101211 !important;
+    transform: translate(-50%, -50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    cursor: ew-resize !important;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.14) !important;
+    padding: 0 !important;
+  }
+
+  #before-after-{{ section.id }} .bap-handle span {
+    display: block !important;
+    width: 3px !important;
+    height: 16px !important;
+    border-radius: 999px !important;
+    background: #101211 !important;
+  }
+
+  @media (max-width: 768px) {
+    #before-after-{{ section.id }} {
+      padding: 42px 18px 50px !important;
+    }
+
+    #before-after-{{ section.id }} .bap-header {
+      margin-bottom: 26px !important;
+    }
+
+    #before-after-{{ section.id }} .bap-title {
+      font-family: {{ title_font_family }} !important;
+      font-size: {{ title_size_mobile }}px !important;
+      font-weight: 600 !important;
+      line-height: 1 !important;
+      letter-spacing: -0.045em !important;
+      margin-bottom: 18px !important;
+    }
+
+    #before-after-{{ section.id }} .bap-subtitle {
+      font-size: {{ subtitle_size_mobile }}px !important;
+      line-height: 1.25 !important;
+      max-width: 88vw !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    #before-after-{{ section.id }} .bap-wrapper {
+      width: 100% !important;
+      height: {{ height_mobile }}px !important;
+      border-radius: {{ border_radius }}px !important;
+    }
+
+    #before-after-{{ section.id }} .bap-handle {
+      width: 36px !important;
+      height: 36px !important;
+      gap: 3px !important;
+    }
+
+    #before-after-{{ section.id }} .bap-handle span {
+      width: 3px !important;
+      height: 15px !important;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  function initBeforeAfter(sectionId) {
+    var wrapper = document.querySelector('#before-after-' + sectionId + ' [data-bap-id="' + sectionId + '"]');
+    if (!wrapper) return;
+
+    var beforeWrap = wrapper.querySelector('[data-bap-before="' + sectionId + '"]');
+    var line = wrapper.querySelector('[data-bap-line="' + sectionId + '"]');
+    var handle = wrapper.querySelector('[data-bap-handle="' + sectionId + '"]');
+
+    if (!beforeWrap || !line || !handle) return;
+
+    var currentPercent = 50;
+    var dragging = false;
+
+    function updateImageWidth() {
+      wrapper.style.setProperty('--bap-wrapper-width', wrapper.offsetWidth + 'px');
+    }
+
+    function setPosition(percent) {
+      percent = Math.max(0, Math.min(100, percent));
+      currentPercent = percent;
+      beforeWrap.style.width = percent + '%';
+      line.style.left = percent + '%';
+      handle.style.left = percent + '%';
+      updateImageWidth();
+    }
+
+    function getPercent(clientX) {
+      var rect = wrapper.getBoundingClientRect();
+      return ((clientX - rect.left) / rect.width) * 100;
+    }
+
+    function move(clientX) {
+      setPosition(getPercent(clientX));
+    }
+
+    function stopDrag() {
+      dragging = false;
+    }
+
+    handle.addEventListener('mousedown', function(event) {
+      dragging = true;
+      event.preventDefault();
+    });
+
+    wrapper.addEventListener('mousedown', function(event) {
+      dragging = true;
+      move(event.clientX);
+    });
+
+    document.addEventListener('mousemove', function(event) {
+      if (!dragging) return;
+      move(event.clientX);
+    });
+
+    document.addEventListener('mouseup', stopDrag);
+
+    handle.addEventListener('touchstart', function(event) {
+      dragging = true;
+      event.preventDefault();
+    }, { passive: false });
+
+    wrapper.addEventListener('touchstart', function(event) {
+      if (!event.touches || !event.touches[0]) return;
+      dragging = true;
+      move(event.touches[0].clientX);
+    }, { passive: false });
+
+    document.addEventListener('touchmove', function(event) {
+      if (!dragging || !event.touches || !event.touches[0]) return;
+      move(event.touches[0].clientX);
+    }, { passive: false });
+
+    document.addEventListener('touchend', stopDrag);
+
+    window.addEventListener('resize', function() {
+      setPosition(currentPercent);
+    });
+
+    setPosition(50);
+  }
+
+  function initAllBeforeAfter() {
+    document.querySelectorAll('[data-bap-id]').forEach(function(el) {
+      initBeforeAfter(el.getAttribute('data-bap-id'));
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAllBeforeAfter);
+  } else {
+    initAllBeforeAfter();
+  }
+
+  document.addEventListener('shopify:section:load', function(event) {
+    if (event.detail && event.detail.sectionId) {
+      initBeforeAfter(event.detail.sectionId);
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Avant Apres Premium",
+  "tag": "section",
+  "class": "section-avant-apres",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Avant & Après"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous titre",
+      "default": "De l'ombre à le son ! Un investissement durable"
+    },
+    {
+      "type": "select",
+      "id": "title_font",
+      "label": "Police du titre",
+      "default": "georgia",
+      "options": [
+        {
+          "value": "theme",
+          "label": "Police du theme"
+        },
+        {
+          "value": "georgia",
+          "label": "Georgia"
+        },
+        {
+          "value": "times",
+          "label": "Times New Roman"
+        },
+        {
+          "value": "serif",
+          "label": "Serif simple"
+        },
+        {
+          "value": "sans",
+          "label": "Sans-serif"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Images desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_before_desktop",
+      "label": "Image Avant desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_after_desktop",
+      "label": "Image Apres desktop"
+    },
+    {
+      "type": "header",
+      "content": "Images mobile optionnel"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_before_mobile",
+      "label": "Image Avant mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_after_mobile",
+      "label": "Image Apres mobile"
+    },
+    {
+      "type": "header",
+      "content": "Dimensions"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Largeur maximale desktop",
+      "min": 900,
+      "max": 1700,
+      "step": 20,
+      "default": 1480,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "side_padding_desktop",
+      "label": "Espace blanc gauche droite desktop",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "label": "Hauteur image desktop",
+      "min": 300,
+      "max": 900,
+      "step": 10,
+      "default": 650,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Hauteur image mobile",
+      "min": 300,
+      "max": 760,
+      "step": 10,
+      "default": 580,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Arrondi des coins",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur de fond",
+      "default": "#FAFAFA"
+    },
+    {
+      "type": "header",
+      "content": "Typographie"
+    },
+    {
+      "type": "range",
+      "id": "title_size_desktop",
+      "label": "Taille titre desktop",
+      "min": 28,
+      "max": 100,
+      "step": 2,
+      "default": 46,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Taille titre mobile",
+      "min": 28,
+      "max": 76,
+      "step": 2,
+      "default": 54,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_desktop",
+      "label": "Taille description desktop",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "label": "Taille description mobile",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Avant Apres Premium"
+    }
+  ]
+}
+{% endschema %}

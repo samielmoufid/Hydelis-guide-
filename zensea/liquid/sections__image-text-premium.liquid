@@ -1,0 +1,658 @@
+{% comment %}
+  Velluce — Image + Texte Premium (v2).
+  Même traitement que les chapitres de la page d'accueil : média serti
+  dans un cadre de laiton, halo chaud, léger basculement au survol,
+  sur-titre gravé, titre sérif avec accent italique doré, arguments
+  filetés. Tous les réglages d'origine sont conservés (image, vidéo,
+  titre, features, paragraphe, couleurs, paddings) : le contenu déjà
+  saisi dans les pages produit reste en place.
+{% endcomment %}
+
+{%- liquid
+  assign s = section.settings
+  assign has_media = false
+  if s.video != blank or s.image != blank
+    assign has_media = true
+  endif
+-%}
+
+<section
+  class="itp-section itp2 itp2--{{ s.media_position | default: 'left' }}{% if s.reveal %} itp2--reveal{% endif %}"
+  id="itp-{{ section.id }}"
+  style="
+    padding: {{ s.padding_top }}px 0 {{ s.padding_bottom }}px;
+    --itp-ink: {{ s.ink_color }};
+    --itp-accent: {{ s.icon_color }};
+    --itp-frame: {{ s.frame_color }};
+    --itp-card: {{ s.bg_color }};
+    --itp-radius: {{ s.frame_radius }}px;
+    --itp-pad: {{ s.frame_pad }}px;
+    --itp-media-h: {{ s.video_height_desktop }}px;
+    --itp-media-h-m: {{ s.video_height_mobile }}px;
+    --itp-zoom: {{ s.video_zoom | divided_by: 100.0 }};
+  "
+>
+  <div class="itp-wrapper itp2__wrap">
+
+    {%- comment -%} ————— Média serti ————— {%- endcomment -%}
+    <div class="itp-image-block itp2__media{% if s.video != blank %} itp-has-video{% endif %}" data-itp-tilt>
+      {%- if s.glow -%}<span class="itp2__glow" aria-hidden="true"></span>{%- endif -%}
+      <div class="itp2__frame">
+        <div class="itp2__inner">
+          {% if s.video != blank %}
+            {{ s.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, class: 'itp-image itp2__img' }}
+          {% elsif s.image != blank %}
+            <img
+              src="{{ s.image | image_url: width: 1600 }}"
+              srcset="{{ s.image | image_url: width: 600 }} 600w, {{ s.image | image_url: width: 1000 }} 1000w, {{ s.image | image_url: width: 1600 }} 1600w"
+              sizes="(max-width: 768px) 92vw, 46vw"
+              alt="{{ s.image.alt | escape }}"
+              class="itp-image itp2__img"
+              loading="lazy"
+            >
+          {% else %}
+            {%- render 'zensea-illus', key: 'handpan', uid: section.id, name: 'Zensea', class: 'itp-image itp2__img itp-placeholder' -%}
+          {% endif %}
+        </div>
+        {%- if s.plaque != blank -%}
+          <span class="itp2__plaque">{{ s.plaque }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} ————— Argumentaire ————— {%- endcomment -%}
+    <div class="itp-text-block itp2__text">
+      <div class="itp-text-inner itp2__inner-text">
+
+        {%- if s.eyebrow != blank -%}
+          <p class="itp2__eyebrow"><span class="itp2__rule"></span>{{ s.eyebrow }}</p>
+        {%- endif -%}
+
+        {% if s.title != blank %}
+          <h2 class="itp-title itp2__title">
+            {{ s.title }}{% if s.title_accent != blank %} <em class="itp2__accent">{{ s.title_accent }}</em>{% endif %}
+          </h2>
+        {% endif %}
+
+        {%- if s.paragraph_first and s.paragraph != blank -%}
+          <p class="itp-paragraph itp2__para itp2__para--lead">{{ s.paragraph }}</p>
+        {%- endif -%}
+
+        <ul class="itp-features itp2__features">
+          {% if s.feature_1_title != blank %}
+            <li class="itp-feature itp2__feature">
+              <span class="itp-icon itp2__ic" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </span>
+              <div class="itp-feature-text itp2__ftext">
+                <strong>{{ s.feature_1_title }}</strong>
+                {% if s.feature_1_desc != blank %}<span>{{ s.feature_1_desc }}</span>{% endif %}
+              </div>
+            </li>
+          {% endif %}
+
+          {% if s.feature_2_title != blank %}
+            <li class="itp-feature itp2__feature">
+              <span class="itp-icon itp2__ic" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </span>
+              <div class="itp-feature-text itp2__ftext">
+                <strong>{{ s.feature_2_title }}</strong>
+                {% if s.feature_2_desc != blank %}<span>{{ s.feature_2_desc }}</span>{% endif %}
+              </div>
+            </li>
+          {% endif %}
+        </ul>
+
+        {%- unless s.paragraph_first -%}
+          {% if s.paragraph != blank %}<p class="itp-paragraph itp2__para">{{ s.paragraph }}</p>{% endif %}
+        {%- endunless -%}
+
+        {%- if s.cta_label != blank -%}
+          <a class="itp2__cta" href="{{ s.cta_link | default: '#' }}">
+            <span>{{ s.cta_label }}</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        {%- endif -%}
+
+      </div>
+    </div>
+
+  </div>
+
+  {%- if s.filet -%}<div class="itp2__filet" aria-hidden="true"></div>{%- endif -%}
+</section>
+
+{% stylesheet %}
+  .itp2 {
+    position: relative;
+    background: transparent;
+    font-family: var(--font-body-family, "Jost", system-ui, sans-serif);
+    color: var(--itp-ink);
+  }
+
+  .itp2__wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 clamp(18px, 4vw, 48px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(24px, 4.5vw, 64px);
+  }
+  /* Image à droite : on inverse simplement l'ordre des colonnes. */
+  .itp2--right .itp2__media { order: 2; }
+  .itp2--right .itp2__text { order: 1; }
+
+  /* ————— Média serti dans son cadre ————— */
+  .itp2__media {
+    position: relative;
+    perspective: 1200px;
+  }
+  .itp2__glow {
+    position: absolute;
+    inset: -8% -6% -12%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--itp-accent) 26%, transparent), transparent 78%);
+    filter: blur(26px);
+    pointer-events: none;
+  }
+  .itp2__frame {
+    position: relative;
+    padding: var(--itp-pad);
+    border-radius: var(--itp-radius);
+    background: var(--itp-frame);
+    border: 1px solid color-mix(in srgb, var(--itp-accent) 30%, transparent);
+    box-shadow:
+      0 26px 60px rgba(31, 61, 47, .14),
+      inset 0 1px 0 rgba(255, 255, 255, .8);
+    transform-style: preserve-3d;
+    transition: transform .6s cubic-bezier(.2, .8, .2, 1), box-shadow .5s ease;
+    will-change: transform;
+  }
+  .itp2__media:hover .itp2__frame {
+    box-shadow:
+      0 40px 84px rgba(31, 61, 47, .2),
+      inset 0 1px 0 rgba(255, 255, 255, .9);
+  }
+  .itp2__inner {
+    position: relative;
+    overflow: hidden;
+    border-radius: calc(var(--itp-radius) - var(--itp-pad) + 2px);
+    background: #fff;
+    /* liseré doré intérieur, très fin : la signature du cadre */
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--itp-accent) 34%, transparent);
+  }
+  .itp2__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 1.2s cubic-bezier(.2, .8, .2, 1);
+  }
+  .itp2__media:hover .itp2__img { transform: scale(1.035); }
+
+  .itp-has-video .itp2__img {
+    height: var(--itp-media-h);
+    object-fit: cover;
+    transform: scale(var(--itp-zoom));
+  }
+  .itp-has-video:hover .itp2__img { transform: scale(calc(var(--itp-zoom) * 1.03)); }
+
+  /* Plaque gravée posée sur le cadre */
+  .itp2__plaque {
+    position: absolute;
+    left: calc(var(--itp-pad) + 14px);
+    bottom: calc(var(--itp-pad) + 14px);
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .92);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    border: 1px solid color-mix(in srgb, var(--itp-accent) 34%, transparent);
+    color: var(--itp-ink);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 20px rgba(31, 61, 47, .16);
+  }
+
+  /* ————— Texte ————— */
+  .itp2__text { background: transparent; }
+  .itp2__inner-text {
+    max-width: 46ch;
+    padding: clamp(4px, 1vw, 12px) 0;
+  }
+
+  .itp2__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 16px;
+    color: var(--itp-accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+  }
+  .itp2__rule { width: 30px; height: 1px; background: currentColor; opacity: .55; }
+
+  .itp2__title {
+    margin: 0 0 16px;
+    font-family: var(--font-heading--family, var(--font-heading-family, Georgia, serif));
+    font-weight: 400;
+    font-size: clamp(26px, 3.1vw, 42px);
+    line-height: 1.12;
+    letter-spacing: -.015em;
+    color: var(--itp-ink);
+    text-wrap: balance;
+  }
+  .itp2__accent {
+    font-style: italic;
+    color: var(--itp-accent);
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 94%;
+    padding-bottom: 2px;
+  }
+
+  .itp2__para {
+    margin: 18px 0 0;
+    font-size: clamp(14.5px, 1.15vw, 16px);
+    line-height: 1.75;
+    color: var(--itp-ink);
+    opacity: .68;
+    text-wrap: pretty;
+  }
+  .itp2__para--lead { margin: 0 0 22px; }
+
+  /* Arguments : cartes filetées, puce dorée */
+  .itp2__features { list-style: none; margin: 22px 0 0; padding: 0; }
+  .itp2__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 0;
+    border-top: 1px solid color-mix(in srgb, var(--itp-accent) 22%, transparent);
+  }
+  .itp2__feature:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--itp-accent) 22%, transparent);
+  }
+  .itp2__ic {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    margin-top: 1px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--itp-accent);
+    background: color-mix(in srgb, var(--itp-accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--itp-accent) 34%, transparent);
+    transition: background .35s ease, transform .35s ease;
+  }
+  .itp2__feature:hover .itp2__ic {
+    background: color-mix(in srgb, var(--itp-accent) 22%, transparent);
+    transform: scale(1.06);
+  }
+  .itp2__ftext strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -.005em;
+    margin-bottom: 3px;
+    color: var(--itp-ink);
+  }
+  .itp2__ftext span {
+    display: block;
+    font-size: 14.5px;
+    line-height: 1.62;
+    color: var(--itp-ink);
+    opacity: .66;
+  }
+
+  .itp2__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    margin-top: 26px;
+    padding: 14px 26px;
+    border-radius: 999px;
+    border: 1px solid var(--itp-ink);
+    color: var(--itp-ink);
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    transition: background .35s ease, color .35s ease, transform .2s ease;
+  }
+  .itp2__cta svg { width: 17px; height: 17px; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+  .itp2__cta:hover { background: var(--itp-ink); color: #fff; }
+  .itp2__cta:hover svg { transform: translateX(5px); }
+  .itp2__cta:active { transform: scale(.98); }
+
+  .itp2__filet {
+    max-width: 1240px;
+    margin: clamp(34px, 4vw, 56px) auto 0;
+    height: 1px;
+    background: color-mix(in srgb, var(--itp-accent) 26%, transparent);
+  }
+
+  /* Apparition au défilement */
+  .itp2--reveal .itp2__media,
+  .itp2--reveal .itp2__text {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2, .8, .2, 1);
+  }
+  .itp2--reveal .itp2__text { transition-delay: .1s; }
+  .itp2--reveal.is-in .itp2__media,
+  .itp2--reveal.is-in .itp2__text {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 900px) {
+    .itp2__wrap { grid-template-columns: 1fr; gap: 26px; }
+    /* Sur mobile, le visuel passe toujours au-dessus du texte. */
+    .itp2--right .itp2__media,
+    .itp2--left .itp2__media { order: -1; }
+    .itp2--right .itp2__text,
+    .itp2--left .itp2__text { order: 0; }
+    .itp2__inner-text { max-width: none; }
+    .itp-has-video .itp2__img { height: var(--itp-media-h-m); }
+    .itp2__plaque { left: calc(var(--itp-pad) + 10px); bottom: calc(var(--itp-pad) + 10px); font-size: 10px; padding: 7px 13px; }
+    .itp2__glow { filter: blur(18px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .itp2__frame, .itp2__img, .itp2__ic, .itp2__cta { transition: none !important; }
+    .itp2--reveal .itp2__media,
+    .itp2--reveal .itp2__text { opacity: 1 !important; transform: none !important; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Apparition au défilement */
+    var sections = document.querySelectorAll('.itp2--reveal');
+    if (sections.length && 'IntersectionObserver' in window && !reduce) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+      sections.forEach(function (el) { io.observe(el); });
+    } else {
+      sections.forEach(function (el) { el.classList.add('is-in'); });
+    }
+
+    /* Léger basculement du cadre au survol, souris uniquement */
+    if (!window.matchMedia('(hover: hover)').matches || reduce) return;
+    document.querySelectorAll('[data-itp-tilt]').forEach(function (el) {
+      var frame = el.querySelector('.itp2__frame');
+      if (!frame) return;
+      var raf = null;
+      el.addEventListener('pointermove', function (ev) {
+        if (raf) return;
+        raf = requestAnimationFrame(function () {
+          raf = null;
+          var r = el.getBoundingClientRect();
+          var px = (ev.clientX - r.left) / r.width - 0.5;
+          var py = (ev.clientY - r.top) / r.height - 0.5;
+          frame.style.transform =
+            'rotateY(' + (px * 5).toFixed(2) + 'deg) rotateX(' + (-py * 5).toFixed(2) + 'deg)';
+        });
+      });
+      el.addEventListener('pointerleave', function () { frame.style.transform = ''; });
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Image + Texte Premium",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Vidéo (remplace l'image)",
+      "info": "Si une vidéo est sélectionnée, elle remplace l'image : lecture automatique, en boucle, sans son."
+    },
+    {
+      "type": "range",
+      "id": "video_height_desktop",
+      "label": "Hauteur vidéo desktop",
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "default": 420
+    },
+    {
+      "type": "range",
+      "id": "video_height_mobile",
+      "label": "Hauteur vidéo mobile",
+      "min": 160,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "video_zoom",
+      "label": "Zoom vidéo (supprime les bandes noires)",
+      "min": 100,
+      "max": 180,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Position du visuel",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "À gauche"
+        },
+        {
+          "value": "right",
+          "label": "À droite"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "plaque",
+      "label": "Plaque sur le visuel",
+      "info": "Laissez vide pour ne rien afficher."
+    },
+    {
+      "type": "header",
+      "content": "Contenu"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "info": "Petites capitales dorées au-dessus du titre."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "Lumière & ambiance"
+    },
+    {
+      "type": "text",
+      "id": "title_accent",
+      "label": "Fin du titre en italique doré",
+      "info": "Ajouté à la suite du titre, en italique souligné."
+    },
+    {
+      "type": "text",
+      "id": "feature_1_title",
+      "label": "Argument 1 — titre"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_1_desc",
+      "label": "Argument 1 — description"
+    },
+    {
+      "type": "text",
+      "id": "feature_2_title",
+      "label": "Argument 2 — titre"
+    },
+    {
+      "type": "textarea",
+      "id": "feature_2_desc",
+      "label": "Argument 2 — description"
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph",
+      "label": "Paragraphe"
+    },
+    {
+      "type": "checkbox",
+      "id": "paragraph_first",
+      "label": "Paragraphe avant les arguments",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Bouton (texte)",
+      "info": "Laissez vide pour masquer le bouton."
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Bouton (lien)"
+    },
+    {
+      "type": "header",
+      "content": "Cadre du visuel"
+    },
+    {
+      "type": "color",
+      "id": "frame_color",
+      "label": "Couleur du cadre",
+      "default": "#EDF3F0"
+    },
+    {
+      "type": "range",
+      "id": "frame_pad",
+      "label": "Épaisseur du cadre",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "frame_radius",
+      "label": "Arrondi du cadre",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "checkbox",
+      "id": "glow",
+      "label": "Halo lumineux derrière le visuel",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Couleur de fond de la carte texte",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "ink_color",
+      "label": "Couleur du texte",
+      "default": "#0D1712"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Couleur d'accent",
+      "default": "#2E5E46"
+    },
+    {
+      "type": "checkbox",
+      "id": "filet",
+      "label": "Filet de séparation en bas",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "reveal",
+      "label": "Apparition au défilement",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Espacements"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Espace au-dessus",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Espace en dessous",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image + Texte Premium"
+    }
+  ]
+}
+{% endschema %}

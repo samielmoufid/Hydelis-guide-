@@ -1,0 +1,313 @@
+{% doc %}
+  Affiche une carte de produit.
+
+  @param product - {Product} Le produit à afficher.
+  @param block - {Block} Le bloc à utiliser.
+  @param children - {String} Les enfants à afficher (blocs).
+{% enddoc %}
+
+<script src="{{ 'product-card.js' | asset_url }}" type="module"></script>
+
+<product-card
+  class="product-card{% if block.settings.wrap_in_card %} card color-{{ block.settings.color_scheme }}{% endif %}"
+  style="--gap: {{ block.settings.layout_gap }}px;"
+  data-product-url="{{ product.url }}"
+  {{ block.shopify_attributes }}
+  {% if request.visual_preview_mode %}
+    data-visual-preview-mode
+  {% endif %}
+>
+  {{ children }}
+
+  {%- liquid
+    # ------------------------------------------------------------------
+    # Velluce - Pastilles de couleur sur la carte produit
+    # 1. On cherche une option "Couleur" (nom explicite)
+    # 2. Sinon on accepte toute option (Modele, Motif, Style...) dont
+    #    au moins 70% des valeurs sont des couleurs reconnues.
+    # ------------------------------------------------------------------
+    assign sw_opt = null
+    assign sw_pairs = ''
+    assign sw_total = 0
+
+    for opt in product.options_with_values
+      if sw_opt != null
+        break
+      endif
+
+      assign opt_name = opt.name | downcase | strip
+      assign is_color_name = false
+      if opt_name == 'couleur' or opt_name == 'coloris' or opt_name == 'couleurs' or opt_name == 'color' or opt_name == 'colour' or opt_name == 'farbe' or opt_name == 'colore'
+        assign is_color_name = true
+      endif
+
+      if opt.values.size > 1
+        assign hits = 0
+        assign pairs = ''
+
+        for val in opt.values
+          capture hx
+            render 'zensea-color-hex', swatch_value: val
+          endcapture
+          assign hx = hx | strip
+          if hx != ''
+            assign hits = hits | plus: 1
+          else
+            assign hx = '#CBDAD2'
+          endif
+          assign pairs = pairs | append: val | append: '~' | append: hx | append: '|'
+        endfor
+
+        assign ratio = hits | times: 100 | divided_by: opt.values.size
+
+        if is_color_name
+          assign sw_opt = opt
+          assign sw_pairs = pairs
+          assign sw_total = opt.values.size
+        elsif ratio >= 70 and hits > 1
+          assign sw_opt = opt
+          assign sw_pairs = pairs
+          assign sw_total = opt.values.size
+        endif
+      endif
+    endfor
+  -%}
+
+  {%- if sw_opt != null -%}
+    {%- liquid
+      # --- Determination de la couleur "courante" de cette carte ---
+      # a) une valeur d'option presente dans le titre du produit (la plus longue gagne)
+      # b) sinon la couleur de la variante affichee
+      # c) sinon la premiere valeur
+      assign sel = ''
+      assign best_len = 0
+      assign lower_title = product.title | downcase
+
+      for val in sw_opt.values
+        assign vl = val | downcase | strip
+        if vl != '' and lower_title contains vl
+          assign vlen = vl | size
+          if vlen > best_len
+            assign best_len = vlen
+            assign sel = vl
+          endif
+        endif
+      endfor
+
+      if sel == ''
+        assign cur_variant = product.selected_or_first_available_variant | default: product.variants.first
+        if cur_variant != blank
+          for val in sw_opt.values
+            if sel == '' and cur_variant.options contains val
+              assign sel = val | downcase | strip
+            endif
+          endfor
+        endif
+      endif
+
+      if sel == ''
+        assign sel = sw_opt.values.first | downcase | strip
+      endif
+
+      assign sw_items = sw_pairs | split: '|'
+      assign sw_limit = 8
+      assign sel_index = 0
+      assign i = 0
+      for item in sw_items
+        assign parts = item | split: '~'
+        assign pv = parts.first | downcase | strip
+        if pv == sel
+          assign sel_index = i
+        endif
+        assign i = i | plus: 1
+      endfor
+    -%}
+
+    {%- liquid
+      # Si la couleur courante est au-dela de la limite d'affichage,
+      # on libere une place pour qu'elle reste toujours visible.
+      assign vis_limit = sw_limit
+      if sel_index >= sw_limit
+        assign vis_limit = sw_limit | minus: 1
+      endif
+    -%}
+    <div class="pcard-swatches" aria-label="Couleurs disponibles">
+      {%- assign shown = 0 -%}
+      {%- for item in sw_items -%}
+        {%- assign idx = forloop.index0 -%}
+        {%- assign display = false -%}
+        {%- if idx < vis_limit -%}
+          {%- assign display = true -%}
+        {%- elsif idx == sel_index -%}
+          {%- assign display = true -%}
+        {%- endif -%}
+
+        {%- if display and shown < sw_limit -%}
+          {%- assign parts = item | split: '~' -%}
+          {%- assign pval = parts.first -%}
+          {%- assign phex = parts.last -%}
+          {%- assign pv = pval | downcase | strip -%}
+          {%- assign shown = shown | plus: 1 -%}
+
+          {%- assign vimg = '' -%}
+          {%- assign vid = '' -%}
+          {%- for variant in product.variants -%}
+            {%- if variant.options contains pval -%}
+              {%- assign vid = variant.id -%}
+              {%- if variant.image -%}{%- assign vimg = variant.image | image_url: width: 700 -%}{%- endif -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          <span
+            class="pcard-swatch{% if pv == sel %} is-active is-current{% endif %}"
+            style="background:{{ phex }};"
+            title="{{ pval | escape }}"
+            aria-label="{{ pval | escape }}"
+            tabindex="0"
+            role="button"
+            {% if pv == sel %}aria-current="true"{% endif %}
+            {% if vimg != blank %}data-img="{{ vimg }}"{% endif %}
+            {% if vid != blank %}data-url="{{ product.url }}?variant={{ vid }}"{% endif %}
+          ></span>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if sw_total > sw_limit -%}
+        <span class="pcard-swatch-more">+{{ sw_total | minus: sw_limit }}</span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</product-card>
+
+<script>
+(function(){
+  if (window.__pcardSwatchInit) return; window.__pcardSwatchInit = true;
+  function mediaWrap(card){
+    var img = card.querySelector('img');
+    if(!img) return null;
+    var w = img.closest('.product-media, .card-gallery, .card__media, [class*="media"]');
+    return w || img.parentElement;
+  }
+  function handle(e){
+    var sw = e.target.closest ? e.target.closest('.pcard-swatch') : null;
+    if(!sw) return;
+    if(e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    if(e.stopImmediatePropagation) e.stopImmediatePropagation();
+    e.stopPropagation();
+    var card = sw.closest('product-card') || sw.closest('.product-card');
+    if(!card) return;
+    var img = sw.getAttribute('data-img');
+    if(img){
+      var wrap = mediaWrap(card);
+      if(wrap){
+        var cs = window.getComputedStyle(wrap);
+        if(cs.position === 'static') wrap.style.position = 'relative';
+        wrap.style.overflow = 'hidden';
+        var ov = wrap.querySelector(':scope > .pcard-variant-overlay');
+        if(!ov){ ov = document.createElement('img'); ov.className = 'pcard-variant-overlay'; ov.setAttribute('alt',''); wrap.appendChild(ov); }
+        ov.src = img;
+      }
+    }
+    var url = sw.getAttribute('data-url');
+    if(url){
+      card.setAttribute('data-product-url', url);
+      var a = card.querySelector('a[href]');
+      if(a) a.setAttribute('href', url);
+    }
+    var all = card.querySelectorAll('.pcard-swatch');
+    for(var i=0;i<all.length;i++){ all[i].classList.remove('is-active'); }
+    sw.classList.add('is-active');
+  }
+  document.addEventListener('click', handle, true);
+  document.addEventListener('keydown', handle, true);
+})();
+</script>
+
+{% stylesheet %}
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+    width: 100%;
+    overflow: hidden;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .product-card[data-visual-preview-mode] {
+    max-width: 280px;
+  }
+
+  @media (width > 750px) {
+    .product-card:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .pcard-variant-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    z-index: 2;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .pcard-swatches {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 2px;
+    max-width: 100%;
+    padding-block: 2px;
+    padding-inline-start: 1px;
+    box-sizing: border-box;
+  }
+
+  .pcard-swatch {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border-radius: 50%;
+    display: inline-block;
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.16);
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  }
+
+  .pcard-swatch:hover {
+    transform: scale(1.1);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.28);
+  }
+
+  .pcard-swatches > .pcard-swatch:first-child:hover {
+    transform-origin: left center;
+  }
+
+  /* Anneau de selection dessine A L'INTERIEUR de la pastille :
+     il ne deborde donc jamais sur la gauche de la carte. */
+  .pcard-swatch.is-active,
+  .pcard-swatch.is-active:hover {
+    box-shadow:
+      inset 0 0 0 2px #fff,
+      inset 0 0 0 3.5px #292F2C;
+    transform: none;
+  }
+
+  .pcard-swatch-more {
+    font-size: 11px;
+    line-height: 1;
+    color: #83918A;
+    align-self: center;
+  }
+{% endstylesheet %}

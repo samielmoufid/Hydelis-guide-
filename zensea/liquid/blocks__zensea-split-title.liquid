@@ -1,0 +1,121 @@
+{% comment %}
+  Velluce — Titre produit en deux lignes.
+  Ligne 1 : nom du produit (avant « — ») en Playfair Display italique.
+  Ligne 2 : mini-description (après « — ») en petit texte discret.
+  Si le titre ne contient pas « — », seule la ligne 1 s'affiche.
+{% endcomment %}
+
+{%- liquid
+  assign vl_product = closest.product
+  if vl_product == blank
+    assign vl_product = product
+  endif
+  assign vl_parts = vl_product.title | split: ' — '
+  assign vl_name = vl_parts | first
+-%}
+
+<div
+  class="vl-split-title{% if block.settings.style == 'page' %} vl-split-title--page{% endif %}"
+  {{ block.shopify_attributes }}
+>
+  {%- if block.settings.heading_level == 'h1' -%}
+    <h1 class="vl-split-title__name">{{ vl_name }}</h1>
+  {%- else -%}
+    <h2 class="vl-split-title__name">{{ vl_name }}</h2>
+  {%- endif -%}
+  {%- if vl_parts.size > 1 -%}
+    <p class="vl-split-title__sub">{{ vl_parts | slice: 1, 10 | join: ' — ' }}</p>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .vl-split-title {
+    display: block;
+  }
+
+  .vl-split-title__name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.35;
+    color: #0D1712;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0;
+  }
+
+  .vl-split-title__sub {
+    font-size: 13px;
+    line-height: 1.45;
+    color: #576F63;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 2px 0 0;
+  }
+
+  .vl-split-title--page .vl-split-title__name {
+    font-size: 34px;
+    line-height: 1.2;
+  }
+
+  .vl-split-title--page .vl-split-title__sub {
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  @media (max-width: 749px) {
+    .vl-split-title--page .vl-split-title__name {
+      font-size: 27px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Titre Zensea 2 lignes",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "heading_level",
+      "label": "Balise du nom",
+      "default": "h2",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1 (page produit)"
+        },
+        {
+          "value": "h2",
+          "label": "H2 (carte produit)"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "default": "card",
+      "options": [
+        {
+          "value": "card",
+          "label": "Carte produit"
+        },
+        {
+          "value": "page",
+          "label": "Page produit"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Titre Zensea 2 lignes",
+      "category": "Velluce"
+    }
+  ]
+}
+{% endschema %}

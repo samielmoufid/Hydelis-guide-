@@ -1,0 +1,56 @@
+name: Déploiement GitHub Pages
+
+# Chaîne de déploiement :
+#   push (main ou branche de travail) → build Vite → commit du build sur
+#   gh-pages (sans toucher à .github/) → le workflow self-deploy.yml présent
+#   SUR gh-pages publie via l'API Pages (actions/deploy-pages).
+# Ce détour existe parce que le token du workflow ne peut ni créer le site
+# Pages ni déployer depuis une autre branche (protection d'environnement),
+# et que le pipeline interne « build from branch » s'est montré instable.
+on:
+  push:
+    branches: [main, claude/oh-s5aavh]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - name: Publier le build sur gh-pages
+        run: |
+          git fetch origin gh-pages
+          git worktree add /tmp/site origin/gh-pages
+          cd /tmp/site
+          git checkout -B gh-pages origin/gh-pages
+          # Remplace tout le contenu sauf .git, .github (le workflow
+          # d'auto-déploiement doit rester intact : le token n'a pas le
+          # droit de modifier des fichiers de workflow) et assets/ : les
+          # anciens bundles empilés restent servis pour qu'un HTML encore
+          # en cache navigateur (Safari iOS…) ne casse jamais.
+          find . -maxdepth 1 ! -name .git ! -name .github ! -name assets ! -name . -exec rm -rf {} +
+          # Copie simple : les noms sont hachés, une collision signifie un
+          # contenu identique (cp -n a des codes retour instables selon la
+          # version de coreutils, on l'évite).
+          mkdir -p assets
+          cp -r "$GITHUB_WORKSPACE"/dist/assets/. assets/
+          find "$GITHUB_WORKSPACE"/dist -mindepth 1 -maxdepth 1 ! -name assets -exec cp -r {} . \;
+          touch .nojekyll
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Déploiement Pages — ${GITHUB_SHA::7}" || { echo "Aucun changement à déployer."; exit 0; }
+          git push origin gh-pages

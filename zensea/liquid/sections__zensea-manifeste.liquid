@@ -1,0 +1,813 @@
+{%- liquid
+  assign s = section.settings
+  assign sid = section.id
+-%}
+
+<div class="vmf" id="vmf-{{ sid }}" data-vmf{% if s.reveal %} data-vmf-reveal{% endif %}>
+  <div class="vmf__wrap">
+
+    {%- if s.eyebrow != blank -%}
+      <div class="vmf__eyebrow" data-vmf-el>
+        <span class="vmf__rule"></span>
+        <span class="vmf__eyebrow-txt">{{ s.eyebrow }}</span>
+      </div>
+    {%- endif -%}
+
+    {%- if s.title != blank -%}
+      <h2 class="vmf__title" data-vmf-el>
+        {{ s.title }}{% if s.title_accent != blank %} <em class="vmf__title-em">{{ s.title_accent }}</em>{% endif %}
+      </h2>
+    {%- endif -%}
+
+    <div class="vmf__grid vmf__grid--{{ s.image_position }}">
+
+      <figure class="vmf__figure" data-vmf-el>
+        {%- if s.ghost_text != blank -%}
+          <span class="vmf__ghost" aria-hidden="true">{{ s.ghost_text }}</span>
+        {%- endif -%}
+        <div class="vmf__media">
+          {%- if s.image != blank -%}
+            {{ s.image | image_url: width: 1400 | image_tag:
+                 loading: 'lazy',
+                 sizes: '(min-width: 990px) 46vw, 92vw',
+                 widths: '400,600,800,1000,1200,1400',
+                 alt: s.image_alt,
+                 class: 'vmf__img' }}
+          {%- else -%}
+            <div class="vmf__placeholder">{%- render 'zensea-illus', key: 'handpan', uid: section.id, name: s.title, class: 'vmf__img' -%}</div>
+          {%- endif -%}
+          <span class="vmf__frame" aria-hidden="true"></span>
+        </div>
+        {%- if s.image_caption != blank -%}
+          <figcaption class="vmf__caption">{{ s.image_caption }}</figcaption>
+        {%- endif -%}
+      </figure>
+
+      <div class="vmf__body">
+
+        {%- if s.intro != blank -%}
+          <div class="vmf__intro{% if s.dropcap %} vmf__intro--cap{% endif %}" data-vmf-el>{{ s.intro }}</div>
+        {%- endif -%}
+
+        {%- if s.text != blank -%}
+          <div class="vmf__text" data-vmf-el>{{ s.text }}</div>
+        {%- endif -%}
+
+        {%- if s.quote != blank -%}
+          <blockquote class="vmf__quote" data-vmf-el>
+            <p>{{ s.quote }}</p>
+            {%- if s.signature != blank -%}
+              <cite class="vmf__sign">{{ s.signature }}</cite>
+            {%- endif -%}
+          </blockquote>
+        {%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <div class="vmf__facts-wrap" data-vmf-el>
+            <dl class="vmf__facts" data-vmf-track>
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'fact' -%}
+                  <div class="vmf__fact" {{ block.shopify_attributes }}>
+                    <dt class="vmf__fact-k">{{ block.settings.label }}</dt>
+                    <dd class="vmf__fact-v">{{ block.settings.value }}</dd>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </dl>
+            {%- if section.blocks.size > 1 -%}
+              <div class="vmf__dots" data-vmf-dots>
+                {%- for block in section.blocks -%}
+                  <button class="vmf__dot{% if forloop.first %} is-on{% endif %}" type="button" data-vmf-dot="{{ forloop.index0 }}" aria-label="Repere {{ forloop.index }}"></button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if s.cta_label != blank and s.cta_link != blank -%}
+          <div class="vmf__cta" data-vmf-el>
+            <a class="vmf__link vmf__link--{{ s.cta_style }}" href="{{ s.cta_link }}">
+              <span class="vmf__link-txt">{{ s.cta_label }}</span>
+              <span class="vmf__link-arrow" aria-hidden="true">
+                <svg viewBox="0 0 26 8" fill="none"><path d="M0 4h24M21 1l3.2 3L21 7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </a>
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #vmf-{{ sid }}{
+    --acc:{{ s.accent }};
+    --ink:{{ s.ink }};
+    --muted:{{ s.muted }};
+    --rule:{{ s.rule_color }};
+    --bg:{{ s.bg }};
+    background:var(--bg);
+    padding:{{ s.pad_top }}px 24px {{ s.pad_bottom }}px;
+    overflow:hidden;
+  }
+  #vmf-{{ sid }} .vmf__wrap{ max-width:{{ s.max_width }}px; margin:0 auto; }
+
+  /* ---------- sur-titre ---------- */
+  #vmf-{{ sid }} .vmf__eyebrow{ display:flex; align-items:center; gap:14px; margin:0 0 22px; }
+  #vmf-{{ sid }} .vmf__rule{ width:44px; height:1px; background:var(--acc); flex:none; }
+  #vmf-{{ sid }} .vmf__eyebrow-txt{
+    font-size:10.5px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--acc);
+  }
+
+  /* ---------- titre ---------- */
+  #vmf-{{ sid }} .vmf__title{
+    margin:0 0 {{ s.title_gap }}px; max-width:15ch;
+    font-size:clamp(30px,4.6vw,{{ s.title_size }}px); line-height:1.06;
+    letter-spacing:-.025em; font-weight:400; color:var(--ink);
+  }
+  #vmf-{{ sid }} .vmf__title-em{ font-style:italic; color:var(--acc); }
+
+  /* ---------- grille ---------- */
+  #vmf-{{ sid }} .vmf__grid{
+    display:grid; grid-template-columns:1.05fr .95fr; gap:{{ s.gap }}px; align-items:start;
+  }
+  #vmf-{{ sid }} .vmf__grid--left .vmf__figure{ order:1; }
+  #vmf-{{ sid }} .vmf__grid--left .vmf__body{ order:2; }
+  #vmf-{{ sid }} .vmf__grid--right .vmf__figure{ order:2; }
+  #vmf-{{ sid }} .vmf__grid--right .vmf__body{ order:1; }
+
+  /* ---------- image ---------- */
+  #vmf-{{ sid }} .vmf__figure{ position:relative; margin:0; }
+  #vmf-{{ sid }} .vmf__media{
+    position:relative; overflow:hidden; border-radius:{{ s.img_radius }}px;
+    box-shadow:0 26px 60px -28px rgba(37,29,10,.34);
+  }
+  #vmf-{{ sid }} .vmf__img{
+    display:block; width:100%; height:{{ s.img_height }}px; object-fit:cover;
+    transform:scale(1.001); transition:transform 1.5s cubic-bezier(.2,.7,.2,1);
+  }
+  #vmf-{{ sid }} .vmf__media:hover .vmf__img{ transform:scale(1.045); }
+  #vmf-{{ sid }} .vmf__frame{
+    position:absolute; inset:10px; border:1px solid rgba(255,255,255,.30);
+    border-radius:{% if s.img_radius > 10 %}{{ s.img_radius | minus: 6 }}{% else %}2{% endif %}px;
+    pointer-events:none;
+  }
+  #vmf-{{ sid }} .vmf__placeholder{ background:#EAF1EE; }
+  #vmf-{{ sid }} .vmf__placeholder svg{ width:100%; height:{{ s.img_height }}px; }
+  #vmf-{{ sid }} .vmf__caption{
+    margin-top:14px; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+  }
+
+  /* ---------- chiffre fantôme ---------- */
+  #vmf-{{ sid }} .vmf__ghost{
+    position:absolute; z-index:2; top:-.44em; {% if s.image_position == 'right' %}left:-.22em{% else %}right:-.22em{% endif %};
+    font-size:clamp(64px,11vw,{{ s.ghost_size }}px); line-height:1; font-weight:300;
+    letter-spacing:-.04em; color:var(--acc); opacity:{{ s.ghost_opacity }}; pointer-events:none;
+  }
+
+  /* ---------- texte ---------- */
+  #vmf-{{ sid }} .vmf__body{ padding-top:{{ s.body_offset }}px; }
+  #vmf-{{ sid }} .vmf__intro p{
+    margin:0 0 18px; font-size:{{ s.intro_size }}px; line-height:1.62; color:var(--ink); font-weight:400;
+  }
+  #vmf-{{ sid }} .vmf__intro--cap > p:first-child::first-letter{
+    float:left; font-size:{{ s.intro_size | times: 3.4 | round }}px; line-height:.82;
+    padding:6px 12px 0 0; color:var(--acc); font-weight:400;
+  }
+  #vmf-{{ sid }} .vmf__text p{
+    margin:0 0 16px; font-size:{{ s.text_size }}px; line-height:1.78; color:var(--muted);
+  }
+  #vmf-{{ sid }} .vmf__text p:last-child{ margin-bottom:0; }
+
+  /* ---------- citation ---------- */
+  #vmf-{{ sid }} .vmf__quote{
+    margin:30px 0 0; padding:2px 0 2px 22px; border-left:1px solid var(--acc);
+  }
+  #vmf-{{ sid }} .vmf__quote p{
+    margin:0; font-size:{{ s.quote_size }}px; line-height:1.5; font-style:italic;
+    letter-spacing:-.01em; color:var(--ink);
+  }
+  #vmf-{{ sid }} .vmf__sign{
+    display:block; margin-top:12px; font-style:normal;
+    font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+  }
+
+  /* ---------- repères ---------- */
+  #vmf-{{ sid }} .vmf__facts-wrap{ margin:34px 0 0; }
+  #vmf-{{ sid }} .vmf__facts{
+    display:flex; flex-wrap:wrap; gap:0; margin:0; padding:20px 0 0; border-top:1px solid var(--rule);
+  }
+  #vmf-{{ sid }} .vmf__dots{ display:none; }
+  #vmf-{{ sid }} .vmf__dot{
+    -webkit-appearance:none; appearance:none; border:0; padding:0; cursor:pointer;
+    width:6px; height:6px; border-radius:99px; background:var(--rule);
+    transition:background .35s ease, width .35s cubic-bezier(.2,.7,.2,1);
+  }
+  #vmf-{{ sid }} .vmf__dot.is-on{ background:var(--acc); width:20px; }
+  #vmf-{{ sid }} .vmf__fact{ flex:1 1 0; min-width:110px; padding:0 20px; border-left:1px solid var(--rule); }
+  #vmf-{{ sid }} .vmf__fact:first-child{ border-left:0; padding-left:0; }
+  #vmf-{{ sid }} .vmf__fact-k{
+    margin:0 0 5px; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+  }
+  #vmf-{{ sid }} .vmf__fact-v{
+    margin:0; font-size:16.5px; line-height:1.25; color:var(--ink); letter-spacing:-.01em;
+  }
+
+  /* ---------- appel à l'action ---------- */
+  #vmf-{{ sid }} .vmf__cta{ margin-top:36px; }
+  #vmf-{{ sid }} .vmf__link{
+    display:inline-flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink);
+    font-size:11.5px; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  }
+  #vmf-{{ sid }} .vmf__link-arrow svg{ width:26px; height:8px; display:block; transition:transform .35s cubic-bezier(.2,.7,.2,1); }
+  #vmf-{{ sid }} .vmf__link:hover .vmf__link-arrow svg{ transform:translateX(6px); }
+
+  #vmf-{{ sid }} .vmf__link--link .vmf__link-txt{ position:relative; padding-bottom:7px; }
+  #vmf-{{ sid }} .vmf__link--link .vmf__link-txt::after{
+    content:""; position:absolute; left:0; bottom:0; width:100%; height:1px; background:var(--acc);
+    transform-origin:right; transform:scaleX(1); transition:transform .45s cubic-bezier(.2,.7,.2,1);
+  }
+  #vmf-{{ sid }} .vmf__link--link:hover .vmf__link-txt::after{ transform-origin:left; transform:scaleX(.32); }
+
+  #vmf-{{ sid }} .vmf__link--button{
+    padding:17px 34px; border:1px solid var(--ink); border-radius:2px;
+    transition:background .35s ease, color .35s ease;
+  }
+  #vmf-{{ sid }} .vmf__link--button:hover{ background:var(--ink); color:#fff; }
+
+  /* ---------- apparition ---------- */
+  #vmf-{{ sid }}[data-vmf-reveal] [data-vmf-el]{
+    opacity:0; transform:translateY(22px);
+    transition:opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1);
+  }
+  #vmf-{{ sid }}[data-vmf-reveal].is-in [data-vmf-el]{ opacity:1; transform:none; }
+  #vmf-{{ sid }}[data-vmf-reveal].is-in [data-vmf-el]:nth-child(2){ transition-delay:.09s; }
+  #vmf-{{ sid }}[data-vmf-reveal].is-in .vmf__figure{ transition-delay:.14s; }
+  #vmf-{{ sid }}[data-vmf-reveal].is-in .vmf__text{ transition-delay:.10s; }
+  #vmf-{{ sid }}[data-vmf-reveal].is-in .vmf__quote{ transition-delay:.16s; }
+  #vmf-{{ sid }}[data-vmf-reveal].is-in .vmf__facts{ transition-delay:.20s; }
+  #vmf-{{ sid }}[data-vmf-reveal].is-in .vmf__cta{ transition-delay:.24s; }
+  @media (prefers-reduced-motion:reduce){
+    #vmf-{{ sid }}[data-vmf-reveal] [data-vmf-el]{ opacity:1; transform:none; transition:none; }
+    #vmf-{{ sid }} .vmf__img{ transition:none; }
+  }
+
+  /* ---------- tablette ---------- */
+  @media (max-width:989px){
+    #vmf-{{ sid }} .vmf__grid{ grid-template-columns:1fr; gap:34px; }
+    #vmf-{{ sid }} .vmf__grid--right .vmf__figure,
+    #vmf-{{ sid }} .vmf__grid--left  .vmf__figure{ order:1; }
+    #vmf-{{ sid }} .vmf__grid--right .vmf__body,
+    #vmf-{{ sid }} .vmf__grid--left  .vmf__body{ order:2; padding-top:0; }
+    #vmf-{{ sid }} .vmf__title{ max-width:none; }
+  }
+
+  /* ---------- mobile ---------- */
+  @media (max-width:749px){
+    #vmf-{{ sid }}{ padding:{{ s.pad_top_m }}px 18px {{ s.pad_bottom_m }}px; }
+    #vmf-{{ sid }} .vmf__eyebrow{ margin-bottom:16px; gap:11px; }
+    #vmf-{{ sid }} .vmf__rule{ width:30px; }
+    #vmf-{{ sid }} .vmf__eyebrow-txt{ font-size:9.5px; letter-spacing:.24em; }
+    #vmf-{{ sid }} .vmf__title{ font-size:{{ s.title_size_m }}px; margin-bottom:24px; letter-spacing:-.02em; }
+    #vmf-{{ sid }} .vmf__grid{ gap:26px; }
+    #vmf-{{ sid }} .vmf__img,
+    #vmf-{{ sid }} .vmf__placeholder svg{ height:{{ s.img_height_m }}px; }
+    #vmf-{{ sid }} .vmf__media{ border-radius:{{ s.img_radius_m }}px; }
+    #vmf-{{ sid }} .vmf__frame{ inset:8px; }
+    #vmf-{{ sid }} .vmf__ghost{ font-size:clamp(52px,17vw,96px); top:-.36em; opacity:{{ s.ghost_opacity_m }}; }
+    #vmf-{{ sid }} .vmf__intro p{ font-size:{{ s.intro_size_m }}px; line-height:1.58; margin-bottom:15px; }
+    #vmf-{{ sid }} .vmf__intro--cap > p:first-child::first-letter{ font-size:{{ s.intro_size_m | times: 3.1 | round }}px; padding-right:10px; }
+    #vmf-{{ sid }} .vmf__text p{ font-size:{{ s.text_size_m }}px; line-height:1.72; }
+    #vmf-{{ sid }} .vmf__quote{ margin-top:24px; padding-left:16px; }
+    #vmf-{{ sid }} .vmf__quote p{ font-size:{{ s.quote_size_m }}px; }
+    #vmf-{{ sid }} .vmf__facts-wrap{ margin-top:26px; }
+    #vmf-{{ sid }} .vmf__facts{
+      flex-wrap:nowrap; gap:0; padding-top:18px;
+      overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+      scrollbar-width:none; -ms-overflow-style:none;
+    }
+    #vmf-{{ sid }} .vmf__facts::-webkit-scrollbar{ display:none; }
+    #vmf-{{ sid }} .vmf__fact{
+      flex:0 0 100%; width:100%; max-width:none; scroll-snap-align:start; scroll-snap-stop:always;
+      padding:0 8px; border-left:0; text-align:center;
+    }
+    #vmf-{{ sid }} .vmf__fact-k{ letter-spacing:.24em; }
+    #vmf-{{ sid }} .vmf__fact-v{ font-size:19px; }
+    #vmf-{{ sid }} .vmf__dots{ display:flex; justify-content:center; gap:7px; margin-top:20px; }
+    #vmf-{{ sid }} .vmf__cta{ margin-top:28px; }
+    #vmf-{{ sid }} .vmf__link--button{ width:100%; justify-content:center; padding:16px 20px; }
+  }
+</style>
+
+<script>
+(function(){
+  var el = document.getElementById('vmf-{{ sid }}');
+  if (!el || !el.hasAttribute('data-vmf-reveal')) return;
+  if (!('IntersectionObserver' in window)) { el.classList.add('is-in'); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+  io.observe(el);
+})();
+(function(){
+  var root = document.getElementById('vmf-{{ sid }}');
+  if (!root) return;
+  var track = root.querySelector('[data-vmf-track]');
+  var dots  = root.querySelector('[data-vmf-dots]');
+  if (!track || !dots) return;
+  var items = track.querySelectorAll('.vmf__fact');
+  var buttons = dots.querySelectorAll('.vmf__dot');
+  if (!items.length || !buttons.length) return;
+
+  function sync(){
+    if (getComputedStyle(dots).display === 'none') return;
+    var best = 0, min = Infinity;
+    for (var i = 0; i < items.length; i++){
+      var d = Math.abs(items[i].offsetLeft - track.scrollLeft);
+      if (d < min){ min = d; best = i; }
+    }
+    for (var j = 0; j < buttons.length; j++){
+      buttons[j].classList.toggle('is-on', j === best);
+    }
+  }
+  var tick;
+  track.addEventListener('scroll', function(){
+    if (tick) return;
+    tick = requestAnimationFrame(function(){ tick = null; sync(); });
+  }, { passive: true });
+
+  for (var k = 0; k < buttons.length; k++){
+    (function(idx){
+      buttons[idx].addEventListener('click', function(){
+        if (!items[idx]) return;
+        track.scrollTo({ left: items[idx].offsetLeft, behavior: 'smooth' });
+      });
+    })(k);
+  }
+  window.addEventListener('resize', sync, { passive: true });
+  sync();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Zensea — Manifeste",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Sur-titre",
+      "default": "LE MOMENT VELLUCE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre",
+      "default": "L'heure où l'on"
+    },
+    {
+      "type": "text",
+      "id": "title_accent",
+      "label": "Fin du titre (en italique, couleur accent)",
+      "default": "allume"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Chapô",
+      "default": "<p>18 h 47 en décembre. 21 h 30 en juin. Ce n'est jamais la même heure, mais c'est toujours le même moment : celui où la maison bascule.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>On tire les rideaux, on allume, et la pièce cesse d'être un lieu de passage. Ce basculement-là ne tient à rien — une hauteur de câble, une accordage, un abat-jour qui diffuse au lieu d'éblouir.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "dropcap",
+      "label": "Lettrine sur le chapô",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "quote",
+      "label": "Citation",
+      "default": "C'est notre métier de réussir ce basculement-là."
+    },
+    {
+      "type": "text",
+      "id": "signature",
+      "label": "Signature",
+      "default": "VELLUCE — LA LUMIÈRE EN VELOURS"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Texte alternatif",
+      "default": "Salon éclairé à la tombée du jour"
+    },
+    {
+      "type": "text",
+      "id": "image_caption",
+      "label": "Légende sous l'image",
+      "default": "SALON — 18 H 47"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Position de l'image",
+      "options": [
+        {
+          "value": "left",
+          "label": "À gauche"
+        },
+        {
+          "value": "right",
+          "label": "À droite"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "img_height",
+      "min": 280,
+      "max": 760,
+      "step": 10,
+      "unit": "px",
+      "label": "Hauteur image (bureau)",
+      "default": 560
+    },
+    {
+      "type": "range",
+      "id": "img_height_m",
+      "min": 200,
+      "max": 560,
+      "step": 10,
+      "unit": "px",
+      "label": "Hauteur image (mobile)",
+      "default": 380
+    },
+    {
+      "type": "range",
+      "id": "img_radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Arrondi image (bureau)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "img_radius_m",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Arrondi image (mobile)",
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Chiffre fantôme"
+    },
+    {
+      "type": "text",
+      "id": "ghost_text",
+      "label": "Texte (laisser vide pour masquer)",
+      "default": "18:47"
+    },
+    {
+      "type": "range",
+      "id": "ghost_size",
+      "min": 80,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "label": "Taille (bureau)",
+      "default": 192
+    },
+    {
+      "type": "range",
+      "id": "ghost_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Opacité (bureau)",
+      "default": 0.3
+    },
+    {
+      "type": "range",
+      "id": "ghost_opacity_m",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Opacité (mobile)",
+      "default": 0.4
+    },
+    {
+      "type": "header",
+      "content": "Bouton"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Texte",
+      "default": "EXPLORER NOS PIÈCES"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Lien"
+    },
+    {
+      "type": "select",
+      "id": "cta_style",
+      "label": "Style",
+      "options": [
+        {
+          "value": "link",
+          "label": "Lien souligné (recommandé)"
+        },
+        {
+          "value": "button",
+          "label": "Bouton encadré"
+        }
+      ],
+      "default": "link"
+    },
+    {
+      "type": "header",
+      "content": "Couleurs"
+    },
+    {
+      "type": "color",
+      "id": "accent",
+      "label": "Accent",
+      "default": "#B4C9BE"
+    },
+    {
+      "type": "color",
+      "id": "ink",
+      "label": "Texte principal",
+      "default": "#0D1712"
+    },
+    {
+      "type": "color",
+      "id": "muted",
+      "label": "Texte secondaire",
+      "default": "#576F63"
+    },
+    {
+      "type": "color",
+      "id": "rule_color",
+      "label": "Filets",
+      "default": "#DDE9E3"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Fond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Typographie"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 30,
+      "max": 90,
+      "step": 1,
+      "unit": "px",
+      "label": "Titre (bureau)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "title_size_m",
+      "min": 22,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Titre (mobile)",
+      "default": 33
+    },
+    {
+      "type": "range",
+      "id": "intro_size",
+      "min": 14,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "label": "Chapô (bureau)",
+      "default": 19
+    },
+    {
+      "type": "range",
+      "id": "intro_size_m",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Chapô (mobile)",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Texte (bureau)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_size_m",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Texte (mobile)",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "quote_size",
+      "min": 15,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Citation (bureau)",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "quote_size_m",
+      "min": 14,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "label": "Citation (mobile)",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Mise en page"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 900,
+      "max": 1500,
+      "step": 20,
+      "unit": "px",
+      "label": "Largeur maximale",
+      "default": 1240
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Espace entre colonnes",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "title_gap",
+      "min": 16,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "label": "Espace sous le titre",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "body_offset",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Décalage vertical du texte",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge haute (bureau)",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge basse (bureau)",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "pad_top_m",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge haute (mobile)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom_m",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Marge basse (mobile)",
+      "default": 56
+    },
+    {
+      "type": "checkbox",
+      "id": "reveal",
+      "label": "Apparition au défilement",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "fact",
+      "name": "Repère",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Intitulé",
+          "default": "GARANTIE"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Valeur",
+          "default": "24 mois"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Zensea — Manifeste",
+      "blocks": [
+        {
+          "type": "fact",
+          "settings": {
+            "label": "SÉLECTION",
+            "value": "Peu de modèles"
+          }
+        },
+        {
+          "type": "fact",
+          "settings": {
+            "label": "CONTRÔLE",
+            "value": "Avant mise en ligne"
+          }
+        },
+        {
+          "type": "fact",
+          "settings": {
+            "label": "GARANTIE",
+            "value": "24 mois incluse"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
