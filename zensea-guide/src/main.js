@@ -117,16 +117,35 @@ btnSilence.addEventListener('click', () => entrer(false))
 if (foret) foret.onInteraction = () => { if (hud.classList.contains('is-live')) hud.classList.add('is-settled') }
 
 // ---- Marche --------------------------------------------------------------
-// On marche tant qu'on maintient le bouton (ou ↑ / Z / W au clavier). Chaque
-// pas déclenche un son, alterné gauche-droite, au rythme du balancement.
+// Un appui lance la marche, un autre l'arrête ; si on maintient le bouton
+// plus d'un instant, relâcher arrête aussi. Les deux gestes marchent, parce
+// que les deux sont naturels. Au clavier : ↑, Z ou W maintenus.
 if (foret) {
   foret.onPas = (pan, force) => ambiance.pas(pan, force)
-  const va = on => { foret.marche = on; walk.classList.toggle('is-on', on) }
-  walk.addEventListener('pointerdown', e => { e.preventDefault(); walk.setPointerCapture?.(e.pointerId); va(true) })
-  for (const ev of ['pointerup', 'pointercancel', 'lostpointercapture']) walk.addEventListener(ev, () => va(false))
-  window.addEventListener('keydown', e => { if (['ArrowUp', 'KeyW', 'KeyZ'].includes(e.code)) { va(true); e.preventDefault() } })
+  const va = on => {
+    foret.marche = on
+    walk.classList.toggle('is-on', on)
+    walk.querySelector('span').textContent = on ? 'Stop' : 'Marcher'
+    walk.setAttribute('aria-pressed', on ? 'true' : 'false')
+  }
+  let tAppui = 0
+  walk.addEventListener('pointerdown', e => {
+    e.preventDefault(); e.stopPropagation()
+    tAppui = performance.now()
+    va(!foret.marche)
+  })
+  walk.addEventListener('pointerup', e => {
+    e.preventDefault()
+    // Maintenu longtemps : c'était une marche « tant que j'appuie ».
+    if (foret.marche && performance.now() - tAppui > 450) va(false)
+  })
+  walk.addEventListener('click', e => e.preventDefault())
+  window.addEventListener('keydown', e => { if (['ArrowUp', 'KeyW', 'KeyZ'].includes(e.code) && !e.repeat) { va(true); e.preventDefault() } })
   window.addEventListener('keyup', e => { if (['ArrowUp', 'KeyW', 'KeyZ'].includes(e.code)) va(false) })
   window.addEventListener('blur', () => va(false))
+  document.addEventListener('visibilitychange', () => { if (document.hidden) va(false) })
+  // Au bout du chemin, la marche s'arrête d'elle-même.
+  foret.onArret = () => va(false)
 }
 
 // ---- Son -----------------------------------------------------------------

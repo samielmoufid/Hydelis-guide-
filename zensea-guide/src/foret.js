@@ -24,8 +24,8 @@ const SUN_EL = 15.8 * DEG
 const SUN_DIR = new THREE.Vector3(-Math.sin(SUN_YAW) * Math.cos(SUN_EL), Math.sin(SUN_EL), -Math.cos(SUN_YAW) * Math.cos(SUN_EL))
 
 const RAYON = 60          // rayon de la sphère
-const PORTEE = 26         // distance maximale de marche depuis le centre
-const VITESSE = 1.15      // unités par seconde
+const PORTEE = 30         // distance maximale de marche depuis le centre
+const VITESSE = 1.6       // unités par seconde
 const CADENCE = 1.55      // pas par seconde
 const PITCH_MAX = 72 * DEG
 
@@ -255,8 +255,12 @@ export class Foret {
   // ---- Contrôles ----------------------------------------------------------
   _controles() {
     const el = this.canvas
-    let down = false, lx = 0, ly = 0, vx = 0, vy = 0, dernierTap = 0
+    let down = false, lx = 0, ly = 0, vx = 0, vy = 0, dernierTap = 0, doigt = null
     const debut = e => {
+      // Un seul doigt pilote le regard. Un deuxième doigt (pincement) annule
+      // le glissé en cours : mélanger les deux faisait n'importe quoi.
+      if (doigt !== null && e.pointerId !== doigt) { down = false; doigt = null; this.inertie = null; return }
+      doigt = e.pointerId
       down = true; lx = e.clientX; ly = e.clientY; vx = vy = 0
       this.onInteraction?.()
       // Double appui : on recentre le regard (utile avec le gyroscope).
@@ -268,7 +272,7 @@ export class Foret {
       const w = window.innerWidth, h = window.innerHeight
       this.mouseX = (e.clientX / w) * 2 - 1
       this.mouseY = (e.clientY / h) * 2 - 1
-      if (!down) return
+      if (!down || e.pointerId !== doigt) return
       const dx = e.clientX - lx, dy = e.clientY - ly
       lx = e.clientX; ly = e.clientY
       // Un glissé sur toute la largeur tourne d'environ 60° : assez pour se
@@ -277,7 +281,17 @@ export class Foret {
       vx = -dx * k; vy = -dy * k
       this.dragYaw += vx; this.dragPitch = clamp(this.dragPitch + vy, -PITCH_MAX, PITCH_MAX)
     }
-    const fin = () => { down = false; this.inertie = { vx, vy } }
+    const fin = e => {
+      if (e.pointerId !== doigt) return
+      doigt = null
+      if (down) this.inertie = { vx, vy }
+      down = false
+    }
+    // Pas de zoom : ni pincement, ni double appui (iOS ignore parfois
+    // touch-action, d'où les gestes bloqués explicitement).
+    for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(ev, e => e.preventDefault(), { passive: false })
+    document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault() }, { passive: false })
+    document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault() }, { passive: false })
     el.addEventListener('pointerdown', debut)
     window.addEventListener('pointermove', bouge, { passive: true })
     window.addEventListener('pointerup', fin)
@@ -395,7 +409,7 @@ export class Foret {
       // Au bout du chemin, on ralentit jusqu'à l'arrêt plutôt que de buter.
       const d = suivant.length()
       if (d < PORTEE || d < this.pos.length()) this.pos.copy(suivant)
-      else this.allure *= 0.9
+      else if (this.marche) { this.marche = false; this.onArret?.() }
       this.phasePas += dt * CADENCE * 2 * Math.PI * (0.6 + 0.4 * this.allure)
       bobY = Math.sin(this.phasePas) * 0.055 * this.allure
       roll += Math.sin(this.phasePas * 0.5) * 0.45 * DEG * this.allure
