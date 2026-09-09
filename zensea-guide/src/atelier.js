@@ -34,6 +34,10 @@ export class Atelier {
     this.ray = new THREE.Raycaster()
     this.assis = 0               // 0 debout … 1 assis
     this._sphere()
+    // Le mobilier est posé face à la vue d'ouverture.
+    this.mobilier = new THREE.Group()
+    this.mobilier.rotation.y = ATELIER_YAW
+    this.scene.add(this.mobilier)
     this._table()
     this._handpans()
     this._tasse()
@@ -70,13 +74,13 @@ export class Atelier {
   _table() {
     this.table = new THREE.Group()
     const bois = new THREE.MeshStandardMaterial({ color: 0x3a2a1c, roughness: 0.55, metalness: 0.05 })
-    const plateau = new THREE.Mesh(new THREE.CylinderGeometry(1.15, 1.1, 0.05, 48), bois)
+    const plateau = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.8, 0.045, 48), bois)
     plateau.position.y = -0.98
-    const pied = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.22, 0.6, 20), bois)
-    pied.position.y = -1.3
+    const pied = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.2, 0.62, 20), bois)
+    pied.position.y = -1.31
     this.table.add(plateau, pied)
-    this.table.position.set(0, 0, -1.9)
-    this.scene.add(this.table)
+    this.table.position.set(0, 0, -2.15)
+    this.mobilier.add(this.table)
   }
 
   // ---- Les handpans ---------------------------------------------------------
@@ -130,10 +134,10 @@ export class Atelier {
     const angles = [-38, 0, 38]
     this.handpans.forEach((g, i) => {
       const a = angles[i] * DEG
-      g.position.set(Math.sin(a) * 0.72, -0.95 + 0.075, -1.9 + 0.1 + Math.cos(a) * -0.3 + 0.35)
+      g.position.set(Math.sin(a) * 0.55, -0.95 + 0.075, -2.15 + 0.15 + (1 - Math.cos(a)) * 0.35)
       g.rotation.set(0, -a * 0.6, 0)
       g.userData.repos.copy(g.position); g.userData.reposQ.copy(g.quaternion)
-      this.scene.add(g)
+      this.mobilier.add(g)
     })
     this.cibles = this.handpans.flatMap(g => [g.userData.coque, ...g.userData.champs])
   }
@@ -147,8 +151,8 @@ export class Atelier {
     const fond = new THREE.Mesh(new THREE.CircleGeometry(0.036, 24), ceram); fond.rotation.x = -Math.PI / 2; fond.position.y = -0.037
     const the = new THREE.Mesh(new THREE.CircleGeometry(0.043, 24), new THREE.MeshStandardMaterial({ color: 0x6a3f1a, roughness: 0.2 })); the.rotation.x = -Math.PI / 2; the.position.y = 0.028
     tasse.add(corps, fond, the)
-    tasse.position.set(0.95, -0.95 + 0.04, -1.55)
-    this.scene.add(tasse)
+    tasse.position.set(0.68, -0.95 + 0.04, -1.75)
+    this.mobilier.add(tasse)
     // Vapeur : quelques sprites qui montent en s'effaçant.
     const cv = document.createElement('canvas'); cv.width = cv.height = 64
     const c = cv.getContext('2d'); const gr = c.createRadialGradient(32, 32, 0, 32, 32, 32)
@@ -160,7 +164,7 @@ export class Atelier {
       const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, opacity: 0 }))
       s.userData = { phase: i / 6 }
       s.position.copy(tasse.position)
-      this.scene.add(s); this.vapeur.push(s)
+      this.mobilier.add(s); this.vapeur.push(s)
     }
     this.tasse = tasse
   }
