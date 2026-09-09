@@ -202,6 +202,15 @@ function entrerAtelier() {
   }, { passive: true })
 }
 
+btnSon.addEventListener('click', () => entrer(true))
+btnSilence.addEventListener('click', () => entrer(false))
+
+// Un glissé dans la forêt fait disparaître l'indication plus tôt.
+if (foret) foret.onInteraction = () => { if (hud.classList.contains('is-live')) hud.classList.add('is-settled') }
+
+// ---- Marche --------------------------------------------------------------
+// Un appui lance la marche, un autre l'arrête ; si on maintient le bouton
+// plus d'un instant, relâcher arrête aussi. Au clavier : ↑, Z ou W maintenus.
 let marcher = () => {}
 if (foret) {
   foret.onPas = (pan, force) => ambiance.pas(pan, force)
