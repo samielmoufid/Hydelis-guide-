@@ -253,6 +253,42 @@ export class Ambiance {
     this.timers = []
   }
 
+  // Un pas sur l'herbe et les feuilles : un coup sourd très court (le pied
+  // qui se pose) et un froissement plus aigu juste après (les feuilles).
+  // Fonctionne même quand l'ambiance est coupée par le bouton, tant que le
+  // contexte existe — le silence total reste le choix de l'entrée.
+  pas(pan = 0, force = 1) {
+    if (!this.ctx || !this.enabled) return
+    const c = this.ctx, t = c.currentTime
+    const p = c.createStereoPanner ? c.createStereoPanner() : null
+    if (p) p.pan.value = pan
+    const sortie = p || c.createGain()
+    sortie.connect(this.master)
+
+    const coup = this._sourceBruit()
+    coup.playbackRate.value = rnd(0.85, 1.1)
+    const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = rnd(520, 760); lp.Q.value = 0.9
+    const g1 = c.createGain()
+    const v1 = 0.16 * force
+    g1.gain.setValueAtTime(0.0001, t)
+    g1.gain.exponentialRampToValueAtTime(v1, t + 0.008)
+    g1.gain.exponentialRampToValueAtTime(0.0001, t + rnd(0.09, 0.13))
+    coup.connect(lp).connect(g1).connect(sortie)
+    coup.start(t); coup.stop(t + 0.2)
+
+    const feuilles = this._sourceBruit()
+    feuilles.playbackRate.value = rnd(0.9, 1.3)
+    const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = rnd(2600, 4200); bp.Q.value = 0.8
+    const g2 = c.createGain()
+    const v2 = 0.05 * force
+    const t2 = t + rnd(0.01, 0.03)
+    g2.gain.setValueAtTime(0.0001, t2)
+    g2.gain.exponentialRampToValueAtTime(v2, t2 + 0.012)
+    g2.gain.exponentialRampToValueAtTime(0.0001, t2 + rnd(0.07, 0.12))
+    feuilles.connect(bp).connect(g2).connect(sortie)
+    feuilles.start(t2); feuilles.stop(t2 + 0.2)
+  }
+
   // Bouffée de vent : utilisée à l'entrée dans la forêt.
   rafale(force = 1) {
     if (!this.ctx) return

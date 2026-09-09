@@ -178,6 +178,22 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 #choose { opacity: 0; transform: translateY(8px); transition: opacity 1.4s, transform 1.4s cubic-bezier(.2,.7,.2,1); }
 
+/* Bouton de marche : on le maintient enfoncé. */
+.hud__walk {
+  position: absolute; left: 18px; bottom: max(28px, env(safe-area-inset-bottom));
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  width: 78px; height: 78px; border-radius: 50%;
+  background: rgba(11,26,19,.38); border: 1px solid rgba(246,249,248,.28);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  color: var(--papier); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
+  justify-content: center; opacity: 0; transform: translateY(8px);
+  transition: opacity 1.4s, transform 1.4s cubic-bezier(.2,.7,.2,1), background .2s, box-shadow .2s;
+  touch-action: none;
+}
+.hud__walk.is-on { background: rgba(246,249,248,.92); color: var(--vert-sombre); box-shadow: 0 0 0 8px rgba(246,249,248,.14); }
+.hud.is-settled .hud__walk { opacity: 1; transform: none; }
+@media (max-width: 480px) { .hud__walk { width: 70px; height: 70px; font-size: 11px; } }
+
 /* États pilotés par main.js */
 .hud.is-live .hud__brand, .hud.is-live .hud__sound { opacity: 1; }
 .hud.is-live .hud__hint { opacity: 1; }

@@ -11,7 +11,7 @@ const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const entry = $('#entry'), hud = $('#hud'), veil = $('#veil'), hint = $('#entry-hint')
 const btnSon = $('#enter-sound'), btnSilence = $('#enter-silent'), toggle = $('#sound-toggle')
-const lookHint = $('#look-hint'), choose = $('#choose')
+const lookHint = $('#look-hint'), choose = $('#choose'), walk = $('#walk')
 
 const ambiance = new Ambiance()
 let foret = null
@@ -77,8 +77,12 @@ async function entrer(avecSon) {
   // 1. Le titre s'enfonce, l'arrière-plan s'approche.
   entry.classList.add('is-leaving')
   // 2. La brume monte et recouvre tout.
+  // Appliqué de façon synchrone (lecture forcée de la mise en page entre les
+  // deux) : un requestAnimationFrame peut arriver après le minuteur suivant
+  // sur une machine qui rame, et le voile resterait alors opaque.
   veil.style.transition = 'opacity 1.4s cubic-bezier(.4,0,.6,1)'
-  requestAnimationFrame(() => { veil.style.opacity = '1' })
+  void veil.offsetHeight
+  veil.style.opacity = '1'
   await attendre(1500)
   entry.remove()
   hud.hidden = false
@@ -99,7 +103,9 @@ async function entrer(avecSon) {
 
   // 4. L'interface se pose.
   hud.classList.add('is-live')
-  lookHint.textContent = foret?.gyro ? 'Inclinez votre téléphone pour regarder autour' : (mobile ? 'Glissez pour regarder autour de vous' : 'Glissez pour regarder autour de vous')
+  lookHint.textContent = foret?.gyroBrut
+    ? 'Inclinez le téléphone ou glissez pour regarder · double appui pour recentrer'
+    : (mobile ? 'Glissez pour regarder autour de vous' : 'Glissez pour regarder · maintenez ↑ ou Z pour marcher')
   await attendre(4500)
   hud.classList.add('is-settled')
 }
@@ -109,6 +115,19 @@ btnSilence.addEventListener('click', () => entrer(false))
 
 // Un glissé dans la forêt fait disparaître l'indication plus tôt.
 if (foret) foret.onInteraction = () => { if (hud.classList.contains('is-live')) hud.classList.add('is-settled') }
+
+// ---- Marche --------------------------------------------------------------
+// On marche tant qu'on maintient le bouton (ou ↑ / Z / W au clavier). Chaque
+// pas déclenche un son, alterné gauche-droite, au rythme du balancement.
+if (foret) {
+  foret.onPas = (pan, force) => ambiance.pas(pan, force)
+  const va = on => { foret.marche = on; walk.classList.toggle('is-on', on) }
+  walk.addEventListener('pointerdown', e => { e.preventDefault(); walk.setPointerCapture?.(e.pointerId); va(true) })
+  for (const ev of ['pointerup', 'pointercancel', 'lostpointercapture']) walk.addEventListener(ev, () => va(false))
+  window.addEventListener('keydown', e => { if (['ArrowUp', 'KeyW', 'KeyZ'].includes(e.code)) { va(true); e.preventDefault() } })
+  window.addEventListener('keyup', e => { if (['ArrowUp', 'KeyW', 'KeyZ'].includes(e.code)) va(false) })
+  window.addEventListener('blur', () => va(false))
+}
 
 // ---- Son -----------------------------------------------------------------
 toggle.addEventListener('click', () => {
