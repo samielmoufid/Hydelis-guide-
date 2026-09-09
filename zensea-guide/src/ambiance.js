@@ -267,7 +267,7 @@ export class Ambiance {
   // qui se pose) et un froissement plus aigu juste après (les feuilles).
   // Fonctionne même quand l'ambiance est coupée par le bouton, tant que le
   // contexte existe — le silence total reste le choix de l'entrée.
-  pas(pan = 0, force = 1) {
+  pas(pan = 0, force = 1, course = 0) {
     if (!this.ctx || !this.enabled) return
     const c = this.ctx, t = c.currentTime
     const p = c.createStereoPanner ? c.createStereoPanner() : null
@@ -277,7 +277,7 @@ export class Ambiance {
 
     const coup = this._sourceBruit()
     coup.playbackRate.value = rnd(0.85, 1.1)
-    const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = rnd(520, 760); lp.Q.value = 0.9
+    const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = rnd(520, 760) - 180 * course; lp.Q.value = 0.9 + 0.4 * course
     const g1 = c.createGain()
     const v1 = 0.16 * force
     g1.gain.setValueAtTime(0.0001, t)
@@ -376,6 +376,7 @@ export class Ambiance {
   // Entrer dans l'atelier : la musique au loin s'éteint, dehors s'assourdit.
   interieur(on) {
     if (!this.ctx) return
+    this.interieurOn = on
     const t = this.ctx.currentTime
     this.dehors.frequency.setTargetAtTime(on ? 900 : 20000, t, 1.2)
     this.oiseaux.gain.setTargetAtTime(on ? 0.35 : 1, t, 1)
@@ -430,6 +431,14 @@ export class Ambiance {
     this.oiseaux.gain.setTargetAtTime(1 - prox * 0.7, t, 0.5)
   }
 
+  // En courant, l'air siffle aux oreilles : le vent monte et s'ouvre.
+  setCourse(k) {
+    if (!this.ctx) return
+    const t = this.ctx.currentTime
+    this.course = k
+    this.ventGain.gain.setTargetAtTime(this.interieurOn ? 0.05 : 0.16 + 0.3 * k, t, 0.6)
+  }
+
   // Bouffée de vent : utilisée à l'entrée dans la forêt.
   rafale(force = 1) {
     if (!this.ctx) return
@@ -452,7 +461,7 @@ export class Ambiance {
       const k2 = 0.5 + 0.5 * Math.sin(t * s.vitesse2 * 6.283 + s.phase * 1.7)
       const v = 0.25 + 0.75 * k * (0.4 + 0.6 * k2)
       s.g.gain.setTargetAtTime(v, t, 0.4)
-      s.lp.frequency.setTargetAtTime(260 + 520 * v, t, 0.6)
+      s.lp.frequency.setTargetAtTime(260 + 520 * v + 900 * (this.course || 0), t, 0.6)
       total += v
     }
     const moy = total / this.souffles.length

@@ -13,6 +13,7 @@ const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches
 const entry = $('#entry'), hud = $('#hud'), veil = $('#veil'), hint = $('#entry-hint')
 const btnSon = $('#enter-sound'), btnSilence = $('#enter-silent'), toggle = $('#sound-toggle')
 const lookHint = $('#look-hint'), choose = $('#choose'), walk = $('#walk'), murmure = $('#murmure')
+const run = $('#run')
 const carte = $('#carte'), carteNom = $('#carte-nom'), carteSous = $('#carte-sous'), guide = $('#guide')
 
 const ambiance = new Ambiance()
@@ -60,6 +61,7 @@ if (foret) {
   const boucle = () => {
     // Le vent qu'on entend est celui qu'on voit.
     foret.ventExterne = ambiance.running ? ambiance.niveauVent : null
+    if (ambiance.running) ambiance.setCourse(foret.effort * foret.allure)
     if (ambiance.hp) ambiance.setMusique(foret.distanceMusique(), foret.angleMusique())
     if (musiqueLancee && !arrive && foret.distanceMusique() < 6) arrivee()
     foret.rendu(); raf = requestAnimationFrame(boucle)
@@ -118,7 +120,7 @@ async function entrer(avecSon) {
   hud.classList.add('is-live')
   lookHint.textContent = foret?.gyroBrut
     ? 'Inclinez le téléphone ou glissez pour regarder · double appui pour recentrer'
-    : (mobile ? 'Glissez pour regarder autour de vous' : 'Glissez pour regarder · maintenez ↑ ou Z pour marcher')
+    : (mobile ? 'Glissez pour regarder autour de vous' : 'Glissez pour regarder · ↑ pour marcher, Maj pour courir')
   await attendre(4500)
   hud.classList.add('is-settled')
 
@@ -181,6 +183,7 @@ function entrerAtelier() {
   hud.classList.add('is-atelier')
   choose.hidden = true
   walk.hidden = true
+  run.hidden = true
   // Un appui sur un handpan le choisit ; sur un champ, joue la note.
   foret.onTap = (nx, ny) => {
     const r = atelier.toucher(foret.camera, nx, ny)
@@ -214,36 +217,45 @@ if (foret) foret.onInteraction = () => { if (hud.classList.contains('is-live')) 
 // plus d'un instant, relâcher arrête aussi. Au clavier : ↑, Z ou W maintenus.
 let marcher = () => {}
 if (foret) {
-  foret.onPas = (pan, force) => ambiance.pas(pan, force)
-  const va = on => {
+  foret.onPas = (pan, force, course) => ambiance.pas(pan, force, course)
+  const va = (on, course = false) => {
     foret.marche = on
-    walk.classList.toggle('is-on', on)
-    walk.querySelector('span').textContent = on ? 'Stop' : 'Marcher'
-    walk.setAttribute('aria-pressed', on ? 'true' : 'false')
+    foret.course = on && course
+    walk.classList.toggle('is-on', on && !course)
+    run.classList.toggle('is-on', on && course)
+    walk.querySelector('span').textContent = on && !course ? 'Stop' : 'Marcher'
+    run.querySelector('span').textContent = on && course ? 'Stop' : 'Courir'
+    walk.setAttribute('aria-pressed', on && !course ? 'true' : 'false')
+    run.setAttribute('aria-pressed', on && course ? 'true' : 'false')
   }
-  let tAppui = 0
-  walk.addEventListener('pointerdown', e => {
-    e.preventDefault(); e.stopPropagation()
-    tAppui = performance.now()
-    foret.suivre = false
-    va(!foret.marche)
+  const brancher = (btn, course) => {
+    let tAppui = 0
+    btn.addEventListener('pointerdown', e => {
+      e.preventDefault(); e.stopPropagation()
+      tAppui = performance.now()
+      foret.suivre = false
+      const dejaCeMode = foret.marche && foret.course === course
+      va(!dejaCeMode, course)
+    })
+    btn.addEventListener('pointerup', e => {
+      e.preventDefault()
+      if (foret.marche && foret.course === course && performance.now() - tAppui > 450) va(false)
+    })
+    btn.addEventListener('click', e => e.preventDefault())
+  }
+  brancher(walk, false); brancher(run, true)
+  // Clavier : ↑ / Z / W pour marcher, avec Maj pour courir.
+  window.addEventListener('keydown', e => {
+    if (['ArrowUp', 'KeyW', 'KeyZ'].includes(e.code) && !e.repeat) { va(true, e.shiftKey); e.preventDefault() }
+    if (e.code.startsWith('Shift') && foret.marche) va(true, true)
   })
-  walk.addEventListener('pointerup', e => {
-    e.preventDefault()
-    // Maintenu longtemps : c'était une marche « tant que j'appuie ».
-    if (foret.marche && performance.now() - tAppui > 450) va(false)
+  window.addEventListener('keyup', e => {
+    if (['ArrowUp', 'KeyW', 'KeyZ'].includes(e.code)) va(false)
+    if (e.code.startsWith('Shift') && foret.marche) va(true, false)
   })
-  walk.addEventListener('click', e => e.preventDefault())
-  window.addEventListener('keydown', e => { if (['ArrowUp', 'KeyW', 'KeyZ'].includes(e.code) && !e.repeat) { va(true); e.preventDefault() } })
-  window.addEventListener('keyup', e => { if (['ArrowUp', 'KeyW', 'KeyZ'].includes(e.code)) va(false) })
   window.addEventListener('blur', () => va(false))
   document.addEventListener('visibilitychange', () => { if (document.hidden) va(false) })
-  // Au bout du chemin, la marche s'arrête d'elle-même.
-  foret.onArret = () => {
-    va(false)
-    // Au bout du chemin et tout près de la musique : on y est.
-    if (musiqueLancee && !arrive && foret.distanceMusique() < 11) arrivee()
-  }
+  foret.onArret = () => va(false)
   marcher = va
 }
 

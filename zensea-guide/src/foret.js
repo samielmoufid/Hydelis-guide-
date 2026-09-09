@@ -24,10 +24,12 @@ const SUN_EL = 15.8 * DEG
 const SUN_DIR = new THREE.Vector3(-Math.sin(SUN_YAW) * Math.cos(SUN_EL), Math.sin(SUN_EL), -Math.cos(SUN_YAW) * Math.cos(SUN_EL))
 
 const RAYON = 60          // rayon de la sphère
-const PORTEE = 32         // distance maximale de marche depuis le centre
-const VITESSE = 2.6       // unités par seconde
-const CADENCE = 1.9       // pas par seconde
-const PITCH_MAX = 72 * DEG
+const PORTEE = 36         // distance maximale de marche depuis le centre
+const VITESSE = 3.4       // marche, unités par seconde
+const VITESSE_COURSE = 7.2
+const CADENCE = 2.0       // pas par seconde en marchant
+const CADENCE_COURSE = 3.2
+const PITCH_MAX = 80 * DEG
 
 export class Foret {
   constructor(canvas, { mobile = false } = {}) {
@@ -54,6 +56,8 @@ export class Foret {
     // Marche
     this.pos = new THREE.Vector3()
     this.marche = false
+    this.course = false                          // on court plutôt qu'on marche
+    this.effort = 0                              // 0 marche … 1 course, lissé
     this.allure = 0                              // 0..1, lissé
     this.phasePas = 0
     this.dernierPas = 0
@@ -77,6 +81,7 @@ export class Foret {
     this._poussieres()
     this._feuilles()
     this._brume()
+    this._corps()
     this._controles()
     this.resize()
     window.addEventListener('resize', () => this.resize())
@@ -131,6 +136,9 @@ export class Foret {
         tex.anisotropy = this.renderer.capabilities.getMaxAnisotropy()
         this.panoMat.uniforms.map.value = tex
         this.panoMat.uniforms.uPret.value = 1
+        const pm = new THREE.PMREMGenerator(this.renderer)
+        this.scene.environment = pm.fromEquirectangular(tex).texture
+        pm.dispose()
         res()
       }, undefined, rej)
     })
@@ -341,6 +349,70 @@ export class Foret {
     this.feuilles.setMatrixAt(i, this._m4.compose(this._v, this._q, this._s))
   }
 
+  // ---- Le corps -------------------------------------------------------------
+  // Ce qu'on voit de soi en baissant les yeux : jambes de lin sombre,
+  // chaussures, bras et mains. Éclairés par le panorama lui-même (carte
+  // d'environnement) et par un soleil placé là où il est dans la photo, pour
+  // que la peau et le tissu prennent la même lumière que la forêt.
+  _corps() {
+    const lin = new THREE.MeshStandardMaterial({ color: 0x2f342e, roughness: 0.95 })
+    const manche = new THREE.MeshStandardMaterial({ color: 0xe6dfcf, roughness: 0.9 })
+    const cuir = new THREE.MeshStandardMaterial({ color: 0x3a2a1e, roughness: 0.6 })
+    const peau = new THREE.MeshStandardMaterial({ color: 0xd8b08e, roughness: 0.65 })
+    this.corps = new THREE.Group()
+    const jambe = (x) => {
+      const g = new THREE.Group(); g.position.set(x, -0.82, 0)         // hanche
+      const cuisse = new THREE.Mesh(new THREE.CapsuleGeometry(0.085, 0.36, 4, 12), lin); cuisse.position.y = -0.2
+      const genou = new THREE.Group(); genou.position.y = -0.4
+      const tibia = new THREE.Mesh(new THREE.CapsuleGeometry(0.07, 0.34, 4, 12), lin); tibia.position.y = -0.19
+      const pied = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.07, 0.28), cuir); pied.position.set(0, -0.395, 0.07)
+      genou.add(tibia, pied); g.add(cuisse, genou)
+      g.userData = { genou }
+      return g
+    }
+    const bras = (x) => {
+      const g = new THREE.Group(); g.position.set(x, -0.27, -0.02)     // épaule
+      const haut = new THREE.Mesh(new THREE.CapsuleGeometry(0.055, 0.26, 4, 12), manche); haut.position.y = -0.15
+      const coude = new THREE.Group(); coude.position.y = -0.3
+      const avant = new THREE.Mesh(new THREE.CapsuleGeometry(0.045, 0.24, 4, 12), manche); avant.position.y = -0.14
+      const main = new THREE.Mesh(new THREE.SphereGeometry(0.052, 14, 10), peau); main.scale.set(0.8, 1.15, 0.45); main.position.y = -0.31
+      const doigts = new THREE.Mesh(new THREE.CapsuleGeometry(0.03, 0.05, 3, 8), peau); doigts.position.set(0, -0.37, 0.005); doigts.scale.set(1.6, 1, 0.7)
+      coude.add(avant, main, doigts); g.add(haut, coude)
+      g.userData = { coude }
+      return g
+    }
+    this.jG = jambe(-0.11); this.jD = jambe(0.11)
+    this.bG = bras(-0.22); this.bD = bras(0.22)
+    this.corps.add(this.jG, this.jD, this.bG, this.bD)
+    this.scene.add(this.corps)
+    this.soleil = new THREE.DirectionalLight(0xffe0b0, 1.6)
+    this.soleil.position.copy(SUN_DIR).multiplyScalar(10)
+    this.scene.add(this.soleil, new THREE.AmbientLight(0xcfd8c8, 0.35))
+  }
+
+  _animerCorps(t) {
+    const ph = this.phasePas, a = this.allure, e = this.effort
+    // Amplitude de balancement : modeste en marchant, large en courant.
+    const amp = (0.55 + 0.55 * e) * a
+    const sw = Math.sin(ph)
+    this.jG.rotation.x = sw * amp
+    this.jD.rotation.x = -sw * amp
+    // Le genou plie quand la jambe passe derrière (et davantage en courant).
+    this.jG.userData.genou.rotation.x = Math.max(0, Math.sin(ph + Math.PI)) * (0.7 + 0.9 * e) * a
+    this.jD.userData.genou.rotation.x = Math.max(0, Math.sin(ph)) * (0.7 + 0.9 * e) * a
+    // Bras en opposition ; au repos ils pendent, en courant ils se plient.
+    const repos = Math.sin(t * 0.9) * 0.03
+    this.bG.rotation.x = -sw * amp * 0.75 + repos + 0.12 * e
+    this.bD.rotation.x = sw * amp * 0.75 + repos + 0.12 * e
+    this.bG.userData.coude.rotation.x = -(0.25 + 1.1 * e) * (0.4 + 0.6 * a)
+    this.bD.userData.coude.rotation.x = -(0.25 + 1.1 * e) * (0.4 + 0.6 * a)
+    this.bG.rotation.z = 0.08; this.bD.rotation.z = -0.08
+    // Le corps est sous la tête, tourné avec elle, mais ne bouge pas avec
+    // le balancement de la tête.
+    this.corps.position.set(this.pos.x, 0, this.pos.z)
+    this.corps.rotation.y = this.yaw
+  }
+
   // ---- Brume au sol -------------------------------------------------------
   // Un halo doré très doux sous l'horizon, qui suit la caméra. Le cylindre
   // descend bien sous le champ le plus bas et un disque le ferme.
@@ -525,7 +597,7 @@ export class Foret {
     // Intro : on part le regard levé vers la canopée, champ serré, puis on
     // redescend vers le chemin en ouvrant l'angle. C'est la « descente ».
     const pitchIntro = lerp(52 * DEG, 0, ease)
-    const fov = lerp(34, this.fovBase, ease) + fovResp * ease
+    const fov = lerp(34, this.fovBase, ease) + fovResp * ease + 5 * this.effort * this.allure
     let roll = lerp(-3 * DEG, 0, ease)
 
     // Vent : celui de l'ambiance sonore si elle tourne, sinon une simulation
@@ -567,28 +639,33 @@ export class Foret {
     // rythme des pas, et un pas déclenché à chaque appui du pied.
     const veut = this.marche && this.intro >= 1 ? 1 : 0
     this.allure = lerp(this.allure, veut, veut ? 0.05 : 0.08)
+    this.effort = lerp(this.effort, this.course && this.marche ? 1 : 0, 0.04)
+    const vitesse = lerp(VITESSE, VITESSE_COURSE, this.effort)
+    const cadence = lerp(CADENCE, CADENCE_COURSE, this.effort)
     let bobY = 0
     if (this.allure > 0.01) {
       const dir = this.suivre
         ? new THREE.Vector3(this.musique.x - this.pos.x, 0, this.musique.z - this.pos.z).normalize()
         : new THREE.Vector3(-Math.sin(this.yaw), 0, -Math.cos(this.yaw))
-      const suivant = this.pos.clone().addScaledVector(dir, VITESSE * this.allure * dt)
+      const suivant = this.pos.clone().addScaledVector(dir, vitesse * this.allure * dt)
       // Au bout du chemin, on ralentit jusqu'à l'arrêt plutôt que de buter.
       const d = suivant.length()
       if (d < PORTEE || d < this.pos.length()) this.pos.copy(suivant)
       else if (this.marche) { this.marche = false; this.onArret?.() }
-      this.phasePas += dt * CADENCE * 2 * Math.PI * (0.6 + 0.4 * this.allure)
-      bobY = Math.sin(this.phasePas) * 0.055 * this.allure
-      roll += Math.sin(this.phasePas * 0.5) * 0.45 * DEG * this.allure
-      const cycle = Math.floor(this.phasePas / (2 * Math.PI))
-      if (cycle !== this.dernierPas) {
-        this.dernierPas = cycle
-        if (this.allure > 0.25) this.onPas?.(cycle % 2 ? 0.35 : -0.35, this.allure)
+      this.phasePas += dt * cadence * 2 * Math.PI * (0.6 + 0.4 * this.allure)
+      // Deux appuis par cycle (un par pied) : la tête descend à chaque pas.
+      bobY = -Math.abs(Math.sin(this.phasePas)) * (0.05 + 0.07 * this.effort) * this.allure
+      roll += Math.sin(this.phasePas) * (0.4 + 0.5 * this.effort) * DEG * this.allure
+      const demi = Math.floor(this.phasePas / Math.PI)
+      if (demi !== this.dernierPas) {
+        this.dernierPas = demi
+        if (this.allure > 0.25) this.onPas?.(demi % 2 ? 0.35 : -0.35, this.allure * (0.85 + 0.5 * this.effort), this.effort)
       }
     } else if (this.phasePas % (2 * Math.PI) > 0.01) {
       this.phasePas = 0
     }
     if (this.autre) {
+      this.corps.visible = false
       // Dans l'atelier : pas de marche, on est debout puis assis.
       this.autre.assis = lerp(this.autre.assis, this.autre.choisi ? 1 : 0, 0.03)
       this.camera.position.set(0, -0.35 * this.autre.assis, 0)
@@ -599,6 +676,8 @@ export class Foret {
       this.renderer.render(this.autre.scene, this.camera)
       return
     }
+    this.corps.visible = ease > 0.6
+    this._animerCorps(t)
     this.camera.position.set(this.pos.x, this.pos.y + bobY, this.pos.z)
     this.camera.rotation.set(this.pitch + pitchIntro + respire, this.yaw, roll, 'YXZ')
     if (Math.abs(this.camera.fov - fov) > 0.01) { this.camera.fov = fov; this.camera.updateProjectionMatrix() }

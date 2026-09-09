@@ -208,7 +208,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .hud__walk.is-on { background: rgba(246,249,248,.92); color: var(--vert-sombre); box-shadow: 0 0 0 8px rgba(246,249,248,.14); }
 .hud.is-settled .hud__walk { opacity: 1; transform: none; }
-@media (max-width: 480px) { .hud__walk { width: 70px; height: 70px; font-size: 11px; } }
+.hud__walk--run { left: 106px; transition-delay: .15s; }
+@media (max-width: 480px) { .hud__walk { width: 70px; height: 70px; font-size: 11px; } .hud__walk--run { left: 98px; } }
 
 /* États pilotés par main.js */
 .hud.is-live .hud__brand, .hud.is-live .hud__sound { opacity: 1; }
