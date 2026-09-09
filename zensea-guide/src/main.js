@@ -33,7 +33,11 @@ if (!webgl) {
 // n'est actif qu'une fois la forêt prête : on n'entre jamais dans le noir.
 const pret = (async () => {
   if (foret) {
-    const url = mobile ? './foret/misty-pines-2k.jpg' : './foret/misty-pines-4k.jpg'
+    // 4K partout (33 Mo en mémoire graphique : dans le budget d'un iPhone),
+    // 6K sur les machines qui l'acceptent. Le flou du 2K venait de là : sur
+    // un téléphone on ne voit que 82° du panorama, soit un cinquième des
+    // pixels étirés sur toute la largeur de l'écran.
+    const url = (!mobile && foret.maxTexture >= 6144) ? './foret/vondel-6k.jpg' : './foret/vondel-4k.jpg'
     await foret.charger(url)
   }
   hint.textContent = mobile ? 'Inclinez votre téléphone une fois dans la forêt' : 'La forêt est prête'

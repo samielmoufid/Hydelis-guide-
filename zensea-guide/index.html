@@ -7,7 +7,7 @@
   <meta name="description" content="Apprenez le handpan au cœur d'une forêt. Le guide immersif Zensea.">
   <meta name="theme-color" content="#0b1a13">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2716%27 fill=%27%232e5e46%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%279%27 fill=%27none%27 stroke=%27%23f6f9f8%27 stroke-width=%272%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%273%27 fill=%27%23f6f9f8%27/%3E%3C/svg%3E">
-  <link rel="preload" as="image" href="./foret/misty-pines-mini.jpg">
+  <link rel="preload" as="image" href="./foret/vondel-mini.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
   <link rel="stylesheet" href="./src/styles.css">
@@ -16,6 +16,7 @@
   <!-- La scène WebGL vit derrière tout le reste. -->
   <canvas id="scene" aria-hidden="true"></canvas>
   <div id="fallback" class="fallback" hidden aria-hidden="true"></div>
+  <div class="grade" aria-hidden="true"></div>
 
   <!-- Voile de transition : brume qui se lève à l'entrée. -->
   <div id="veil" class="veil" aria-hidden="true"></div>
@@ -30,7 +31,7 @@
         <span class="entry__line">Le guide</span>
         <span class="entry__line entry__line--em">du handpan</span>
       </h1>
-      <p class="entry__lead">Apprenez à jouer au cœur d’une forêt.<br>Prenez une grande respiration.</p>
+      <p class="entry__lead">Apprenez à jouer dans la lumière du soir,<br>au cœur d’une forêt.</p>
 
       <p class="entry__ask">Voulez-vous activer le son pour un voyage encore plus immersif ?</p>
       <div class="entry__actions">

@@ -4,9 +4,9 @@ Expérience immersive d'accueil du guide : un écran d'entrée, puis une
 descente dans une vraie forêt en 360° (panorama photographique) que l'on
 parcourt du regard à la souris, au doigt ou en inclinant le téléphone.
 Ambiance sonore synthétisée en direct (vent, feuilles, oiseaux), rais de
-lumière, poussières en suspension, brume au sol.
+lumière, poussières en suspension, brume au sol, halo de soleil.
 
-Le panorama `misty_pines` vient de Poly Haven (licence CC0, usage
+Le panorama `sunny_vondelpark` vient de Poly Haven (licence CC0, usage
 commercial libre). Le son ne charge aucun fichier : tout est généré
 par WebAudio, donc aucune licence à gérer et jamais deux fois le même.
 

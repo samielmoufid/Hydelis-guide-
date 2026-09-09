@@ -33,15 +33,23 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* Repli sans WebGL : le panorama en fond, qui glisse lentement. */
 .fallback {
   position: fixed; inset: 0;
-  background: #0b1a13 url('/foret/misty-pines-2k.jpg') center / auto 100% repeat-x;
+  background: #0b1a13 url('/foret/vondel-4k.jpg') center / auto 100% repeat-x;
   animation: pan 90s linear infinite;
 }
-@keyframes pan { from { background-position-x: 0; } to { background-position-x: -2048px; } }
+@keyframes pan { from { background-position-x: 0; } to { background-position-x: -4096px; } }
+
+/* Étalonnage : bords assombris et réchauffés, comme à travers un objectif. */
+.grade {
+  position: fixed; inset: 0; z-index: 5; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 45%, rgba(30,18,5,.28) 100%),
+    linear-gradient(180deg, rgba(255,200,120,.05), rgba(0,0,0,0) 35%, rgba(20,12,4,.18));
+}
 
 /* ---- Voile de brume à l'entrée ---- */
 .veil {
   position: fixed; inset: 0; z-index: 30; pointer-events: none;
-  background: radial-gradient(ellipse at 50% 40%, rgba(246,249,248,1) 0%, rgba(223,234,228,1) 55%, rgba(200,216,208,1) 100%);
+  background: radial-gradient(ellipse at 50% 40%, rgba(255,250,240,1) 0%, rgba(255,232,195,1) 55%, rgba(236,200,150,1) 100%);
   opacity: 0;
 }
 
@@ -54,8 +62,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 }
 .entry__bg {
   position: absolute; inset: -6%;
-  background: url('/foret/misty-pines-mini.jpg') center 45% / cover no-repeat;
-  filter: blur(12px) saturate(0.9) brightness(0.72);
+  background: url('/foret/vondel-mini.jpg') center 45% / cover no-repeat;
+  filter: blur(12px) saturate(1.05) brightness(0.62);
   transform: scale(1.04);
   animation: kenburns 28s ease-in-out infinite alternate;
 }

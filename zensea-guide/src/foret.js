@@ -9,17 +9,24 @@ const DEG = Math.PI / 180
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 const lerp = (a, b, k) => a + (b - a) * k
 
-// Orientation de départ : le point de la photo vers lequel on regarde en
-// arrivant. Ajusté pour tomber sur l'allée entre les grands pins.
-const YAW0 = 0 * DEG
-const PITCH0 = 2 * DEG
+// Position du soleil dans le panorama (mesurée sur l'image : pixel le plus
+// lumineux). Repère : le centre de la photo est à yaw 90°, et yaw décroît
+// quand on va vers la droite de l'image.
+const SUN_YAW = (90 - 41.1) * DEG
+const SUN_EL = 15.8 * DEG
+const SUN_DIR = new THREE.Vector3(-Math.sin(SUN_YAW) * Math.cos(SUN_EL), Math.sin(SUN_EL), -Math.cos(SUN_YAW) * Math.cos(SUN_EL))
+
+// Vue de départ : le soleil un peu à droite du centre, jamais en plein
+// milieu — c'est ce qui rend la composition vivante.
+let YAW0 = SUN_YAW + 22 * DEG
+const PITCH0 = 1 * DEG
 
 export class Foret {
   constructor(canvas, { mobile = false } = {}) {
     this.canvas = canvas
     this.mobile = mobile
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, powerPreference: 'high-performance' })
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 2 : 1.75))
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 3 : 2))
     this.renderer.outputColorSpace = THREE.SRGBColorSpace
     this.renderer.toneMapping = THREE.NoToneMapping
 
@@ -40,6 +47,7 @@ export class Foret {
     this.actif = false
 
     this._sphere()
+    this._soleil()
     this._rais()
     this._poussieres()
     this._brume()
@@ -57,19 +65,47 @@ export class Foret {
     this.scene.add(this.pano)
   }
 
+  get maxTexture() { return this.renderer.capabilities.maxTextureSize }
+
   charger(url) {
     return new Promise((res, rej) => {
       new THREE.TextureLoader().load(url, tex => {
         tex.colorSpace = THREE.SRGBColorSpace
-        tex.minFilter = THREE.LinearFilter
-        tex.generateMipmaps = false
-        tex.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy())
+        // Le panorama est bien plus grand que l'écran : les mipmaps et
+        // l'anisotropie évitent le scintillement sans perdre le piqué.
+        tex.minFilter = THREE.LinearMipmapLinearFilter
+        tex.magFilter = THREE.LinearFilter
+        tex.generateMipmaps = true
+        tex.anisotropy = this.renderer.capabilities.getMaxAnisotropy()
         this.panoMat.map = tex
         this.panoMat.color.set(0xffffff)
         this.panoMat.needsUpdate = true
         res()
       }, undefined, rej)
     })
+  }
+
+  // ---- Le soleil ------------------------------------------------------------
+  // La photo contient déjà le soleil ; on lui ajoute un halo additif large
+  // et un cœur plus serré, qui pulsent lentement. C'est ce qui donne le
+  // « débordement » de lumière qu'un capteur photo écrase.
+  _soleil() {
+    const halo = (taille, stops) => {
+      const cv = document.createElement('canvas'); cv.width = cv.height = 256
+      const g = cv.getContext('2d')
+      const grad = g.createRadialGradient(128, 128, 0, 128, 128, 128)
+      for (const [k, c] of stops) grad.addColorStop(k, c)
+      g.fillStyle = grad; g.fillRect(0, 0, 256, 256)
+      const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace
+      const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false, blending: THREE.AdditiveBlending, opacity: 0 })
+      const sp = new THREE.Sprite(mat)
+      sp.position.copy(SUN_DIR).multiplyScalar(50)
+      sp.scale.set(taille, taille, 1)
+      this.scene.add(sp)
+      return mat
+    }
+    this.haloMat = halo(46, [[0, 'rgba(255,214,150,0.42)'], [0.25, 'rgba(255,190,110,0.16)'], [0.6, 'rgba(255,160,80,0.06)'], [1, 'rgba(255,140,60,0)']])
+    this.coeurMat = halo(14, [[0, 'rgba(255,250,235,0.95)'], [0.3, 'rgba(255,230,180,0.5)'], [1, 'rgba(255,200,130,0)']])
   }
 
   // ---- Rais de lumière ----------------------------------------------------
@@ -93,18 +129,19 @@ export class Foret {
 
     this.rais = new THREE.Group()
     this.raisItems = []
-    const n = this.mobile ? 7 : 11
+    const n = this.mobile ? 9 : 14
     for (let i = 0; i < n; i++) {
       const mat = new THREE.MeshBasicMaterial({
         map: tex, transparent: true, depthWrite: false, depthTest: false,
-        blending: THREE.AdditiveBlending, color: new THREE.Color(0xfff1cf), opacity: 0
+        blending: THREE.AdditiveBlending, color: new THREE.Color(0xffd08a), opacity: 0
       })
-      const w = 1.6 + Math.random() * 2.4, h = 26 + Math.random() * 14
+      const w = 1.4 + Math.random() * 2.6, h = 30 + Math.random() * 16
       const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat)
-      // Répartis autour de l'axe de regard, un peu en avant et en hauteur.
-      const a = (i / n) * Math.PI * 2 + Math.random() * 0.5
-      const r = 10 + Math.random() * 12
-      m.position.set(Math.cos(a) * r, 8 + Math.random() * 4, Math.sin(a) * r)
+      // Groupés autour du soleil : c'est de lui que la lumière tombe.
+      const ecart = (Math.random() - 0.5) * 70 * DEG
+      const yaw = SUN_YAW + ecart
+      const r = 14 + Math.random() * 10
+      m.position.set(-Math.sin(yaw) * r, 4 + Math.random() * 6, -Math.cos(yaw) * r)
       // Le plan fait toujours face à l'observateur (qui ne bouge pas), sinon
       // on le verrait de profil. Une légère inclinaison casse la régularité.
       m.rotation.set(0, Math.atan2(m.position.x, m.position.z), (Math.random() - 0.5) * 0.35)
@@ -121,9 +158,9 @@ export class Foret {
     const cv = document.createElement('canvas'); cv.width = cv.height = 64
     const g = cv.getContext('2d')
     const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32)
-    grad.addColorStop(0, 'rgba(255,252,235,1)')
-    grad.addColorStop(0.35, 'rgba(255,252,235,0.5)')
-    grad.addColorStop(1, 'rgba(255,252,235,0)')
+    grad.addColorStop(0, 'rgba(255,236,190,1)')
+    grad.addColorStop(0.35, 'rgba(255,236,190,0.5)')
+    grad.addColorStop(1, 'rgba(255,236,190,0)')
     g.fillStyle = grad; g.fillRect(0, 0, 64, 64)
     const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace
 
@@ -181,9 +218,9 @@ export class Foret {
     const cv = document.createElement('canvas'); cv.width = 256; cv.height = 128
     const g = cv.getContext('2d')
     const grad = g.createLinearGradient(0, 0, 0, 128)
-    grad.addColorStop(0, 'rgba(223,234,228,0)')
-    grad.addColorStop(0.6, 'rgba(223,234,228,0.55)')
-    grad.addColorStop(1, 'rgba(223,234,228,0.75)')
+    grad.addColorStop(0, 'rgba(255,226,180,0)')
+    grad.addColorStop(0.6, 'rgba(255,226,180,0.5)')
+    grad.addColorStop(1, 'rgba(255,226,180,0.7)')
     g.fillStyle = grad; g.fillRect(0, 0, 256, 128)
     const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace
     // Le cylindre descend bien sous le champ de vision le plus bas (-75°) et
@@ -195,7 +232,7 @@ export class Foret {
     m.position.y = -37
     this.scene.add(m)
     const fond = new THREE.Mesh(new THREE.CircleGeometry(40, 48),
-      new THREE.MeshBasicMaterial({ color: 0xdfeae4, transparent: true, depthWrite: false, opacity: 0 }))
+      new THREE.MeshBasicMaterial({ color: 0xffe2b4, transparent: true, depthWrite: false, opacity: 0 }))
     fond.rotation.x = Math.PI / 2
     fond.position.y = -72
     this.brumeFond = fond.material
@@ -264,6 +301,7 @@ export class Foret {
     this.camera.aspect = w / h
     // Sur un écran étroit on ouvre plus l'angle pour ne pas se sentir enfermé.
     this.fovBase = w < h ? 82 : 68
+    YAW0 = SUN_YAW + (w < h ? 11 : 22) * DEG
     this.camera.updateProjectionMatrix()
     this.pMat.uniforms.uScale.value = h * 0.42
   }
@@ -310,13 +348,17 @@ export class Foret {
     }
     if (Math.abs(this.camera.fov - fov) > 0.01) { this.camera.fov = fov; this.camera.updateProjectionMatrix() }
 
+    // Soleil : le halo respire, le cœur scintille à peine.
+    this.haloMat.opacity = lerp(this.haloMat.opacity, (0.75 + 0.25 * Math.sin(t * 0.3)) * ease, 0.03)
+    this.coeurMat.opacity = lerp(this.coeurMat.opacity, (0.85 + 0.15 * Math.sin(t * 1.7)) * ease, 0.05)
+
     // Rais : apparaissent pendant l'intro, ondulent ensuite.
     const cible = ease
     this.raisOpacite = lerp(this.raisOpacite, cible, 0.03)
     for (const m of this.raisItems) {
       const u = m.userData
       const o = u.base * (0.55 + 0.45 * Math.sin(t * u.vitesse * 6.283 + u.phase))
-      u.mat.opacity = o * this.raisOpacite
+      u.mat.opacity = o * this.raisOpacite * (this.mobile ? 0.8 : 1)
     }
     // Les rais suivent la caméra sur le lacet seulement : ils restent
     // « dans la lumière », pas collés à l'écran.
@@ -332,7 +374,7 @@ export class Foret {
     }
     this.points.geometry.attributes.position.needsUpdate = true
     this.pMat.uniforms.uOpacity.value = lerp(this.pMat.uniforms.uOpacity.value, 0.7 * ease, 0.02)
-    this.brumeMat.opacity = lerp(this.brumeMat.opacity, 0.42 * ease, 0.02)
+    this.brumeMat.opacity = lerp(this.brumeMat.opacity, 0.3 * ease, 0.02)
     this.brumeFond.opacity = this.brumeMat.opacity * 0.75
 
     this.renderer.render(this.scene, this.camera)
