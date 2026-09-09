@@ -187,6 +187,7 @@ function entrerAtelier() {
     if (r?.type === 'choix') {
       carteNom.textContent = r.modele.nom; carteSous.textContent = r.modele.sous
       carte.hidden = false; guide.hidden = false
+      hud.classList.add('is-choisi')
       murmure.textContent = 'Touchez les champs pour jouer.'
       setTimeout(() => { if (murmure.textContent === 'Touchez les champs pour jouer.') murmure.textContent = '' }, 5000)
       // La première note, offerte : c'est sa voix.

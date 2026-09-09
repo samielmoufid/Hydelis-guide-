@@ -230,6 +230,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .carte__sous { margin: 4px 0 0; font-size: 14px; letter-spacing: .04em; color: rgba(246,249,248,.8); text-shadow: 0 1px 12px rgba(0,0,0,.45); }
 .hud.is-atelier .hud__hint { display: none; }
 #guide { opacity: 1; transform: none; }
+/* Handpan choisi : il occupe le bas de l'écran, la carte remonte en haut. */
+.hud.is-choisi .hud__bottom { bottom: auto; top: max(64px, calc(env(safe-area-inset-top) + 52px)); gap: 12px; }
+.hud.is-choisi .hud__murmure { font-size: clamp(17px, 3vw, 22px); }
 
 /* Toast de placeholder pour l'étape suivante */
 .toast {
