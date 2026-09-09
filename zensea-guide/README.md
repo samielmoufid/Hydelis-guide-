@@ -20,6 +20,21 @@ npm run build      # build de production dans dist/
 
 `?no3d` force le repli sans WebGL (panorama en fond CSS).
 
+## Déploiement
+
+Chaque push sur `main` déclenche `.github/workflows/deploy.yml` : build
+Vite, puis publication sur GitHub Pages. Le site est servi sur
+**https://guide.zensea.fr** ; `public/CNAME` maintient le domaine à chaque
+déploiement.
+
+Mise en place, une seule fois :
+
+1. Dépôt GitHub → Settings → Pages → Source : **GitHub Actions**.
+2. Shopify → Paramètres → Domaines → zensea.fr → ajouter un enregistrement
+   DNS `CNAME` : hôte `guide`, cible `samielmoufid.github.io`.
+3. Settings → Pages → Custom domain : `guide.zensea.fr`, puis cocher
+   « Enforce HTTPS » quand le certificat est émis (quelques minutes).
+
 ## Étape suivante
 
 Le bouton « Choisir mon handpan » est en place ; l'écran de choix (visuels
