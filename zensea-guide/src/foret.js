@@ -361,17 +361,17 @@ export class Foret {
     const peau = new THREE.MeshStandardMaterial({ color: 0xd8b08e, roughness: 0.65 })
     this.corps = new THREE.Group()
     const jambe = (x) => {
-      const g = new THREE.Group(); g.position.set(x, -0.82, 0)         // hanche
+      const g = new THREE.Group(); g.position.set(x, -0.78, -0.14)     // hanche, un peu en avant de la tête
       const cuisse = new THREE.Mesh(new THREE.CapsuleGeometry(0.085, 0.36, 4, 12), lin); cuisse.position.y = -0.2
       const genou = new THREE.Group(); genou.position.y = -0.4
       const tibia = new THREE.Mesh(new THREE.CapsuleGeometry(0.07, 0.34, 4, 12), lin); tibia.position.y = -0.19
-      const pied = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.07, 0.28), cuir); pied.position.set(0, -0.395, 0.07)
+      const pied = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.07, 0.3), cuir); pied.position.set(0, -0.395, -0.09)
       genou.add(tibia, pied); g.add(cuisse, genou)
       g.userData = { genou }
       return g
     }
     const bras = (x) => {
-      const g = new THREE.Group(); g.position.set(x, -0.27, -0.02)     // épaule
+      const g = new THREE.Group(); g.position.set(x, -0.25, -0.1)      // épaule
       const haut = new THREE.Mesh(new THREE.CapsuleGeometry(0.055, 0.26, 4, 12), manche); haut.position.y = -0.15
       const coude = new THREE.Group(); coude.position.y = -0.3
       const avant = new THREE.Mesh(new THREE.CapsuleGeometry(0.045, 0.24, 4, 12), manche); avant.position.y = -0.14
@@ -402,10 +402,10 @@ export class Foret {
     this.jD.userData.genou.rotation.x = Math.max(0, Math.sin(ph)) * (0.7 + 0.9 * e) * a
     // Bras en opposition ; au repos ils pendent, en courant ils se plient.
     const repos = Math.sin(t * 0.9) * 0.03
-    this.bG.rotation.x = -sw * amp * 0.75 + repos + 0.12 * e
-    this.bD.rotation.x = sw * amp * 0.75 + repos + 0.12 * e
-    this.bG.userData.coude.rotation.x = -(0.25 + 1.1 * e) * (0.4 + 0.6 * a)
-    this.bD.userData.coude.rotation.x = -(0.25 + 1.1 * e) * (0.4 + 0.6 * a)
+    this.bG.rotation.x = -sw * amp * 0.75 + repos + 0.35 + 0.15 * e
+    this.bD.rotation.x = sw * amp * 0.75 + repos + 0.35 + 0.15 * e
+    this.bG.userData.coude.rotation.x = -(0.55 + 0.9 * e) * (0.5 + 0.5 * a) - 0.3
+    this.bD.userData.coude.rotation.x = -(0.55 + 0.9 * e) * (0.5 + 0.5 * a) - 0.3
     this.bG.rotation.z = 0.08; this.bD.rotation.z = -0.08
     // Le corps est sous la tête, tourné avec elle, mais ne bouge pas avec
     // le balancement de la tête.
