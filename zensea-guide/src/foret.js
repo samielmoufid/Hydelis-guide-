@@ -362,7 +362,7 @@ export class Foret {
     this.corps = new THREE.Group()
     const jambe = (x) => {
       const g = new THREE.Group(); g.position.set(x, -0.78, -0.14)     // hanche, un peu en avant de la tête
-      const cuisse = new THREE.Mesh(new THREE.CapsuleGeometry(0.085, 0.36, 4, 12), lin); cuisse.position.y = -0.2
+      const cuisse = new THREE.Mesh(new THREE.CapsuleGeometry(0.075, 0.36, 4, 12), lin); cuisse.position.y = -0.2
       const genou = new THREE.Group(); genou.position.y = -0.4
       const tibia = new THREE.Mesh(new THREE.CapsuleGeometry(0.07, 0.34, 4, 12), lin); tibia.position.y = -0.19
       const pied = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.07, 0.3), cuir); pied.position.set(0, -0.395, -0.09)
@@ -370,19 +370,19 @@ export class Foret {
       g.userData = { genou }
       return g
     }
+    // Des bras, on ne voit que l'avant-bras et la main : le haut du bras est
+    // hors du champ, contre l'œil. Le groupe pivote au coude.
     const bras = (x) => {
-      const g = new THREE.Group(); g.position.set(x, -0.25, -0.1)      // épaule
-      const haut = new THREE.Mesh(new THREE.CapsuleGeometry(0.055, 0.26, 4, 12), manche); haut.position.y = -0.15
-      const coude = new THREE.Group(); coude.position.y = -0.3
-      const avant = new THREE.Mesh(new THREE.CapsuleGeometry(0.045, 0.24, 4, 12), manche); avant.position.y = -0.14
-      const main = new THREE.Mesh(new THREE.SphereGeometry(0.052, 14, 10), peau); main.scale.set(0.8, 1.15, 0.45); main.position.y = -0.31
-      const doigts = new THREE.Mesh(new THREE.CapsuleGeometry(0.03, 0.05, 3, 8), peau); doigts.position.set(0, -0.37, 0.005); doigts.scale.set(1.6, 1, 0.7)
-      coude.add(avant, main, doigts); g.add(haut, coude)
-      g.userData = { coude }
+      const g = new THREE.Group(); g.position.set(x, -0.5, -0.12)      // coude
+      const avant = new THREE.Mesh(new THREE.CapsuleGeometry(0.038, 0.24, 4, 12), manche); avant.position.y = -0.13
+      const poignet = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.033, 0.03, 12), peau); poignet.position.y = -0.27
+      const main = new THREE.Mesh(new THREE.SphereGeometry(0.05, 14, 10), peau); main.scale.set(0.85, 1.2, 0.42); main.position.y = -0.33
+      const doigts = new THREE.Mesh(new THREE.CapsuleGeometry(0.026, 0.06, 3, 8), peau); doigts.position.set(0, -0.4, 0); doigts.scale.set(1.7, 1, 0.65)
+      g.add(avant, poignet, main, doigts)
       return g
     }
     this.jG = jambe(-0.11); this.jD = jambe(0.11)
-    this.bG = bras(-0.22); this.bD = bras(0.22)
+    this.bG = bras(-0.21); this.bD = bras(0.21)
     this.corps.add(this.jG, this.jD, this.bG, this.bD)
     this.scene.add(this.corps)
     this.soleil = new THREE.DirectionalLight(0xffe0b0, 1.6)
@@ -400,13 +400,13 @@ export class Foret {
     // Le genou plie quand la jambe passe derrière (et davantage en courant).
     this.jG.userData.genou.rotation.x = Math.max(0, Math.sin(ph + Math.PI)) * (0.7 + 0.9 * e) * a
     this.jD.userData.genou.rotation.x = Math.max(0, Math.sin(ph)) * (0.7 + 0.9 * e) * a
-    // Bras en opposition ; au repos ils pendent, en courant ils se plient.
+    // Avant-bras en opposition des jambes ; au repos ils pendent un peu vers
+    // l'avant, en courant ils se relèvent presque à l'horizontale.
     const repos = Math.sin(t * 0.9) * 0.03
-    this.bG.rotation.x = -sw * amp * 0.75 + repos + 0.35 + 0.15 * e
-    this.bD.rotation.x = sw * amp * 0.75 + repos + 0.35 + 0.15 * e
-    this.bG.userData.coude.rotation.x = -(0.55 + 0.9 * e) * (0.5 + 0.5 * a) - 0.3
-    this.bD.userData.coude.rotation.x = -(0.55 + 0.9 * e) * (0.5 + 0.5 * a) - 0.3
-    this.bG.rotation.z = 0.08; this.bD.rotation.z = -0.08
+    const base = -0.35 - 0.95 * e * a
+    this.bG.rotation.x = base - sw * amp * 0.55 + repos
+    this.bD.rotation.x = base + sw * amp * 0.55 + repos
+    this.bG.rotation.z = 0.1; this.bD.rotation.z = -0.1
     // Le corps est sous la tête, tourné avec elle, mais ne bouge pas avec
     // le balancement de la tête.
     this.corps.position.set(this.pos.x, 0, this.pos.z)
