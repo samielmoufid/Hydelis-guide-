@@ -68,7 +68,13 @@ export class Ambiance {
     const comp = c.createDynamicsCompressor()
     comp.threshold.value = -22; comp.knee.value = 18; comp.ratio.value = 3
     comp.attack.value = 0.01; comp.release.value = 0.35
-    this.master.connect(comp).connect(c.destination)
+    // Un passe-bas global : grand ouvert dehors, fermé à l'intérieur (les
+    // oiseaux et le vent à travers les murs de bois).
+    this.dehors = c.createBiquadFilter(); this.dehors.type = 'lowpass'; this.dehors.frequency.value = 20000
+    this.master.connect(this.dehors).connect(comp).connect(c.destination)
+    // Ce qui se joue à l'intérieur (le handpan sous les mains) contourne ce filtre.
+    this.dedans = c.createGain(); this.dedans.gain.value = 1
+    this.dedans.connect(comp)
     this.oiseaux = c.createGain(); this.oiseaux.gain.value = 1
     this.oiseaux.connect(this.master)
     this.niveauVent = 0
@@ -365,6 +371,49 @@ export class Ambiance {
     h.prochain = t
     const id = setTimeout(() => this._phraseHandpan(), Math.max(50, (t - c.currentTime - 0.6) * 1000))
     this.timers.push(id)
+  }
+
+  // Entrer dans l'atelier : la musique au loin s'éteint, dehors s'assourdit.
+  interieur(on) {
+    if (!this.ctx) return
+    const t = this.ctx.currentTime
+    this.dehors.frequency.setTargetAtTime(on ? 900 : 20000, t, 1.2)
+    this.oiseaux.gain.setTargetAtTime(on ? 0.35 : 1, t, 1)
+    this.ventGain.gain.setTargetAtTime(on ? 0.05 : 0.16, t, 1)
+    if (on && this.hp) {
+      this.hp.gain.gain.setTargetAtTime(0.0001, t, 0.8)
+      const h = this.hp; this.hp = null
+      setTimeout(() => { try { h.lp.disconnect() } catch {} }, 4000)
+    }
+  }
+
+  // Une note de handpan tout près : sous les mains. Sans le filtre extérieur,
+  // avec une réverbération de bois discrète.
+  noteProche(f, vel = 0.9, pan = 0) {
+    if (!this.ctx) return
+    const c = this.ctx, t = c.currentTime + 0.01
+    if (!this.proche) {
+      this.proche = c.createGain(); this.proche.gain.value = 1
+      const rev = c.createGain(); rev.gain.value = 0.22
+      this.proche.connect(this.dedans); this.proche.connect(rev).connect(this.reverb)
+    }
+    const p = c.createStereoPanner ? c.createStereoPanner() : null
+    const sortie = p || c.createGain()
+    if (p) p.pan.value = Math.max(-0.7, Math.min(0.7, pan))
+    sortie.connect(this.proche)
+    for (const [ratio, g, dur] of [[1, 1, 4.2], [2, 0.5, 2.8], [3, 0.24, 1.8], [4.9, 0.06, 0.7], [6.2, 0.03, 0.4]]) {
+      const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f * ratio
+      const e = c.createGain()
+      e.gain.setValueAtTime(0.0001, t)
+      e.gain.exponentialRampToValueAtTime(0.28 * g * vel, t + 0.005 + 0.003 * ratio)
+      e.gain.exponentialRampToValueAtTime(0.0001, t + dur * (0.7 + 0.3 * vel))
+      o.connect(e).connect(sortie); o.start(t); o.stop(t + dur + 0.1)
+    }
+    const n = this._sourceBruit()
+    const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f * 2.4; bp.Q.value = 1.5
+    const e = c.createGain()
+    e.gain.setValueAtTime(0.0001, t); e.gain.exponentialRampToValueAtTime(0.09 * vel, t + 0.003); e.gain.exponentialRampToValueAtTime(0.0001, t + 0.06)
+    n.connect(bp).connect(e).connect(sortie); n.start(t); n.stop(t + 0.1)
   }
 
   // Distance (unités de la scène) et angle (radians, négatif = à gauche) de la

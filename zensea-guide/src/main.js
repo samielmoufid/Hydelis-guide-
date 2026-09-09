@@ -3,6 +3,7 @@
 
 import { Foret } from './foret.js'
 import { Ambiance } from './ambiance.js'
+import { Atelier, ATELIER_YAW } from './atelier.js'
 
 const $ = s => document.querySelector(s)
 const params = new URLSearchParams(location.search)
@@ -12,6 +13,7 @@ const reduit = matchMedia('(prefers-reduced-motion: reduce)').matches
 const entry = $('#entry'), hud = $('#hud'), veil = $('#veil'), hint = $('#entry-hint')
 const btnSon = $('#enter-sound'), btnSilence = $('#enter-silent'), toggle = $('#sound-toggle')
 const lookHint = $('#look-hint'), choose = $('#choose'), walk = $('#walk'), murmure = $('#murmure')
+const carte = $('#carte'), carteNom = $('#carte-nom'), carteSous = $('#carte-sous'), guide = $('#guide')
 
 const ambiance = new Ambiance()
 let foret = null
@@ -129,6 +131,7 @@ function lancerMusique() {
   if (musiqueLancee) return
   musiqueLancee = true
   if (ambiance.running) ambiance.handpanLointain()
+  preparerAtelier()
   murmure.textContent = 'Quelqu’un joue, un peu plus loin.'
   hud.classList.add('is-musique')
   choose.querySelector('.btn__label').textContent = 'Suivre la musique'
@@ -139,37 +142,66 @@ async function suivre() {
   if (!musiqueLancee) return
   foret?.tournerVersMusique()
   murmure.textContent = ''
-  // On ne part qu'une fois tourné, sinon on marche en courbe et on la manque.
-  for (let i = 0; i < 60 && foret?.cibleYaw != null; i++) await attendre(50)
+  // Les pieds vont vers la musique quoi qu'on regarde ; la tête reste libre.
+  if (foret) foret.suivre = true
+  for (let i = 0; i < 24 && foret?.cibleYaw != null; i++) await attendre(50)
   if (foret && !foret.marche) marcher(true)
 }
 
-// Arrivée : la lumière monte — l'atelier viendra ici.
+// Arrivée : la lumière monte, et on entre dans l'atelier.
+let atelier = null
 async function arrivee() {
   arrive = true
   marcher(false)
   veil.style.transition = 'opacity 1.6s cubic-bezier(.4,0,.6,1)'
   void veil.offsetHeight
   veil.style.opacity = '1'
-  await attendre(1700)
-  toast('L’atelier s’ouvrira ici — la suite du voyage.')
-  await attendre(1200)
-  veil.style.transition = 'opacity 2.4s cubic-bezier(.3,0,.2,1)'
+  await Promise.all([attendre(1700), atelierPret])
+  entrerAtelier()
+  veil.style.transition = 'opacity 2.6s cubic-bezier(.3,0,.2,1)'
   veil.style.opacity = '0'
-  await attendre(3000)
-  arrive = false
+  await attendre(2200)
+  murmure.textContent = 'Il vient de partir. Le thé fume encore.'
+  await attendre(5200)
+  murmure.textContent = 'Choisissez votre handpan.'
 }
 
-btnSon.addEventListener('click', () => entrer(true))
-btnSilence.addEventListener('click', () => entrer(false))
+// L'atelier se charge en arrière-plan dès que la musique commence.
+let atelierPret = Promise.resolve()
+function preparerAtelier() {
+  if (!foret || atelier) return
+  atelier = new Atelier(foret.renderer, { mobile })
+  atelierPret = atelier.charger('./atelier/attic-3k.jpg').catch(err => console.error(err))
+  atelier.onNote = (f, vel, pan) => ambiance.noteProche(f, vel, pan)
+}
 
-// Un glissé dans la forêt fait disparaître l'indication plus tôt.
-if (foret) foret.onInteraction = () => { if (hud.classList.contains('is-live')) hud.classList.add('is-settled') }
+function entrerAtelier() {
+  foret.entrerAtelier(atelier, ATELIER_YAW)
+  ambiance.interieur(true)
+  hud.classList.add('is-atelier')
+  choose.hidden = true
+  walk.hidden = true
+  // Un appui sur un handpan le choisit ; sur un champ, joue la note.
+  foret.onTap = (nx, ny) => {
+    const r = atelier.toucher(foret.camera, nx, ny)
+    if (r?.type === 'choix') {
+      carteNom.textContent = r.modele.nom; carteSous.textContent = r.modele.sous
+      carte.hidden = false; guide.hidden = false
+      murmure.textContent = 'Touchez les champs pour jouer.'
+      setTimeout(() => { if (murmure.textContent === 'Touchez les champs pour jouer.') murmure.textContent = '' }, 5000)
+      // La première note, offerte : c'est sa voix.
+      setTimeout(() => ambiance.noteProche(r.modele.notes[0], 0.7, 0), 700)
+    }
+  }
+  // Survol à la souris : le handpan s'éclaire.
+  window.addEventListener('pointermove', e => {
+    if (atelier.choisi) return
+    const obj = atelier.viser(foret.camera, (e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1)
+    atelier.survol = obj ? (obj.userData.handpan || obj.parent) : null
+    document.body.style.cursor = obj ? 'pointer' : ''
+  }, { passive: true })
+}
 
-// ---- Marche --------------------------------------------------------------
-// Un appui lance la marche, un autre l'arrête ; si on maintient le bouton
-// plus d'un instant, relâcher arrête aussi. Les deux gestes marchent, parce
-// que les deux sont naturels. Au clavier : ↑, Z ou W maintenus.
 let marcher = () => {}
 if (foret) {
   foret.onPas = (pan, force) => ambiance.pas(pan, force)
@@ -183,6 +215,7 @@ if (foret) {
   walk.addEventListener('pointerdown', e => {
     e.preventDefault(); e.stopPropagation()
     tAppui = performance.now()
+    foret.suivre = false
     va(!foret.marche)
   })
   walk.addEventListener('pointerup', e => {
@@ -224,6 +257,8 @@ choose.addEventListener('click', () => {
   if (musiqueLancee) suivre()
   else toast('Écoutez… quelqu’un ne va pas tarder à jouer.')
 })
+
+guide.addEventListener('click', () => toast('Le guide s’ouvrira ici — sur la table, à côté de vous.'))
 
 let toastEl, toastTimer
 function toast(msg) {

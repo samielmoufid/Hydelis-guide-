@@ -223,6 +223,13 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .entry.is-leaving .entry__bg { transition: transform 2.2s cubic-bezier(.3,0,.2,1), filter 2.2s; transform: scale(1.35); filter: blur(4px) brightness(.9); }
 .entry.is-leaving .entry__vignette { transition: opacity 1.8s .3s; opacity: 0; }
 
+/* Carte du handpan choisi */
+.carte { text-align: center; margin: 0; }
+.carte__nom { margin: 0; font-family: var(--serif); font-size: clamp(26px, 4.6vw, 36px); color: var(--papier); text-shadow: 0 2px 20px rgba(0,0,0,.45); }
+.carte__sous { margin: 4px 0 0; font-size: 14px; letter-spacing: .04em; color: rgba(246,249,248,.8); text-shadow: 0 1px 12px rgba(0,0,0,.45); }
+.hud.is-atelier .hud__hint { display: none; }
+#guide { opacity: 1; transform: none; }
+
 /* Toast de placeholder pour l'étape suivante */
 .toast {
   position: fixed; left: 50%; bottom: 120px; transform: translateX(-50%) translateY(8px);

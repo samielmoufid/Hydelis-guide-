@@ -63,6 +63,8 @@ export class Foret {
     // du chemin. On y marche ; on « arrive » quand on en est tout près.
     this.musique = new THREE.Vector3()
     this.cibleYaw = null
+    this.suivre = false          // les pieds vont vers la musique, la tête reste libre
+    this.autre = null            // scène de l'atelier quand on y est
 
     this.tPrec = performance.now()
     this.t0 = this.tPrec
@@ -394,18 +396,26 @@ export class Foret {
       vx = -dx * k; vy = -dy * k
       this.dragYaw += vx; this.dragPitch = clamp(this.dragPitch + vy, -PITCH_MAX, PITCH_MAX)
     }
+    let x0 = 0, y0 = 0, t0 = 0
+    const debut0 = debut
+    const debut2 = e => { x0 = e.clientX; y0 = e.clientY; t0 = performance.now(); debut0(e) }
     const fin = e => {
       if (e.pointerId !== doigt) return
       doigt = null
       if (down) this.inertie = { vx, vy }
       down = false
+      // Un appui bref sans déplacement : un « tap », pour l'atelier.
+      if (performance.now() - t0 < 350 && Math.hypot(e.clientX - x0, e.clientY - y0) < 12) {
+        this.inertie = null
+        this._onTap?.((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1)
+      }
     }
     // Pas de zoom : ni pincement, ni double appui (iOS ignore parfois
     // touch-action, d'où les gestes bloqués explicitement).
     for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(ev, e => e.preventDefault(), { passive: false })
     document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault() }, { passive: false })
     document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault() }, { passive: false })
-    el.addEventListener('pointerdown', debut)
+    el.addEventListener('pointerdown', debut2)
     window.addEventListener('pointermove', bouge, { passive: true })
     window.addEventListener('pointerup', fin)
     window.addEventListener('pointercancel', fin)
@@ -465,6 +475,18 @@ export class Foret {
   // Tourne doucement le regard vers la musique.
   tournerVersMusique() { this.cibleYaw = this.yaw + this.angleMusique() }
 
+  // Bascule vers l'atelier : le regard repart de sa vue d'ouverture.
+  entrerAtelier(atelier, yaw) {
+    this.autre = atelier
+    this.marche = false; this.suivre = false; this.allure = 0
+    this.yaw0 = yaw
+    this.dragYaw = 0; this.dragPitch = 0; this.inertie = null
+    if (this.gyroBrut) { this.gyroYaw0 = this.gyroBrut.yaw; this.gyroPitch0 = this.gyroBrut.pitch }
+    this.yaw = yaw; this.pitch = 0
+  }
+  // Appui simple (sans glissé) : transmis à l'atelier.
+  get onTap() { return this._onTap } set onTap(f) { this._onTap = f }
+
   resize() {
     const w = window.innerWidth, h = window.innerHeight
     this.renderer.setSize(w, h, false)
@@ -472,7 +494,7 @@ export class Foret {
     // Sur un écran étroit on ouvre plus l'angle pour ne pas se sentir enfermé,
     // et on met le soleil plus près du centre, le champ horizontal étant réduit.
     this.fovBase = w < h ? 82 : 68
-    this.yaw0 = SUN_YAW + (w < h ? 20 : 34) * DEG
+    if (!this.autre) this.yaw0 = SUN_YAW + (w < h ? 20 : 34) * DEG
     const ym = this.yaw0 + 38 * DEG
     this.musique.set(-Math.sin(ym) * (PORTEE - 3), 0, -Math.cos(ym) * (PORTEE - 3))
     this.camera.updateProjectionMatrix()
@@ -547,7 +569,9 @@ export class Foret {
     this.allure = lerp(this.allure, veut, veut ? 0.05 : 0.08)
     let bobY = 0
     if (this.allure > 0.01) {
-      const dir = new THREE.Vector3(-Math.sin(this.yaw), 0, -Math.cos(this.yaw))
+      const dir = this.suivre
+        ? new THREE.Vector3(this.musique.x - this.pos.x, 0, this.musique.z - this.pos.z).normalize()
+        : new THREE.Vector3(-Math.sin(this.yaw), 0, -Math.cos(this.yaw))
       const suivant = this.pos.clone().addScaledVector(dir, VITESSE * this.allure * dt)
       // Au bout du chemin, on ralentit jusqu'à l'arrêt plutôt que de buter.
       const d = suivant.length()
@@ -563,6 +587,17 @@ export class Foret {
       }
     } else if (this.phasePas % (2 * Math.PI) > 0.01) {
       this.phasePas = 0
+    }
+    if (this.autre) {
+      // Dans l'atelier : pas de marche, on est debout puis assis.
+      this.autre.assis = lerp(this.autre.assis, this.autre.choisi ? 1 : 0, 0.03)
+      this.camera.position.set(0, -0.35 * this.autre.assis, 0)
+      this.camera.rotation.set(this.pitch + respire * 0.5, this.yaw, 0, 'YXZ')
+      const f2 = this.fovBase - 6 + fovResp
+      if (Math.abs(this.camera.fov - f2) > 0.01) { this.camera.fov = f2; this.camera.updateProjectionMatrix() }
+      this.autre.rendu(this.camera, dt)
+      this.renderer.render(this.autre.scene, this.camera)
+      return
     }
     this.camera.position.set(this.pos.x, this.pos.y + bobY, this.pos.z)
     this.camera.rotation.set(this.pitch + pitchIntro + respire, this.yaw, roll, 'YXZ')
